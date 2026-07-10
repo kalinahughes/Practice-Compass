@@ -17,3 +17,13 @@ This update adds:
 • Direct assessment tagging and evidence collection  
 
 Official LearnJCU templates and instructions remain the source of truth.
+
+
+## Soft botanical visual update
+
+• Stone and warm neutral base
+• Muted eucalyptus and sage accents
+• Warm brown and clay details
+• Very soft dusty blush
+• Cream backgrounds
+• Subtle eucalyptus botanical linework
