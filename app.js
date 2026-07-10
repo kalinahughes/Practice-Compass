@@ -343,6 +343,33 @@ function todayPage(){
   const count=savedEntries().length, g=greeting(), stage=currentStage(info);
 
   return `
+
+    <section class="brand-hero">
+      <div class="hero-botanical" aria-hidden="true">
+        <svg viewBox="0 0 260 180" role="img" aria-label="Practice Compass logo">
+          <g class="hero-compass">
+            <circle cx="130" cy="88" r="49"></circle>
+            <circle cx="130" cy="88" r="35"></circle>
+            <line x1="130" y1="28" x2="130" y2="148"></line>
+            <line x1="70" y1="88" x2="190" y2="88"></line>
+            <path d="M130 43 L141 88 L130 133 L119 88 Z"></path>
+            <circle cx="130" cy="88" r="4"></circle>
+          </g>
+          <g class="hero-leaf">
+            <path d="M165 112 C189 98 206 78 216 50"></path>
+            <ellipse cx="179" cy="100" rx="8" ry="18" transform="rotate(42 179 100)"></ellipse>
+            <ellipse cx="194" cy="82" rx="8" ry="18" transform="rotate(38 194 82)"></ellipse>
+            <ellipse cx="205" cy="63" rx="7" ry="16" transform="rotate(28 205 63)"></ellipse>
+            <ellipse cx="184" cy="116" rx="7" ry="16" transform="rotate(55 184 116)"></ellipse>
+          </g>
+        </svg>
+      </div>
+      <div class="brand-hero-copy">
+        <div class="brand-kicker">Practice Compass</div>
+        <div class="brand-tagline">🌿 Your placement companion</div>
+      </div>
+    </section>
+
     <section class="welcome-block">
       <div class="eyebrow">${info.started?`Week ${info.week} · Day ${info.day}`:"Before placement"}</div>
       <h1>${g.title}</h1>
@@ -712,6 +739,13 @@ function myJourneyPage(){
 function wellbeingPage(){
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backMore">‹</button><h2>💚 Looking after me</h2></div>
+
+    <div class="card about-card">
+      <div class="label">🧭 Why Practice Compass?</div>
+      <div class="big">A compass does not tell you every step. It helps you find your direction.</div>
+      <p>Practice Compass is here to help you understand what you are working towards, why it matters, and what you are learning along the way.</p>
+    </div>
+
     <div class="card stone"><div class="label">A gentle reminder</div><div class="big">${selfcare[new Date().getDay()]}</div></div>
     <div class="card"><div class="label">Quick check in</div>
       ${["I drank enough water","I moved or stretched","I took a real break","I connected with someone","I did something calming","I left placement work at placement"].map(x=>`<label class="option"><input type="checkbox"><span>${x}</span></label>`).join("")}

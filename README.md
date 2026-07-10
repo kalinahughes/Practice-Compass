@@ -27,3 +27,12 @@ Official LearnJCU templates and instructions remain the source of truth.
 • Very soft dusty blush
 • Cream backgrounds
 • Subtle eucalyptus botanical linework
+
+
+## Compass branding update
+
+• Custom line art compass on the Home page
+• Eucalyptus sprig incorporated into the logo
+• Practice Compass tagline
+• Why Practice Compass card
+• Copyright footer with creator credit

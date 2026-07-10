@@ -423,3 +423,76 @@ body{
 .nav.active{
   background:rgba(255,255,255,.15);
 }
+
+
+/* Practice Compass branding */
+.brand-hero{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  padding:24px 16px 18px;
+  margin:0 0 8px;
+  text-align:left;
+}
+.hero-botanical{width:132px;flex:none}
+.hero-botanical svg{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 8px 18px rgba(79,93,84,.08));
+}
+.hero-compass circle,
+.hero-compass line,
+.hero-compass path{
+  fill:none;
+  stroke:var(--eucalyptus-deep);
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.hero-compass path{fill:rgba(190,200,189,.22)}
+.hero-compass circle:last-child{fill:var(--brown);stroke:none}
+.hero-leaf path{
+  fill:none;
+  stroke:var(--brown);
+  stroke-width:2;
+  stroke-linecap:round;
+}
+.hero-leaf ellipse{
+  fill:rgba(116,137,123,.26);
+  stroke:var(--eucalyptus);
+  stroke-width:1.2;
+}
+.brand-hero-copy{min-width:0}
+.brand-kicker{
+  color:var(--eucalyptus-deep);
+  font-size:25px;
+  font-weight:850;
+  letter-spacing:-.02em;
+}
+.brand-tagline{
+  color:var(--brown);
+  font-size:15px;
+  margin-top:7px;
+}
+.about-card{
+  background:linear-gradient(135deg,#f8f4ef,#eee6dd)!important;
+}
+.site-footer{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  padding:26px 18px calc(112px + env(safe-area-inset-bottom));
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+.site-footer strong,.site-footer span{display:block}
+.footer-mark{font-size:20px;margin-bottom:6px}
+@media(max-width:390px){
+  .brand-hero{gap:10px;padding-left:4px;padding-right:4px}
+  .hero-botanical{width:110px}
+  .brand-kicker{font-size:22px}
+}
