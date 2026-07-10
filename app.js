@@ -196,9 +196,9 @@ let route="today";
 
 function greeting(){
   const hour = new Date().getHours();
-  if(hour < 12) return {title:"☀️ Good morning, Kalina", subtitle:"A new day. You only need to notice one useful thing."};
-  if(hour < 17) return {title:"🌿 Good afternoon, Kalina", subtitle:"Take a breath. Let’s focus on what matters next."};
-  return {title:"🌙 Welcome back, Kalina", subtitle:"You do not need to remember everything. One moment is enough."};
+  if(hour < 12) return {title:"☀️ Good morning, Kalina", subtitle:"A new day. Stay curious and notice one useful thing."};
+  if(hour < 17) return {title:"🌿 Good afternoon, Kalina", subtitle:"Welcome back. Let’s focus on what matters next."};
+  return {title:"🌙 Welcome back, Kalina", subtitle:"One meaningful moment from today is enough."};
 }
 
 function dayMessage(){
@@ -499,8 +499,9 @@ function morePage(){
       <button class="menu" id="learningPlan"><span>◎</span><strong>🌱 What I’m growing</strong></button>
       <button class="menu" id="evidenceBank"><span>▤</span><strong>⭐ Moments that matter</strong></button>
       <button class="menu" id="weeklyReview"><span>◫</span><strong>☕ Weekly check in</strong></button>
-      <button class="menu" id="wellbeing"><span>♧</span><strong>💚 Looking after me</strong></button>
-      <button class="menu" id="exportHtml"><span>⇩</span><strong>📄 Export my notes</strong></button>
+      <button class="menu blush-menu" id="myJourney"><span>🌸</span><strong>My journey</strong></button>
+      <button class="menu" id="wellbeing"><span>💚</span><strong>Looking after me</strong></button>
+      <button class="menu" id="exportHtml"><span>📄</span><strong>Export my notes</strong></button>
       <button class="menu" id="backupJson"><span>⇩</span><strong>💾 Back up my data</strong></button>
     </div>
     <div class="card"><div class="label">Your placement</div><p><strong>Mind Australia</strong><br>Adult Step Up Step Down<br>20 July 2026<br>Monday to Friday · 9:00 am to 5:00 pm<br>45 minute lunch · 7.25 placement hours</p></div>`;
@@ -509,7 +510,7 @@ function morePage(){
 function learningPlanPage(){
   const entries=savedEntries();
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore for you">‹</button><h2>🌱 What I’m growing</h2></div>
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🌱 What I’m growing</h2></div>
     ${goals.map(g=>{
       const n=entries.filter(e=>e.goal===g.id).length;
       return `<div class="card">
@@ -520,7 +521,7 @@ function learningPlanPage(){
         <details class="example"><summary><strong>Need ideas?</strong></summary><ul>${g.examples.map(x=>`<li>${x}</li>`).join("")}</ul></details>
       </div>`;
     }).join("")}`;
-  document.getElementById("backMore for you").onclick=()=>{route="more";render()};
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
 }
 
 function evidenceBankPage(){
@@ -528,7 +529,7 @@ function evidenceBankPage(){
   const categories=["Skill","Knowledge","Ethics or values","Theory in action","Communication","Recovery","Use of self","Feedback","Teamwork","Systems issue","Professional development"];
   const counts=Object.fromEntries(categories.map(c=>[c,entries.filter(e=>(e.evidenceTypes||[]).includes(c)).length]));
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore for you">‹</button><h2>⭐ Moments that matter</h2></div>
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>⭐ Moments that matter</h2></div>
 
     <div class="card green">
       <div class="label">Your practice is taking shape</div>
@@ -549,18 +550,18 @@ function evidenceBankPage(){
       ${e.theory?`<span class="pill">${e.theory}</span>`:""}
       ${e.method?`<span class="pill">${e.method}</span>`:""}
     </div>`).join(""):`<div class="card"><p class="muted">No entries yet. Your first saved example will appear here.</p></div>`}`;
-  document.getElementById("backMore for you").onclick=()=>{route="more";render()};
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
 }
 
 function weeklyReviewPage(){
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore for you">‹</button><h2>☕ Weekly check in</h2></div>
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>☕ Weekly check in</h2></div>
     <div class="card">
       ${["What am I proud of this week?","What confused or challenged me?","Which theory makes more sense now?","What do I want to ask in supervision?","How did I look after myself?","What is one focus for next week?"].map((q,i)=>`<div class="prompt-box"><strong>${q}</strong><textarea class="textarea weekly" data-q="${q}"></textarea></div>`).join("")}
       <button class="btn" id="saveWeekly">Save weekly review</button>
       <button class="btn secondary" onclick="window.print()">Print or save as PDF</button>
     </div>`;
-  document.getElementById("backMore for you").onclick=()=>{route="more";render()};
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
   document.getElementById("saveWeekly").onclick=()=>{
     const reviews=state.get("weeklyReviews",[]);
     reviews.unshift({date:new Date().toLocaleDateString("en-AU"),answers:[...document.querySelectorAll(".weekly")].map(x=>({q:x.dataset.q,a:x.value}))});
@@ -568,15 +569,39 @@ function weeklyReviewPage(){
   };
 }
 
+function myJourneyPage(){
+  const entries=savedEntries();
+  const reviews=state.get("weeklyReviews",[]);
+  const grouped={};
+  entries.forEach(e=>{
+    const d=e.date||"Undated";
+    (grouped[d]||(grouped[d]=[])).push(e);
+  });
+  document.getElementById("main").innerHTML=`
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🌸 My journey</h2></div>
+    <div class="card blush-card">
+      <div class="label">Looking back</div>
+      <div class="big">Small moments can show you how much your practice is changing.</div>
+      <p class="muted">This page gathers your saved reflections and weekly check ins in one place.</p>
+    </div>
+    ${entries.length?Object.entries(grouped).map(([date,list])=>`
+      <section class="journey-day">
+        <div class="journey-date">${date}</div>
+        ${list.map(e=>`<div class="journey-moment"><span>⭐</span><div><strong>${(e.evidenceTypes||[])[0]||"Learning moment"}</strong><p>${e.answer}</p></div></div>`).join("")}
+      </section>`).join(""):`<div class="card"><p class="muted">Your saved moments will appear here as your placement begins.</p></div>`}
+    ${reviews.length?`<div class="card"><div class="label">☕ Weekly check ins</div><p>${reviews.length} saved</p></div>`:""}`;
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
+}
+
 function wellbeingPage(){
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore for you">‹</button><h2>💚 Looking after me</h2></div>
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>💚 Looking after me</h2></div>
     <div class="card stone"><div class="label">A gentle reminder</div><div class="big">${selfcare[new Date().getDay()]}</div></div>
     <div class="card"><div class="label">Quick check in</div>
       ${["I drank enough water","I moved or stretched","I took a real break","I connected with someone","I did something calming","I left placement work at placement"].map(x=>`<label class="option"><input type="checkbox"><span>${x}</span></label>`).join("")}
     </div>
     <div class="notice">This is a prompt, not another task. Missing a day does not mean you are behind.</div>`;
-  document.getElementById("backMore for you").onclick=()=>{route="more";render()};
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
 }
 
 function saveEntry(){
@@ -598,7 +623,7 @@ function saveEntry(){
     evidence:[...document.querySelectorAll(".evidence:checked")].map(x=>x.value)
   };
   const arr=savedEntries(); arr.unshift(entry); state.set("entries",arr);
-  alert("Saved 🌿 One more useful moment is ready for you later.");
+  alert("Saved 🌿 Your moment is ready for you later.");
   route="today"; render();
 }
 
@@ -644,6 +669,7 @@ function bind(){
   document.getElementById("learningPlan")?.addEventListener("click",learningPlanPage);
   document.getElementById("evidenceBank")?.addEventListener("click",evidenceBankPage);
   document.getElementById("weeklyReview")?.addEventListener("click",weeklyReviewPage);
+  document.getElementById("myJourney")?.addEventListener("click",myJourneyPage);
   document.getElementById("wellbeing")?.addEventListener("click",wellbeingPage);
   document.getElementById("exportHtml")?.addEventListener("click",exportPrintable);
   document.getElementById("backupJson")?.addEventListener("click",backup);

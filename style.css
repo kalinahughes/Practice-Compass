@@ -281,3 +281,23 @@ p{line-height:1.65}
 }
 
 .toolkit-welcome{padding:10px 2px 20px}.toolkit-list{display:flex;flex-direction:column;gap:14px}.toolkit-folder{background:rgba(255,253,249,.96);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 7px 22px rgba(49,65,54,.05)}.folder-header{width:100%;display:flex;align-items:center;gap:15px;border:0;background:transparent;padding:19px;text-align:left;color:var(--charcoal)}.folder-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:var(--eucalyptus-soft);font-size:24px;flex:none}.folder-text{flex:1}.folder-title{font-size:19px;font-weight:820;color:var(--eucalyptus-deep)}.folder-subtitle{font-size:14px;line-height:1.45;color:var(--muted);margin-top:4px}.folder-arrow{font-size:23px;color:var(--eucalyptus)}.folder-content{padding:0 14px 14px;border-top:1px solid var(--line)}.toolkit-topic{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;border:0;border-bottom:1px solid var(--line);background:transparent;padding:15px 5px;text-align:left;color:var(--charcoal)}.toolkit-topic:last-child{border-bottom:0}.toolkit-topic div{display:flex;flex-direction:column;gap:4px}.toolkit-topic strong{font-size:16px;color:var(--eucalyptus-deep)}.toolkit-topic span{font-size:13px;line-height:1.45;color:var(--muted)}
+
+
+/* Warm companion accents */
+:root{
+  --blush:#ead6d3;
+  --blush-soft:#f7eceb;
+  --rosewood:#9b716d;
+}
+.focus-panel{background:linear-gradient(135deg,#fffdfa 0%,var(--blush-soft) 100%)}
+.focus-icon{background:var(--blush)}
+.glance-card:nth-child(2){background:linear-gradient(145deg,#fffdfa,var(--blush-soft))}
+.blush-menu{background:linear-gradient(145deg,#fffdfa,var(--blush-soft))}
+.blush-card{background:linear-gradient(135deg,#fffdfa,var(--blush-soft))}
+.journey-day{margin:20px 0}
+.journey-date{font-size:13px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:var(--rosewood);margin:0 0 10px 4px}
+.journey-moment{display:flex;gap:12px;padding:17px;background:#fffdfa;border:1px solid var(--line);border-radius:20px;margin:10px 0;box-shadow:0 5px 16px rgba(49,65,54,.04)}
+.journey-moment span{font-size:22px}
+.journey-moment p{margin:5px 0 0;color:#555d57;line-height:1.55}
+.folder-header,.toolkit-topic,.btn,.mini-btn,.menu{transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+.folder-header:active,.toolkit-topic:active,.btn:active,.mini-btn:active,.menu:active{transform:scale(.985)}
