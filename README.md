@@ -1,7 +1,19 @@
 # Practice Compass
 
-Visual update with expandable Practice Toolkit folders. Replace the existing GitHub project files with these files. Vercel will update the same live app automatically.
+Private JCU Advanced Social Work Practicum companion for Kalina's placement at Mind Australia.
 
-## Companion update
+This update adds:
 
-Added dusty blush accents, warmer balanced wording, gentle interactions and a new My Journey page.
+• A genuine My Placement hub  
+• All seven JCU assessment and placement requirements  
+• Learning Plan guidance  
+• Small Project and three Project Reflections  
+• Integration Session dates  
+• Fortnightly timesheet guidance and local timesheet entries  
+• Mid and End Placement assessment guidance  
+• Final presentation criteria  
+• Supervision questions and actions  
+• A smoother conversation based reflection flow  
+• Direct assessment tagging and evidence collection  
+
+Official LearnJCU templates and instructions remain the source of truth.
