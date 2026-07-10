@@ -1,0 +1,9 @@
+{
+  "name": "Practice Compass 2.0",
+  "short_name": "Compass",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf6ee",
+  "theme_color": "#496b58",
+  "icons": []
+}

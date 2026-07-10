@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2f4f3b" />
+  <title>Practice Compass</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="compass">✦</div>
+      <div>
+        <div class="brand">PRACTICE</div>
+        <div class="brand">COMPASS</div>
+      </div>
+    </div>
+    <button id="menuBtn" class="icon-btn">☰</button>
+  </header>
+
+  <main id="main"></main>
+
+  <nav class="bottom-nav">
+    <button data-route="today" class="nav active"><span>🏡</span><small>Home</small></button>
+    <button data-route="journal" class="nav"><span>💬</span><small>Reflect</small></button>
+    <button data-route="assessments" class="nav"><span>🌱</span><small>Placement</small></button>
+    <button data-route="learn" class="nav"><span>📚</span><small>Toolkit</small></button>
+    <button data-route="more" class="nav"><span>💚</span><small>Me</small></button>
+  </nav>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
