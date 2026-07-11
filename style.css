@@ -772,3 +772,6 @@ body{
   font-size:12px;
   font-weight:750;
 }
+
+/* repaired journey/export */
+.framework-chip{margin:4px 4px 4px 0}

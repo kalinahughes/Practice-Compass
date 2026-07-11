@@ -1,14 +1,17 @@
 # Practice Compass
 
-Assessment and information link repair.
+Full repair update.
 
-This update fixes:
+Fixed:
+• My Journey buttons
+• My Framework for Practice
+• My Growth
+• Weekly check in
+• Wellbeing
+• HTML export
+• JSON backup
+• Timesheets
+• Supervision
+• Assessment and Toolkit navigation preserved
 
-• Relevant Practice Toolkit links inside every assessment
-• Assessment dropdown sections
-• Checklist status controls
-• Back navigation after opening Toolkit information
-• External source links in the Domestic and Family Violence topic
-• Clear guidance about which official LearnJCU documents still need to be checked
-
-The update preserves the simplified Home, Reflect, Toolkit and My Journey layout.
+The previous failure occurred because page functions referenced by My Journey were missing, which stopped the rest of the button bindings from loading.

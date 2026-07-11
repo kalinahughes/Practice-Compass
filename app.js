@@ -939,6 +939,71 @@ function morePage(){
     </div>`;
 }
 
+
+function evidenceMapPage(){
+  const entries=savedEntries();
+  const categories=["Skill","Knowledge","Communication","Ethics or values","Cultural capability","Theory in action","Recovery","Use of self","Feedback","Teamwork","Systems issue","Documentation","Professional development"];
+  document.getElementById("main").innerHTML=`
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🌱 My growth</h2></div>
+    <div class="card green"><div class="label">What is this?</div><p>Your saved reflections are grouped by what they demonstrate. You do not need equal numbers in every category.</p></div>
+    <div class="card">${categories.map(c=>{const n=entries.filter(e=>(e.evidenceTypes||[]).includes(c)).length;return `<div class="row"><span style="flex:1">${c}</span><strong>${n}</strong></div>`}).join("")}</div>`;
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
+}
+
+function frameworkPage(){
+  const data=frameworkData();
+  const groups={
+    values:["Human dignity","Social justice","Self determination","Respect","Hope","Compassion","Accountability","Cultural safety"],
+    theories:["Recovery Oriented Practice","Strengths Based Practice","Systems and Ecological Theory","Trauma Informed Practice","Person Centred Practice","Anti Oppressive Practice","Feminist Social Work","Intersectionality","Narrative Practice","Motivational Interviewing"],
+    cultural:["Cultural humility","Cultural safety","Aboriginal and Torres Strait Islander self determination","CALD inclusion","Anti racist practice","LGBTQIA+ affirmative practice","Disability inclusion","Neurodiversity affirming practice"],
+    skills:["Engagement and rapport","Active listening","Assessment","Advocacy","Documentation","Case management","Group facilitation","Interprofessional collaboration","Reflective supervision"]
+  };
+  const chips=(group,items)=>items.map(v=>`<button class="select-chip framework-chip ${(data[group]||[]).includes(v)?"selected":""}" data-group="${group}" data-value="${v}">${v}</button>`).join("");
+  document.getElementById("main").innerHTML=`
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Framework for Practice</h2></div>
+    <div class="card green"><div class="label">Why am I building this?</div><p>Your framework brings together the values, theories, skills and reflections that shape how you practise. It can grow throughout placement.</p></div>
+    <div class="card"><div class="label">My values</div><div class="chip-grid">${chips("values",groups.values)}</div></div>
+    <div class="card"><div class="label">Theories and approaches</div><div class="chip-grid">${chips("theories",groups.theories)}</div></div>
+    <div class="card"><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips("cultural",groups.cultural)}</div></div>
+    <div class="card"><div class="label">My developing skills</div><div class="chip-grid">${chips("skills",groups.skills)}</div></div>
+    <div class="card stone"><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${data.useOfSelf||""}</textarea></div>
+    <div class="card"><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${data.professionalIdentity||""}</textarea><button class="btn" id="saveFramework">Save my framework</button></div>`;
+  document.getElementById("backMore").onclick=()=>{route="more";render()};
+  document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
+  document.getElementById("saveFramework").onclick=()=>{
+    const current={values:[],theories:[],cultural:[],skills:[],useOfSelf:document.getElementById("frameworkSelf").value.trim(),professionalIdentity:document.getElementById("frameworkIdentity").value.trim()};
+    document.querySelectorAll(".framework-chip.selected").forEach(btn=>current[btn.dataset.group].push(btn.dataset.value));
+    saveFrameworkData(current); alert("My Framework for Practice has been saved 🧭");
+  };
+}
+
+function timesheetPage(){
+  const entries=timesheetEntries();
+  document.getElementById("main").innerHTML=`
+    <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>⏱️ Timesheets</h2></div>
+    <div class="card green"><div class="label">Why am I doing this?</div><p>JCU requires a detailed record of placement hours and activities. Timesheets are reviewed, signed and submitted every two weeks.</p></div>
+    <div class="card"><label class="label">Date</label><input id="tsDate" type="date" class="input"><div class="grid2" style="margin-top:10px"><input id="tsStart" type="time" class="input" value="09:00"><input id="tsFinish" type="time" class="input" value="17:00"></div><label class="label" style="display:block;margin-top:12px">Unpaid lunch minutes</label><input id="tsLunch" type="number" class="input" value="45"><label class="label" style="display:block;margin-top:12px">Activities</label><textarea id="tsActivities" class="textarea" placeholder="Orientation, team meeting, shadowing, documentation, group, supervision, research..."></textarea><button class="btn" id="saveTimesheet">Save timesheet entry</button></div>
+    <div class="card"><div class="label">Saved entries</div>${entries.length?entries.map(e=>`<div class="row"><div style="flex:1"><strong>${e.date}</strong><div class="small">${e.start} to ${e.finish} · ${Number(e.hours).toFixed(2)} hrs</div><div class="small">${e.activities||""}</div></div></div>`).join(""):`<p class="muted">No timesheet entries saved yet.</p>`}</div>`;
+  document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
+  document.getElementById("saveTimesheet").onclick=()=>{
+    const date=document.getElementById("tsDate").value,start=document.getElementById("tsStart").value,finish=document.getElementById("tsFinish").value,lunch=Number(document.getElementById("tsLunch").value||0),activities=document.getElementById("tsActivities").value.trim();
+    if(!date||!start||!finish){alert("Add the date, start and finish time first.");return}
+    const [sh,sm]=start.split(":").map(Number),[fh,fm]=finish.split(":").map(Number); const total=Math.max(((fh*60+fm)-(sh*60+sm)-lunch)/60,0);
+    const arr=timesheetEntries(); arr.unshift({id:Date.now(),date,start,finish,lunch,hours:total,activities}); state.set("timesheets",arr); state.set("hours",arr.reduce((sum,e)=>sum+Number(e.hours||0),0)); alert("Timesheet entry saved ⏱️"); timesheetPage();
+  };
+}
+
+function supervisionPage(){
+  const items=supervisionItems();
+  document.getElementById("main").innerHTML=`
+    <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>☕ Supervision</h2></div>
+    <div class="card green"><div class="label">Why am I doing this?</div><p>Supervision connects theory, ethics, feedback, use of self and professional development with your placement experiences.</p></div>
+    <div class="card"><select id="supType" class="select"><option>Question</option><option>Feedback</option><option>Action item</option><option>Ethical issue</option><option>Use of self</option><option>Learning goal</option></select><textarea id="supText" class="textarea" placeholder="What would you like to discuss or remember?"></textarea><button class="btn" id="saveSupervision">Save for supervision</button></div>
+    <div class="card"><div class="label">My supervision list</div>${items.length?items.map(i=>`<div class="row"><div><strong>${i.type}</strong><div class="small">${i.date}</div><div>${i.text}</div></div></div>`).join(""):`<p class="muted">No items saved yet.</p>`}</div>`;
+  document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
+  document.getElementById("saveSupervision").onclick=()=>{const text=document.getElementById("supText").value.trim();if(!text){alert("Add a supervision note first.");return}const arr=supervisionItems();arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text});state.set("supervisionItems",arr);alert("Saved for supervision ☕");supervisionPage();};
+}
+
 function learningPlanPage(){
   const entries=savedEntries();
   document.getElementById("main").innerHTML=`
@@ -1062,28 +1127,28 @@ What I learnt: ${learnt}`:what;
   route="today"; render();
 }
 
-function exportPrintable(){
-  const entries=savedEntries();
-  const reviews=state.get("weeklyReviews",[]);
-  const html=`<!doctype html><html><head><meta charset="utf-8"><title>Practice Compass Journal</title>
-  <style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;color:#222}h1,h2{color:#2f4f3b}.entry{border:1px solid #ccc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#666;font-size:13px}.pill{display:inline-block;background:#e4ece2;padding:5px 8px;border-radius:99px;margin:3px}</style></head><body>
-  <h1>Practice Compass Placement Journal</h1><p>Kalina Hughes · Mind Australia · Adult Step Up Step Down</p>
-  <h2>Daily evidence</h2>
-  ${entries.map(e=>`<div class="entry"><div class="meta">${e.date} · Learning Goal ${e.goal}</div><p>${e.answer.replace(/</g,"&lt;")}</p>
-  ${(e.evidenceTypes||[]).length?`<p><strong>Evidence type:</strong> ${(e.evidenceTypes||[]).join(", ")}</p>`:""}${e.theory?`<p><strong>Theory:</strong> ${e.theory}</p>`:""}${e.method?`<p><strong>Method:</strong> ${e.method}</p>`:""}
-  ${e.supervision?`<p><strong>Supervision:</strong> ${e.supervision.replace(/</g,"&lt;")}</p>`:""}
-  ${(e.evidence||[]).map(x=>`<span class="pill">${x}</span>`).join("")}</div>`).join("")||"<p>No entries yet.</p>"}
-  <h2>☕ Weekly check ins</h2>
-  ${reviews.map(r=>`<div class="entry"><div class="meta">${r.date}</div>${r.answers.map(x=>`<p><strong>${x.q}</strong><br>${(x.a||"").replace(/</g,"&lt;")}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}
-  </body></html>`;
-  const blob=new Blob([html],{type:"text/html"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Practice_Compass_Journal.html";a.click();
+function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+function triggerFileDownload(blob,filename){
+  const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=filename; link.style.display="none"; document.body.appendChild(link); link.click(); setTimeout(()=>{URL.revokeObjectURL(url);link.remove();},1500);
 }
-
+async function shareOrDownload(blob,filename,title){
+  try{
+    if(navigator.share && window.File){const file=new File([blob],filename,{type:blob.type}); if(!navigator.canShare || navigator.canShare({files:[file]})){await navigator.share({title,files:[file]});return;}}
+  }catch(error){if(error && error.name==="AbortError") return;}
+  triggerFileDownload(blob,filename);
+}
+function exportPrintable(){
+  try{
+    const entries=savedEntries(),reviews=state.get("weeklyReviews",[]),timesheets=timesheetEntries(),framework=frameworkData();
+    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>Kalina Hughes · Mind Australia · Adult Step Up Step Down</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Framework for Practice</h2><div class="entry"><p><strong>Values:</strong> ${(framework.values||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Theories and approaches:</strong> ${(framework.theories||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Cultural capability:</strong> ${(framework.cultural||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Skills:</strong> ${(framework.skills||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Use of self:</strong> ${safeText(framework.useOfSelf)||"Not added"}</p><p><strong>Professional identity:</strong> ${safeText(framework.professionalIdentity)||"Not added"}</p></div></body></html>`;
+    shareOrDownload(new Blob([html],{type:"text/html"}),"Practice_Compass_Placement_Notes.html","Practice Compass placement notes");
+  }catch(error){console.error(error);alert("The export could not be created. Please try the JSON backup instead.");}
+}
 function backup(){
-  const data={hours:hours(),entries:savedEntries(),weeklyReviews:state.get("weeklyReviews",[]),timesheets:timesheetEntries(),supervisionItems:supervisionItems(),taskStatuses:taskStatusData()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Practice_Compass_Backup.json";a.click();
+  try{
+    const data={exportedAt:new Date().toISOString(),hours:hours(),entries:savedEntries(),weeklyReviews:state.get("weeklyReviews",[]),timesheets:timesheetEntries(),supervisionItems:supervisionItems(),taskStatuses:taskStatusData(),framework:frameworkData()};
+    shareOrDownload(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"Practice_Compass_Backup.json","Practice Compass backup");
+  }catch(error){console.error(error);alert("The backup could not be created. Please try again.");}
 }
 
 function bind(){
@@ -1099,10 +1164,10 @@ function bind(){
   document.querySelectorAll(".mood-chip").forEach(btn=>btn.onclick=()=>{document.querySelectorAll(".mood-chip").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");document.getElementById("mood").value=btn.dataset.mood;});
   document.querySelectorAll(".select-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
   document.getElementById("openCurrentAssessment")?.addEventListener("click",e=>assessmentDetail(e.currentTarget.dataset.id));
-  document.getElementById("openEvidenceMap")?.addEventListener("click",evidenceMapPage);
-  document.getElementById("openFramework")?.addEventListener("click",frameworkPage);
-  document.getElementById("openTimesheets")?.addEventListener("click",timesheetPage);
-  document.getElementById("openSupervision")?.addEventListener("click",supervisionPage);
+  document.getElementById("openEvidenceMap")?.addEventListener("click",()=>evidenceMapPage());
+  document.getElementById("openFramework")?.addEventListener("click",()=>frameworkPage());
+  document.getElementById("openTimesheets")?.addEventListener("click",()=>timesheetPage());
+  document.getElementById("openSupervision")?.addEventListener("click",()=>supervisionPage());
   document.querySelectorAll(".assessment").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id));
   const toolkitList=document.getElementById("toolkitList");
   if(toolkitList){
@@ -1139,13 +1204,13 @@ function bind(){
     });
   });
   
-    document.getElementById("frameworkMenu")?.addEventListener("click",frameworkPage);
-    document.getElementById("evidenceBank")?.addEventListener("click",evidenceBankPage);
-  document.getElementById("weeklyReview")?.addEventListener("click",weeklyReviewPage);
+    document.getElementById("frameworkMenu")?.addEventListener("click",()=>frameworkPage());
+    document.getElementById("evidenceBank")?.addEventListener("click",()=>evidenceBankPage());
+  document.getElementById("weeklyReview")?.addEventListener("click",()=>weeklyReviewPage());
   document.getElementById("myJourney")?.addEventListener("click",myJourneyPage);
-  document.getElementById("wellbeing")?.addEventListener("click",wellbeingPage);
-  document.getElementById("exportHtml")?.addEventListener("click",exportPrintable);
-  document.getElementById("backupJson")?.addEventListener("click",backup);
+  document.getElementById("wellbeing")?.addEventListener("click",()=>wellbeingPage());
+  document.getElementById("exportHtml")?.addEventListener("click",()=>exportPrintable());
+  document.getElementById("backupJson")?.addEventListener("click",()=>backup());
 }
 
 document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>{route=n.dataset.route;render()});
