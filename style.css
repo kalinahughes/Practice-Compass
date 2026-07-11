@@ -496,3 +496,13 @@ body{
   .hero-botanical{width:110px}
   .brand-kicker{font-size:22px}
 }
+
+/* Consolidated update */
+.blush-panel{background:linear-gradient(135deg,#fffdfa,#f1ece5)!important}
+.focus-panel,.milestone-panel,.conversation-card,.card,.glance-card,.quick-action,.item,.menu{background:rgba(255,253,249,.96)}
+.quick-action{min-height:132px}
+.hero-leaf{display:none!important}
+.brand-hero{padding-top:18px}
+.hero-botanical{width:115px}
+.hero-compass circle,.hero-compass line,.hero-compass path{stroke:var(--brown)}
+.hero-compass path{fill:rgba(216,208,197,.20)}
