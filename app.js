@@ -366,23 +366,19 @@ function render(){
 }
 
 function todayPage(){
-  const info=placementInfo(), h=hours(), a=nextAssessment(info,h), p=dailyPrompt(info,h);
-  const count=savedEntries().length, g=greeting(), stage=currentStage(info);
-
+  const info=placementInfo(), h=hours(), a=nextAssessment(info,h), stage=currentStage(info), g=greeting();
   return `
-
-    <section class="brand-hero">
+    <section class="brand-hero simple-brand">
       <div class="hero-botanical" aria-hidden="true">
-        <svg viewBox="0 0 260 180" role="img" aria-label="Practice Compass logo">
+        <svg viewBox="0 0 180 180">
           <g class="hero-compass">
-            <circle cx="130" cy="88" r="49"></circle>
-            <circle cx="130" cy="88" r="35"></circle>
-            <line x1="130" y1="28" x2="130" y2="148"></line>
-            <line x1="70" y1="88" x2="190" y2="88"></line>
-            <path d="M130 43 L141 88 L130 133 L119 88 Z"></path>
-            <circle cx="130" cy="88" r="4"></circle>
+            <circle cx="90" cy="90" r="48"></circle>
+            <circle cx="90" cy="90" r="34"></circle>
+            <line x1="90" y1="32" x2="90" y2="148"></line>
+            <line x1="32" y1="90" x2="148" y2="90"></line>
+            <path d="M90 46 L101 90 L90 134 L79 90 Z"></path>
+            <circle cx="90" cy="90" r="4"></circle>
           </g>
-          
         </svg>
       </div>
       <div class="brand-hero-copy">
@@ -392,140 +388,101 @@ function todayPage(){
     </section>
 
     <section class="welcome-block">
-      <div class="eyebrow">${info.started?`Week ${info.week} · Day ${info.day}`:"Before placement"}</div>
+      <div class="eyebrow">${info.started?`Week ${info.week} · Mind Australia`:"Before placement"}</div>
       <h1>${g.title}</h1>
       <p class="welcome-text">${g.subtitle}</p>
-      <p class="soft-note">${dayMessage()}</p>
     </section>
 
-    <section class="focus-panel blush-panel">
-      <div class="focus-icon">🎯</div>
-      <div>
-        <div class="section-title">This week</div>
-        <div class="focus-text">${stage.title}</div>
-        <ul class="calm-list">${stage.focus.slice(0,3).map(x=>`<li>${x}</li>`).join("")}</ul>
-        <button class="text-link" id="whyFocus">Why am I seeing this?</button>
-        <div id="whyFocusText" class="explain-box hidden">Your placement requirements build over time. This guide highlights what matters now so you do not have to hold the whole subject outline in your head.</div>
-      </div>
+    <section class="clean-section">
+      <div class="section-title">Today</div>
+      <div class="focus-line">${stage.focus[0]}</div>
+      <div class="focus-line">${stage.focus[1] || "Save one useful learning moment."}</div>
+      <button class="btn" id="startJournal">💬 Start today’s reflection</button>
     </section>
 
-    <section class="milestone-panel">
-      <div class="milestone-top">
-        <div>
-          <div class="section-title">🌱 What you’re working towards</div>
-          <div class="milestone-title">${a.title}</div>
-          <div class="muted">${a.when}</div>
-        </div>
-        <div class="round-icon">${a.icon}</div>
-      </div>
-      <p>${a.purpose || a.plain}</p>
-      <button class="btn" id="openCurrentAssessment" data-id="${a.id}">Open assessment guidance</button>
+    <section class="clean-section">
+      <div class="section-title">Coming up</div>
+      <button class="plain-row" id="openCurrentAssessment" data-id="${a.id}">
+        <div><strong>${a.title}</strong><span>${a.when}</span></div><span>›</span>
+      </button>
     </section>
 
-    <section class="buddy-note">
-      <div class="buddy-icon">💬</div>
-      <div>
-        <div class="section-title">One moment from today</div>
-        <div class="buddy-text">${p.q}</div>
-        <button class="mini-btn" id="startJournal">Reflect when ready</button>
-      </div>
+    <section class="snapshot-row">
+      <div><span>Hours</span><strong>${h.toFixed(2)} / 500</strong></div>
+      <div><span>Learning moments</span><strong>${savedEntries().length}</strong></div>
     </section>
 
-    <section class="glance-grid">
-      <div class="glance-card">
-        <div class="glance-icon">⏳</div>
-        <div class="glance-label">Placement hours</div>
-        <div class="glance-number">${h.toFixed(2)}</div>
-        <div class="small">of 500 hours</div>
-        <button class="mini-btn" id="completeDay">Add 7.25 hrs</button>
-      </div>
-      <div class="glance-card">
-        <div class="glance-icon">⭐</div>
-        <div class="glance-label">Moments saved</div>
-        <div class="glance-number">${count}</div>
-        <div class="small">assessment examples</div>
-        <button class="mini-btn" id="openEvidence">View growth</button>
-      </div>
-    </section>
-
-    <section class="buddy-note green-note">
-      <div class="buddy-icon">💚</div>
-      <div><div class="section-title">Looking after you</div><div class="buddy-text">${selfcare[new Date().getDay()]}</div></div>
-    </section>
-
-    <section class="quiet-footer"><span>🌿</span><p>Use deidentified learning only. Do not record consumer names, addresses, dates of birth or case identifiers.</p></section>`;
+    <section class="kindness-note"><div>💚</div><p>${selfcare[new Date().getDay()]}</p></section>
+    <p class="home-mantra">Supporting thoughtful, evidence informed and compassionate social work practice.</p>`;
 }
 
 function journalPage(){
   const info=placementInfo(), h=hours(), p=dailyPrompt(info,h);
-  const evidenceTypes=["Skill","Knowledge","Ethics or values","Cultural capability","Theory in action","Communication","Recovery","Use of self","Feedback","Teamwork","Systems issue","Documentation","Professional development"];
-
+  const evidenceTypes=["Skill","Knowledge","Communication","Ethics or values","Cultural capability","Theory in action","Recovery","Use of self","Feedback","Teamwork","Systems issue","Documentation","Professional development"];
   return `
     <section class="welcome-block">
-      <div class="eyebrow">Guided reflection</div>
-      <h1>💬 Let’s make sense of today</h1>
-      <p class="welcome-text">Start with one moment. The assessment links come afterwards.</p>
+      <div class="eyebrow">Reflect</div>
+      <h1>💬 What did you learn today?</h1>
+      <p class="welcome-text">Keep it simple. Practice Compass will organise the rest.</p>
     </section>
 
-    <div class="conversation-card blush-panel">
-      <div class="chat-label">Practice Compass</div>
-      <div class="chat-bubble">How are you feeling after today?</div>
-      <div class="mood-row">
-        ${["Calm","Proud","Mixed","Tired","Overwhelmed"].map(x=>`<button class="mood-chip" data-mood="${x}">${x}</button>`).join("")}
-      </div>
-      <input type="hidden" id="mood">
+    <div class="conversation-card">
+      <div class="chat-label">What happened?</div>
+      <textarea id="answer" class="textarea" placeholder="One conversation, observation, challenge or learning moment..."></textarea>
     </div>
 
     <div class="conversation-card">
-      <div class="chat-label">Practice Compass</div>
-      <div class="chat-bubble">${p.q}</div>
-      <textarea id="answer" class="textarea" placeholder="Tell me about one conversation, observation, challenge or learning moment..."></textarea>
-      <details class="example"><summary><strong>I’m stuck</strong></summary>
-        <p>Think about a conversation, decision, feeling, piece of feedback, team interaction, cultural consideration, ethical tension or something that differed from Child Safety.</p>
-      </details>
+      <div class="chat-label">What did you learn?</div>
+      <textarea id="learningText" class="textarea" placeholder="What became clearer, challenged you, or changed your thinking?"></textarea>
       <div class="why"><strong>Why am I being asked this?</strong><br>${p.why}</div>
     </div>
 
     <div class="conversation-card">
-      <div class="chat-label">What did this moment show?</div>
-      <p class="muted">Choose only what genuinely fits.</p>
+      <div class="chat-label">What did this demonstrate?</div>
+      <p class="muted">Choose only what fits. These tags connect your reflection to relevant assessments.</p>
       <div class="chip-grid">${evidenceTypes.map(x=>`<button class="select-chip evidence-chip" data-value="${x}">${x}</button>`).join("")}</div>
     </div>
 
     <div class="conversation-card">
-      <div class="chat-label">Would a practice lens help?</div>
-      <select id="theoryPick" class="select"><option value="">Not today / I am unsure</option>${theories.map(t=>`<option>${t.name}</option>`).join("")}</select>
-      <select id="methodPick" class="select" style="margin-top:10px"><option value="">Choose a skill or method if relevant</option>${methods.map(m=>`<option>${m.name}</option>`).join("")}</select>
-    </div>
-
-    <div class="conversation-card green-note">
-      <div class="chat-label">How could this help your placement?</div>
-      <div class="chip-grid">
-        ${["Learning Plan","Project Reflections","Mid and End Placement Assessments","Final Presentation","Supervision","Just for me"].map(x=>`<button class="select-chip assessment-chip" data-value="${x}">${x}</button>`).join("")}
-      </div>
-      <textarea id="supervision" class="textarea" placeholder="Optional: a question or topic for supervision"></textarea>
+      <div class="chat-label">Anything for supervision?</div>
+      <textarea id="supervision" class="textarea" placeholder="Optional"></textarea>
+      <input type="hidden" id="mood" value="">
+      <select id="theoryPick" class="select hidden"><option value=""></option></select>
+      <select id="methodPick" class="select hidden"><option value=""></option></select>
       <button class="btn" id="saveEntry">🌿 Save this moment</button>
     </div>`;
 }
 
 function assessmentPage(){
-  const info=placementInfo(), h=hours();
+  const info=placementInfo(), h=hours(), stage=currentStage(info);
   return `
     <section class="welcome-block">
-      <div class="eyebrow">JCU WS5606 / WS5607</div>
-      <h1>🎓 Assessment Companion</h1>
-      <p class="welcome-text">See what is coming, what each task is for, and what evidence you are building.</p>
+      <div class="eyebrow">Placement</div>
+      <h1>🌱 My Placement</h1>
+      <p class="welcome-text">Everything practical and everything JCU requires, in one place.</p>
     </section>
-    <div class="card stone"><div class="label">Your placement at a glance</div><div class="grid2"><div class="stat"><span>Placement week</span><strong>${info.started?info.week:"—"}</strong><span>${info.started?"current week":"Starts 20 July 2026"}</span></div><div class="stat"><span>Hours</span><strong>${h.toFixed(2)}</strong><span>of 500</span></div></div></div>
-    <div class="card green"><div class="label">How this works</div><div class="big">Capture learning first. Practice Compass maps it to assessments afterwards.</div><p>Each saved reflection is tagged by what it demonstrates. Those tags then appear under the relevant assessment.</p></div>
-    <div class="placement-actions">
-      <button class="quick-action" id="openEvidenceMap">⭐<span>Evidence Map</span><small>See what is building automatically</small></button>
-      <button class="quick-action" id="openTimesheets">⏱️<span>Timesheets</span><small>Hours and activities</small></button>
-      <button class="quick-action" id="openSupervision">☕<span>Supervision</span><small>Questions and actions</small></button>
-      <button class="quick-action" id="openFramework">🧭<span>My Framework</span><small>The social worker I am becoming</small></button>
-    </div>
-    <h2 class="section-heading">What is coming up</h2>
-    <div class="list">${assessments.map(a=>{const n=savedEntries().filter(e=>(e.evidence||[]).includes(a.title)).length;return `<button class="item assessment" data-id="${a.id}"><div class="item-icon ${a.color}">${a.icon}</div><div class="item-main"><div class="item-title">${a.title}</div><div class="item-meta">${a.when}</div><div class="item-meta">${n} linked learning moment${n===1?"":"s"}</div></div><div class="chev">›</div></button>`}).join("")}</div>`;
+
+    <section class="clean-section">
+      <div class="section-title">Placement overview</div>
+      <div class="plain-info"><strong>Mind Australia</strong><span>Adult Step Up Step Down</span></div>
+      <div class="plain-info"><strong>${info.started?`Week ${info.week}`:"Starts 20 July 2026"}</strong><span>${h.toFixed(2)} / 500 hours</span></div>
+    </section>
+
+    <section class="clean-section">
+      <div class="section-title">This week</div>
+      ${stage.focus.map(x=>`<div class="focus-line">${x}</div>`).join("")}
+    </section>
+
+    <section class="clean-section">
+      <div class="section-title">Placement admin</div>
+      <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets</strong><span>Hours and daily activities</span></div><span>›</span></button>
+      <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
+    </section>
+
+    <section class="clean-section">
+      <div class="section-title">Assessment Companion</div>
+      ${assessments.map(a=>`<button class="plain-row assessment" data-id="${a.id}"><div><strong>${a.icon} ${a.title}</strong><span>${a.when}</span></div><span>›</span></button>`).join("")}
+    </section>`;
 }
 
 function assessmentDetail(id){
@@ -579,89 +536,26 @@ function toolkitDetail(categoryIndex,topicIndex){
 }
 
 function morePage(){
-  return `<h1>More for you</h1>
-    <div class="menu-grid">
-      <button class="menu" id="learningPlan"><span>◎</span><strong>🌱 What I’m growing</strong></button>
-      <button class="menu" id="evidenceBank"><span>▤</span><strong>⭐ Moments that matter</strong></button>
-      <button class="menu" id="weeklyReview"><span>◫</span><strong>☕ Weekly check in</strong></button>
-      <button class="menu blush-menu" id="myJourney"><span>🌸</span><strong>My journey</strong></button>
-      <button class="menu" id="wellbeing"><span>💚</span><strong>Looking after me</strong></button>
-      <button class="menu" id="exportHtml"><span>📄</span><strong>Export my notes</strong></button>
-      <button class="menu" id="backupJson"><span>⇩</span><strong>💾 Back up my data</strong></button>
-    </div>
-    <div class="card"><div class="label">Your placement</div><p><strong>Mind Australia</strong><br>Adult Step Up Step Down<br>20 July 2026<br>Monday to Friday · 9:00 am to 5:00 pm<br>45 minute lunch · 7.25 placement hours</p></div>`;
-}
+  return `
+    <section class="welcome-block">
+      <div class="eyebrow">My Journey</div>
+      <h1>💚 My Journey</h1>
+      <p class="welcome-text">Your wellbeing, growth and developing professional identity.</p>
+    </section>
 
+    <section class="clean-section">
+      <button class="plain-row" id="frameworkMenu"><div><strong>🧭 My Framework for Practice</strong><span>Values, approaches, skills and professional identity</span></div><span>›</span></button>
+      <button class="plain-row" id="weeklyReview"><div><strong>☕ Weekly check in</strong><span>Pause and notice how the week felt</span></div><span>›</span></button>
+      <button class="plain-row" id="wellbeing"><div><strong>💚 Looking after me</strong><span>Gentle reminders without pressure</span></div><span>›</span></button>
+      <button class="plain-row" id="evidenceBank"><div><strong>🌱 My growth</strong><span>Learning moments across placement</span></div><span>›</span></button>
+      <button class="plain-row" id="exportHtml"><div><strong>📄 Export my notes</strong><span>Readable placement record</span></div><span>›</span></button>
+      <button class="plain-row" id="backupJson"><div><strong>💾 Back up my data</strong><span>Private JSON backup</span></div><span>›</span></button>
+    </section>
 
-
-function evidenceMapPage(){
-  const coverage=evidenceCoverage(),entries=savedEntries();
-  const cats=["Skill","Knowledge","Communication","Ethics or values","Cultural capability","Theory in action","Recovery","Use of self","Feedback","Teamwork","Systems issue","Documentation","Professional development"];
-  document.getElementById("main").innerHTML=`<div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>⭐ Evidence Map</h2></div><div class="card green"><div class="label">What am I building?</div><div class="big">One learning moment can support several assessments.</div><p>The map shows where you already have examples and what still needs attention.</p></div>${Object.entries(coverage).map(([a,rows])=>`<div class="card"><div class="label">${a}</div>${rows.map(r=>`<div class="row"><span>${r.count?"✓":"○"}</span><span style="flex:1">${r.requirement}</span><strong>${r.count}</strong></div>`).join("")}</div>`).join("")}<div class="card stone"><div class="label">Overall evidence snapshot</div>${cats.map(c=>`<div class="row"><span style="flex:1">${c}</span><strong>${entries.filter(e=>(e.evidenceTypes||[]).includes(c)).length}</strong></div>`).join("")}</div>`;
-  document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
-}
-function frameworkPage(){
-  const d=frameworkData();
-  const values=["Human dignity","Social justice","Self determination","Respect","Hope","Compassion","Accountability","Cultural safety"];
-  const theories=["Recovery Oriented Practice","Strengths Based Practice","Systems and Ecological Theory","Trauma Informed Practice","Person Centred Practice","Anti Oppressive Practice","Feminist Social Work","Intersectionality","Narrative Practice","Motivational Interviewing"];
-  const cultural=["Cultural humility","Cultural safety","Aboriginal and Torres Strait Islander self determination","CALD inclusion","Anti racist practice","LGBTQIA+ affirmative practice","Disability inclusion","Neurodiversity affirming practice"];
-  const skills=["Engagement and rapport","Active listening","Assessment","Advocacy","Documentation","Case management","Group facilitation","Interprofessional collaboration","Reflective supervision"];
-  const chips=(arr,g,sel)=>arr.map(v=>`<button class="select-chip framework-chip ${sel.includes(v)?"selected":""}" data-group="${g}" data-value="${v}">${v}</button>`).join("");
-  document.getElementById("main").innerHTML=`<div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>🧭 My Framework for Practice</h2></div><div class="card green"><div class="label">Why am I building this?</div><div class="big">Your framework brings together the values, theories, skills and reflections that shape how you practise.</div><p>It is not a finished statement. It should grow with your placement experience.</p></div><div class="card"><div class="label">My values</div><div class="chip-grid">${chips(values,"values",d.values)}</div></div><div class="card"><div class="label">Theories and approaches I draw on</div><div class="chip-grid">${chips(theories,"theories",d.theories)}</div></div><div class="card"><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips(cultural,"cultural",d.cultural)}</div></div><div class="card"><div class="label">My developing skills</div><div class="chip-grid">${chips(skills,"skills",d.skills)}</div></div><div class="card stone"><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${d.useOfSelf||""}</textarea></div><div class="card"><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${d.professionalIdentity||""}</textarea><button class="btn" id="saveFramework">Save my framework</button></div>`;
-  document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
-  document.querySelectorAll(".framework-chip").forEach(b=>b.onclick=()=>b.classList.toggle("selected"));
-  document.getElementById("saveFramework").onclick=()=>{const x={values:[],theories:[],cultural:[],skills:[],useOfSelf:document.getElementById("frameworkSelf").value.trim(),professionalIdentity:document.getElementById("frameworkIdentity").value.trim()};document.querySelectorAll(".framework-chip.selected").forEach(b=>x[b.dataset.group].push(b.dataset.value));saveFrameworkData(x);alert("My Framework for Practice has been saved 🧭");};
-}
-
-function timesheetPage(){
-  const entries=timesheetEntries();
-  document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>⏱️ Timesheets</h2></div>
-    <div class="card green"><div class="label">Why am I doing this?</div><p>JCU requires a detailed record of placement hours and activities. Timesheets are reviewed, signed and submitted every two weeks.</p></div>
-    <div class="card">
-      <label class="label">Date</label><input id="tsDate" type="date" class="input">
-      <div class="grid2" style="margin-top:10px"><input id="tsStart" type="time" class="input" value="09:00"><input id="tsFinish" type="time" class="input" value="17:00"></div>
-      <label class="label" style="display:block;margin-top:12px">Unpaid lunch minutes</label><input id="tsLunch" type="number" class="input" value="45">
-      <label class="label" style="display:block;margin-top:12px">Activities</label><textarea id="tsActivities" class="textarea" placeholder="Orientation, team meeting, shadowing, documentation, group, supervision, research..."></textarea>
-      <button class="btn" id="saveTimesheet">Save timesheet entry</button>
-    </div>
-    <div class="card"><div class="label">Saved entries</div>
-      ${entries.length?entries.map(e=>`<div class="row"><div style="flex:1"><strong>${e.date}</strong><div class="small">${e.start} to ${e.finish} · ${e.hours.toFixed(2)} hrs</div><div class="small">${e.activities}</div></div></div>`).join(""):`<p class="muted">No timesheet entries saved yet.</p>`}
+    <div class="card about-card">
+      <div class="label">🧭 Why Practice Compass?</div>
+      <p>It helps you understand what you are working towards, save what you are learning and connect those moments to placement requirements.</p>
     </div>`;
-  document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
-  document.getElementById("saveTimesheet").onclick=saveTimesheet;
-}
-
-function saveTimesheet(){
-  const date=document.getElementById("tsDate").value, start=document.getElementById("tsStart").value, finish=document.getElementById("tsFinish").value;
-  const lunch=Number(document.getElementById("tsLunch").value||0), activities=document.getElementById("tsActivities").value.trim();
-  if(!date||!start||!finish){alert("Add the date, start and finish time first.");return}
-  const [sh,sm]=start.split(":").map(Number), [fh,fm]=finish.split(":").map(Number);
-  const total=((fh*60+fm)-(sh*60+sm)-lunch)/60;
-  const arr=timesheetEntries(); arr.unshift({id:Date.now(),date,start,finish,lunch,hours:Math.max(total,0),activities}); state.set("timesheets",arr);
-  state.set("hours",arr.reduce((sum,e)=>sum+e.hours,0));
-  alert("Timesheet entry saved ⏱️"); timesheetPage();
-}
-
-function supervisionPage(){
-  const items=supervisionItems();
-  document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>☕ Supervision</h2></div>
-    <div class="card blush-panel"><div class="label">Why am I doing this?</div><p>Supervision is where you connect theory, ethics, feedback, use of self and professional development with your actual placement experiences.</p></div>
-    <div class="card">
-      <select id="supType" class="select"><option>Question</option><option>Feedback</option><option>Action item</option><option>Ethical issue</option><option>Use of self</option><option>Learning goal</option></select>
-      <textarea id="supText" class="textarea" placeholder="What would you like to discuss or remember?"></textarea>
-      <button class="btn" id="saveSupervision">Save for supervision</button>
-    </div>
-    <div class="card"><div class="label">My supervision list</div>
-      ${items.length?items.map(i=>`<div class="row"><div><strong>${i.type}</strong><div class="small">${i.date}</div><div>${i.text}</div></div></div>`).join(""):`<p class="muted">No items saved yet.</p>`}
-    </div>`;
-  document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
-  document.getElementById("saveSupervision").onclick=()=>{
-    const text=document.getElementById("supText").value.trim(); if(!text){alert("Add a supervision note first.");return}
-    const arr=supervisionItems(); arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text}); state.set("supervisionItems",arr);
-    alert("Saved for supervision ☕"); supervisionPage();
-  };
 }
 
 function learningPlanPage(){
@@ -769,15 +663,22 @@ function wellbeingPage(){
 }
 
 function saveEntry(){
-  const ans=document.getElementById("answer").value.trim();if(!ans){alert("Tell me about one moment first.");return}
-  const info=placementInfo(),p=dailyPrompt(info,hours());
-  const types=[...document.querySelectorAll(".evidence-chip.selected")].map(x=>x.dataset.value);
-  const manual=[...document.querySelectorAll(".assessment-chip.selected")].map(x=>x.dataset.value);
-  const all=[...new Set([...manual,...mappedAssessments(types)])];
-  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:document.getElementById("mood").value,answer:ans,evidenceTypes:types,theory:document.getElementById("theoryPick").value,method:document.getElementById("methodPick").value,supervision:document.getElementById("supervision").value.trim(),evidence:all};
-  const arr=savedEntries();arr.unshift(entry);state.set("entries",arr);
-  if(entry.supervision){const s=supervisionItems();s.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:entry.supervision});state.set("supervisionItems",s);}
-  alert(all.length?`Saved 🌿 Linked to: ${all.join(", ")}.`:"Saved 🌿 Your moment is ready for you later.");route="today";render();
+  const what=document.getElementById("answer").value.trim();
+  const learnt=document.getElementById("learningText").value.trim();
+  if(!what){alert("Add one moment from today first.");return}
+  const info=placementInfo(), p=dailyPrompt(info,hours());
+  const evidenceTypes=[...document.querySelectorAll(".evidence-chip.selected")].map(x=>x.dataset.value);
+  const autoMapped=mappedAssessments(evidenceTypes);
+  const answer=learnt?`${what}
+
+What I learnt: ${learnt}`:what;
+  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer,evidenceTypes,theory:"",method:"",supervision:document.getElementById("supervision").value.trim(),evidence:autoMapped};
+  const arr=savedEntries(); arr.unshift(entry); state.set("entries",arr);
+  if(entry.supervision){
+    const s=supervisionItems(); s.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:entry.supervision}); state.set("supervisionItems",s);
+  }
+  alert(autoMapped.length?`Saved 🌿 Linked to: ${autoMapped.join(", ")}.`:"Saved 🌿");
+  route="today"; render();
 }
 
 function exportPrintable(){
@@ -826,10 +727,8 @@ function bind(){
   document.querySelectorAll('.toolkit-topic').forEach(btn=>btn.onclick=()=>toolkitDetail(Number(btn.dataset.category),Number(btn.dataset.topic)));
   document.getElementById('toolkitSearch')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.toolkit-folder').forEach(folder=>{folder.style.display=folder.dataset.search.includes(q)?'block':'none';if(q&&folder.dataset.search.includes(q)){folder.querySelector('.folder-content').classList.remove('hidden');folder.querySelector('.folder-arrow').textContent='⌃';}});});
   
-  document.getElementById("learningPlan")?.addEventListener("click",learningPlanPage);
-  document.getElementById("frameworkMenu")?.addEventListener("click",frameworkPage);
-  document.getElementById("evidenceMapMenu")?.addEventListener("click",evidenceMapPage);
-  document.getElementById("evidenceBank")?.addEventListener("click",evidenceBankPage);
+    document.getElementById("frameworkMenu")?.addEventListener("click",frameworkPage);
+    document.getElementById("evidenceBank")?.addEventListener("click",evidenceBankPage);
   document.getElementById("weeklyReview")?.addEventListener("click",weeklyReviewPage);
   document.getElementById("myJourney")?.addEventListener("click",myJourneyPage);
   document.getElementById("wellbeing")?.addEventListener("click",wellbeingPage);

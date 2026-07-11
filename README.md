@@ -1,7 +1,12 @@
 # Practice Compass
 
-Consolidated update for Kalina's JCU Advanced Social Work Practicum at Mind Australia.
+Cohesion update.
 
-Added: Assessment Companion, smart evidence mapping, Evidence Map, My Framework for Practice, cleaner stone/brown/cream styling, and a minimal compass logo.
+Home answers what matters today.
+Placement holds assessments, timesheets and supervision.
+Reflect has three clear steps.
+Toolkit remains searchable and expandable.
+My Journey holds wellbeing, growth and framework for practice.
 
-Official LearnJCU documents remain the source of truth.
+Flow:
+Experience → Reflection → Tags → Assessment evidence
