@@ -1,15 +1,14 @@
 # Practice Compass
 
-Knowledge Hub repair and verified content update.
+Assessment and information link repair.
 
-This update adds:
+This update fixes:
 
-• A Practice Areas folder
-• Searchable Domestic and Family Violence topic
-• Current Australian and Queensland prevalence data
-• Social work practice considerations
-• Relevant theories and reflective prompts
-• Clickable links to ABS, AIHW, Queensland Government and ANROWS
-• Source type and review date labels
+• Relevant Practice Toolkit links inside every assessment
+• Assessment dropdown sections
+• Checklist status controls
+• Back navigation after opening Toolkit information
+• External source links in the Domestic and Family Violence topic
+• Clear guidance about which official LearnJCU documents still need to be checked
 
-The statistics are drawn from the linked official sources. Users should open the original source before citing a statistic in university work.
+The update preserves the simplified Home, Reflect, Toolkit and My Journey layout.

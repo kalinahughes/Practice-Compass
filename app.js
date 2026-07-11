@@ -353,10 +353,10 @@ function verifiedKnowledgePage(topic,category){
       <p class="muted">Open the original publication before using a statistic in university work.</p>
       <div class="source-list">
         ${data.sources.map(source=>`
-          <a class="source-link" href="${source.url}" target="_blank" rel="noopener noreferrer">
+          <a class="source-link" href="${source.url}" target="_blank" rel="noopener noreferrer external">
             <span class="source-type">${source.type}</span>
             <strong>${source.title}</strong>
-            <small>${source.organisation}</small>
+            <small>${source.organisation}</small><span class="open-source-label">Open original source ↗</span>
           </a>`).join("")}
       </div>
       <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
@@ -551,6 +551,55 @@ function assessmentProgress(a){
   return Math.round((total/tasks.length)*100);
 }
 
+
+function findToolkitTopicByName(name){
+  const normalise=value=>String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  const wanted=normalise(name);
+  const aliases={
+    "recovery":"recovery oriented practice",
+    "reflective practice":"reflective practice",
+    "use of self":"use of self",
+    "cultural capability and inclusion":"cultural capability inclusion",
+    "research and evidence":"research evidence",
+    "social policy":"social policy",
+    "documentation":"documentation",
+    "community development":"community development",
+    "ethics and professional practice":"ethics professional practice",
+    "aasw practice standards":"aasw practice standards",
+    "presentation and communication":"communication"
+  };
+  const target=aliases[wanted] || wanted;
+
+  for(let categoryIndex=0; categoryIndex<toolkitCategories.length; categoryIndex++){
+    const category=toolkitCategories[categoryIndex];
+    for(let topicIndex=0; topicIndex<category[3].length; topicIndex++){
+      const topic=category[3][topicIndex];
+      const topicName=normalise(topic[0]);
+      const categoryName=normalise(category[1]);
+      if(topicName===target || topicName.includes(target) || target.includes(topicName) || categoryName===target){
+        return {categoryIndex,topicIndex};
+      }
+    }
+  }
+  return null;
+}
+
+function openToolkitTopicByName(name){
+  const match=findToolkitTopicByName(name);
+  if(match){
+    toolkitDetail(match.categoryIndex,match.topicIndex);
+    return true;
+  }
+  route="learn";
+  render();
+  const search=document.getElementById("toolkitSearch");
+  if(search){
+    search.value=name;
+    search.dispatchEvent(new Event("input",{bubbles:true}));
+  }
+  return false;
+}
+
 function savedEntries(){ return state.get("entries",[]); }
 function hours(){ return state.get("hours",0); }
 
@@ -689,9 +738,13 @@ function assessmentDetail(id){
   const overall=assessmentOverallStatus(a);
   const overallMeta=taskStatuses[overall];
   const progress=assessmentProgress(a);
+  const toolkitLinks=(a.toolkit||[]);
 
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backAssess">‹</button><h2>${a.icon} ${a.title}</h2></div>
+    <div class="screen-title">
+      <button class="back" id="backAssess">‹</button>
+      <h2>${a.icon} ${a.title}</h2>
+    </div>
 
     <div class="assessment-status-card">
       <div>
@@ -703,55 +756,94 @@ function assessmentDetail(id){
 
     <div class="progress-track"><div style="width:${progress}%"></div></div>
 
-    <div class="card green">
-      <div class="label">What is it?</div>
-      <div class="big">${a.purpose||a.plain}</div>
-    </div>
+    <details class="card assessment-panel" open>
+      <summary><strong>What is it?</strong></summary>
+      <p>${a.purpose||a.plain}</p>
+    </details>
 
-    <div class="card stone">
-      <div class="label">Why am I doing it?</div>
+    <details class="card assessment-panel">
+      <summary><strong>Why am I doing it?</strong></summary>
       <p>${a.why||"This task helps JCU and your placement team see how your learning is developing in practice."}</p>
-    </div>
+    </details>
 
-    <div class="card">
-      <div class="label">My checklist</div>
-      <p class="muted">Change each item as it moves from not started, to in progress, waiting or complete.</p>
+    <details class="card assessment-panel" open>
+      <summary><strong>My checklist</strong></summary>
+      <p class="muted">Update each item as it moves through placement.</p>
       ${(a.tasks||[]).map((task,i)=>{
         const status=getTaskStatus(a.id,i), meta=taskStatuses[status];
         return `<div class="task-row">
-          <div class="task-copy"><span class="task-icon ${meta.className}">${meta.icon}</span><span>${task}</span></div>
+          <div class="task-copy">
+            <span class="task-icon ${meta.className}">${meta.icon}</span>
+            <span>${task}</span>
+          </div>
           <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${i}">
             ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===status?"selected":""}>${m.label}</option>`).join("")}
           </select>
         </div>`;
       }).join("")}
-    </div>
+    </details>
 
-    ${reqs.length?`<div class="card">
-      <div class="label">What you are building towards</div>
-      <p class="muted">These evidence types are especially useful for this task.</p>
-      ${reqs.map(r=>{const c=entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length;return `<div class="row"><span>${c?"✓":"○"}</span><span style="flex:1">${r}</span><strong>${c}</strong></div>`}).join("")}
-    </div>`:""}
+    ${reqs.length?`<details class="card assessment-panel">
+      <summary><strong>What am I building towards?</strong></summary>
+      <p class="muted">These evidence types are particularly useful for this requirement.</p>
+      ${reqs.map(r=>{
+        const count=entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length;
+        return `<div class="row"><span>${count?"✓":"○"}</span><span style="flex:1">${r}</span><strong>${count}</strong></div>`;
+      }).join("")}
+    </details>`:""}
 
-    <div class="card">
-      <div class="label">What should I collect?</div>
+    <details class="card assessment-panel">
+      <summary><strong>What should I collect?</strong></summary>
       ${(a.collect||a.asks||[]).map(x=>`<div class="row"><span>⭐</span><span>${x}</span></div>`).join("")}
-    </div>
+    </details>
 
-    <div class="card">
-      <div class="label">My linked learning moments</div>
-      ${entries.length?entries.map(e=>`<div class="row"><div><strong>${e.date}</strong><div class="small">${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</div></div></div>`).join(""):`<p class="muted">Nothing linked yet. Save a relevant reflection and Practice Compass will add it here.</p>`}
-    </div>
+    <details class="card assessment-panel" open>
+      <summary><strong>Relevant Practice Toolkit information</strong></summary>
+      ${toolkitLinks.length
+        ? `<div class="linked-resource-list">${toolkitLinks.map(item=>`
+            <button class="linked-resource" data-toolkit-name="${item}">
+              <span>📚</span>
+              <div><strong>${item}</strong><small>Open information and practice prompts</small></div>
+              <span>›</span>
+            </button>`).join("")}</div>`
+        : `<p class="muted">No specific Toolkit links have been added for this requirement yet.</p>`}
+    </details>
 
-    <div class="notice">Practice Compass supports your understanding and organisation. LearnJCU instructions and templates remain the official source.</div>`;
+    <details class="card assessment-panel">
+      <summary><strong>My linked learning moments</strong></summary>
+      ${entries.length
+        ? entries.map(e=>`<div class="row"><div><strong>${e.date}</strong><div class="small">${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</div></div></div>`).join("")
+        : `<p class="muted">Nothing linked yet. Save a relevant reflection and Practice Compass will add it here.</p>`}
+    </details>
+
+    <div class="card official-doc-card">
+      <div class="label">Official JCU documents</div>
+      <p>Practice Compass summarises your requirements, but your LearnJCU assessment overview, templates and Field Education Manual remain the official instructions.</p>
+      <button class="btn secondary" id="officialDocInfo">What should I check on LearnJCU?</button>
+      <div id="officialDocDetails" class="official-doc-details hidden">
+        <div class="row"><span>•</span><span>The current assessment description and rubric</span></div>
+        <div class="row"><span>•</span><span>The required template or form</span></div>
+        <div class="row"><span>•</span><span>Submission dates and liaison arrangements</span></div>
+        <div class="row"><span>•</span><span>Any updated instructions from your FELO or subject coordinator</span></div>
+      </div>
+    </div>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+
   document.querySelectorAll(".task-status-select").forEach(select=>{
     select.onchange=()=>{
       setTaskStatus(select.dataset.assessment,Number(select.dataset.index),select.value);
       assessmentDetail(id);
     };
   });
+
+  document.querySelectorAll(".linked-resource").forEach(button=>{
+    button.onclick=()=>openToolkitTopicByName(button.dataset.toolkitName);
+  });
+
+  document.getElementById("officialDocInfo").onclick=()=>{
+    document.getElementById("officialDocDetails").classList.toggle("hidden");
+  };
 }
 
 function learnPage(){
