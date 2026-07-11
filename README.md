@@ -1,14 +1,15 @@
 # Practice Compass
 
-Toolkit link repair update.
+Knowledge Hub repair and verified content update.
 
-This update restores and strengthens:
+This update adds:
 
-• Expandable Practice Toolkit folders
-• Clickable Toolkit topics
-• Detailed information pages
-• Back navigation to the Toolkit
-• Toolkit search
-• Existing assessment checklist statuses
+• A Practice Areas folder
+• Searchable Domestic and Family Violence topic
+• Current Australian and Queensland prevalence data
+• Social work practice considerations
+• Relevant theories and reflective prompts
+• Clickable links to ABS, AIHW, Queensland Government and ANROWS
+• Source type and review date labels
 
-Navigation now uses event delegation so future updates are less likely to break the Toolkit links.
+The statistics are drawn from the linked official sources. Users should open the original source before citing a statistic in university work.

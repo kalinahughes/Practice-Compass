@@ -650,3 +650,69 @@ body{
 }
 .toolkit-info[open] summary::after{content:"⌃"}
 .toolkit-info p{margin-bottom:0}
+
+
+/* Verified Knowledge Hub topic */
+.source-review{
+  display:inline-block;
+  margin:0 0 14px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:var(--stone-soft);
+  color:var(--brown);
+  font-size:12px;
+  font-weight:750;
+}
+.stats-list{
+  display:grid;
+  gap:11px;
+  margin-top:14px;
+}
+.stat-fact{
+  padding:15px;
+  border-radius:18px;
+  background:#f5f1eb;
+  border:1px solid var(--line);
+}
+.stat-fact strong{
+  display:block;
+  color:var(--eucalyptus-deep);
+  font-size:19px;
+}
+.stat-fact p{
+  margin:6px 0;
+  line-height:1.5;
+}
+.stat-fact span,
+.data-note{
+  color:var(--muted);
+  font-size:12px;
+}
+.source-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin:14px 0 4px;
+}
+.source-link{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:#fffdfa;
+  color:var(--charcoal);
+  text-decoration:none;
+}
+.source-link strong{color:var(--eucalyptus-deep)}
+.source-link small{color:var(--muted)}
+.source-type{
+  width:max-content;
+  padding:4px 8px;
+  border-radius:999px;
+  background:var(--eucalyptus-soft);
+  color:var(--eucalyptus-deep);
+  font-size:11px;
+  font-weight:800;
+}
