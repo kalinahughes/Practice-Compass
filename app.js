@@ -354,6 +354,55 @@ function saveFrameworkData(data){state.set("framework",data);}
 function mappedAssessments(types){const found=new Set();(types||[]).forEach(t=>(evidenceMapRules[t]||[]).forEach(a=>found.add(a)));return [...found];}
 function evidenceCoverage(){const entries=savedEntries(),counts={};Object.keys(assessmentRequirements).forEach(a=>{counts[a]=assessmentRequirements[a].map(r=>({requirement:r,count:entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length}));});return counts;}
 
+
+const taskStatuses = {
+  not_started:{label:"Not started",icon:"○",className:"status-not-started"},
+  in_progress:{label:"In progress",icon:"◐",className:"status-in-progress"},
+  waiting:{label:"Waiting",icon:"◌",className:"status-waiting"},
+  complete:{label:"Complete",icon:"✓",className:"status-complete"}
+};
+
+function taskStatusData(){
+  const saved=state.get("taskStatuses",null);
+  if(saved) return saved;
+  const initial={};
+  assessments.forEach(a=>{
+    (a.tasks||[]).forEach((_,i)=>{
+      initial[`${a.id}:${i}`]=a.id==="modules"?"complete":"not_started";
+    });
+  });
+  state.set("taskStatuses",initial);
+  return initial;
+}
+
+function getTaskStatus(assessmentId,index){
+  return taskStatusData()[`${assessmentId}:${index}`] || "not_started";
+}
+
+function setTaskStatus(assessmentId,index,status){
+  const data=taskStatusData();
+  data[`${assessmentId}:${index}`]=status;
+  state.set("taskStatuses",data);
+}
+
+function assessmentOverallStatus(a){
+  const tasks=a.tasks||[];
+  if(!tasks.length) return "not_started";
+  const statuses=tasks.map((_,i)=>getTaskStatus(a.id,i));
+  if(statuses.every(s=>s==="complete")) return "complete";
+  if(statuses.some(s=>s==="waiting")) return "waiting";
+  if(statuses.some(s=>s==="in_progress"||s==="complete")) return "in_progress";
+  return "not_started";
+}
+
+function assessmentProgress(a){
+  const tasks=a.tasks||[];
+  if(!tasks.length) return 0;
+  const weights={not_started:0,in_progress:.5,waiting:.5,complete:1};
+  const total=tasks.reduce((sum,_,i)=>sum+(weights[getTaskStatus(a.id,i)]||0),0);
+  return Math.round((total/tasks.length)*100);
+}
+
 function savedEntries(){ return state.get("entries",[]); }
 function hours(){ return state.get("hours",0); }
 
@@ -489,16 +538,72 @@ function assessmentDetail(id){
   const a=assessments.find(x=>x.id===id);
   const entries=savedEntries().filter(e=>(e.evidence||[]).includes(a.title));
   const reqs=assessmentRequirements[a.title]||[];
+  const overall=assessmentOverallStatus(a);
+  const overallMeta=taskStatuses[overall];
+  const progress=assessmentProgress(a);
+
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backAssess">‹</button><h2>${a.icon} ${a.title}</h2></div>
-    <div class="card green"><div class="label">What is it?</div><div class="big">${a.purpose||a.plain}</div></div>
-    <div class="card stone"><div class="label">Why am I doing it?</div><p>${a.why||"This task helps JCU and your placement team see how your learning is developing in practice."}</p></div>
-    <div class="card"><div class="label">What JCU is looking for</div>${(a.tasks||a.asks||[]).map(x=>`<div class="row"><span>✓</span><span>${x}</span></div>`).join("")}</div>
-    ${reqs.length?`<div class="card"><div class="label">What you are building towards</div><p class="muted">These evidence types are especially useful for this task.</p>${reqs.map(r=>{const c=entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length;return `<div class="row"><span>${c?"✓":"○"}</span><span style="flex:1">${r}</span><strong>${c}</strong></div>`}).join("")}</div>`:""}
-    <div class="card"><div class="label">What should I collect?</div>${(a.collect||a.asks||[]).map(x=>`<div class="row"><span>⭐</span><span>${x}</span></div>`).join("")}</div>
-    <div class="card"><div class="label">My linked learning moments</div>${entries.length?entries.map(e=>`<div class="row"><div><strong>${e.date}</strong><div class="small">${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</div></div></div>`).join(""):`<p class="muted">Nothing linked yet. Save a relevant reflection and Practice Compass will add it here.</p>`}</div>
+
+    <div class="assessment-status-card">
+      <div>
+        <div class="label">Current status</div>
+        <div class="status-large ${overallMeta.className}">${overallMeta.icon} ${overallMeta.label}</div>
+      </div>
+      <div class="progress-number">${progress}%</div>
+    </div>
+
+    <div class="progress-track"><div style="width:${progress}%"></div></div>
+
+    <div class="card green">
+      <div class="label">What is it?</div>
+      <div class="big">${a.purpose||a.plain}</div>
+    </div>
+
+    <div class="card stone">
+      <div class="label">Why am I doing it?</div>
+      <p>${a.why||"This task helps JCU and your placement team see how your learning is developing in practice."}</p>
+    </div>
+
+    <div class="card">
+      <div class="label">My checklist</div>
+      <p class="muted">Change each item as it moves from not started, to in progress, waiting or complete.</p>
+      ${(a.tasks||[]).map((task,i)=>{
+        const status=getTaskStatus(a.id,i), meta=taskStatuses[status];
+        return `<div class="task-row">
+          <div class="task-copy"><span class="task-icon ${meta.className}">${meta.icon}</span><span>${task}</span></div>
+          <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${i}">
+            ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===status?"selected":""}>${m.label}</option>`).join("")}
+          </select>
+        </div>`;
+      }).join("")}
+    </div>
+
+    ${reqs.length?`<div class="card">
+      <div class="label">What you are building towards</div>
+      <p class="muted">These evidence types are especially useful for this task.</p>
+      ${reqs.map(r=>{const c=entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length;return `<div class="row"><span>${c?"✓":"○"}</span><span style="flex:1">${r}</span><strong>${c}</strong></div>`}).join("")}
+    </div>`:""}
+
+    <div class="card">
+      <div class="label">What should I collect?</div>
+      ${(a.collect||a.asks||[]).map(x=>`<div class="row"><span>⭐</span><span>${x}</span></div>`).join("")}
+    </div>
+
+    <div class="card">
+      <div class="label">My linked learning moments</div>
+      ${entries.length?entries.map(e=>`<div class="row"><div><strong>${e.date}</strong><div class="small">${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</div></div></div>`).join(""):`<p class="muted">Nothing linked yet. Save a relevant reflection and Practice Compass will add it here.</p>`}
+    </div>
+
     <div class="notice">Practice Compass supports your understanding and organisation. LearnJCU instructions and templates remain the official source.</div>`;
+
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+  document.querySelectorAll(".task-status-select").forEach(select=>{
+    select.onchange=()=>{
+      setTaskStatus(select.dataset.assessment,Number(select.dataset.index),select.value);
+      assessmentDetail(id);
+    };
+  });
 }
 
 function learnPage(){
@@ -700,7 +805,7 @@ function exportPrintable(){
 }
 
 function backup(){
-  const data={hours:hours(),entries:savedEntries(),weeklyReviews:state.get("weeklyReviews",[]),timesheets:timesheetEntries(),supervisionItems:supervisionItems()};
+  const data={hours:hours(),entries:savedEntries(),weeklyReviews:state.get("weeklyReviews",[]),timesheets:timesheetEntries(),supervisionItems:supervisionItems(),taskStatuses:taskStatusData()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Practice_Compass_Backup.json";a.click();
 }

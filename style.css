@@ -542,3 +542,94 @@ body{
 .section-helper{margin:8px 0 6px;font-size:14px;color:var(--muted);line-height:1.5}
 .plain-row{padding:14px 0}
 .home-mantra{max-width:360px;margin:0 auto;line-height:1.5}
+
+
+/* Checklist status update */
+.status-inline{
+  display:inline-flex!important;
+  width:max-content;
+  margin-top:5px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:12px!important;
+  font-weight:750;
+}
+.status-not-started{background:#eee9e2;color:#746d65}
+.status-in-progress{background:#eee5cf;color:#7d6734}
+.status-waiting{background:#e3e9e5;color:#52675a}
+.status-complete{background:#dfe9df;color:#44604d}
+
+.assessment-status-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:18px 20px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#fffdfa;
+}
+.status-large{
+  display:inline-flex;
+  align-items:center;
+  margin-top:7px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:800;
+}
+.progress-number{
+  font-size:30px;
+  font-weight:850;
+  color:var(--eucalyptus-deep);
+}
+.progress-track{
+  height:8px;
+  margin:12px 4px 20px;
+  background:#e8e2da;
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress-track div{
+  height:100%;
+  background:linear-gradient(90deg,var(--brown),var(--eucalyptus));
+  border-radius:999px;
+  transition:width .25s ease;
+}
+.task-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+}
+.task-row:last-child{border-bottom:0}
+.task-copy{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  flex:1;
+  line-height:1.45;
+}
+.task-icon{
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  flex:none;
+  font-size:13px;
+  font-weight:800;
+}
+.task-status-select{
+  max-width:126px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:8px 9px;
+  font-size:13px;
+  font-weight:700;
+}
+@media(max-width:390px){
+  .task-row{align-items:flex-start;flex-direction:column}
+  .task-status-select{max-width:none;width:100%}
+}

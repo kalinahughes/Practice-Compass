@@ -1,9 +1,14 @@
 # Practice Compass
 
-Polish update.
+Assessment checklist status update.
 
-• Removed duplicate Practice Compass heading from Home
-• Tightened Home spacing
-• Simplified placement wording
-• Clarified the JCU assessment list
-• Minor spacing and typography improvements
+Each assessment task now has four states:
+
+Not started
+In progress
+Waiting
+Complete
+
+The six mandatory pre placement modules are marked complete by default because Kalina has already completed them. Any item can be changed back to another status.
+
+Assessment progress is saved privately in the browser and included in JSON backups.
