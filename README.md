@@ -1,14 +1,14 @@
 # Practice Compass
 
-Assessment checklist status update.
+Toolkit link repair update.
 
-Each assessment task now has four states:
+This update restores and strengthens:
 
-Not started
-In progress
-Waiting
-Complete
+• Expandable Practice Toolkit folders
+• Clickable Toolkit topics
+• Detailed information pages
+• Back navigation to the Toolkit
+• Toolkit search
+• Existing assessment checklist statuses
 
-The six mandatory pre placement modules are marked complete by default because Kalina has already completed them. Any item can be changed back to another status.
-
-Assessment progress is saved privately in the browser and included in JSON backups.
+Navigation now uses event delegation so future updates are less likely to break the Toolkit links.

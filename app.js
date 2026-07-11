@@ -629,15 +629,50 @@ function learnPage(){
     </div>`;
 }
 function toolkitDetail(categoryIndex,topicIndex){
- const c=toolkitCategories[categoryIndex], t=c[3][topicIndex];
- document.getElementById('main').innerHTML=`
-  <div class="screen-title"><button class="back" id="backToolkit">‹</button><h2>${c[0]} ${t[0]}</h2></div>
-  <div class="card green"><div class="label">What is it?</div><div class="big">${t[1]}</div></div>
-  <div class="card"><div class="label">🌿 Why does it matter?</div><p>This topic can help you understand practice more clearly, notice context and make more intentional decisions.</p></div>
-  <div class="card"><div class="label">👀 What might it look like?</div><p>Think about one conversation, decision, interaction, policy or service process where this idea may have been visible.</p></div>
-  <div class="card brownline"><div class="label">💭 Practice prompt</div><div class="big">Where did you notice ${t[0].toLowerCase()} in practice today?</div><div class="why"><strong>Why am I being asked this?</strong><br>Recognising a concept in practice makes it easier to remember and gives you material for reflection, supervision and assessment.</div></div>
-  <div class="card"><div class="label">📚 Read more</div><p class="muted">Verified authors, references and links can be added topic by topic as the Toolkit develops.</p></div>`;
- document.getElementById('backToolkit').onclick=()=>{route='learn';render()};
+  const category=toolkitCategories[categoryIndex];
+  const topic=category[3][topicIndex];
+
+  document.getElementById("main").innerHTML=`
+    <div class="screen-title">
+      <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+      <h2>${category[0]} ${topic[0]}</h2>
+    </div>
+
+    <div class="card green">
+      <div class="label">What is it?</div>
+      <div class="big">${topic[1]}</div>
+    </div>
+
+    <details class="card toolkit-info" open>
+      <summary><strong>🌿 Why does it matter?</strong></summary>
+      <p>This topic can help you understand practice more clearly, notice context, power and relationships, and make more intentional decisions.</p>
+    </details>
+
+    <details class="card toolkit-info">
+      <summary><strong>👀 What might it look like in practice?</strong></summary>
+      <p>Think about one conversation, decision, interaction, policy or service process where this idea may have been visible.</p>
+    </details>
+
+    <details class="card toolkit-info">
+      <summary><strong>💭 Practice prompt</strong></summary>
+      <p>Where did you notice ${topic[0].toLowerCase()} in practice today?</p>
+      <div class="why"><strong>Why am I being asked this?</strong><br>Recognising a concept in practice makes it easier to remember and gives you material for reflection, supervision and assessment.</div>
+    </details>
+
+    <details class="card toolkit-info">
+      <summary><strong>🎓 How could this support placement?</strong></summary>
+      <p>This may help you identify learning goals, prepare supervision questions, strengthen reflective evidence and connect daily experiences with your JCU requirements.</p>
+    </details>
+
+    <div class="card">
+      <div class="label">📚 Sources and further reading</div>
+      <p class="muted">Only verified references and official links will be added here. Practice Compass will not present unverified information as fact.</p>
+      <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
+    </div>`;
+
+  const goBack=()=>{route="learn";render()};
+  document.getElementById("backToolkit").onclick=goBack;
+  document.getElementById("returnToolkit").onclick=goBack;
 }
 
 function morePage(){
@@ -828,9 +863,40 @@ function bind(){
   document.getElementById("openTimesheets")?.addEventListener("click",timesheetPage);
   document.getElementById("openSupervision")?.addEventListener("click",supervisionPage);
   document.querySelectorAll(".assessment").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id));
-  document.querySelectorAll('.folder-header').forEach(btn=>btn.onclick=()=>{const target=document.getElementById(`folder-${btn.dataset.folder}`);target.classList.toggle('hidden');btn.querySelector('.folder-arrow').textContent=target.classList.contains('hidden')?'⌄':'⌃';});
-  document.querySelectorAll('.toolkit-topic').forEach(btn=>btn.onclick=()=>toolkitDetail(Number(btn.dataset.category),Number(btn.dataset.topic)));
-  document.getElementById('toolkitSearch')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();document.querySelectorAll('.toolkit-folder').forEach(folder=>{folder.style.display=folder.dataset.search.includes(q)?'block':'none';if(q&&folder.dataset.search.includes(q)){folder.querySelector('.folder-content').classList.remove('hidden');folder.querySelector('.folder-arrow').textContent='⌃';}});});
+  const toolkitList=document.getElementById("toolkitList");
+  if(toolkitList){
+    toolkitList.onclick=(event)=>{
+      const folderButton=event.target.closest(".folder-header");
+      if(folderButton){
+        const target=document.getElementById(`folder-${folderButton.dataset.folder}`);
+        if(target){
+          target.classList.toggle("hidden");
+          const arrow=folderButton.querySelector(".folder-arrow");
+          if(arrow) arrow.textContent=target.classList.contains("hidden")?"⌄":"⌃";
+        }
+        return;
+      }
+
+      const topicButton=event.target.closest(".toolkit-topic");
+      if(topicButton){
+        toolkitDetail(Number(topicButton.dataset.category),Number(topicButton.dataset.topic));
+      }
+    };
+  }
+
+  document.getElementById("toolkitSearch")?.addEventListener("input",event=>{
+    const query=event.target.value.toLowerCase().trim();
+    document.querySelectorAll(".toolkit-folder").forEach(folder=>{
+      const matches=folder.dataset.search.includes(query);
+      folder.style.display=matches?"block":"none";
+      if(query && matches){
+        const content=folder.querySelector(".folder-content");
+        const arrow=folder.querySelector(".folder-arrow");
+        if(content) content.classList.remove("hidden");
+        if(arrow) arrow.textContent="⌃";
+      }
+    });
+  });
   
     document.getElementById("frameworkMenu")?.addEventListener("click",frameworkPage);
     document.getElementById("evidenceBank")?.addEventListener("click",evidenceBankPage);

@@ -633,3 +633,20 @@ body{
   .task-row{align-items:flex-start;flex-direction:column}
   .task-status-select{max-width:none;width:100%}
 }
+
+
+/* Toolkit link restoration */
+.toolkit-info summary{
+  cursor:pointer;
+  list-style:none;
+  color:var(--eucalyptus-deep);
+  font-size:17px;
+}
+.toolkit-info summary::-webkit-details-marker{display:none}
+.toolkit-info summary::after{
+  content:"⌄";
+  float:right;
+  color:var(--muted);
+}
+.toolkit-info[open] summary::after{content:"⌃"}
+.toolkit-info p{margin-bottom:0}
