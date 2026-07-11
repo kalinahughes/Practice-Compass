@@ -382,7 +382,6 @@ function todayPage(){
         </svg>
       </div>
       <div class="brand-hero-copy">
-        <div class="brand-kicker">Practice Compass</div>
         <div class="brand-tagline">Your placement companion</div>
       </div>
     </section>
@@ -413,7 +412,7 @@ function todayPage(){
     </section>
 
     <section class="kindness-note"><div>💚</div><p>${selfcare[new Date().getDay()]}</p></section>
-    <p class="home-mantra">Supporting thoughtful, evidence informed and compassionate social work practice.</p>`;
+    <p class="home-mantra">Thoughtful, evidence informed and compassionate social work practice.</p>`;
 }
 
 function journalPage(){
@@ -459,7 +458,7 @@ function assessmentPage(){
     <section class="welcome-block">
       <div class="eyebrow">Placement</div>
       <h1>🌱 My Placement</h1>
-      <p class="welcome-text">Everything practical and everything JCU requires, in one place.</p>
+      <p class="welcome-text">Your placement requirements, assessments and practical tasks in one place.</p>
     </section>
 
     <section class="clean-section">
@@ -480,7 +479,8 @@ function assessmentPage(){
     </section>
 
     <section class="clean-section">
-      <div class="section-title">Assessment Companion</div>
+      <div class="section-title">Coming up for JCU</div>
+      <p class="section-helper">Tap an assessment to see what it is, why it matters and what to collect.</p>
       ${assessments.map(a=>`<button class="plain-row assessment" data-id="${a.id}"><div><strong>${a.icon} ${a.title}</strong><span>${a.when}</span></div><span>›</span></button>`).join("")}
     </section>`;
 }

@@ -532,3 +532,13 @@ body{
 .home-mantra{text-align:center;font-size:13px;color:var(--muted);padding:24px 12px 8px}
 .conversation-card{background:#fffdfa!important}
 .card,.focus-panel,.milestone-panel,.glance-card,.quick-action,.item,.menu{box-shadow:0 5px 16px rgba(60,65,61,.035)!important}
+
+/* Small polish update */
+.simple-brand{padding:2px 0 8px;gap:10px}
+.simple-brand .hero-botanical{width:68px}
+.simple-brand .brand-tagline{margin-top:0;font-size:14px;color:var(--muted)}
+.welcome-block{padding-top:4px}
+.clean-section{padding:18px 0}
+.section-helper{margin:8px 0 6px;font-size:14px;color:var(--muted);line-height:1.5}
+.plain-row{padding:14px 0}
+.home-mantra{max-width:360px;margin:0 auto;line-height:1.5}
