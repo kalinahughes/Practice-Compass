@@ -611,56 +611,84 @@ function render(){
   window.scrollTo({top:0});
 }
 
+function homeIcon(name){
+  const icons={
+    compass:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2Z"></path></svg>',
+    target:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r="1"></circle></svg>',
+    calendar:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg>',
+    progress:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"></path></svg>',
+    heart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"></path></svg>',
+    arrow:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>'
+  };
+  return `<span class="home-icon home-icon-${name}">${icons[name]||icons.compass}</span>`;
+}
+
 function todayPage(){
-  const info=placementInfo(), h=hours(), a=nextAssessment(info,h), stage=currentStage(info), g=greeting();
+  const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
+  const currentIndex=Math.max(0,assessments.findIndex(item=>item.id===current.id));
+  const upcoming=assessments.slice(currentIndex+1,currentIndex+3);
+  const remaining=Math.max(0,TOTAL_HOURS-h);
+  const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
+  const status=taskStatuses[assessmentOverallStatus(current)];
+  const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
+  const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
   return `
-    <section class="brand-hero simple-brand">
-      <div class="hero-botanical" aria-hidden="true">
-        <svg viewBox="0 0 180 180">
-          <g class="hero-compass">
-            <circle cx="90" cy="90" r="48"></circle>
-            <circle cx="90" cy="90" r="34"></circle>
-            <line x1="90" y1="32" x2="90" y2="148"></line>
-            <line x1="32" y1="90" x2="148" y2="90"></line>
-            <path d="M90 46 L101 90 L90 134 L79 90 Z"></path>
-            <circle cx="90" cy="90" r="4"></circle>
-          </g>
-        </svg>
+    <section class="home-greeting">
+      <div>
+        <div class="eyebrow">${dayLabel}</div>
+        <h1>${g.title}</h1>
+        <p>${placementLabel} · ${h.toFixed(1)} of ${TOTAL_HOURS} hours</p>
       </div>
-      <div class="brand-hero-copy">
-        <div class="brand-tagline">Your placement companion</div>
+      <div class="home-compass-mark">${homeIcon('compass')}</div>
+    </section>
+
+    <section class="home-card home-due-card">
+      <div class="home-card-heading">
+        ${homeIcon('compass')}
+        <div><span class="home-kicker">What’s due next</span><h2>${current.title}</h2></div>
+      </div>
+      <p class="home-card-copy">${current.when}</p>
+      <div class="home-due-footer">
+        <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
+        <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
       </div>
     </section>
 
-    <section class="welcome-block">
-      <div class="eyebrow">${info.started?`Week ${info.week} · Mind Australia`:"Before placement"}</div>
-      <h1>${g.title}</h1>
-      <p class="welcome-text">${g.subtitle}</p>
+    <section class="home-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('target')}
+        <div><span class="home-kicker">Today</span><h2>${stage.title}</h2></div>
+      </div>
+      <div class="home-task-list">
+        <div><span class="home-task-dot"></span>${stage.focus[0]}</div>
+        <div><span class="home-task-dot"></span>${stage.focus[1] || 'Save one useful learning moment.'}</div>
+      </div>
+      <button class="home-text-button" id="startJournal">Start today’s reflection ${homeIcon('arrow')}</button>
     </section>
 
-    <section class="home-priority-card">
-      <div class="home-card-heading"><span>📋</span><div><small>Next milestone</small><h2>What’s Due Next</h2></div></div>
-      <button class="plain-row home-due-row" id="openCurrentAssessment" data-id="${a.id}">
-        <div><strong>${a.title}</strong><span>${a.when}</span></div><span class="home-arrow">›</span>
-      </button>
+    ${upcoming.length?`<section class="home-card home-upcoming-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('calendar')}
+        <div><span class="home-kicker">Coming up</span><h2>Next milestones</h2></div>
+      </div>
+      <div class="home-upcoming-list">
+        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
+      </div>
+    </section>`:''}
+
+    <section class="home-card home-progress-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('progress')}
+        <div><span class="home-kicker">Placement progress</span><h2>${progress}% complete</h2></div>
+      </div>
+      <div class="home-progress-track"><span style="width:${progress}%"></span></div>
+      <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
     </section>
 
-    <section class="clean-section home-focus-card">
-      <div class="section-title">🎯 Today’s Focus</div>
-      <div class="focus-line">${stage.focus[0]}</div>
-      <div class="focus-line">${stage.focus[1] || "Save one useful learning moment."}</div>
-      <button class="btn" id="startJournal">💬 Start today’s reflection</button>
-    </section>
-
-    <div class="section-title home-snapshot-title">Placement Snapshot</div>
-    <section class="snapshot-row home-snapshot">
-      <div><span>Hours completed</span><strong>${h.toFixed(2)} / 500</strong></div>
-      <div><span>Learning moments</span><strong>${savedEntries().length}</strong></div>
-      <div><span>Placement week</span><strong>${info.started?info.week:"Not started"}</strong></div>
-    </section>
-
-    <section class="kindness-note home-self-care"><div>💚</div><p><strong>Self Care Today</strong><br>${selfcare[new Date().getDay()]}</p></section>
-    <p class="home-mantra">Thoughtful, evidence informed and compassionate social work practice.</p>`;
+    <section class="home-reminder">
+      ${homeIcon('heart')}
+      <div><strong>Today’s reminder</strong><p>${selfcare[new Date().getDay()]}</p></div>
+    </section>`;
 }
 
 function journalPage(){
