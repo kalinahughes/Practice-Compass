@@ -652,9 +652,10 @@ function homeIcon(name){
 
 function todayPage(){
   const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
-  const upcoming=[current,...upcomingAssessments(info,h,current.id,2)];
+  const upcoming=upcomingAssessments(info,h,current.id,2);
   const remaining=Math.max(0,TOTAL_HOURS-h);
   const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
+  const status=taskStatuses[assessmentOverallStatus(current)];
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
   return `
@@ -662,12 +663,24 @@ function todayPage(){
       <div>
         <div class="eyebrow">${dayLabel}</div>
         <h1>${g.title}</h1>
-        <p>${placementLabel}</p>
+        <p>${placementLabel} · ${h.toFixed(1)} of ${TOTAL_HOURS} hours</p>
       </div>
       <div class="home-compass-mark">${homeIcon('compass')}</div>
     </section>
 
-    <section class="home-card home-today-card">
+    <section class="home-card home-due-card">
+      <div class="home-card-heading">
+        ${homeIcon('compass')}
+        <div><span class="home-kicker">What’s due next</span><h2>${current.title}</h2></div>
+      </div>
+      <p class="home-card-copy">${current.when}</p>
+      <div class="home-due-footer">
+        <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
+        <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
+      </div>
+    </section>
+
+    <section class="home-card">
       <div class="home-card-heading compact">
         ${homeIcon('target')}
         <div><span class="home-kicker">Today</span><h2>${stage.title}</h2></div>
@@ -679,35 +692,28 @@ function todayPage(){
       <button class="home-text-button" id="startJournal">Start today’s reflection ${homeIcon('arrow')}</button>
     </section>
 
-    <section class="home-card home-up-next-card">
+    ${upcoming.length?`<section class="home-card home-upcoming-card">
       <div class="home-card-heading compact">
-        ${homeIcon('compass')}
-        <div><span class="home-kicker">Up next</span><h2>Your next milestones</h2></div>
+        ${homeIcon('calendar')}
+        <div><span class="home-kicker">Coming up</span><h2>Next milestones</h2></div>
       </div>
       <div class="home-upcoming-list">
-        ${upcoming.map((item,index)=>{
-          const itemStatus=taskStatuses[assessmentOverallStatus(item)];
-          return `<button class="home-upcoming-row assessment${index===0?' is-next':''}" data-id="${item.id}">
-            <span><strong>${item.title}</strong><small>${item.when}</small></span>
-            ${index===0?`<em class="home-mini-status ${itemStatus.className}">${itemStatus.label}</em>`:''}
-            ${homeIcon('arrow')}
-          </button>`;
-        }).join('')}
+        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
       </div>
-    </section>
+    </section>`:''}
 
     <section class="home-card home-progress-card">
       <div class="home-card-heading compact">
         ${homeIcon('progress')}
-        <div><span class="home-kicker">Progress</span><h2>${progress}% complete</h2></div>
+        <div><span class="home-kicker">Placement progress</span><h2>${progress}% complete</h2></div>
       </div>
       <div class="home-progress-track"><span style="width:${progress}%"></span></div>
       <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
     </section>
 
-    <section class="home-card home-reminder">
+    <section class="home-reminder">
       ${homeIcon('heart')}
-      <div><span class="home-kicker">Take care</span><strong>Today’s reminder</strong><p>${selfcare[new Date().getDay()]}</p></div>
+      <div><strong>Take care</strong><p>${selfcare[new Date().getDay()]}</p></div>
     </section>`;
 }
 
@@ -749,50 +755,35 @@ function journalPage(){
 }
 
 function assessmentPage(){
-  const info=placementInfo(), h=hours();
+  const info=placementInfo(), h=hours(), stage=currentStage(info);
   return `
-    <section class="welcome-block placement-welcome">
+    <section class="welcome-block">
       <div class="eyebrow">Placement</div>
       <h1>🌱 My Placement</h1>
-      <p class="welcome-text">One place for your requirements, assessments, hours and supervision.</p>
+      <p class="welcome-text">Your placement requirements, assessments and practical tasks in one place.</p>
     </section>
 
-    <section class="placement-summary-card">
-      <div class="placement-summary-main">
-        <span class="placement-summary-label">Mind Australia</span>
-        <strong>Adult Step Up Step Down</strong>
-      </div>
-      <div class="placement-summary-grid">
-        <div><span>Progress</span><strong>${h.toFixed(1)} / ${TOTAL_HOURS} hours</strong></div>
-        <div><span>Current point</span><strong>${info.started?`Week ${info.week}`:"Starts 20 July 2026"}</strong></div>
-      </div>
+    <section class="clean-section">
+      <div class="section-title">Placement overview</div>
+      <div class="plain-info"><strong>Mind Australia</strong><span>Adult Step Up Step Down</span></div>
+      <div class="plain-info"><strong>${info.started?`Week ${info.week}`:"Starts 20 July 2026"}</strong><span>${h.toFixed(2)} / 500 hours</span></div>
     </section>
 
-    <section class="clean-section placement-actions-section">
-      <div class="section-title">Placement records</div>
-      <p class="section-helper">Open the record you need. Your assessment tasks are listed separately below.</p>
-      <div class="placement-action-grid">
-        <button class="placement-action" id="openTimesheets"><span class="placement-action-icon">⏱️</span><span><strong>Timesheets</strong><small>Hours and daily activities</small></span><span class="chev">›</span></button>
-        <button class="placement-action" id="openSupervision"><span class="placement-action-icon">☕</span><span><strong>Supervision</strong><small>Questions, feedback and actions</small></span><span class="chev">›</span></button>
-      </div>
+    <section class="clean-section">
+      <div class="section-title">This week</div>
+      ${stage.focus.map(x=>`<div class="focus-line">${x}</div>`).join("")}
     </section>
 
-    <section class="clean-section placement-assessments-section">
-      <div class="section-title">Assessments and requirements</div>
-      <p class="section-helper">This is the full list. Home only shows the next priority.</p>
-      <div class="placement-assessment-list">
-        ${assessments.map(a=>{
-          const overall=assessmentOverallStatus(a);
-          const meta=taskStatuses[overall];
-          const progress=assessmentProgress(a);
-          return `<button class="placement-assessment-row assessment" data-id="${a.id}">
-            <span class="placement-assessment-icon">${a.icon}</span>
-            <span class="placement-assessment-copy"><strong>${a.title}</strong><small>${a.when}</small><span class="placement-mini-progress"><i style="width:${progress}%"></i></span></span>
-            <span class="placement-assessment-status ${meta.className}">${meta.label}</span>
-            <span class="chev">›</span>
-          </button>`;
-        }).join("")}
-      </div>
+    <section class="clean-section">
+      <div class="section-title">Placement admin</div>
+      <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets</strong><span>Hours and daily activities</span></div><span>›</span></button>
+      <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
+    </section>
+
+    <section class="clean-section">
+      <div class="section-title">Coming up for JCU</div>
+      <p class="section-helper">Tap an assessment to see what it is, why it matters and what to collect.</p>
+      ${assessments.map(a=>`<button class="plain-row assessment" data-id="${a.id}"><div><strong>${a.icon} ${a.title}</strong><span>${a.when}</span></div><span>›</span></button>`).join("")}
     </section>`;
 }
 
@@ -1191,24 +1182,7 @@ function saveEntry(){
   const answer=learnt?`${what}
 
 What I learnt: ${learnt}`:what;
-  const now=new Date();
-  const stage=currentStage(info);
-  const entry={
-    id:Date.now(),
-    createdAt:now.toISOString(),
-    date:now.toLocaleDateString("en-AU"),
-    time:now.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}),
-    placementWeek:info.started?info.week:null,
-    placementStage:stage.title,
-    goal:p.goal,
-    mood:"",
-    answer,
-    evidenceTypes,
-    theory:"",
-    method:"",
-    supervision:document.getElementById("supervision").value.trim(),
-    evidence:autoMapped
-  };
+  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer,evidenceTypes,theory:"",method:"",supervision:document.getElementById("supervision").value.trim(),evidence:autoMapped};
   const arr=savedEntries(); arr.unshift(entry); state.set("entries",arr);
   if(entry.supervision){
     const s=supervisionItems(); s.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:entry.supervision}); state.set("supervisionItems",s);

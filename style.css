@@ -845,235 +845,197 @@ body{
   background:rgba(239,236,229,.72);
 }
 
-/* Visual Polish 2: calmer home hierarchy and reduced repetition */
+/* Visual Polish 1: warm botanical hierarchy
+   Cosmetic only. Keeps existing layout, content and behaviour unchanged. */
 :root{
-  --ink:#3f403c;
-  --ink-soft:#565852;
-  --stone-text:#74756f;
-  --warm-white:#fffdf9;
-  --charcoal:var(--ink-soft);
+  --brown:#725644;
+  --brown-deep:#49372d;
+  --brown-body:#554c45;
+  --stone-text:#756b62;
+  --charcoal:var(--brown-body);
   --muted:var(--stone-text);
-  --shadow:0 10px 28px rgba(51,61,54,.06);
+  --shadow:0 10px 28px rgba(73,55,45,.055);
 }
 
-html,body{color:var(--ink-soft)}
+html,body{color:var(--brown-body)}
 h1,h2,h3,
-.brand,.item-title,.menu strong,.folder-title,.toolkit-topic strong,
-.quick-action span,.plain-row strong,.linked-resource strong,
-.snapshot-row strong,.progress-number{color:var(--ink)}
+.brand,
+.item-title,
+.menu strong,
+.folder-title,
+.toolkit-topic strong,
+.quick-action span,
+.plain-row strong,
+.linked-resource strong,
+.snapshot-row strong,
+.progress-number{
+  color:var(--brown-deep);
+}
 
-.section-title,.label,.chat-label,.home-kicker{color:#667067}
-.welcome-text,.focus-text,.big,.item-meta,.folder-subtitle,
-.toolkit-topic span,.section-helper,.home-greeting p,
-.home-upcoming-row small,.home-progress-meta,.home-reminder p{color:var(--stone-text)}
-.text-link,.home-text-button,.back,.folder-arrow,.chev{color:var(--eucalyptus-deep)}
+.section-title,
+.label,
+.chat-label,
+.home-kicker{
+  color:var(--brown);
+}
 
-/* Home is a quick overview: one hero, one action card, one progress card. */
-.home-greeting{padding:22px 2px 26px}
-.home-greeting h1{color:var(--ink);font-size:31px}
+.welcome-text,
+.focus-text,
+.big,
+.item-meta,
+.folder-subtitle,
+.toolkit-topic span,
+.section-helper,
+.home-greeting p,
+.home-upcoming-row small,
+.home-progress-meta,
+.home-reminder p{
+  color:var(--stone-text);
+}
+
+.text-link,
+.home-text-button,
+.back,
+.folder-arrow,
+.chev{
+  color:var(--eucalyptus-deep);
+}
+
+/* Home: clearer separation and warmer typography */
+.home-greeting{padding:22px 2px 28px}
+.home-greeting h1{color:var(--brown-deep);font-size:32px}
 .home-compass-mark{
-  background:linear-gradient(145deg,#f3efe8,var(--eucalyptus-soft));
-  border:1px solid rgba(63,64,60,.08);
+  background:linear-gradient(145deg,#f1ebe4,var(--eucalyptus-soft));
+  border:1px solid rgba(114,86,68,.10);
 }
 .home-compass-mark .home-icon{color:var(--eucalyptus-deep)}
-
 .home-card{
   margin-bottom:22px;
   padding:24px;
-  border-color:rgba(63,64,60,.10);
-  background:var(--warm-white);
-  box-shadow:var(--shadow);
+  border-color:rgba(114,86,68,.12);
+  box-shadow:0 10px 28px rgba(73,55,45,.055);
 }
-.home-card-heading h2{color:var(--ink)}
+.home-card-heading h2{color:var(--brown-deep)}
 .home-card-heading .home-icon{color:var(--eucalyptus-deep)}
-.home-kicker{letter-spacing:.075em}
-
 .home-due-card{
-  background:linear-gradient(145deg,#53685c 0%,#3e594b 100%);
-  box-shadow:0 15px 32px rgba(62,89,75,.17);
+  background:linear-gradient(145deg,#56685d 0%,#3f594b 100%);
+  box-shadow:0 14px 30px rgba(63,89,75,.17);
+}
+.home-due-card .home-card-heading h2,
+.home-due-card .home-icon{color:#fff}
+.home-task-list{margin:22px 0 18px;gap:14px}
+.home-task-list>div{color:var(--brown-body)}
+.home-task-dot{background:var(--brown)}
+.home-upcoming-row strong{color:var(--brown-deep)}
+.home-progress-track span{background:linear-gradient(90deg,var(--brown),var(--eucalyptus-deep))}
+.home-reminder{
+  margin:2px 0 28px;
+  padding:20px 6px;
+  border-top:1px solid rgba(114,86,68,.10);
+}
+.home-reminder strong{color:var(--brown-deep)}
+
+/* Warm neutral controls while retaining green as the action accent */
+.input,.textarea,.select,
+.item,.menu,.toolkit-folder,.conversation-card,.quick-action,.placement-summary>div{
+  color:var(--brown-body);
+}
+.btn.secondary{color:var(--brown-deep);border-color:#d8cec4}
+.pill{color:var(--brown-deep);background:#eee7df}
+
+@media(max-width:390px){
+  .home-greeting{padding-bottom:24px}
+  .home-greeting h1{font-size:29px}
+  .home-card{padding:21px;margin-bottom:19px}
+}
+
+/* Home palette refinement: one forest hero, white information cards, sage Take care */
+:root{
+  --forest:#355444;
+  --forest-deep:#2f493c;
+  --sage-card:#dce7dc;
+  --sage-border:#bdcfbe;
+  --warm-charcoal:#453f3a;
+  --warm-body:#5b554f;
+  --warm-stone:#746d66;
+}
+
+/* Reduce the yellow cast without changing the wider botanical style */
+#app{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(170,185,165,.18),transparent 32%),
+    linear-gradient(180deg,#fffdfa 0%,#f8f6f1 55%,#f1efea 100%);
+}
+
+/* Home uses green as an accent rather than the default text colour */
+.home-greeting h1,
+.home-card-heading h2,
+.home-upcoming-row strong,
+.home-reminder strong{
+  color:var(--warm-charcoal);
+}
+.home-greeting p,
+.home-task-list>div,
+.home-progress-meta,
+.home-upcoming-row small,
+.home-reminder p{
+  color:var(--warm-body);
+}
+.home-kicker{color:var(--warm-stone)}
+
+/* Information cards stay clean and neutral */
+.home-card:not(.home-due-card){
+  background:#fff;
+  border-color:rgba(69,63,58,.10);
+  box-shadow:0 9px 24px rgba(52,61,55,.055);
+}
+
+/* The next priority remains the single strong forest card */
+.home-due-card{
+  background:linear-gradient(145deg,var(--forest) 0%,var(--forest-deep) 100%);
+  color:#fff;
+  border:0;
+  box-shadow:0 14px 30px rgba(47,73,60,.19);
 }
 .home-due-card .home-card-heading h2,
 .home-due-card .home-icon{color:#fff}
 .home-due-card .home-kicker{color:rgba(255,255,255,.76)}
+.home-due-card .home-card-copy{color:rgba(255,255,255,.86)}
 
-.home-task-list{margin:22px 0 18px;gap:15px}
-.home-task-list>div{color:var(--ink-soft)}
+/* Green accents are reserved for icons, links and progress */
+.home-card:not(.home-due-card) .home-icon,
+.home-text-button{color:var(--forest)}
 .home-task-dot{background:var(--sage)}
-.home-upcoming-row strong{color:var(--ink)}
-.home-progress-track span{background:var(--eucalyptus-deep)}
+.home-progress-track{background:#e9ece8}
+.home-progress-track span{background:linear-gradient(90deg,var(--forest),#6f8977)}
 
-/* Self care is a full closing card, not footer text. */
+/* Take care is a proper closing card, not a footer note */
 .home-reminder{
   display:flex;
   align-items:flex-start;
-  gap:16px;
-  margin:0 0 22px;
-  padding:24px;
-  border:1px solid rgba(90,112,96,.16);
-  background:linear-gradient(145deg,#fbf8f1,#eef2ea);
+  gap:15px;
+  margin:2px 0 28px;
+  padding:23px 22px;
+  border:1px solid var(--sage-border);
+  border-radius:23px;
+  background:var(--sage-card);
+  box-shadow:0 9px 24px rgba(53,84,68,.075);
 }
 .home-reminder .home-icon{
-  width:28px;
-  height:28px;
-  margin-top:2px;
-  color:var(--eucalyptus-deep);
+  width:27px;
+  height:27px;
+  color:var(--forest);
 }
-.home-reminder .home-kicker{display:block;margin-bottom:5px}
 .home-reminder strong{
   display:block;
-  margin-bottom:8px;
-  color:var(--ink);
-  font-size:19px;
+  margin:0 0 6px;
+  font-size:18px;
   line-height:1.25;
+  color:var(--forest-deep);
 }
 .home-reminder p{
   margin:0;
-  color:var(--ink-soft);
   font-size:15px;
   line-height:1.6;
-}
-
-/* Future milestones sit quietly at the end of Home. */
-.home-coming-last{margin-top:2px;background:#faf8f3}
-.home-coming-last .home-card-heading h2{font-size:19px}
-
-.input,.textarea,.select,.item,.menu,.toolkit-folder,
-.conversation-card,.quick-action,.placement-summary>div{color:var(--ink-soft)}
-.btn.secondary{color:var(--ink);border-color:#d7d4cc}
-.pill{color:var(--ink);background:#efede7}
-
-@media(max-width:390px){
-  .home-greeting{padding-bottom:23px}
-  .home-greeting h1{font-size:28px}
-  .home-card{padding:21px;margin-bottom:19px}
-  .home-reminder{padding:22px}
-}
-
-/* Cognitive Load 1: My Placement is the single detailed workspace. */
-.placement-welcome{margin-bottom:18px}
-.placement-summary-card{
-  margin:0 0 22px;
-  padding:22px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:linear-gradient(145deg,#fffdf9,#f3f0e8);
-  box-shadow:0 8px 22px rgba(47,58,50,.05);
-}
-.placement-summary-main{display:grid;gap:4px;margin-bottom:18px}
-.placement-summary-label{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--stone-text)}
-.placement-summary-main strong{font-size:20px;color:var(--ink)}
-.placement-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.placement-summary-grid>div{display:grid;gap:4px;padding:13px;border-radius:15px;background:rgba(255,255,255,.72)}
-.placement-summary-grid span{font-size:12px;color:var(--stone-text)}
-.placement-summary-grid strong{font-size:14px;color:var(--ink)}
-.placement-actions-section,.placement-assessments-section{margin-top:24px}
-.placement-action-grid{display:grid;gap:10px;margin-top:12px}
-.placement-action{
-  width:100%;display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px;
-  padding:15px;border:1px solid var(--line);border-radius:17px;background:#fffdf9;text-align:left;
-}
-.placement-action-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:var(--stone-soft);font-size:18px}
-.placement-action span:nth-child(2){display:grid;gap:3px}
-.placement-action strong{color:var(--ink);font-size:15px}
-.placement-action small{color:var(--stone-text);font-size:12px;line-height:1.35}
-.placement-assessment-list{margin-top:12px;border-top:1px solid var(--line)}
-.placement-assessment-row{
-  width:100%;display:grid;grid-template-columns:38px minmax(0,1fr) auto auto;align-items:center;gap:11px;
-  padding:16px 0;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;
-}
-.placement-assessment-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:var(--stone-soft);font-size:18px}
-.placement-assessment-copy{min-width:0;display:grid;gap:4px}
-.placement-assessment-copy strong{color:var(--ink);font-size:15px;line-height:1.25}
-.placement-assessment-copy small{color:var(--stone-text);font-size:12px;line-height:1.35}
-.placement-mini-progress{display:block;width:100%;height:4px;margin-top:3px;border-radius:99px;background:var(--stone-soft);overflow:hidden}
-.placement-mini-progress i{display:block;height:100%;border-radius:inherit;background:var(--sage)}
-.placement-assessment-status{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}
-@media(max-width:420px){
-  .placement-summary-grid{grid-template-columns:1fr}
-  .placement-assessment-row{grid-template-columns:34px minmax(0,1fr) auto}
-  .placement-assessment-status{grid-column:2;justify-self:start}
-  .placement-assessment-row>.chev{grid-column:3;grid-row:1/3}
-}
-
-/* Home Calm 1: reduce duplicated priority sections and soften colour use. */
-.home-card,
-.home-today-card,
-.home-up-next-card,
-.home-progress-card{
-  background:#fff;
-  border-color:rgba(63,64,60,.11);
-}
-.home-today-card{
-  border-left:4px solid var(--eucalyptus-deep);
-}
-.home-card-heading h2,
-.home-today-card .home-card-heading h2,
-.home-up-next-card .home-card-heading h2,
-.home-progress-card .home-card-heading h2{
-  color:var(--ink);
-}
-.home-card-heading .home-icon,
-.home-today-card .home-icon,
-.home-up-next-card .home-icon,
-.home-progress-card .home-icon{
-  color:#496556;
-}
-.home-kicker{
-  color:#757872;
-}
-.home-task-dot{
-  background:#8fa090;
-}
-.home-text-button{
-  color:#415f50;
-}
-.home-up-next-card{
-  padding-bottom:12px;
-}
-.home-upcoming-row{
-  grid-template-columns:minmax(0,1fr) auto auto;
-  display:grid;
-}
-.home-upcoming-row.is-next{
-  margin-top:8px;
-  padding:15px 12px;
-  border-radius:15px;
-  background:#f5f2eb;
-  border-bottom:0;
-}
-.home-upcoming-row:not(.is-next){
-  padding-left:12px;
-  padding-right:12px;
-}
-.home-mini-status{
-  padding:5px 8px;
-  border-radius:999px;
-  font-size:10px;
-  line-height:1;
-  font-style:normal;
-  font-weight:800;
-  white-space:nowrap;
-  color:#50534e;
-  background:#ece9e1;
-}
-.home-upcoming-row .home-icon{
-  color:#7a7d77;
-}
-.home-progress-track{
-  background:#eeece7;
-}
-.home-progress-track span{
-  background:#5d7768;
-}
-.home-reminder{
-  background:#f6f1e8;
-  border-color:rgba(92,82,66,.13);
-}
-.home-reminder .home-icon{
-  color:#657a6d;
-}
-@media(max-width:390px){
-  .home-upcoming-row{grid-template-columns:minmax(0,1fr) auto}
-  .home-mini-status{grid-column:1;justify-self:start;margin-top:4px}
-  .home-upcoming-row>.home-icon{grid-column:2;grid-row:1/3}
+  color:var(--warm-charcoal);
 }
