@@ -844,3 +844,107 @@ body{
 .task-row-complete{
   background:rgba(239,236,229,.72);
 }
+
+/* Visual Polish 1: warm botanical hierarchy
+   Cosmetic only. Keeps existing layout, content and behaviour unchanged. */
+:root{
+  --brown:#725644;
+  --brown-deep:#49372d;
+  --brown-body:#554c45;
+  --stone-text:#756b62;
+  --charcoal:var(--brown-body);
+  --muted:var(--stone-text);
+  --shadow:0 10px 28px rgba(73,55,45,.055);
+}
+
+html,body{color:var(--brown-body)}
+h1,h2,h3,
+.brand,
+.item-title,
+.menu strong,
+.folder-title,
+.toolkit-topic strong,
+.quick-action span,
+.plain-row strong,
+.linked-resource strong,
+.snapshot-row strong,
+.progress-number{
+  color:var(--brown-deep);
+}
+
+.section-title,
+.label,
+.chat-label,
+.home-kicker{
+  color:var(--brown);
+}
+
+.welcome-text,
+.focus-text,
+.big,
+.item-meta,
+.folder-subtitle,
+.toolkit-topic span,
+.section-helper,
+.home-greeting p,
+.home-upcoming-row small,
+.home-progress-meta,
+.home-reminder p{
+  color:var(--stone-text);
+}
+
+.text-link,
+.home-text-button,
+.back,
+.folder-arrow,
+.chev{
+  color:var(--eucalyptus-deep);
+}
+
+/* Home: clearer separation and warmer typography */
+.home-greeting{padding:22px 2px 28px}
+.home-greeting h1{color:var(--brown-deep);font-size:32px}
+.home-compass-mark{
+  background:linear-gradient(145deg,#f1ebe4,var(--eucalyptus-soft));
+  border:1px solid rgba(114,86,68,.10);
+}
+.home-compass-mark .home-icon{color:var(--eucalyptus-deep)}
+.home-card{
+  margin-bottom:22px;
+  padding:24px;
+  border-color:rgba(114,86,68,.12);
+  box-shadow:0 10px 28px rgba(73,55,45,.055);
+}
+.home-card-heading h2{color:var(--brown-deep)}
+.home-card-heading .home-icon{color:var(--eucalyptus-deep)}
+.home-due-card{
+  background:linear-gradient(145deg,#56685d 0%,#3f594b 100%);
+  box-shadow:0 14px 30px rgba(63,89,75,.17);
+}
+.home-due-card .home-card-heading h2,
+.home-due-card .home-icon{color:#fff}
+.home-task-list{margin:22px 0 18px;gap:14px}
+.home-task-list>div{color:var(--brown-body)}
+.home-task-dot{background:var(--brown)}
+.home-upcoming-row strong{color:var(--brown-deep)}
+.home-progress-track span{background:linear-gradient(90deg,var(--brown),var(--eucalyptus-deep))}
+.home-reminder{
+  margin:2px 0 28px;
+  padding:20px 6px;
+  border-top:1px solid rgba(114,86,68,.10);
+}
+.home-reminder strong{color:var(--brown-deep)}
+
+/* Warm neutral controls while retaining green as the action accent */
+.input,.textarea,.select,
+.item,.menu,.toolkit-folder,.conversation-card,.quick-action,.placement-summary>div{
+  color:var(--brown-body);
+}
+.btn.secondary{color:var(--brown-deep);border-color:#d8cec4}
+.pill{color:var(--brown-deep);background:#eee7df}
+
+@media(max-width:390px){
+  .home-greeting{padding-bottom:24px}
+  .home-greeting h1{font-size:29px}
+  .home-card{padding:21px;margin-bottom:19px}
+}
