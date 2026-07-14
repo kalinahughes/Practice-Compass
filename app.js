@@ -671,36 +671,19 @@ function todayPage(){
     <section class="home-card home-due-card">
       <div class="home-card-heading">
         ${homeIcon('compass')}
-        <div><span class="home-kicker">What’s due next</span><h2>${current.title}</h2></div>
+        <div><span class="home-kicker">What’s next</span><h2>${current.title}</h2></div>
       </div>
       <p class="home-card-copy">${current.when}</p>
+      <div class="home-next-actions">
+        <span class="home-next-label">Next actions</span>
+        <div><span class="home-task-dot"></span>${stage.focus[0]}</div>
+        <div><span class="home-task-dot"></span>${stage.focus[1] || 'Save one useful learning moment.'}</div>
+      </div>
       <div class="home-due-footer">
         <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
         <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
       </div>
     </section>
-
-    <section class="home-card">
-      <div class="home-card-heading compact">
-        ${homeIcon('target')}
-        <div><span class="home-kicker">Today</span><h2>${stage.title}</h2></div>
-      </div>
-      <div class="home-task-list">
-        <div><span class="home-task-dot"></span>${stage.focus[0]}</div>
-        <div><span class="home-task-dot"></span>${stage.focus[1] || 'Save one useful learning moment.'}</div>
-      </div>
-      <button class="home-text-button" id="startJournal">Start today’s reflection ${homeIcon('arrow')}</button>
-    </section>
-
-    ${upcoming.length?`<section class="home-card home-upcoming-card">
-      <div class="home-card-heading compact">
-        ${homeIcon('calendar')}
-        <div><span class="home-kicker">Coming up</span><h2>Next milestones</h2></div>
-      </div>
-      <div class="home-upcoming-list">
-        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
-      </div>
-    </section>`:''}
 
     <section class="home-card home-progress-card">
       <div class="home-card-heading compact">
@@ -710,6 +693,16 @@ function todayPage(){
       <div class="home-progress-track"><span style="width:${progress}%"></span></div>
       <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
     </section>
+
+    ${upcoming.length?`<section class="home-card home-upcoming-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('calendar')}
+        <div><span class="home-kicker">What’s coming</span><h2>Next milestones</h2></div>
+      </div>
+      <div class="home-upcoming-list">
+        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
+      </div>
+    </section>`:''}
 
     <section class="home-reminder">
       ${homeIcon('heart')}

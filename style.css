@@ -1039,3 +1039,63 @@ h1,h2,h3,
   line-height:1.6;
   color:var(--warm-charcoal);
 }
+
+/* Home Calm 2: one clear priority, warm white canvas, no duplicate Today card */
+#app{
+  background:#fbfbf9;
+}
+
+.home-greeting{
+  padding-bottom:22px;
+}
+
+.home-card{
+  background:#fff;
+}
+
+.home-due-card{
+  background:linear-gradient(145deg,#355444 0%,#2f493c 100%);
+}
+
+.home-next-actions{
+  margin:18px 0 4px;
+  padding:15px 0 2px;
+  border-top:1px solid rgba(255,255,255,.18);
+  display:grid;
+  gap:10px;
+}
+
+.home-next-actions .home-next-label{
+  color:rgba(255,255,255,.72);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.home-next-actions>div{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  color:#fff;
+  font-size:15px;
+  line-height:1.45;
+}
+
+.home-next-actions .home-task-dot{
+  width:7px;
+  height:7px;
+  margin-top:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:#cbdacb;
+}
+
+.home-progress-card,
+.home-upcoming-card{
+  background:#fff;
+}
+
+.home-reminder{
+  background:#dce7dc;
+}
