@@ -948,3 +948,49 @@ h1,h2,h3,
   .home-card{padding:21px;margin-bottom:19px}
   .home-reminder{padding:22px}
 }
+
+/* Cognitive Load 1: My Placement is the single detailed workspace. */
+.placement-welcome{margin-bottom:18px}
+.placement-summary-card{
+  margin:0 0 22px;
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:linear-gradient(145deg,#fffdf9,#f3f0e8);
+  box-shadow:0 8px 22px rgba(47,58,50,.05);
+}
+.placement-summary-main{display:grid;gap:4px;margin-bottom:18px}
+.placement-summary-label{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--stone-text)}
+.placement-summary-main strong{font-size:20px;color:var(--ink)}
+.placement-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.placement-summary-grid>div{display:grid;gap:4px;padding:13px;border-radius:15px;background:rgba(255,255,255,.72)}
+.placement-summary-grid span{font-size:12px;color:var(--stone-text)}
+.placement-summary-grid strong{font-size:14px;color:var(--ink)}
+.placement-actions-section,.placement-assessments-section{margin-top:24px}
+.placement-action-grid{display:grid;gap:10px;margin-top:12px}
+.placement-action{
+  width:100%;display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px;
+  padding:15px;border:1px solid var(--line);border-radius:17px;background:#fffdf9;text-align:left;
+}
+.placement-action-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:var(--stone-soft);font-size:18px}
+.placement-action span:nth-child(2){display:grid;gap:3px}
+.placement-action strong{color:var(--ink);font-size:15px}
+.placement-action small{color:var(--stone-text);font-size:12px;line-height:1.35}
+.placement-assessment-list{margin-top:12px;border-top:1px solid var(--line)}
+.placement-assessment-row{
+  width:100%;display:grid;grid-template-columns:38px minmax(0,1fr) auto auto;align-items:center;gap:11px;
+  padding:16px 0;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;
+}
+.placement-assessment-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:var(--stone-soft);font-size:18px}
+.placement-assessment-copy{min-width:0;display:grid;gap:4px}
+.placement-assessment-copy strong{color:var(--ink);font-size:15px;line-height:1.25}
+.placement-assessment-copy small{color:var(--stone-text);font-size:12px;line-height:1.35}
+.placement-mini-progress{display:block;width:100%;height:4px;margin-top:3px;border-radius:99px;background:var(--stone-soft);overflow:hidden}
+.placement-mini-progress i{display:block;height:100%;border-radius:inherit;background:var(--sage)}
+.placement-assessment-status{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}
+@media(max-width:420px){
+  .placement-summary-grid{grid-template-columns:1fr}
+  .placement-assessment-row{grid-template-columns:34px minmax(0,1fr) auto}
+  .placement-assessment-status{grid-column:2;justify-self:start}
+  .placement-assessment-row>.chev{grid-column:3;grid-row:1/3}
+}

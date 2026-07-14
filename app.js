@@ -755,35 +755,50 @@ function journalPage(){
 }
 
 function assessmentPage(){
-  const info=placementInfo(), h=hours(), stage=currentStage(info);
+  const info=placementInfo(), h=hours();
   return `
-    <section class="welcome-block">
+    <section class="welcome-block placement-welcome">
       <div class="eyebrow">Placement</div>
       <h1>🌱 My Placement</h1>
-      <p class="welcome-text">Your placement requirements, assessments and practical tasks in one place.</p>
+      <p class="welcome-text">One place for your requirements, assessments, hours and supervision.</p>
     </section>
 
-    <section class="clean-section">
-      <div class="section-title">Placement overview</div>
-      <div class="plain-info"><strong>Mind Australia</strong><span>Adult Step Up Step Down</span></div>
-      <div class="plain-info"><strong>${info.started?`Week ${info.week}`:"Starts 20 July 2026"}</strong><span>${h.toFixed(2)} / 500 hours</span></div>
+    <section class="placement-summary-card">
+      <div class="placement-summary-main">
+        <span class="placement-summary-label">Mind Australia</span>
+        <strong>Adult Step Up Step Down</strong>
+      </div>
+      <div class="placement-summary-grid">
+        <div><span>Progress</span><strong>${h.toFixed(1)} / ${TOTAL_HOURS} hours</strong></div>
+        <div><span>Current point</span><strong>${info.started?`Week ${info.week}`:"Starts 20 July 2026"}</strong></div>
+      </div>
     </section>
 
-    <section class="clean-section">
-      <div class="section-title">This week</div>
-      ${stage.focus.map(x=>`<div class="focus-line">${x}</div>`).join("")}
+    <section class="clean-section placement-actions-section">
+      <div class="section-title">Placement records</div>
+      <p class="section-helper">Open the record you need. Your assessment tasks are listed separately below.</p>
+      <div class="placement-action-grid">
+        <button class="placement-action" id="openTimesheets"><span class="placement-action-icon">⏱️</span><span><strong>Timesheets</strong><small>Hours and daily activities</small></span><span class="chev">›</span></button>
+        <button class="placement-action" id="openSupervision"><span class="placement-action-icon">☕</span><span><strong>Supervision</strong><small>Questions, feedback and actions</small></span><span class="chev">›</span></button>
+      </div>
     </section>
 
-    <section class="clean-section">
-      <div class="section-title">Placement admin</div>
-      <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets</strong><span>Hours and daily activities</span></div><span>›</span></button>
-      <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
-    </section>
-
-    <section class="clean-section">
-      <div class="section-title">Coming up for JCU</div>
-      <p class="section-helper">Tap an assessment to see what it is, why it matters and what to collect.</p>
-      ${assessments.map(a=>`<button class="plain-row assessment" data-id="${a.id}"><div><strong>${a.icon} ${a.title}</strong><span>${a.when}</span></div><span>›</span></button>`).join("")}
+    <section class="clean-section placement-assessments-section">
+      <div class="section-title">Assessments and requirements</div>
+      <p class="section-helper">This is the full list. Home only shows the next priority.</p>
+      <div class="placement-assessment-list">
+        ${assessments.map(a=>{
+          const overall=assessmentOverallStatus(a);
+          const meta=taskStatuses[overall];
+          const progress=assessmentProgress(a);
+          return `<button class="placement-assessment-row assessment" data-id="${a.id}">
+            <span class="placement-assessment-icon">${a.icon}</span>
+            <span class="placement-assessment-copy"><strong>${a.title}</strong><small>${a.when}</small><span class="placement-mini-progress"><i style="width:${progress}%"></i></span></span>
+            <span class="placement-assessment-status ${meta.className}">${meta.label}</span>
+            <span class="chev">›</span>
+          </button>`;
+        }).join("")}
+      </div>
     </section>`;
 }
 
@@ -1182,7 +1197,24 @@ function saveEntry(){
   const answer=learnt?`${what}
 
 What I learnt: ${learnt}`:what;
-  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer,evidenceTypes,theory:"",method:"",supervision:document.getElementById("supervision").value.trim(),evidence:autoMapped};
+  const now=new Date();
+  const stage=currentStage(info);
+  const entry={
+    id:Date.now(),
+    createdAt:now.toISOString(),
+    date:now.toLocaleDateString("en-AU"),
+    time:now.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}),
+    placementWeek:info.started?info.week:null,
+    placementStage:stage.title,
+    goal:p.goal,
+    mood:"",
+    answer,
+    evidenceTypes,
+    theory:"",
+    method:"",
+    supervision:document.getElementById("supervision").value.trim(),
+    evidence:autoMapped
+  };
   const arr=savedEntries(); arr.unshift(entry); state.set("entries",arr);
   if(entry.supervision){
     const s=supervisionItems(); s.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:entry.supervision}); state.set("supervisionItems",s);
