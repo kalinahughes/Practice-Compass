@@ -663,7 +663,7 @@ function todayPage(){
       <div>
         <div class="eyebrow">${dayLabel}</div>
         <h1>${g.title}</h1>
-        <p>${placementLabel} · ${h.toFixed(1)} of ${TOTAL_HOURS} hours</p>
+        <p>${placementLabel}</p>
       </div>
       <div class="home-compass-mark">${homeIcon('compass')}</div>
     </section>
@@ -692,16 +692,6 @@ function todayPage(){
       <button class="home-text-button" id="startJournal">Start today’s reflection ${homeIcon('arrow')}</button>
     </section>
 
-    ${upcoming.length?`<section class="home-card home-upcoming-card">
-      <div class="home-card-heading compact">
-        ${homeIcon('calendar')}
-        <div><span class="home-kicker">Coming up</span><h2>Next milestones</h2></div>
-      </div>
-      <div class="home-upcoming-list">
-        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
-      </div>
-    </section>`:''}
-
     <section class="home-card home-progress-card">
       <div class="home-card-heading compact">
         ${homeIcon('progress')}
@@ -711,10 +701,20 @@ function todayPage(){
       <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
     </section>
 
-    <section class="home-reminder">
+    <section class="home-card home-reminder">
       ${homeIcon('heart')}
-      <div><strong>Today’s reminder</strong><p>${selfcare[new Date().getDay()]}</p></div>
-    </section>`;
+      <div><span class="home-kicker">Take care</span><strong>Today’s reminder</strong><p>${selfcare[new Date().getDay()]}</p></div>
+    </section>
+
+    ${upcoming.length?`<section class="home-card home-upcoming-card home-coming-last">
+      <div class="home-card-heading compact">
+        ${homeIcon('calendar')}
+        <div><span class="home-kicker">What’s coming</span><h2>Next milestones</h2></div>
+      </div>
+      <div class="home-upcoming-list">
+        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
+      </div>
+    </section>`:''}`;
 }
 
 function journalPage(){
