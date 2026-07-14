@@ -652,10 +652,9 @@ function homeIcon(name){
 
 function todayPage(){
   const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
-  const upcoming=upcomingAssessments(info,h,current.id,2);
+  const upcoming=[current,...upcomingAssessments(info,h,current.id,2)];
   const remaining=Math.max(0,TOTAL_HOURS-h);
   const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
-  const status=taskStatuses[assessmentOverallStatus(current)];
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
   return `
@@ -668,19 +667,7 @@ function todayPage(){
       <div class="home-compass-mark">${homeIcon('compass')}</div>
     </section>
 
-    <section class="home-card home-due-card">
-      <div class="home-card-heading">
-        ${homeIcon('compass')}
-        <div><span class="home-kicker">What’s due next</span><h2>${current.title}</h2></div>
-      </div>
-      <p class="home-card-copy">${current.when}</p>
-      <div class="home-due-footer">
-        <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
-        <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
-      </div>
-    </section>
-
-    <section class="home-card">
+    <section class="home-card home-today-card">
       <div class="home-card-heading compact">
         ${homeIcon('target')}
         <div><span class="home-kicker">Today</span><h2>${stage.title}</h2></div>
@@ -692,10 +679,27 @@ function todayPage(){
       <button class="home-text-button" id="startJournal">Start today’s reflection ${homeIcon('arrow')}</button>
     </section>
 
+    <section class="home-card home-up-next-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('compass')}
+        <div><span class="home-kicker">Up next</span><h2>Your next milestones</h2></div>
+      </div>
+      <div class="home-upcoming-list">
+        ${upcoming.map((item,index)=>{
+          const itemStatus=taskStatuses[assessmentOverallStatus(item)];
+          return `<button class="home-upcoming-row assessment${index===0?' is-next':''}" data-id="${item.id}">
+            <span><strong>${item.title}</strong><small>${item.when}</small></span>
+            ${index===0?`<em class="home-mini-status ${itemStatus.className}">${itemStatus.label}</em>`:''}
+            ${homeIcon('arrow')}
+          </button>`;
+        }).join('')}
+      </div>
+    </section>
+
     <section class="home-card home-progress-card">
       <div class="home-card-heading compact">
         ${homeIcon('progress')}
-        <div><span class="home-kicker">Placement progress</span><h2>${progress}% complete</h2></div>
+        <div><span class="home-kicker">Progress</span><h2>${progress}% complete</h2></div>
       </div>
       <div class="home-progress-track"><span style="width:${progress}%"></span></div>
       <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
@@ -704,17 +708,7 @@ function todayPage(){
     <section class="home-card home-reminder">
       ${homeIcon('heart')}
       <div><span class="home-kicker">Take care</span><strong>Today’s reminder</strong><p>${selfcare[new Date().getDay()]}</p></div>
-    </section>
-
-    ${upcoming.length?`<section class="home-card home-upcoming-card home-coming-last">
-      <div class="home-card-heading compact">
-        ${homeIcon('calendar')}
-        <div><span class="home-kicker">What’s coming</span><h2>Next milestones</h2></div>
-      </div>
-      <div class="home-upcoming-list">
-        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
-      </div>
-    </section>`:''}`;
+    </section>`;
 }
 
 function journalPage(){
