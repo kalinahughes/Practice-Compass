@@ -638,26 +638,28 @@ function todayPage(){
       <p class="welcome-text">${g.subtitle}</p>
     </section>
 
-    <section class="clean-section">
-      <div class="section-title">Today</div>
+    <section class="home-priority-card">
+      <div class="home-card-heading"><span>📋</span><div><small>Next milestone</small><h2>What’s Due Next</h2></div></div>
+      <button class="plain-row home-due-row" id="openCurrentAssessment" data-id="${a.id}">
+        <div><strong>${a.title}</strong><span>${a.when}</span></div><span class="home-arrow">›</span>
+      </button>
+    </section>
+
+    <section class="clean-section home-focus-card">
+      <div class="section-title">🎯 Today’s Focus</div>
       <div class="focus-line">${stage.focus[0]}</div>
       <div class="focus-line">${stage.focus[1] || "Save one useful learning moment."}</div>
       <button class="btn" id="startJournal">💬 Start today’s reflection</button>
     </section>
 
-    <section class="clean-section">
-      <div class="section-title">Coming up</div>
-      <button class="plain-row" id="openCurrentAssessment" data-id="${a.id}">
-        <div><strong>${a.title}</strong><span>${a.when}</span></div><span>›</span>
-      </button>
-    </section>
-
-    <section class="snapshot-row">
-      <div><span>Hours</span><strong>${h.toFixed(2)} / 500</strong></div>
+    <div class="section-title home-snapshot-title">Placement Snapshot</div>
+    <section class="snapshot-row home-snapshot">
+      <div><span>Hours completed</span><strong>${h.toFixed(2)} / 500</strong></div>
       <div><span>Learning moments</span><strong>${savedEntries().length}</strong></div>
+      <div><span>Placement week</span><strong>${info.started?info.week:"Not started"}</strong></div>
     </section>
 
-    <section class="kindness-note"><div>💚</div><p>${selfcare[new Date().getDay()]}</p></section>
+    <section class="kindness-note home-self-care"><div>💚</div><p><strong>Self Care Today</strong><br>${selfcare[new Date().getDay()]}</p></section>
     <p class="home-mantra">Thoughtful, evidence informed and compassionate social work practice.</p>`;
 }
 
