@@ -825,3 +825,22 @@ body{
   .home-due-card{padding:22px}
   .home-progress-meta{flex-direction:column;gap:3px}
 }
+
+
+/* Task completion controls */
+.task-complete-check{
+  width:22px;
+  height:22px;
+  flex:0 0 22px;
+  margin:0;
+  accent-color:var(--deep-green,#315f50);
+  cursor:pointer;
+}
+.task-row-complete .task-copy > span:last-child{
+  color:#776d61;
+  text-decoration:line-through;
+  text-decoration-thickness:1.5px;
+}
+.task-row-complete{
+  background:rgba(239,236,229,.72);
+}

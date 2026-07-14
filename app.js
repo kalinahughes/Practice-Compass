@@ -414,13 +414,40 @@ function placementInfo(){
   return {started:true,workdays,week:Math.ceil(workdays/5),day:((workdays-1)%5)+1};
 }
 
+function assessmentIsComplete(id){
+  const assessment=assessments.find(item=>item.id===id);
+  return assessment ? assessmentOverallStatus(assessment)==="complete" : false;
+}
+
+function assessmentPriority(info,hours){
+  if(!info.started){
+    return ["modules","learning","timesheets","project","integration","reflections","midfinal","final"];
+  }
+  if(info.week<=3){
+    return ["learning","timesheets","project","integration","reflections","midfinal","final","modules"];
+  }
+  if(hours<250){
+    return ["project","timesheets","integration","reflections","midfinal","final","learning","modules"];
+  }
+  if(hours<430){
+    return ["midfinal","reflections","project","timesheets","integration","final","learning","modules"];
+  }
+  return ["final","midfinal","reflections","project","timesheets","integration","learning","modules"];
+}
+
 function nextAssessment(info,hours){
-  if(!info.started || info.week<=3) return assessments[0];
-  if(hours<140) return assessments[1];
-  if(hours<250) return assessments[2];
-  if(hours<350) return assessments[3];
-  if(hours<430) return assessments[4];
-  return assessments[5];
+  const ordered=assessmentPriority(info,hours)
+    .map(id=>assessments.find(item=>item.id===id))
+    .filter(Boolean);
+  return ordered.find(item=>!assessmentIsComplete(item.id)) || ordered[ordered.length-1] || assessments[0];
+}
+
+function upcomingAssessments(info,hours,currentId,limit=2){
+  return assessmentPriority(info,hours)
+    .filter(id=>id!==currentId && !assessmentIsComplete(id))
+    .map(id=>assessments.find(item=>item.id===id))
+    .filter(Boolean)
+    .slice(0,limit);
 }
 
 function dailyPrompt(info,hours){
@@ -625,8 +652,7 @@ function homeIcon(name){
 
 function todayPage(){
   const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
-  const currentIndex=Math.max(0,assessments.findIndex(item=>item.id===current.id));
-  const upcoming=assessments.slice(currentIndex+1,currentIndex+3);
+  const upcoming=upcomingAssessments(info,h,current.id,2);
   const remaining=Math.max(0,TOTAL_HOURS-h);
   const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
@@ -801,8 +827,9 @@ function assessmentDetail(id){
       <p class="muted">Update each item as it moves through placement.</p>
       ${(a.tasks||[]).map((task,i)=>{
         const status=getTaskStatus(a.id,i), meta=taskStatuses[status];
-        return `<div class="task-row">
+        return `<div class="task-row ${status==="complete"?"task-row-complete":""}">
           <div class="task-copy">
+            <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${i}" ${status==="complete"?"checked":""} aria-label="Mark ${task} complete">
             <span class="task-icon ${meta.className}">${meta.icon}</span>
             <span>${task}</span>
           </div>
@@ -859,6 +886,13 @@ function assessmentDetail(id){
     </div>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+
+  document.querySelectorAll(".task-complete-check").forEach(check=>{
+    check.onchange=()=>{
+      setTaskStatus(check.dataset.assessment,Number(check.dataset.index),check.checked?"complete":"not_started");
+      assessmentDetail(id);
+    };
+  });
 
   document.querySelectorAll(".task-status-select").forEach(select=>{
     select.onchange=()=>{
