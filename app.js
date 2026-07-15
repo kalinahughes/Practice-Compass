@@ -752,109 +752,102 @@ function assessmentPage(){
   const orderedAssessments=assessmentPriority(info,h)
     .map(id=>assessments.find(item=>item.id===id))
     .filter(Boolean);
-  const standardAssessments=orderedAssessments.filter(item=>!['project','reflections','timesheets'].includes(item.id));
-  const projectAssessments=orderedAssessments.filter(item=>['project','reflections'].includes(item.id));
-  const activeAssessments=standardAssessments.filter(item=>!assessmentIsComplete(item.id));
-  const completedAssessments=standardAssessments.filter(item=>assessmentIsComplete(item.id));
-  const activeProject=projectAssessments.filter(item=>!assessmentIsComplete(item.id));
-  const completedProject=projectAssessments.filter(item=>assessmentIsComplete(item.id));
+  const activeAssessments=orderedAssessments.filter(a=>assessmentOverallStatus(a)!=="complete");
+  const completedAssessments=orderedAssessments.filter(a=>assessmentOverallStatus(a)==="complete");
+  const currentAssessment=activeAssessments[0] || orderedAssessments[0];
 
-  const taskItems=orderedAssessments
-    .filter(item=>item.id!=='timesheets')
-    .flatMap(item=>(item.tasks||[]).map((task,index)=>({assessment:item,task,index,status:getTaskStatus(item.id,index)})));
-  const outstandingTasks=taskItems.filter(item=>item.status!=='complete');
-  const completedTasks=taskItems.filter(item=>item.status==='complete');
+  const outstandingTasks=[];
+  activeAssessments.forEach(a=>{
+    (a.tasks||[]).forEach((task,index)=>{
+      const status=getTaskStatus(a.id,index);
+      if(status!=="complete") outstandingTasks.push({assessment:a,task,index,status});
+    });
+  });
 
-  const assessmentCard=item=>{
-    const overall=assessmentOverallStatus(item);
-    const meta=taskStatuses[overall];
-    const progress=assessmentProgress(item);
-    const remaining=(item.tasks||[]).filter((_,index)=>getTaskStatus(item.id,index)!=='complete').length;
-    const evidence=assessmentCount(item.title);
-    return `<button class="placement-assessment-card assessment" data-id="${item.id}">
-      <div class="placement-assessment-topline">
-        <span class="placement-assessment-icon">${item.icon}</span>
-        <div class="placement-assessment-title">
-          <strong>${item.title}</strong>
-          <span>${item.when}</span>
-        </div>
-        <span class="placement-card-arrow">›</span>
+  const nextActions=outstandingTasks.slice(0,3);
+  const assessmentCard=a=>{
+    const status=assessmentOverallStatus(a);
+    const meta=taskStatuses[status];
+    const progress=assessmentProgress(a);
+    const remaining=(a.tasks||[]).filter((_,index)=>getTaskStatus(a.id,index)!=="complete").length;
+    const nextIndex=(a.tasks||[]).findIndex((task,index)=>getTaskStatus(a.id,index)!=="complete");
+    const nextAction=nextIndex>=0?a.tasks[nextIndex]:"Review the official completion and submission requirements";
+    return `<button class="placement-assessment-card assessment" data-id="${a.id}">
+      <div class="placement-assessment-top">
+        <div><span class="placement-assessment-icon">${a.icon}</span><strong>${a.title}</strong></div>
+        <span class="status-inline ${meta.className}">${meta.icon} ${meta.label}</span>
       </div>
+      <div class="placement-progress-track"><span style="width:${progress}%"></span></div>
       <div class="placement-assessment-meta">
-        <span class="placement-status ${meta.className}">${meta.icon} ${meta.label}</span>
-        <span>${remaining} task${remaining===1?'':'s'} remaining</span>
-        ${evidence?`<span>${evidence} linked reflection${evidence===1?'':'s'}</span>`:''}
+        <span>${progress}% complete</span>
+        <span>${remaining} task${remaining===1?"":"s"} remaining</span>
       </div>
-      <div class="placement-card-progress"><span style="width:${progress}%"></span></div>
-      <div class="placement-progress-label"><span>Progress</span><strong>${progress}%</strong></div>
+      <div class="placement-next-step"><span>Next action</span><strong>${nextAction}</strong></div>
+      <small>${a.when}</small>
     </button>`;
   };
 
-  const taskRow=item=>{
-    const meta=taskStatuses[item.status];
-    return `<button class="placement-task-row assessment" data-id="${item.assessment.id}">
-      <span class="task-icon ${meta.className}">${meta.icon}</span>
-      <span class="placement-task-copy"><strong>${item.task}</strong><small>${item.assessment.title}</small></span>
-      <span>›</span>
-    </button>`;
-  };
+  const projectAssessments=activeAssessments.filter(a=>a.id==="project"||a.id==="reflections");
+  const standardAssessments=activeAssessments.filter(a=>a.id!=="project"&&a.id!=="reflections");
 
   return `
-    <section class="welcome-block placement-workspace-intro">
-      <div class="eyebrow">Placement workspace</div>
-      <h1>🌱 My Placement</h1>
-      <p class="welcome-text">Everything you need to complete placement, in one workspace.</p>
-    </section>
+    <div class="placement-workspace">
+      <section class="welcome-block placement-heading">
+        <div class="eyebrow">Placement</div>
+        <h1>🌱 My Placement</h1>
+        <p class="welcome-text">Your workspace for what matters now.</p>
+      </section>
 
-    <section class="clean-section placement-overview-section">
-      <div class="section-title">Overview</div>
-      <div class="placement-overview-grid">
-        <div class="placement-overview-item"><span>Organisation</span><strong>Mind Australia</strong></div>
-        <div class="placement-overview-item"><span>Placement week</span><strong>${info.started?`Week ${info.week}`:'Starts 20 July 2026'}</strong></div>
-        <div class="placement-overview-item placement-overview-wide"><span>Current stage</span><strong>${stage.title}</strong></div>
-      </div>
-      <div class="placement-hours-summary">
-        <div><span>Placement hours</span><strong>${h.toFixed(2)} / 500</strong></div>
-        <div class="placement-card-progress"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>
-      </div>
-    </section>
-
-    <section class="clean-section">
-      <div class="section-title-row"><div class="section-title">Tasks</div><span class="placement-count">${outstandingTasks.length} outstanding</span></div>
-      <p class="section-helper">Your active placement tasks. Open an item to update its checklist.</p>
-      <div class="placement-task-list">
-        ${outstandingTasks.length?outstandingTasks.map(taskRow).join(''):'<div class="placement-empty-state">All current placement tasks are complete.</div>'}
-      </div>
-      ${completedTasks.length?`<details class="placement-completed-group"><summary>Completed tasks (${completedTasks.length})</summary><div class="placement-task-list completed">${completedTasks.map(taskRow).join('')}</div></details>`:''}
-    </section>
-
-    <section class="clean-section placement-assessments-section">
-      <div class="section-title">Assessments</div>
-      <p class="section-helper">Current requirements appear first and update as checklist tasks are completed.</p>
-      <div class="placement-assessment-list">
-        ${activeAssessments.map(assessmentCard).join('')}
-      </div>
-
-      <div class="placement-project-group">
-        <div class="placement-group-heading"><div><strong>Placement Project</strong><span>Small Project and Project Reflections</span></div></div>
-        <div class="placement-assessment-list">
-          ${activeProject.length?activeProject.map(assessmentCard).join(''):'<div class="placement-empty-state">Placement Project requirements are complete.</div>'}
+      <section class="placement-overview-card">
+        <div class="placement-section-label">Overview</div>
+        <div class="placement-overview-grid">
+          <div><span>Organisation</span><strong>Mind Australia</strong></div>
+          <div><span>Placement week</span><strong>${info.started?`Week ${info.week}`:"Starts 20 July"}</strong></div>
+          <div><span>Placement stage</span><strong>${stage.title}</strong></div>
+          <div><span>Hours completed</span><strong>${h.toFixed(2)} / 500</strong></div>
         </div>
-        ${completedProject.length?`<details class="placement-completed-group"><summary>Completed project assessments (${completedProject.length})</summary><div class="placement-assessment-list">${completedProject.map(assessmentCard).join('')}</div></details>`:''}
-      </div>
+        <div class="placement-hours-track"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>
+      </section>
 
-      ${completedAssessments.length?`<details class="placement-completed-group"><summary>Completed assessments (${completedAssessments.length})</summary><div class="placement-assessment-list">${completedAssessments.map(assessmentCard).join('')}</div></details>`:''}
-    </section>
+      <section class="placement-focus-card">
+        <div class="placement-section-label">Current focus</div>
+        <h2>${currentAssessment?currentAssessment.title:stage.title}</h2>
+        <div class="placement-next-label">Next actions</div>
+        <div class="placement-next-actions">
+          ${nextActions.length?nextActions.map(item=>`<button class="placement-focus-action assessment" data-id="${item.assessment.id}"><span>☐</span><span>${item.task}</span></button>`).join(""):`<div class="placement-empty-action">You are up to date. Review your next assessment when ready.</div>`}
+        </div>
+        ${outstandingTasks.length>3?`<details class="placement-all-tasks"><summary>View all tasks <span>${outstandingTasks.length}</span></summary><div>${outstandingTasks.map(item=>`<button class="placement-all-task assessment" data-id="${item.assessment.id}"><span>${item.assessment.title}</span><strong>${item.task}</strong></button>`).join("")}</div></details>`:""}
+      </section>
 
-    <section class="clean-section">
-      <div class="section-title">Supervision</div>
-      <button class="plain-row" id="openSupervision"><div><strong>☕ Open supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
-    </section>
+      <section class="placement-section">
+        <div class="placement-section-heading"><div><span class="placement-section-label">Assessments</span><h2>Your progress</h2></div></div>
+        <div class="placement-assessment-list">${standardAssessments.map(assessmentCard).join("")}</div>
 
-    <section class="clean-section">
-      <div class="section-title">Timesheets &amp; Hours</div>
-      <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Open timesheets</strong><span>Daily hours, activities and submissions</span></div><span>›</span></button>
-    </section>`;
+        ${projectAssessments.length?`<div class="placement-project-group"><div class="placement-project-title"><span>Placement project</span><small>Small Project and Project Reflections</small></div><div class="placement-assessment-list">${projectAssessments.map(assessmentCard).join("")}</div></div>`:""}
+
+        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed assessments <span>${completedAssessments.length}</span></summary><div class="placement-assessment-list">${completedAssessments.map(assessmentCard).join("")}</div></details>`:""}
+      </section>
+
+      <section class="placement-section placement-admin-section">
+        <div class="placement-section-heading"><div><span class="placement-section-label">Placement records</span><h2>Supervision and hours</h2></div></div>
+        <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
+        <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets &amp; hours</strong><span>Daily activities and detailed hour records</span></div><span>›</span></button>
+      </section>
+    </div>`;
+}
+function officialAssessmentInfo(a){
+  const sharedNotice="Practice Compass is a planning and evidence tool. It does not replace official JCU documents, LearnJCU instructions or advice from your Field Education Liaison Officer (FELO).";
+  const records={
+    modules:{requirement:"Follow the current JCU Assessment Overview and LearnJCU instructions for completion and confirmation requirements.",record:"Complete and record this requirement through the official JCU or LearnJCU process identified in the current subject instructions.",sources:["JCU Assessment Overview","JCU Field Education Manual"]},
+    integration:{requirement:"Follow the current JCU Assessment Overview and LearnJCU instructions for attendance, participation and any required record.",record:"Use the official JCU or LearnJCU record identified in the current subject instructions.",sources:["JCU Assessment Overview","JCU Field Education Manual"]},
+    learning:{requirement:"Complete the official JCU Learning Plan form in consultation with your placement supervisor and FELO. Practice Compass may help organise ideas, questions, evidence and progress only.",record:"Use the current official JCU Learning Plan form. Do not submit Practice Compass content as a replacement for that form.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU Learning Plan form","AASW Practice Standards 2023","AASW Code of Ethics 2020"]},
+    project:{requirement:"Follow the current JCU Assessment Overview and FELO advice when agreeing on the project scope, process and required output.",record:"Use any relevant JCU project form, template or LearnJCU instruction supplied for this assessment.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU form"]},
+    reflections:{requirement:"Complete the three Project Reflections using the current JCU instructions and relevant official form or template.",record:"Use the relevant JCU Project Reflection form or template and submit through the official process identified in LearnJCU.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU form","AASW Practice Standards 2023","AASW Code of Ethics 2020"]},
+    timesheets:{requirement:"Record and submit placement hours using the current official JCU timesheet workbook and instructions.",record:"The official JCU timesheet workbook is the formal record. Practice Compass hours are for planning and tracking only.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU timesheet form"]},
+    midfinal:{requirement:"Complete the relevant official JCU placement assessment form and follow the current Assessment Overview, Field Education Manual and FELO advice.",record:"Use the current official JCU mid placement or end of placement assessment form. Practice Compass supports evidence preparation only.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU placement assessment form","AASW Practice Standards 2023","AASW Code of Ethics 2020"]},
+    final:{requirement:"Follow the current JCU Assessment Overview and LearnJCU instructions for the final placement and project presentation.",record:"Use the official JCU instructions, form or template supplied for the final presentation and project report.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU form","AASW Practice Standards 2023","AASW Code of Ethics 2020"]}
+  };
+  return {...(records[a.id]||{requirement:"Check the current JCU Assessment Overview, Field Education Manual and relevant official form before completing this assessment.",record:"Complete the assessment using the official JCU document or system identified in the current subject instructions.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU form"]}),notice:sharedNotice};
 }
 
 function assessmentDetail(id){
@@ -865,95 +858,98 @@ function assessmentDetail(id){
   const overallMeta=taskStatuses[overall];
   const progress=assessmentProgress(a);
   const toolkitLinks=(a.toolkit||[]);
+  const taskItems=(a.tasks||[]).map((task,index)=>({task,index,status:getTaskStatus(a.id,index)}));
+  const incomplete=taskItems.filter(item=>item.status!=="complete");
+  const completeCount=taskItems.length-incomplete.length;
+  const official=officialAssessmentInfo(a);
+
+  const taskRow=item=>{
+    const meta=taskStatuses[item.status];
+    return `<div class="task-row ${item.status==="complete"?"task-row-complete":""}">
+      <div class="task-copy">
+        <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${item.index}" ${item.status==="complete"?"checked":""} aria-label="Mark ${item.task} complete">
+        <span class="task-icon ${meta.className}">${meta.icon}</span>
+        <span>${item.task}</span>
+      </div>
+      <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${item.index}">
+        ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===item.status?"selected":""}>${m.label}</option>`).join("")}
+      </select>
+    </div>`;
+  };
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title">
-      <button class="back" id="backAssess">‹</button>
+      <button class="back" id="backAssess" aria-label="Back to My Placement">‹</button>
       <h2>${a.icon} ${a.title}</h2>
     </div>
 
-    <div class="assessment-status-card">
-      <div>
-        <div class="label">Current status</div>
-        <div class="status-large ${overallMeta.className}">${overallMeta.icon} ${overallMeta.label}</div>
+    <section class="assessment-detail-intro">
+      <div class="assessment-status-card">
+        <div><div class="label">Current status</div><div class="status-large ${overallMeta.className}">${overallMeta.icon} ${overallMeta.label}</div></div>
+        <div class="progress-number">${progress}%</div>
       </div>
-      <div class="progress-number">${progress}%</div>
-    </div>
+      <div class="progress-track"><div style="width:${progress}%"></div></div>
+    </section>
 
-    <div class="progress-track"><div style="width:${progress}%"></div></div>
-
-    <details class="card assessment-panel" open>
-      <summary><strong>What is it?</strong></summary>
+    <section class="card assessment-section" aria-labelledby="assessment-overview">
+      <div class="label" id="assessment-overview">Overview</div>
       <p>${a.purpose||a.plain}</p>
-    </details>
+    </section>
 
-    <details class="card assessment-panel">
-      <summary><strong>Why am I doing it?</strong></summary>
-      <p>${a.why||"This task helps JCU and your placement team see how your learning is developing in practice."}</p>
-    </details>
+    <section class="card assessment-section assessment-jcu-requirement" aria-labelledby="jcu-requirement">
+      <div class="label" id="jcu-requirement">JCU requirement</div>
+      <p>${official.requirement}</p>
+      <p class="assessment-scope-note">${official.notice}</p>
+    </section>
 
-    <details class="card assessment-panel" open>
-      <summary><strong>My checklist</strong></summary>
-      <p class="muted">Update each item as it moves through placement.</p>
-      ${(a.tasks||[]).map((task,i)=>{
-        const status=getTaskStatus(a.id,i), meta=taskStatuses[status];
-        return `<div class="task-row ${status==="complete"?"task-row-complete":""}">
-          <div class="task-copy">
-            <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${i}" ${status==="complete"?"checked":""} aria-label="Mark ${task} complete">
-            <span class="task-icon ${meta.className}">${meta.icon}</span>
-            <span>${task}</span>
-          </div>
-          <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${i}">
-            ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===status?"selected":""}>${m.label}</option>`).join("")}
-          </select>
-        </div>`;
-      }).join("")}
-    </details>
+    <section class="card assessment-section" aria-labelledby="next-steps">
+      <div class="assessment-section-heading"><div><div class="label" id="next-steps">Next steps</div><p class="muted">Focus on the next three incomplete actions.</p></div></div>
+      <div class="assessment-priority-steps">
+        ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">All checklist steps are marked complete. Check the official submission or sign off requirements.</div>`}
+      </div>
+      ${taskItems.length>3?`<details class="assessment-all-steps"><summary>View all steps <span>${taskItems.length}</span></summary><div>${taskItems.map(taskRow).join("")}</div></details>`:""}
+    </section>
 
-    ${reqs.length?`<details class="card assessment-panel">
-      <summary><strong>What am I building towards?</strong></summary>
-      <p class="muted">These evidence types are particularly useful for this requirement.</p>
-      ${reqs.map(r=>{
+    <section class="card assessment-section" aria-labelledby="assessment-progress">
+      <div class="label" id="assessment-progress">Progress</div>
+      <div class="assessment-progress-grid">
+        <div><span>Completed steps</span><strong>${completeCount}</strong></div>
+        <div><span>Remaining steps</span><strong>${incomplete.length}</strong></div>
+        <div><span>Progress</span><strong>${progress}%</strong></div>
+        <div><span>Status</span><strong>${overallMeta.label}</strong></div>
+      </div>
+    </section>
+
+    <section class="card assessment-section" aria-labelledby="assessment-evidence">
+      <div class="label" id="assessment-evidence">Evidence</div>
+      <p class="muted">Linked reflections and evidence already collected for this assessment.</p>
+      ${entries.length
+        ? `<div class="assessment-linked-evidence">${entries.map(e=>`<div class="row"><div><strong>${e.date}</strong><div class="small">${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</div></div></div>`).join("")}</div>`
+        : `<p class="muted">Nothing linked yet. Save a relevant reflection and Practice Compass will add it here.</p>`}
+      ${reqs.length?`<div class="assessment-evidence-map"><strong>Existing evidence categories</strong>${reqs.map(r=>{
         const count=entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length;
         return `<div class="row"><span>${count?"✓":"○"}</span><span style="flex:1">${r}</span><strong>${count}</strong></div>`;
-      }).join("")}
-    </details>`:""}
+      }).join("")}</div>`:""}
+    </section>
 
-    <details class="card assessment-panel">
-      <summary><strong>What should I collect?</strong></summary>
-      ${(a.collect||a.asks||[]).map(x=>`<div class="row"><span>⭐</span><span>${x}</span></div>`).join("")}
-    </details>
+    <section class="card assessment-section assessment-official-record" aria-labelledby="official-record">
+      <div class="label" id="official-record">Official record</div>
+      <p>${official.record}</p>
+      <p class="assessment-scope-note">${official.notice}</p>
+    </section>
 
-    <details class="card assessment-panel" open>
-      <summary><strong>Relevant Practice Toolkit information</strong></summary>
+    <section class="card assessment-section" aria-labelledby="helpful-toolkit">
+      <div class="label" id="helpful-toolkit">Helpful Toolkit topics</div>
       ${toolkitLinks.length
-        ? `<div class="linked-resource-list">${toolkitLinks.map(item=>`
-            <button class="linked-resource" data-toolkit-name="${item}">
-              <span>📚</span>
-              <div><strong>${item}</strong><small>Open information and practice prompts</small></div>
-              <span>›</span>
-            </button>`).join("")}</div>`
-        : `<p class="muted">No specific Toolkit links have been added for this requirement yet.</p>`}
-    </details>
+        ? `<div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong><small>Open information and practice prompts</small></div><span>›</span></button>`).join("")}</div>`
+        : `<p class="muted">No specific Toolkit links have been added for this assessment.</p>`}
+    </section>
 
-    <details class="card assessment-panel">
-      <summary><strong>My linked learning moments</strong></summary>
-      ${entries.length
-        ? entries.map(e=>`<div class="row"><div><strong>${e.date}</strong><div class="small">${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</div></div></div>`).join("")
-        : `<p class="muted">Nothing linked yet. Save a relevant reflection and Practice Compass will add it here.</p>`}
-    </details>
-
-    <div class="card official-doc-card">
-      <div class="label">Official JCU documents</div>
-      <p>Practice Compass summarises your requirements, but your LearnJCU assessment overview, templates and Field Education Manual remain the official instructions.</p>
-      <button class="btn secondary" id="officialDocInfo">What should I check on LearnJCU?</button>
-      <div id="officialDocDetails" class="official-doc-details hidden">
-        <div class="row"><span>•</span><span>The current assessment description and rubric</span></div>
-        <div class="row"><span>•</span><span>The required template or form</span></div>
-        <div class="row"><span>•</span><span>Submission dates and liaison arrangements</span></div>
-        <div class="row"><span>•</span><span>Any updated instructions from your FELO or subject coordinator</span></div>
-      </div>
-    </div>`;
+    <section class="card assessment-section official-sources-card" aria-labelledby="official-sources">
+      <div class="label" id="official-sources">Official sources</div>
+      <div class="official-source-list">${official.sources.map(source=>`<div class="official-source-row"><span>✓</span><span>${source}</span></div>`).join("")}</div>
+      <p class="assessment-scope-note">Use the current version supplied by JCU or published by the AASW. Practice Compass does not replace official JCU documents, LearnJCU instructions or FELO advice.</p>
+    </section>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
 
@@ -974,10 +970,6 @@ function assessmentDetail(id){
   document.querySelectorAll(".linked-resource").forEach(button=>{
     button.onclick=()=>openToolkitTopicByName(button.dataset.toolkitName);
   });
-
-  document.getElementById("officialDocInfo").onclick=()=>{
-    document.getElementById("officialDocDetails").classList.toggle("hidden");
-  };
 }
 
 function learnPage(){

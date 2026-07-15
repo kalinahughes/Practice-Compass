@@ -1100,45 +1100,193 @@ h1,h2,h3,
   background:#dce7dc;
 }
 
-/* Sprint 3: My Placement workspace */
-.placement-workspace-intro{margin-bottom:4px}
-.placement-overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.placement-overview-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:5px}
-.placement-overview-item span,.placement-hours-summary span{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.02em}
-.placement-overview-item strong{color:var(--text);line-height:1.3}
-.placement-overview-wide{grid-column:1/-1}
-.placement-hours-summary{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
-.placement-hours-summary>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-.placement-hours-summary strong{color:var(--text)}
-.section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.placement-count{font-size:12px;color:var(--muted);font-weight:700}
-.placement-task-list,.placement-assessment-list{display:flex;flex-direction:column;gap:10px}
-.placement-task-row{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:10px;text-align:left;color:var(--text)}
-.placement-task-row>span:last-child{margin-left:auto;color:var(--muted);font-size:22px}
-.placement-task-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
-.placement-task-copy strong{font-size:14px;line-height:1.35}
-.placement-task-copy small{color:var(--muted)}
-.placement-task-list.completed .placement-task-row{opacity:.72}
-.placement-assessment-card{width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;text-align:left;color:var(--text)}
-.placement-assessment-topline{display:flex;align-items:flex-start;gap:10px}
-.placement-assessment-icon{font-size:20px;line-height:1.2}
-.placement-assessment-title{display:flex;flex-direction:column;gap:3px;flex:1}
-.placement-assessment-title strong{font-size:15px;line-height:1.35}
-.placement-assessment-title span{font-size:12px;color:var(--muted)}
-.placement-card-arrow{font-size:22px;color:var(--muted);line-height:1}
-.placement-assessment-meta{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 10px;font-size:11px;color:var(--muted)}
-.placement-assessment-meta>span{background:var(--stone-soft);border-radius:999px;padding:5px 8px}
-.placement-assessment-meta .placement-status{font-weight:700}
-.placement-card-progress{height:8px;border-radius:999px;background:#e9ece8;overflow:hidden}
-.placement-card-progress span{display:block;height:100%;border-radius:inherit;background:var(--eucalyptus-deep)}
-.placement-progress-label{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--muted)}
-.placement-progress-label strong{color:var(--text)}
-.placement-completed-group{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
-.placement-completed-group summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700;padding:5px 0 10px}
-.placement-project-group{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
-.placement-group-heading{margin-bottom:10px}
-.placement-group-heading div{display:flex;flex-direction:column;gap:3px}
-.placement-group-heading strong{color:var(--text)}
-.placement-group-heading span{font-size:12px;color:var(--muted)}
-.placement-empty-state{background:#fff;border:1px dashed var(--line);border-radius:14px;padding:16px;color:var(--muted);font-size:13px;text-align:center}
-@media(max-width:420px){.placement-overview-grid{grid-template-columns:1fr}.placement-overview-wide{grid-column:auto}.placement-hours-summary>div:first-child{align-items:flex-start;flex-direction:column;gap:4px}}
+/* Sprint 3.1: My Placement workspace refinement */
+.placement-workspace{color:#3f413e}
+.placement-workspace .placement-heading{padding-bottom:16px}
+.placement-workspace .placement-heading h1{color:#354f42}
+.placement-workspace .welcome-text{color:#6d736e}
+.placement-overview-card,
+.placement-section{
+  margin:0 0 18px;
+  padding:21px;
+  border:1px solid rgba(53,79,66,.09);
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(47,58,50,.05);
+}
+.placement-section-label{
+  display:block;
+  margin-bottom:12px;
+  color:#587060;
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.placement-overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.placement-overview-grid div{min-width:0}
+.placement-overview-grid span{display:block;margin-bottom:4px;color:#7b807b;font-size:12px}
+.placement-overview-grid strong{display:block;color:#3f413e;font-size:15px;line-height:1.35}
+.placement-hours-track,.placement-progress-track{height:9px;border-radius:999px;background:#edf0eb;overflow:hidden}
+.placement-hours-track{margin-top:18px}
+.placement-hours-track span,.placement-progress-track span{display:block;height:100%;border-radius:inherit;background:#355444}
+.placement-focus-card{
+  margin:0 0 18px;
+  padding:23px;
+  border-radius:24px;
+  background:linear-gradient(145deg,#355444 0%,#2f493c 100%);
+  color:#fff;
+  box-shadow:0 14px 30px rgba(47,79,59,.16);
+}
+.placement-focus-card .placement-section-label{margin-bottom:7px;color:rgba(255,255,255,.72)}
+.placement-focus-card h2{margin:0 0 20px;color:#fff;font-size:24px}
+.placement-next-label{margin-bottom:8px;color:rgba(255,255,255,.72);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.placement-next-actions{display:grid;gap:2px}
+.placement-focus-action{
+  width:100%;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border:0;background:transparent;color:#fff;text-align:left;line-height:1.45
+}
+.placement-focus-action>span:first-child{color:#d8e3d7;font-size:18px;line-height:1.2}
+.placement-empty-action{padding:8px 0;color:rgba(255,255,255,.82);line-height:1.5}
+.placement-all-tasks{margin-top:13px;border-top:1px solid rgba(255,255,255,.18)}
+.placement-all-tasks summary{display:flex;align-items:center;justify-content:space-between;padding:15px 0 2px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;list-style:none}
+.placement-all-tasks summary::-webkit-details-marker,.placement-completed summary::-webkit-details-marker{display:none}
+.placement-all-tasks summary span,.placement-completed summary span{display:grid;place-items:center;min-width:25px;height:25px;border-radius:99px;background:rgba(255,255,255,.14);font-size:12px}
+.placement-all-task{width:100%;display:grid;gap:3px;padding:12px 0;border:0;border-bottom:1px solid rgba(255,255,255,.12);background:transparent;color:#fff;text-align:left}
+.placement-all-task span{color:rgba(255,255,255,.67);font-size:12px}
+.placement-all-task strong{color:#fff;font-size:14px;line-height:1.4}
+.placement-section-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.placement-section-heading .placement-section-label{margin-bottom:5px}
+.placement-section-heading h2{color:#3f413e;font-size:21px}
+.placement-assessment-list{display:grid;gap:12px}
+.placement-assessment-card{width:100%;padding:17px;border:1px solid #e7e9e5;border-radius:18px;background:#fff;text-align:left}
+.placement-assessment-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.placement-assessment-top>div{display:flex;align-items:flex-start;gap:9px;min-width:0}
+.placement-assessment-top strong{color:#3f413e;font-size:15px;line-height:1.35}
+.placement-assessment-icon{font-size:18px}
+.placement-assessment-card .status-inline{flex:0 0 auto;font-size:11px}
+.placement-progress-track{margin:15px 0 8px;height:7px}
+.placement-assessment-meta{display:flex;justify-content:space-between;gap:12px;color:#727873;font-size:12px}
+.placement-assessment-card small{display:block;margin-top:9px;color:#7b807b;font-size:12px;line-height:1.4}
+.placement-project-group{margin-top:20px;padding-top:18px;border-top:1px solid #e7e9e5}
+.placement-project-title{display:grid;gap:3px;margin-bottom:12px}
+.placement-project-title span{color:#3f413e;font-size:15px;font-weight:850}
+.placement-project-title small{color:#7b807b}
+.placement-completed{margin-top:18px;border-top:1px solid #e7e9e5}
+.placement-completed summary{display:flex;align-items:center;justify-content:space-between;padding:16px 0 2px;color:#526459;font-size:14px;font-weight:800;cursor:pointer;list-style:none}
+.placement-completed summary span{background:#edf0eb;color:#526459}
+.placement-completed[open] summary{margin-bottom:12px}
+.placement-admin-section .plain-row:last-child{border-bottom:0}
+@media(max-width:390px){
+  .placement-overview-grid{grid-template-columns:1fr}
+  .placement-overview-card,.placement-section,.placement-focus-card{padding:19px;border-radius:22px}
+  .placement-assessment-top,.placement-assessment-meta{align-items:flex-start;flex-direction:column}
+}
+
+/* Sprint 3.2: clear, actionable assessment workspace */
+.placement-next-step{
+  margin-top:12px;
+  padding:11px 12px;
+  border-radius:12px;
+  background:#f5f7f3;
+}
+.placement-next-step span{
+  display:block;
+  margin-bottom:3px;
+  color:#727873;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.placement-next-step strong{
+  display:block;
+  color:#3f413e;
+  font-size:13px;
+  line-height:1.4;
+}
+.assessment-detail-intro{margin-bottom:14px}
+.assessment-section{margin-bottom:14px}
+.assessment-section>.label{margin-bottom:8px}
+.assessment-section p{margin:0;color:#3f413e;line-height:1.6}
+.assessment-section .muted{color:#727873}
+.assessment-jcu-requirement,
+.assessment-official-record{
+  border-left:4px solid #315f4c;
+}
+.assessment-scope-note{
+  margin-top:12px!important;
+  padding:11px 12px;
+  border-radius:12px;
+  background:#eef3ec;
+  color:#4f5b53!important;
+  font-size:13px;
+}
+.assessment-priority-steps{display:grid;gap:10px;margin-top:12px}
+.assessment-all-steps{margin-top:13px;border-top:1px solid #e7e9e5;padding-top:12px}
+.assessment-all-steps summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  color:#315f4c;
+  font-weight:700;
+  list-style:none;
+}
+.assessment-all-steps summary::-webkit-details-marker{display:none}
+.assessment-all-steps summary span{
+  min-width:27px;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#eef3ec;
+  text-align:center;
+  font-size:12px;
+}
+.assessment-all-steps>div{display:grid;gap:10px;margin-top:12px}
+.assessment-complete-message{
+  padding:13px;
+  border-radius:12px;
+  background:#eef3ec;
+  color:#3f413e;
+  line-height:1.5;
+}
+.assessment-progress-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+.assessment-progress-grid>div{
+  padding:12px;
+  border-radius:13px;
+  background:#f7f8f6;
+}
+.assessment-progress-grid span{
+  display:block;
+  margin-bottom:5px;
+  color:#727873;
+  font-size:12px;
+}
+.assessment-progress-grid strong{color:#3f413e;font-size:16px}
+.assessment-linked-evidence{margin-top:12px}
+.assessment-evidence-map{
+  margin-top:14px;
+  padding-top:13px;
+  border-top:1px solid #e7e9e5;
+}
+.assessment-evidence-map>strong{display:block;margin-bottom:8px;color:#3f413e}
+.official-sources-card{background:#fff}
+.official-source-list{display:grid;gap:9px;margin-top:10px}
+.official-source-row{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  color:#3f413e;
+  font-size:14px;
+  line-height:1.45;
+}
+.official-source-row>span:first-child{color:#315f4c;font-weight:800}
+@media (max-width:520px){
+  .assessment-progress-grid{grid-template-columns:1fr 1fr}
+  .assessment-section .task-row{align-items:flex-start;flex-direction:column}
+  .assessment-section .task-status-select{width:100%}
+}
