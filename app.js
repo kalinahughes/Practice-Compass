@@ -420,19 +420,27 @@ function assessmentIsComplete(id){
 }
 
 function assessmentPriority(info,hours){
+  let ordered;
   if(!info.started){
-    return ["modules","learning","timesheets","project","integration","reflections","midfinal","final"];
+    ordered=["modules","learning","timesheets","project","integration","reflections","midfinal","final"];
+  }else if(info.week<=3){
+    ordered=["learning","timesheets","project","integration","reflections","midfinal","final","modules"];
+  }else if(hours<250){
+    ordered=["project","timesheets","integration","reflections","midfinal","final","learning","modules"];
+  }else if(hours<430){
+    ordered=["midfinal","reflections","project","timesheets","integration","final","learning","modules"];
+  }else{
+    ordered=["final","midfinal","reflections","project","timesheets","integration","learning","modules"];
   }
-  if(info.week<=3){
-    return ["learning","timesheets","project","integration","reflections","midfinal","final","modules"];
-  }
-  if(hours<250){
-    return ["project","timesheets","integration","reflections","midfinal","final","learning","modules"];
-  }
-  if(hours<430){
-    return ["midfinal","reflections","project","timesheets","integration","final","learning","modules"];
-  }
-  return ["final","midfinal","reflections","project","timesheets","integration","learning","modules"];
+  const baseOrder=new Map(ordered.map((id,index)=>[id,index]));
+  return [...ordered].sort((a,b)=>{
+    const aDate=assessmentPlanning(a).date;
+    const bDate=assessmentPlanning(b).date;
+    if(aDate&&bDate) return aDate.localeCompare(bDate)||baseOrder.get(a)-baseOrder.get(b);
+    if(aDate) return -1;
+    if(bDate) return 1;
+    return baseOrder.get(a)-baseOrder.get(b);
+  });
 }
 
 function nextAssessment(info,hours){
@@ -558,6 +566,41 @@ function setTaskStatus(assessmentId,index,status){
   const data=taskStatusData();
   data[`${assessmentId}:${index}`]=status;
   state.set("taskStatuses",data);
+}
+
+function assessmentPlanning(assessmentId){
+  const data=taskStatusData();
+  const plans=data.__assessmentPlanningDates;
+  if(!plans||typeof plans!=="object") return {date:"",reason:""};
+  const plan=plans[assessmentId];
+  return plan&&typeof plan==="object"?{date:plan.date||"",reason:plan.reason||""}:{date:"",reason:""};
+}
+
+function saveAssessmentPlanning(assessmentId,date,reason){
+  const data=taskStatusData();
+  const plans=data.__assessmentPlanningDates&&typeof data.__assessmentPlanningDates==="object"?data.__assessmentPlanningDates:{};
+  plans[assessmentId]={date:date||"",reason:reason||""};
+  data.__assessmentPlanningDates=plans;
+  state.set("taskStatuses",data);
+}
+
+function clearAssessmentPlanning(assessmentId){
+  const data=taskStatusData();
+  if(data.__assessmentPlanningDates&&typeof data.__assessmentPlanningDates==="object"){
+    delete data.__assessmentPlanningDates[assessmentId];
+    state.set("taskStatuses",data);
+  }
+}
+
+function formatPlanningDate(value){
+  if(!value) return "Not set";
+  const [year,month,day]=value.split("-").map(Number);
+  if(!year||!month||!day) return value;
+  return new Date(year,month-1,day).toLocaleDateString("en-AU",{day:"numeric",month:"short",year:"numeric"});
+}
+
+function escapeAttribute(value){
+  return String(value||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
 function assessmentOverallStatus(a){
@@ -772,19 +815,22 @@ function assessmentPage(){
     const remaining=(a.tasks||[]).filter((_,index)=>getTaskStatus(a.id,index)!=="complete").length;
     const nextIndex=(a.tasks||[]).findIndex((task,index)=>getTaskStatus(a.id,index)!=="complete");
     const nextAction=nextIndex>=0?a.tasks[nextIndex]:"Review the official completion and submission requirements";
-    return `<button class="placement-assessment-card assessment" data-id="${a.id}">
-      <div class="placement-assessment-top">
-        <div><span class="placement-assessment-icon">${a.icon}</span><strong>${a.title}</strong></div>
-        <span class="status-inline ${meta.className}">${meta.icon} ${meta.label}</span>
-      </div>
-      <div class="placement-progress-track"><span style="width:${progress}%"></span></div>
-      <div class="placement-assessment-meta">
-        <span>${progress}% complete</span>
-        <span>${remaining} task${remaining===1?"":"s"} remaining</span>
-      </div>
-      <div class="placement-next-step"><span>Next action</span><strong>${nextAction}</strong></div>
-      <small>${a.when}</small>
-    </button>`;
+    const planning=assessmentPlanning(a.id);
+    return `<article class="placement-assessment-card">
+      <button class="placement-assessment-open assessment" data-id="${a.id}">
+        <div class="placement-assessment-top">
+          <div><span class="placement-assessment-icon">${a.icon}</span><strong>${a.title}</strong></div>
+          <span class="status-inline ${meta.className}">${meta.icon} ${meta.label}</span>
+        </div>
+        <div class="placement-progress-track"><span style="width:${progress}%"></span></div>
+        <div class="placement-assessment-meta">
+          <span>${progress}% complete</span>
+        </div>
+        <div class="placement-next-step"><span>Next action</span><strong>${nextAction}</strong></div>
+        <div class="placement-card-timing"><span><strong>Official timing</strong>${a.when}</span>${planning.date?`<span><strong>My target date</strong>${formatPlanningDate(planning.date)}</span>`:""}</div>
+      </button>
+      <button class="assessment-plan-edit" data-id="${a.id}">Edit plan</button>
+    </article>`;
   };
 
   const projectAssessments=activeAssessments.filter(a=>a.id==="project"||a.id==="reflections");
@@ -850,7 +896,7 @@ function officialAssessmentInfo(a){
   return {...(records[a.id]||{requirement:"Check the current JCU Assessment Overview, Field Education Manual and relevant official form before completing this assessment.",record:"Complete the assessment using the official JCU document or system identified in the current subject instructions.",sources:["JCU Assessment Overview","JCU Field Education Manual","Relevant JCU form"]}),notice:sharedNotice};
 }
 
-function assessmentDetail(id){
+function assessmentDetail(id,openPlanning=false){
   const a=assessments.find(x=>x.id===id);
   const entries=savedEntries().filter(e=>(e.evidence||[]).includes(a.title));
   const reqs=assessmentRequirements[a.title]||[];
@@ -862,6 +908,7 @@ function assessmentDetail(id){
   const incomplete=taskItems.filter(item=>item.status!=="complete");
   const completeCount=taskItems.length-incomplete.length;
   const official=officialAssessmentInfo(a);
+  const planning=assessmentPlanning(a.id);
 
   const taskRow=item=>{
     const meta=taskStatuses[item.status];
@@ -890,6 +937,21 @@ function assessmentDetail(id){
       </div>
       <div class="progress-track"><div style="width:${progress}%"></div></div>
     </section>
+
+    <details class="card assessment-section assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
+      <summary>
+        <div><div class="label">My planning date</div><span><strong>Official timing</strong>${a.when}</span>${planning.date?`<span><strong>My target date</strong>${formatPlanningDate(planning.date)}</span>`:""}</div>
+        <span class="assessment-planning-edit-label">Edit</span>
+      </summary>
+      <div class="assessment-planning-controls">
+        <label class="label" for="planningDate">My target date</label>
+        <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
+        <label class="label" for="planningReason">Optional reason</label>
+        <input id="planningReason" type="text" class="input" maxlength="120" value="${escapeAttribute(planning.reason)}" placeholder="Leave, travel or another commitment">
+        <p class="assessment-planning-notice">This is your personal planning date and does not change the official JCU requirement.</p>
+        <div class="assessment-planning-actions"><button class="btn" id="savePlanningDate">Save</button><button class="btn secondary" id="clearPlanningDate" ${planning.date||planning.reason?"":"disabled"}>Clear</button></div>
+      </div>
+    </details>
 
     <section class="card assessment-section" aria-labelledby="assessment-overview">
       <div class="label" id="assessment-overview">Overview</div>
@@ -952,6 +1014,16 @@ function assessmentDetail(id){
     </section>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+  document.getElementById("savePlanningDate").onclick=()=>{
+    const date=document.getElementById("planningDate").value;
+    const reason=document.getElementById("planningReason").value.trim();
+    saveAssessmentPlanning(a.id,date,reason);
+    assessmentDetail(id,true);
+  };
+  document.getElementById("clearPlanningDate").onclick=()=>{
+    clearAssessmentPlanning(a.id);
+    assessmentDetail(id,true);
+  };
 
   document.querySelectorAll(".task-complete-check").forEach(check=>{
     check.onchange=()=>{
@@ -1076,30 +1148,127 @@ function evidenceMapPage(){
   document.getElementById("backMore").onclick=()=>{route="more";render()};
 }
 
+function practiceFrameworkIntelligence(){
+  const entries=savedEntries();
+  const manual=frameworkData();
+  const reflectionOrder=new Map([...entries].reverse().map((entry,index)=>[entry.id,index+1]));
+  const rules={
+    "Ethics or values":[
+      {group:"values",name:"Human dignity"},
+      {group:"values",name:"Respect"},
+      {group:"skills",name:"Ethical decision making"}
+    ],
+    "Recovery":[
+      {group:"values",name:"Hope"},
+      {group:"theories",name:"Recovery Oriented Practice"},
+      {group:"models",name:"Strengths Based Practice"}
+    ],
+    "Cultural capability":[
+      {group:"values",name:"Cultural safety"},
+      {group:"models",name:"Cultural humility"}
+    ],
+    "Theory in action":[{group:"theories",name:"Theory informed practice"}],
+    "Systems issue":[{group:"theories",name:"Systems and Ecological Theory"}],
+    "Communication":[
+      {group:"skills",name:"Active listening"},
+      {group:"skills",name:"Engagement and rapport"}
+    ],
+    "Documentation":[{group:"skills",name:"Documentation"}],
+    "Teamwork":[{group:"skills",name:"Interprofessional collaboration"}],
+    "Feedback":[{group:"skills",name:"Reflective supervision"}],
+    "Skill":[{group:"skills",name:"Practice skills"}],
+    "Use of self":[
+      {group:"useOfSelf",name:"Self awareness"},
+      {group:"useOfSelf",name:"Professional boundaries"}
+    ],
+    "Professional development":[{group:"useOfSelf",name:"Reflective practice"}],
+    "Knowledge":[{group:"models",name:"Evidence informed practice"}]
+  };
+  const groups={values:new Map(),theories:new Map(),models:new Map(),skills:new Map(),useOfSelf:new Map()};
+  const add=(group,name,entry=null,isManual=false)=>{
+    if(!groups[group].has(name)) groups[group].set(name,{name,evidence:[],assessments:new Set(),manual:false});
+    const item=groups[group].get(name);
+    if(isManual) item.manual=true;
+    if(entry){
+      item.evidence.push({id:entry.id,label:`Reflection ${reflectionOrder.get(entry.id) || 1}`,date:entry.date});
+      (entry.evidence||[]).forEach(a=>item.assessments.add(a));
+    }
+  };
+  entries.forEach(entry=>(entry.evidenceTypes||[]).forEach(type=>(rules[type]||[]).forEach(rule=>add(rule.group,rule.name,entry))));
+  (manual.values||[]).forEach(name=>add("values",name,null,true));
+  (manual.theories||[]).forEach(name=>add("theories",name,null,true));
+  (manual.cultural||[]).forEach(name=>add("models",name,null,true));
+  (manual.skills||[]).forEach(name=>add("skills",name,null,true));
+  if(manual.useOfSelf) add("useOfSelf","Personal use of self reflection",null,true);
+  return {groups,manual,entries};
+}
+
 function frameworkPage(){
-  const data=frameworkData();
+  const intelligence=practiceFrameworkIntelligence();
+  const data=intelligence.manual;
   const groups={
     values:["Human dignity","Social justice","Self determination","Respect","Hope","Compassion","Accountability","Cultural safety"],
     theories:["Recovery Oriented Practice","Strengths Based Practice","Systems and Ecological Theory","Trauma Informed Practice","Person Centred Practice","Anti Oppressive Practice","Feminist Social Work","Intersectionality","Narrative Practice","Motivational Interviewing"],
     cultural:["Cultural humility","Cultural safety","Aboriginal and Torres Strait Islander self determination","CALD inclusion","Anti racist practice","LGBTQIA+ affirmative practice","Disability inclusion","Neurodiversity affirming practice"],
     skills:["Engagement and rapport","Active listening","Assessment","Advocacy","Documentation","Case management","Group facilitation","Interprofessional collaboration","Reflective supervision"]
   };
+  const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
+  const evidencedItems=allItems.filter(item=>item.evidence.length);
+  const growth=evidencedItems.slice(0,4);
+  const opportunityRules=[
+    {label:"Ethical decision making",tags:["Ethics or values"]},
+    {label:"Cultural capability",tags:["Cultural capability"]},
+    {label:"Interprofessional collaboration",tags:["Teamwork"]},
+    {label:"Use of self",tags:["Use of self"]},
+    {label:"Theory informed practice",tags:["Theory in action"]}
+  ];
+  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
+  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
+  const labels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
+  const frameworkItem=item=>`<details class="framework-evidence-item">
+    <summary><span>${safeText(item.name)}</span><span>${item.evidence.length?`${item.evidence.length} reflection${item.evidence.length===1?"":"s"}`:"Personal addition"}</span></summary>
+    <div class="framework-evidence-body">
+      ${item.evidence.length?`<strong>Evidence from</strong><div class="framework-source-list">${item.evidence.map(source=>`<span>${safeText(source.label)}${source.date?` · ${safeText(source.date)}`:""}</span>`).join("")}</div>`:`<p class="muted">This was added by you. Supporting reflection evidence will appear here when available.</p>`}
+      ${item.assessments.size?`<strong>Supports</strong><div class="framework-support-list">${[...item.assessments].map(a=>`<span>✓ ${safeText(a)}</span>`).join("")}</div>`:""}
+    </div>
+  </details>`;
+  const groupSection=(key,map)=>map.size?`<section class="framework-growth-group"><div class="label">${labels[key]}</div><div class="framework-evidence-list">${[...map.values()].map(frameworkItem).join("")}</div></section>`:"";
   const chips=(group,items)=>items.map(v=>`<button class="select-chip framework-chip ${(data[group]||[]).includes(v)?"selected":""}" data-group="${group}" data-value="${v}">${v}</button>`).join("");
+
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Framework for Practice</h2></div>
-    <div class="card green"><div class="label">Why am I building this?</div><p>Your framework brings together the values, theories, skills and reflections that shape how you practise. It can grow throughout placement.</p></div>
-    <div class="card"><div class="label">My values</div><div class="chip-grid">${chips("values",groups.values)}</div></div>
-    <div class="card"><div class="label">Theories and approaches</div><div class="chip-grid">${chips("theories",groups.theories)}</div></div>
-    <div class="card"><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips("cultural",groups.cultural)}</div></div>
-    <div class="card"><div class="label">My developing skills</div><div class="chip-grid">${chips("skills",groups.skills)}</div></div>
-    <div class="card stone"><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${data.useOfSelf||""}</textarea></div>
-    <div class="card"><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${data.professionalIdentity||""}</textarea><button class="btn" id="saveFramework">Save my framework</button></div>`;
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
+    <section class="card green framework-intelligence-hero"><div class="label">How am I developing as a social worker?</div><p>Your framework grows from the reflections and evidence you already save. Capture once, then use it across your placement journey.</p></section>
+
+    ${growth.length?`<section class="card framework-growth-summary"><div class="label">You’re demonstrating</div><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></section>`:`<section class="card framework-empty"><div class="label">Your framework will grow here</div><p>Save reflections and choose what they demonstrate. Practice Compass will organise the supporting evidence for you.</p></section>`}
+
+    ${opportunities.length?`<section class="card sage framework-opportunities"><div class="label">Opportunities to strengthen</div><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p class="muted">These are gentle prompts for future learning, not missing requirements.</p></section>`:""}
+
+    <section class="card framework-development"><div class="label">My developing framework</div>
+      ${groupSection("values",intelligence.groups.values)}
+      ${groupSection("theories",intelligence.groups.theories)}
+      ${groupSection("models",intelligence.groups.models)}
+      ${groupSection("skills",intelligence.groups.skills)}
+      ${groupSection("useOfSelf",intelligence.groups.useOfSelf)}
+    </section>
+
+    <details class="card framework-manual-additions">
+      <summary><span><strong>Personal additions</strong><small>Add anything important that has not yet appeared through reflection evidence.</small></span><span>›</span></summary>
+      <div class="framework-manual-body">
+        <div><div class="label">My values</div><div class="chip-grid">${chips("values",groups.values)}</div></div>
+        <div><div class="label">Theories and approaches</div><div class="chip-grid">${chips("theories",groups.theories)}</div></div>
+        <div><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips("cultural",groups.cultural)}</div></div>
+        <div><div class="label">My developing skills</div><div class="chip-grid">${chips("skills",groups.skills)}</div></div>
+        <div><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${safeText(data.useOfSelf||"")}</textarea></div>
+        <div><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${safeText(data.professionalIdentity||"")}</textarea></div>
+        <button class="btn" id="saveFramework">Save personal additions</button>
+      </div>
+    </details>`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
   document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
   document.getElementById("saveFramework").onclick=()=>{
     const current={values:[],theories:[],cultural:[],skills:[],useOfSelf:document.getElementById("frameworkSelf").value.trim(),professionalIdentity:document.getElementById("frameworkIdentity").value.trim()};
     document.querySelectorAll(".framework-chip.selected").forEach(btn=>current[btn.dataset.group].push(btn.dataset.value));
-    saveFrameworkData(current); alert("My Framework for Practice has been saved 🧭");
+    saveFrameworkData(current); alert("My Practice Framework has been updated 🧭"); frameworkPage();
   };
 }
 
@@ -1295,6 +1464,7 @@ function bind(){
   document.getElementById("openTimesheets")?.addEventListener("click",()=>timesheetPage());
   document.getElementById("openSupervision")?.addEventListener("click",()=>supervisionPage());
   document.querySelectorAll(".assessment").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id));
+  document.querySelectorAll(".assessment-plan-edit").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id,true));
   const toolkitList=document.getElementById("toolkitList");
   if(toolkitList){
     toolkitList.onclick=(event)=>{

@@ -1290,3 +1290,66 @@ h1,h2,h3,
   .assessment-section .task-row{align-items:flex-start;flex-direction:column}
   .assessment-section .task-status-select{width:100%}
 }
+
+/* Sprint 3.3: compact personal planning dates */
+.placement-assessment-card{position:relative;padding:0;overflow:hidden}
+.placement-assessment-open{display:block;width:100%;padding:17px 17px 10px;border:0;background:transparent;color:inherit;text-align:left}
+.placement-card-timing{display:grid;gap:7px;margin-top:11px;padding-top:10px;border-top:1px solid #eceeea}
+.placement-card-timing span{display:flex;gap:7px;color:#727873;font-size:12px;line-height:1.4}
+.placement-card-timing strong{flex:0 0 auto;color:#4a4d49;font-size:12px}
+.assessment-plan-edit{margin:0 17px 13px;padding:2px 0;border:0;background:transparent;color:#315f4c;font-size:12px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.assessment-planning-date{padding:0!important;overflow:hidden}
+.assessment-planning-date>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px;cursor:pointer;list-style:none}
+.assessment-planning-date>summary::-webkit-details-marker{display:none}
+.assessment-planning-date>summary>div{display:grid;gap:5px;min-width:0}
+.assessment-planning-date>summary .label{margin:0}
+.assessment-planning-date>summary span:not(.assessment-planning-edit-label){display:flex;gap:7px;color:#727873;font-size:12px;line-height:1.4}
+.assessment-planning-date>summary span strong{color:#4a4d49}
+.assessment-planning-edit-label{flex:0 0 auto;color:#315f4c;font-size:12px;font-weight:800}
+.assessment-planning-controls{display:grid;gap:9px;padding:0 17px 17px;border-top:1px solid #eceeea}
+.assessment-planning-controls>.label{margin-top:13px;margin-bottom:0}
+.assessment-planning-notice{padding:10px 11px;border-radius:11px;background:#eef3ec;color:#4f5b53!important;font-size:12px!important;line-height:1.45!important}
+.assessment-planning-actions{display:flex;gap:9px}
+.assessment-planning-actions .btn{width:auto;min-width:90px;margin-top:0}
+.assessment-planning-actions .btn:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:390px){
+  .placement-card-timing span,.assessment-planning-date>summary span:not(.assessment-planning-edit-label){display:grid;gap:2px}
+  .assessment-planning-actions{display:grid;grid-template-columns:1fr 1fr}
+  .assessment-planning-actions .btn{width:100%;min-width:0}
+}
+
+/* Sprint 6: My Practice Framework intelligence */
+.framework-intelligence-hero p{margin-bottom:0}
+.framework-growth-summary,.framework-opportunities,.framework-development{background:#fff}
+.framework-growth-chips{display:grid;gap:9px;margin-top:12px}
+.framework-growth-chips span{display:flex;align-items:center;gap:7px;padding:11px 12px;border-radius:12px;background:#f4f7f3;color:#3f413e;font-weight:700}
+.framework-opportunities{background:#e7efe5}
+.framework-opportunity-list{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0}
+.framework-opportunity-list span{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.72);color:#405048;font-size:13px;font-weight:700}
+.framework-development>.label{margin-bottom:4px}
+.framework-growth-group{padding:14px 0;border-top:1px solid #e7e9e5}
+.framework-growth-group:first-of-type{border-top:0}
+.framework-evidence-list{display:grid;gap:8px;margin-top:9px}
+.framework-evidence-item{border:1px solid #e5e9e4;border-radius:13px;background:#fff;overflow:hidden}
+.framework-evidence-item summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;cursor:pointer;list-style:none}
+.framework-evidence-item summary::-webkit-details-marker{display:none}
+.framework-evidence-item summary span:first-child{color:#3f413e;font-weight:750}
+.framework-evidence-item summary span:last-child{flex:0 0 auto;color:#657068;font-size:12px}
+.framework-evidence-body{display:grid;gap:8px;padding:0 12px 12px;border-top:1px solid #edf0ec}
+.framework-evidence-body>strong{margin-top:10px;color:#4a4d49;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.framework-source-list,.framework-support-list{display:flex;flex-wrap:wrap;gap:7px}
+.framework-source-list span,.framework-support-list span{padding:6px 8px;border-radius:9px;background:#f3f6f2;color:#4b554e;font-size:12px}
+.framework-manual-additions{padding:0!important;overflow:hidden;background:#fff}
+.framework-manual-additions>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;cursor:pointer;list-style:none}
+.framework-manual-additions>summary::-webkit-details-marker{display:none}
+.framework-manual-additions>summary>span:first-child{display:grid;gap:4px}
+.framework-manual-additions>summary small{color:#737a74;font-weight:400;line-height:1.35}
+.framework-manual-additions>summary>span:last-child{color:#315f4c;font-size:22px}
+.framework-manual-body{display:grid;gap:17px;padding:0 16px 17px;border-top:1px solid #e7e9e5}
+.framework-manual-body>div:first-child{padding-top:15px}
+.framework-manual-body .btn{margin-top:0}
+.framework-empty p{margin-bottom:0;color:#646a65}
+@media(max-width:420px){
+  .framework-evidence-item summary{align-items:flex-start}
+  .framework-evidence-item summary span:last-child{text-align:right}
+}
