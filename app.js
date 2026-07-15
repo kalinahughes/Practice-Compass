@@ -673,14 +673,14 @@ function todayPage(){
         ${homeIcon('compass')}
         <div><span class="home-kicker">What’s next</span><h2>${current.title}</h2></div>
       </div>
-      <p class="home-card-copy">${current.when}</p>
+      <p class="home-card-copy"><span>Due date</span>${current.when}</p>
       <div class="home-next-actions">
         <span class="home-next-label">Next actions</span>
         <div><span class="home-task-dot"></span>${stage.focus[0]}</div>
         <div><span class="home-task-dot"></span>${stage.focus[1] || 'Save one useful learning moment.'}</div>
       </div>
       <div class="home-due-footer">
-        <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
+        <span class="status-inline ${status.className}"><small>Progress</small>${status.icon} ${status.label}</span>
         <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
       </div>
     </section>
@@ -697,7 +697,7 @@ function todayPage(){
     ${upcoming.length?`<section class="home-card home-upcoming-card">
       <div class="home-card-heading compact">
         ${homeIcon('calendar')}
-        <div><span class="home-kicker">What’s coming</span><h2>Next milestones</h2></div>
+        <div><span class="home-kicker">What’s coming</span><h2>Future milestones</h2></div>
       </div>
       <div class="home-upcoming-list">
         ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
