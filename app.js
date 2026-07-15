@@ -749,70 +749,111 @@ function journalPage(){
 
 function assessmentPage(){
   const info=placementInfo(), h=hours(), stage=currentStage(info);
-  const assessmentItems=assessments.filter(a=>!["project","reflections","timesheets"].includes(a.id));
-  const projectItems=assessments.filter(a=>["project","reflections"].includes(a.id));
-  const assessmentCard=a=>{
-    const status=assessmentOverallStatus(a), meta=taskStatuses[status], progress=assessmentProgress(a);
-    const remaining=(a.tasks||[]).filter((_,i)=>getTaskStatus(a.id,i)!=="complete").length;
-    return `<button class="placement-assessment-card assessment" data-id="${a.id}">
-      <div class="placement-card-top">
-        <div><strong>${a.icon} ${a.title}</strong><span>${a.when}</span></div>
-        <span class="task-icon ${meta.className}">${meta.icon}</span>
+  const orderedAssessments=assessmentPriority(info,h)
+    .map(id=>assessments.find(item=>item.id===id))
+    .filter(Boolean);
+  const standardAssessments=orderedAssessments.filter(item=>!['project','reflections','timesheets'].includes(item.id));
+  const projectAssessments=orderedAssessments.filter(item=>['project','reflections'].includes(item.id));
+  const activeAssessments=standardAssessments.filter(item=>!assessmentIsComplete(item.id));
+  const completedAssessments=standardAssessments.filter(item=>assessmentIsComplete(item.id));
+  const activeProject=projectAssessments.filter(item=>!assessmentIsComplete(item.id));
+  const completedProject=projectAssessments.filter(item=>assessmentIsComplete(item.id));
+
+  const taskItems=orderedAssessments
+    .filter(item=>item.id!=='timesheets')
+    .flatMap(item=>(item.tasks||[]).map((task,index)=>({assessment:item,task,index,status:getTaskStatus(item.id,index)})));
+  const outstandingTasks=taskItems.filter(item=>item.status!=='complete');
+  const completedTasks=taskItems.filter(item=>item.status==='complete');
+
+  const assessmentCard=item=>{
+    const overall=assessmentOverallStatus(item);
+    const meta=taskStatuses[overall];
+    const progress=assessmentProgress(item);
+    const remaining=(item.tasks||[]).filter((_,index)=>getTaskStatus(item.id,index)!=='complete').length;
+    const evidence=assessmentCount(item.title);
+    return `<button class="placement-assessment-card assessment" data-id="${item.id}">
+      <div class="placement-assessment-topline">
+        <span class="placement-assessment-icon">${item.icon}</span>
+        <div class="placement-assessment-title">
+          <strong>${item.title}</strong>
+          <span>${item.when}</span>
+        </div>
+        <span class="placement-card-arrow">›</span>
       </div>
-      <div class="placement-card-meta">
-        <span>${meta.label}</span>
-        <span>${progress}% checklist progress</span>
-        <span>${remaining} ${remaining===1?"task":"tasks"} remaining</span>
+      <div class="placement-assessment-meta">
+        <span class="placement-status ${meta.className}">${meta.icon} ${meta.label}</span>
+        <span>${remaining} task${remaining===1?'':'s'} remaining</span>
+        ${evidence?`<span>${evidence} linked reflection${evidence===1?'':'s'}</span>`:''}
       </div>
-      <div class="placement-progress-track"><div style="width:${progress}%"></div></div>
+      <div class="placement-card-progress"><span style="width:${progress}%"></span></div>
+      <div class="placement-progress-label"><span>Progress</span><strong>${progress}%</strong></div>
     </button>`;
   };
-  const hoursProgress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
+
+  const taskRow=item=>{
+    const meta=taskStatuses[item.status];
+    return `<button class="placement-task-row assessment" data-id="${item.assessment.id}">
+      <span class="task-icon ${meta.className}">${meta.icon}</span>
+      <span class="placement-task-copy"><strong>${item.task}</strong><small>${item.assessment.title}</small></span>
+      <span>›</span>
+    </button>`;
+  };
+
   return `
-    <section class="welcome-block">
-      <div class="eyebrow">Placement</div>
+    <section class="welcome-block placement-workspace-intro">
+      <div class="eyebrow">Placement workspace</div>
       <h1>🌱 My Placement</h1>
-      <p class="welcome-text">Your placement workspace.</p>
+      <p class="welcome-text">Everything you need to complete placement, in one workspace.</p>
     </section>
 
-    <section class="clean-section placement-workspace-section">
+    <section class="clean-section placement-overview-section">
       <div class="section-title">Overview</div>
-      <div class="placement-overview-card">
-        <div><strong>Mind Australia</strong><span>Adult Step Up Step Down</span></div>
-        <div><strong>${info.started?`Week ${info.week}`:"Starts 20 July 2026"}</strong><span>${stage.title}</span></div>
+      <div class="placement-overview-grid">
+        <div class="placement-overview-item"><span>Organisation</span><strong>Mind Australia</strong></div>
+        <div class="placement-overview-item"><span>Placement week</span><strong>${info.started?`Week ${info.week}`:'Starts 20 July 2026'}</strong></div>
+        <div class="placement-overview-item placement-overview-wide"><span>Current stage</span><strong>${stage.title}</strong></div>
+      </div>
+      <div class="placement-hours-summary">
+        <div><span>Placement hours</span><strong>${h.toFixed(2)} / 500</strong></div>
+        <div class="placement-card-progress"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>
       </div>
     </section>
 
-    <section class="clean-section placement-workspace-section">
-      <div class="section-title">Tasks</div>
-      <p class="section-helper">Your current placement focus.</p>
-      <div class="placement-task-list">${stage.focus.map(x=>`<div class="focus-line">${x}</div>`).join("")}</div>
+    <section class="clean-section">
+      <div class="section-title-row"><div class="section-title">Tasks</div><span class="placement-count">${outstandingTasks.length} outstanding</span></div>
+      <p class="section-helper">Your active placement tasks. Open an item to update its checklist.</p>
+      <div class="placement-task-list">
+        ${outstandingTasks.length?outstandingTasks.map(taskRow).join(''):'<div class="placement-empty-state">All current placement tasks are complete.</div>'}
+      </div>
+      ${completedTasks.length?`<details class="placement-completed-group"><summary>Completed tasks (${completedTasks.length})</summary><div class="placement-task-list completed">${completedTasks.map(taskRow).join('')}</div></details>`:''}
     </section>
 
-    <section class="clean-section placement-workspace-section">
+    <section class="clean-section placement-assessments-section">
       <div class="section-title">Assessments</div>
-      <p class="section-helper">Open an assessment to update its checklist and review linked evidence.</p>
-      <div class="placement-assessment-list">${assessmentItems.map(assessmentCard).join("")}</div>
-    </section>
-
-    <section class="clean-section placement-workspace-section">
-      <div class="section-title">Supervision</div>
-      <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision workspace</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
-    </section>
-
-    <section class="clean-section placement-workspace-section">
-      <div class="section-title">Timesheets and hours</div>
-      <div class="placement-hours-card">
-        <div class="placement-hours-heading"><div><strong>${h.toFixed(2)} of ${TOTAL_HOURS} hours</strong><span>${hoursProgress}% complete</span></div><span>⏱️</span></div>
-        <div class="placement-progress-track"><div style="width:${hoursProgress}%"></div></div>
-        <button class="btn secondary" id="openTimesheets">Open timesheets</button>
+      <p class="section-helper">Current requirements appear first and update as checklist tasks are completed.</p>
+      <div class="placement-assessment-list">
+        ${activeAssessments.map(assessmentCard).join('')}
       </div>
+
+      <div class="placement-project-group">
+        <div class="placement-group-heading"><div><strong>Placement Project</strong><span>Small Project and Project Reflections</span></div></div>
+        <div class="placement-assessment-list">
+          ${activeProject.length?activeProject.map(assessmentCard).join(''):'<div class="placement-empty-state">Placement Project requirements are complete.</div>'}
+        </div>
+        ${completedProject.length?`<details class="placement-completed-group"><summary>Completed project assessments (${completedProject.length})</summary><div class="placement-assessment-list">${completedProject.map(assessmentCard).join('')}</div></details>`:''}
+      </div>
+
+      ${completedAssessments.length?`<details class="placement-completed-group"><summary>Completed assessments (${completedAssessments.length})</summary><div class="placement-assessment-list">${completedAssessments.map(assessmentCard).join('')}</div></details>`:''}
     </section>
 
-    <section class="clean-section placement-workspace-section">
-      <div class="section-title">Placement project</div>
-      <p class="section-helper">Keep the project work and its required reflections together.</p>
-      <div class="placement-assessment-list">${projectItems.map(assessmentCard).join("")}</div>
+    <section class="clean-section">
+      <div class="section-title">Supervision</div>
+      <button class="plain-row" id="openSupervision"><div><strong>☕ Open supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
+    </section>
+
+    <section class="clean-section">
+      <div class="section-title">Timesheets &amp; Hours</div>
+      <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Open timesheets</strong><span>Daily hours, activities and submissions</span></div><span>›</span></button>
     </section>`;
 }
 
@@ -824,22 +865,6 @@ function assessmentDetail(id){
   const overallMeta=taskStatuses[overall];
   const progress=assessmentProgress(a);
   const toolkitLinks=(a.toolkit||[]);
-  const taskRows=(a.tasks||[]).map((task,i)=>({task,i,status:getTaskStatus(a.id,i)}));
-  const activeTasks=taskRows.filter(item=>item.status!=="complete");
-  const completedTasks=taskRows.filter(item=>item.status==="complete");
-  const renderTaskRow=({task,i,status})=>{
-    const meta=taskStatuses[status];
-    return `<div class="task-row ${status==="complete"?"task-row-complete":""}">
-      <div class="task-copy">
-        <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${i}" ${status==="complete"?"checked":""} aria-label="Mark ${task} complete">
-        <span class="task-icon ${meta.className}">${meta.icon}</span>
-        <span>${task}</span>
-      </div>
-      <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${i}">
-        ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===status?"selected":""}>${m.label}</option>`).join("")}
-      </select>
-    </div>`;
-  };
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title">
@@ -870,11 +895,19 @@ function assessmentDetail(id){
     <details class="card assessment-panel" open>
       <summary><strong>My checklist</strong></summary>
       <p class="muted">Update each item as it moves through placement.</p>
-      ${activeTasks.length?activeTasks.map(renderTaskRow).join(""):`<p class="muted">All checklist tasks are complete.</p>`}
-      ${completedTasks.length?`<details class="completed-task-file">
-        <summary>Filed as complete (${completedTasks.length})</summary>
-        <div class="completed-task-list">${completedTasks.map(renderTaskRow).join("")}</div>
-      </details>`:""}
+      ${(a.tasks||[]).map((task,i)=>{
+        const status=getTaskStatus(a.id,i), meta=taskStatuses[status];
+        return `<div class="task-row ${status==="complete"?"task-row-complete":""}">
+          <div class="task-copy">
+            <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${i}" ${status==="complete"?"checked":""} aria-label="Mark ${task} complete">
+            <span class="task-icon ${meta.className}">${meta.icon}</span>
+            <span>${task}</span>
+          </div>
+          <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${i}">
+            ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===status?"selected":""}>${m.label}</option>`).join("")}
+          </select>
+        </div>`;
+      }).join("")}
     </details>
 
     ${reqs.length?`<details class="card assessment-panel">

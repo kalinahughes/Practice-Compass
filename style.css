@@ -1101,47 +1101,44 @@ h1,h2,h3,
 }
 
 /* Sprint 3: My Placement workspace */
-.placement-workspace-section{margin-bottom:28px}
-.placement-overview-card,
-.placement-hours-card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:18px;
-  box-shadow:var(--shadow);
-}
-.placement-overview-card{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.placement-overview-card div{display:flex;flex-direction:column;gap:5px}
-.placement-overview-card strong{color:var(--charcoal);font-size:17px}
-.placement-overview-card span,
-.placement-hours-heading span{color:var(--muted);font-size:13px;line-height:1.45}
-.placement-task-list{background:#fff;border:1px solid var(--line);border-radius:22px;padding:6px 17px;box-shadow:var(--shadow)}
-.placement-assessment-list{display:flex;flex-direction:column;gap:12px}
-.placement-assessment-card{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:#fff;
-  padding:17px;
-  text-align:left;
-  color:var(--charcoal);
-  box-shadow:var(--shadow);
-}
-.placement-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-.placement-card-top>div{display:flex;flex-direction:column;gap:5px}
-.placement-card-top strong{font-size:17px;color:var(--charcoal)}
-.placement-card-top span{font-size:13px;color:var(--muted);line-height:1.4}
-.placement-card-meta{display:flex;flex-wrap:wrap;gap:7px 12px;margin-top:13px;color:var(--muted);font-size:12px;font-weight:700}
-.placement-progress-track{height:7px;background:var(--stone-soft);border-radius:999px;overflow:hidden;margin-top:12px}
-.placement-progress-track>div{height:100%;background:var(--eucalyptus-deep);border-radius:inherit}
-.placement-hours-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.placement-hours-heading>div{display:flex;flex-direction:column;gap:5px}
-.placement-hours-heading strong{font-size:20px;color:var(--charcoal)}
-.placement-hours-heading>span{font-size:25px}
-.placement-hours-card .btn{margin-top:16px;width:100%}
-.completed-task-file{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
-.completed-task-file>summary{font-size:14px!important;color:var(--muted)!important;font-weight:800;cursor:pointer}
-.completed-task-file>summary::after{content:"⌄";float:right}
-.completed-task-file[open]>summary::after{content:"⌃"}
-.completed-task-list{margin-top:8px}
-@media(max-width:390px){.placement-overview-card{grid-template-columns:1fr}}
+.placement-workspace-intro{margin-bottom:4px}
+.placement-overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.placement-overview-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:5px}
+.placement-overview-item span,.placement-hours-summary span{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.02em}
+.placement-overview-item strong{color:var(--text);line-height:1.3}
+.placement-overview-wide{grid-column:1/-1}
+.placement-hours-summary{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.placement-hours-summary>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.placement-hours-summary strong{color:var(--text)}
+.section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.placement-count{font-size:12px;color:var(--muted);font-weight:700}
+.placement-task-list,.placement-assessment-list{display:flex;flex-direction:column;gap:10px}
+.placement-task-row{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:10px;text-align:left;color:var(--text)}
+.placement-task-row>span:last-child{margin-left:auto;color:var(--muted);font-size:22px}
+.placement-task-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.placement-task-copy strong{font-size:14px;line-height:1.35}
+.placement-task-copy small{color:var(--muted)}
+.placement-task-list.completed .placement-task-row{opacity:.72}
+.placement-assessment-card{width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;text-align:left;color:var(--text)}
+.placement-assessment-topline{display:flex;align-items:flex-start;gap:10px}
+.placement-assessment-icon{font-size:20px;line-height:1.2}
+.placement-assessment-title{display:flex;flex-direction:column;gap:3px;flex:1}
+.placement-assessment-title strong{font-size:15px;line-height:1.35}
+.placement-assessment-title span{font-size:12px;color:var(--muted)}
+.placement-card-arrow{font-size:22px;color:var(--muted);line-height:1}
+.placement-assessment-meta{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 10px;font-size:11px;color:var(--muted)}
+.placement-assessment-meta>span{background:var(--stone-soft);border-radius:999px;padding:5px 8px}
+.placement-assessment-meta .placement-status{font-weight:700}
+.placement-card-progress{height:8px;border-radius:999px;background:#e9ece8;overflow:hidden}
+.placement-card-progress span{display:block;height:100%;border-radius:inherit;background:var(--eucalyptus-deep)}
+.placement-progress-label{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--muted)}
+.placement-progress-label strong{color:var(--text)}
+.placement-completed-group{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.placement-completed-group summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700;padding:5px 0 10px}
+.placement-project-group{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.placement-group-heading{margin-bottom:10px}
+.placement-group-heading div{display:flex;flex-direction:column;gap:3px}
+.placement-group-heading strong{color:var(--text)}
+.placement-group-heading span{font-size:12px;color:var(--muted)}
+.placement-empty-state{background:#fff;border:1px dashed var(--line);border-radius:14px;padding:16px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:420px){.placement-overview-grid{grid-template-columns:1fr}.placement-overview-wide{grid-column:auto}.placement-hours-summary>div:first-child{align-items:flex-start;flex-direction:column;gap:4px}}
