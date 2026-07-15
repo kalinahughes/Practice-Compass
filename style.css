@@ -23,7 +23,7 @@
 *{box-sizing:border-box}
 html,body{
   margin:0;
-  background:#f4f5f2;
+  background:#eee8df;
   color:var(--charcoal);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
 }
@@ -1100,22 +1100,48 @@ h1,h2,h3,
   background:#dce7dc;
 }
 
-
-/* Sprint 2: Home cognitive load final alignment */
-.home-card-copy{
-  display:grid;
-  gap:4px;
+/* Sprint 3: My Placement workspace */
+.placement-workspace-section{margin-bottom:28px}
+.placement-overview-card,
+.placement-hours-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
+  box-shadow:var(--shadow);
 }
-.home-card-copy span,
-.home-due-card .status-inline small{
-  display:block;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.68);
+.placement-overview-card{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.placement-overview-card div{display:flex;flex-direction:column;gap:5px}
+.placement-overview-card strong{color:var(--charcoal);font-size:17px}
+.placement-overview-card span,
+.placement-hours-heading span{color:var(--muted);font-size:13px;line-height:1.45}
+.placement-task-list{background:#fff;border:1px solid var(--line);border-radius:22px;padding:6px 17px;box-shadow:var(--shadow)}
+.placement-assessment-list{display:flex;flex-direction:column;gap:12px}
+.placement-assessment-card{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#fff;
+  padding:17px;
+  text-align:left;
+  color:var(--charcoal);
+  box-shadow:var(--shadow);
 }
-.home-due-card .status-inline{
-  display:grid;
-  gap:3px;
-}
+.placement-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.placement-card-top>div{display:flex;flex-direction:column;gap:5px}
+.placement-card-top strong{font-size:17px;color:var(--charcoal)}
+.placement-card-top span{font-size:13px;color:var(--muted);line-height:1.4}
+.placement-card-meta{display:flex;flex-wrap:wrap;gap:7px 12px;margin-top:13px;color:var(--muted);font-size:12px;font-weight:700}
+.placement-progress-track{height:7px;background:var(--stone-soft);border-radius:999px;overflow:hidden;margin-top:12px}
+.placement-progress-track>div{height:100%;background:var(--eucalyptus-deep);border-radius:inherit}
+.placement-hours-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.placement-hours-heading>div{display:flex;flex-direction:column;gap:5px}
+.placement-hours-heading strong{font-size:20px;color:var(--charcoal)}
+.placement-hours-heading>span{font-size:25px}
+.placement-hours-card .btn{margin-top:16px;width:100%}
+.completed-task-file{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.completed-task-file>summary{font-size:14px!important;color:var(--muted)!important;font-weight:800;cursor:pointer}
+.completed-task-file>summary::after{content:"⌄";float:right}
+.completed-task-file[open]>summary::after{content:"⌃"}
+.completed-task-list{margin-top:8px}
+@media(max-width:390px){.placement-overview-card{grid-template-columns:1fr}}
