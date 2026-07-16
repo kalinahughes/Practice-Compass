@@ -802,15 +802,16 @@ function assessmentPage(){
     const status=assessmentOverallStatus(a);
     const meta=taskStatuses[status];
     const progress=assessmentProgress(a);
-    return `<article class="assessment-workspace-row">
-      <button class="assessment-workspace-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
-        <span class="assessment-workspace-icon">${a.icon}</span>
-        <span class="assessment-workspace-copy">
-          <span class="assessment-workspace-title">${a.title}</span>
-          <span class="assessment-workspace-meta"><span class="status-inline ${meta.className}">${meta.label}</span><span>${progress}%</span></span>
-          <span class="assessment-workspace-track"><i style="width:${progress}%"></i></span>
+    return `<article class="assessment-list-item">
+      <button class="assessment-list-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
+        <span class="assessment-list-icon" aria-hidden="true">${a.icon}</span>
+        <span class="assessment-list-main">
+          <span class="assessment-list-title">${a.title}</span>
+          <span class="assessment-list-status status-inline ${meta.className}">${meta.label}</span>
+          <span class="assessment-list-progress" aria-label="${progress}% complete"><i style="width:${progress}%"></i></span>
         </span>
-        <span class="assessment-workspace-link">Open assessment <b>›</b></span>
+        <span class="assessment-list-percent">${progress}%</span>
+        <span class="assessment-list-chevron" aria-hidden="true">›</span>
       </button>
     </article>`;
   };
@@ -820,11 +821,10 @@ function assessmentPage(){
 
   return `
     <div class="placement-workspace placement-one-purpose">
-      <section class="welcome-block placement-heading">
-        <div class="eyebrow">Placement</div>
-        <h1>🌱 My Placement</h1>
-        <p class="welcome-text">Open an assessment to continue your work.</p>
-      </section>
+      <header class="placement-page-header">
+        <span class="eyebrow">Placement workspace</span>
+        <h1>My Placement</h1>
+      </header>
 
       <section class="placement-overview-card placement-overview-quiet">
         <div class="placement-overview-grid">
@@ -838,9 +838,9 @@ function assessmentPage(){
 
       <section class="placement-section placement-assessments-one-purpose">
         <div class="placement-section-heading"><div><h2>Assessments</h2></div></div>
-        <div class="assessment-workspace-list">${standardAssessments.map(assessmentRow).join("")}</div>
-        ${projectAssessments.length?`<div class="placement-project-simple"><h3>Placement project</h3><div class="assessment-workspace-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
-        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-workspace-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
+        <div class="assessment-list">${standardAssessments.map(assessmentRow).join("")}</div>
+        ${projectAssessments.length?`<div class="placement-project-simple"><h3>Placement project</h3><div class="assessment-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
+        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
       </section>
 
       <section class="placement-section placement-admin-section placement-admin-quiet">
@@ -896,13 +896,18 @@ function assessmentDetail(id,openPlanning=false){
     <div class="assessment-detail-calm assessment-detail-readable">
       <button class="assessment-back-link" id="backAssess" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
 
-      <section class="assessment-hero-readable">
-        <div class="assessment-hero-icon">${a.icon}</div>
-        <div class="assessment-hero-copy">
-          <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
-          <h2>${a.title}</h2>
+      <section class="assessment-detail-header">
+        <div class="assessment-detail-title-row">
+          <span class="assessment-detail-icon" aria-hidden="true">${a.icon}</span>
+          <div>
+            <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
+            <h2>${a.title}</h2>
+          </div>
         </div>
-        <strong class="assessment-hero-percent">${progress}%</strong>
+        <div class="assessment-detail-progress-row">
+          <span>Progress</span>
+          <strong>${progress}%</strong>
+        </div>
         <div class="progress-track"><div style="width:${progress}%"></div></div>
       </section>
 
