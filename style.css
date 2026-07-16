@@ -1380,3 +1380,190 @@ h1,h2,h3,
   .journey-growth-summary,.journey-opportunities,.journey-framework-card{margin-bottom:12px}
   .journey-utility-row,.journey-utility-details summary{padding:13px 0}
 }
+
+/* Sprint 6.1: calm visual simplification */
+.placement-workspace,
+.journey-page{
+  margin:-22px -20px -34px;
+  padding:22px 20px 34px;
+  background:#fbfcfa;
+  color:var(--charcoal);
+}
+.placement-workspace .eyebrow,
+.journey-page .eyebrow{color:#687269}
+.placement-workspace h1,
+.placement-workspace h2,
+.journey-page h1,
+.journey-page h2{color:var(--charcoal)}
+.placement-heading{padding-bottom:18px}
+.placement-overview-card,
+.placement-section{
+  background:#fff;
+  border-color:#e8ebe7;
+  box-shadow:none;
+}
+.placement-focus-card{
+  padding:21px;
+  box-shadow:0 10px 24px rgba(47,79,59,.12);
+}
+.placement-focus-card h2{margin-bottom:14px;font-size:22px}
+.placement-next-label{
+  margin-bottom:5px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0;
+  text-transform:none;
+}
+.placement-focus-action{padding:8px 0;font-weight:450}
+.placement-all-tasks summary{font-weight:650}
+.placement-section-heading{margin-bottom:12px}
+.placement-section-heading h2{font-size:20px;font-weight:650}
+.placement-assessment-list{gap:10px}
+.placement-assessment-card{
+  padding:16px;
+  border:0;
+  border-bottom:1px solid #e8ebe7;
+  border-radius:0;
+  box-shadow:none;
+}
+.placement-assessment-card:first-child{border-top:1px solid #e8ebe7}
+.placement-assessment-top{align-items:center}
+.placement-assessment-top>strong{
+  color:var(--charcoal);
+  font-size:16px;
+  font-weight:650;
+  line-height:1.4;
+}
+.placement-assessment-card .status-inline{font-weight:600}
+.placement-progress-track{margin:12px 0 7px}
+.placement-assessment-meta{color:var(--muted)}
+.placement-next-line{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:8px;
+  margin-top:11px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+.placement-next-line span{font-weight:500}
+.placement-next-line strong{color:var(--charcoal);font-weight:550}
+.placement-card-timing{
+  margin-top:9px;
+  padding-top:0;
+  border-top:0;
+}
+.placement-card-timing span{color:var(--muted)}
+.placement-card-timing strong{color:var(--charcoal);font-weight:550}
+.placement-card-actions{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:11px;
+}
+.placement-open-link,
+.assessment-plan-edit{
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#315f4c;
+  font-size:13px;
+  font-weight:650;
+  text-decoration:none;
+}
+.assessment-plan-edit{color:var(--muted)}
+.placement-project-group{margin-top:24px}
+.placement-project-title span{font-weight:650}
+
+.journey-welcome{padding-bottom:22px}
+.journey-welcome .welcome-text{max-width:40ch;font-size:16px}
+.journey-section-block{margin:0 0 30px}
+.journey-section-block>h2,
+.journey-app-heading>h2{
+  margin:0 0 12px;
+  font-size:20px;
+  font-weight:650;
+  color:var(--charcoal);
+}
+.journey-growth-panel,
+.journey-support-panel,
+.journey-framework-panel{
+  background:#fff;
+  border:0;
+  border-radius:18px;
+  box-shadow:none;
+}
+.journey-growth-panel{padding:8px 0}
+.journey-support-panel{padding:16px;background:#e7efe5}
+.journey-support-panel p{margin:10px 0 0;color:#5f6b63;font-size:13px}
+.framework-growth-chips{gap:0;margin:0}
+.framework-growth-chips span{
+  padding:11px 2px;
+  border-radius:0;
+  border-bottom:1px solid #e8ebe7;
+  background:transparent;
+  color:var(--charcoal);
+  font-weight:550;
+}
+.framework-growth-chips span:last-child{border-bottom:0}
+.framework-opportunity-list{margin:0;gap:7px}
+.framework-opportunity-list span{
+  background:rgba(255,255,255,.66);
+  color:var(--charcoal);
+  font-weight:550;
+}
+.journey-framework-panel{padding:0 2px}
+.journey-framework-summary{margin:0;border-top:0}
+.journey-framework-row{padding:12px 0}
+.journey-framework-row span{font-weight:450}
+.journey-framework-row strong{font-weight:650}
+.journey-text-action{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 0;
+  border:0;
+  background:transparent;
+  color:#315f4c;
+  text-align:left;
+  font-weight:650;
+}
+.journey-empty-message{
+  padding:16px 0;
+  border-top:1px solid #e8ebe7;
+  border-bottom:1px solid #e8ebe7;
+  color:var(--muted);
+  line-height:1.55;
+}
+.journey-app-section{
+  margin-top:34px;
+  padding-top:22px;
+  border-top:1px solid #dfe4de;
+}
+.journey-app-heading p{margin:0 0 8px}
+.journey-utility-row strong,
+.journey-utility-details strong{font-weight:600}
+
+.framework-development{
+  border:0;
+  box-shadow:none;
+}
+.framework-growth-group{padding:16px 0}
+.framework-evidence-list{gap:0}
+.framework-evidence-item{
+  border:0;
+  border-bottom:1px solid #e8ebe7;
+  border-radius:0;
+}
+.framework-evidence-item summary{padding:12px 0}
+.framework-evidence-item summary span:first-child{font-weight:600}
+.framework-evidence-body{padding:0 0 12px;border-top:0}
+.framework-evidence-body>strong{text-transform:none;letter-spacing:0;font-weight:600}
+
+@media(max-width:390px){
+  .placement-workspace,.journey-page{margin:-22px -20px -34px;padding:22px 20px 34px}
+  .placement-assessment-top{align-items:flex-start;flex-direction:column}
+  .placement-card-actions{justify-content:space-between}
+}

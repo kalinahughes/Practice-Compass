@@ -817,19 +817,18 @@ function assessmentPage(){
     const nextAction=nextIndex>=0?a.tasks[nextIndex]:"Review the official completion and submission requirements";
     const planning=assessmentPlanning(a.id);
     return `<article class="placement-assessment-card">
-      <button class="placement-assessment-open assessment" data-id="${a.id}">
-        <div class="placement-assessment-top">
-          <div><span class="placement-assessment-icon">${a.icon}</span><strong>${a.title}</strong></div>
-          <span class="status-inline ${meta.className}">${meta.icon} ${meta.label}</span>
-        </div>
-        <div class="placement-progress-track"><span style="width:${progress}%"></span></div>
-        <div class="placement-assessment-meta">
-          <span>${progress}% complete</span>
-        </div>
-        <div class="placement-next-step"><span>Next action</span><strong>${nextAction}</strong></div>
-        <div class="placement-card-timing"><span><strong>Official timing</strong>${a.when}</span>${planning.date?`<span><strong>My target date</strong>${formatPlanningDate(planning.date)}</span>`:""}</div>
-      </button>
-      <button class="assessment-plan-edit" data-id="${a.id}">Edit plan</button>
+      <div class="placement-assessment-top">
+        <strong>${a.title}</strong>
+        <span class="status-inline ${meta.className}">${meta.icon} ${meta.label}</span>
+      </div>
+      <div class="placement-progress-track"><span style="width:${progress}%"></span></div>
+      <div class="placement-assessment-meta"><span>${progress}% complete</span></div>
+      <div class="placement-next-line"><span>Next</span><strong>${nextAction}</strong></div>
+      <div class="placement-card-timing"><span><strong>${planning.date?"My target":"Official timing"}</strong>${planning.date?formatPlanningDate(planning.date):a.when}</span></div>
+      <div class="placement-card-actions">
+        <button class="placement-open-link assessment" data-id="${a.id}">Open assessment</button>
+        <button class="assessment-plan-edit" data-id="${a.id}">Edit plan</button>
+      </div>
     </article>`;
   };
 
@@ -1134,30 +1133,41 @@ function morePage(){
     return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
   }).join("");
 
-  return `
+  return `<div class="journey-page">
     <section class="welcome-block journey-welcome">
       <div class="eyebrow">My Journey</div>
       <h1>💚 Professional Growth</h1>
-      <p class="welcome-text">A calm view of how your practice identity is developing through the evidence you already capture.</p>
+      <p class="welcome-text">See how your professional identity is developing through the evidence you already capture.</p>
     </section>
 
-    ${growth.length?`<section class="card framework-growth-summary journey-growth-summary"><div class="label">You’re demonstrating</div><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></section>`:`<section class="card journey-empty-growth"><div class="label">Your professional growth will appear here</div><p>Save reflections and select what they demonstrate. Practice Compass will reuse that evidence here without asking you to enter it again.</p></section>`}
+    <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
+      <h2 id="growthSummaryHeading">Growth Summary</h2>
+      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">Your professional growth will appear as reflection evidence is added.</div>`}
+    </section>
 
-    ${opportunities.length?`<section class="card sage framework-opportunities journey-opportunities"><div class="label">Opportunities to strengthen</div><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p class="muted">Gentle prompts for future learning, not missing requirements.</p></section>`:""}
+    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to Strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
 
-    <section class="card journey-framework-card">
-      <div class="journey-section-heading"><div><div class="label">My Practice Framework</div><p>Built from your reflections and linked evidence.</p></div></div>
-      <div class="journey-framework-summary">${groupSummary}</div>
-      <button class="btn secondary journey-framework-button" id="frameworkMenu">View my developing framework</button>
+    <section class="journey-section-block" aria-labelledby="frameworkHeading">
+      <h2 id="frameworkHeading">My Practice Framework</h2>
+      <div class="journey-framework-panel">
+        <div class="journey-framework-summary">${groupSummary}</div>
+        <button class="journey-text-action" id="frameworkMenu">View my developing framework <span>›</span></button>
+      </div>
+    </section>
+
+    <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
+      <h2 id="professionalDevelopmentHeading">Professional Development</h2>
+      <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
     </section>
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
-      <div class="journey-app-heading"><div class="label" id="journeyAppHeading">App</div><p>Utilities kept separate from your professional journey.</p></div>
+      <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
       <button class="journey-utility-row" id="exportHtml"><span><strong>Export Data</strong><small>Create a readable placement record</small></span><span>›</span></button>
       <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
       <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
       <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
-    </section>`;
+    </section>
+  </div>`;
 }
 
 function evidenceMapPage(){
@@ -1523,6 +1533,7 @@ function bind(){
   });
   
     document.getElementById("frameworkMenu")?.addEventListener("click",()=>frameworkPage());
+    document.getElementById("professionalDevelopmentMenu")?.addEventListener("click",()=>frameworkPage());
     document.getElementById("evidenceBank")?.addEventListener("click",()=>evidenceBankPage());
   document.getElementById("weeklyReview")?.addEventListener("click",()=>weeklyReviewPage());
   document.getElementById("myJourney")?.addEventListener("click",myJourneyPage);
