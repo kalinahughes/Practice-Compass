@@ -1115,28 +1115,50 @@ function toolkitDetail(categoryIndex,topicIndex){
 }
 
 function morePage(){
+  const intelligence=practiceFrameworkIntelligence();
+  const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
+  const evidencedItems=allItems.filter(item=>item.evidence.length);
+  const growth=evidencedItems.slice(0,4);
+  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
+  const opportunityRules=[
+    {label:"Ethical decision making",tags:["Ethics or values"]},
+    {label:"Cultural capability",tags:["Cultural capability"]},
+    {label:"Interprofessional collaboration",tags:["Teamwork"]},
+    {label:"Use of self",tags:["Use of self"]},
+    {label:"Theory informed practice",tags:["Theory in action"]}
+  ];
+  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
+  const groupLabels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
+  const groupSummary=Object.entries(intelligence.groups).map(([key,map])=>{
+    const supported=[...map.values()].filter(item=>item.evidence.length).length;
+    return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
+  }).join("");
+
   return `
-    <section class="welcome-block">
+    <section class="welcome-block journey-welcome">
       <div class="eyebrow">My Journey</div>
-      <h1>💚 My Journey</h1>
-      <p class="welcome-text">Your wellbeing, growth and developing professional identity.</p>
+      <h1>💚 Professional Growth</h1>
+      <p class="welcome-text">A calm view of how your practice identity is developing through the evidence you already capture.</p>
     </section>
 
-    <section class="clean-section">
-      <button class="plain-row" id="frameworkMenu"><div><strong>🧭 My Framework for Practice</strong><span>Values, approaches, skills and professional identity</span></div><span>›</span></button>
-      <button class="plain-row" id="weeklyReview"><div><strong>☕ Weekly check in</strong><span>Pause and notice how the week felt</span></div><span>›</span></button>
-      <button class="plain-row" id="wellbeing"><div><strong>💚 Looking after me</strong><span>Gentle reminders without pressure</span></div><span>›</span></button>
-      <button class="plain-row" id="evidenceBank"><div><strong>🌱 My growth</strong><span>Learning moments across placement</span></div><span>›</span></button>
-      <button class="plain-row" id="exportHtml"><div><strong>📄 Export my notes</strong><span>Readable placement record</span></div><span>›</span></button>
-      <button class="plain-row" id="backupJson"><div><strong>💾 Back up my data</strong><span>Private JSON backup</span></div><span>›</span></button>
+    ${growth.length?`<section class="card framework-growth-summary journey-growth-summary"><div class="label">You’re demonstrating</div><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></section>`:`<section class="card journey-empty-growth"><div class="label">Your professional growth will appear here</div><p>Save reflections and select what they demonstrate. Practice Compass will reuse that evidence here without asking you to enter it again.</p></section>`}
+
+    ${opportunities.length?`<section class="card sage framework-opportunities journey-opportunities"><div class="label">Opportunities to strengthen</div><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p class="muted">Gentle prompts for future learning, not missing requirements.</p></section>`:""}
+
+    <section class="card journey-framework-card">
+      <div class="journey-section-heading"><div><div class="label">My Practice Framework</div><p>Built from your reflections and linked evidence.</p></div></div>
+      <div class="journey-framework-summary">${groupSummary}</div>
+      <button class="btn secondary journey-framework-button" id="frameworkMenu">View my developing framework</button>
     </section>
 
-    <div class="card about-card">
-      <div class="label">🧭 Why Practice Compass?</div>
-      <p>It helps you understand what you are working towards, save what you are learning and connect those moments to placement requirements.</p>
-    </div>`;
+    <section class="journey-app-section" aria-labelledby="journeyAppHeading">
+      <div class="journey-app-heading"><div class="label" id="journeyAppHeading">App</div><p>Utilities kept separate from your professional journey.</p></div>
+      <button class="journey-utility-row" id="exportHtml"><span><strong>Export Data</strong><small>Create a readable placement record</small></span><span>›</span></button>
+      <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
+      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
+      <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
+    </section>`;
 }
-
 
 function evidenceMapPage(){
   const entries=savedEntries();
