@@ -1683,3 +1683,114 @@ h1,h2,h3,
   .assessment-detail-calm .task-row{align-items:flex-start;gap:8px}
   .assessment-detail-calm .task-status-select{max-width:94px}
 }
+
+/* Sprint 7.1: decisive readability and action-first hierarchy */
+:root{
+  --charcoal:#252a26;
+  --muted:#667069;
+  --line:#e2e6e1;
+}
+html,body{background:#f4f4ef;color:var(--charcoal)}
+#app{background:#fbfbf7}
+.placement-workspace-calm{background:#fbfbf7;color:var(--charcoal)}
+.placement-workspace-calm .placement-heading h1{color:var(--charcoal);font-size:32px;letter-spacing:-.03em}
+.placement-workspace-calm .placement-heading .welcome-text{color:#59635c;font-size:17px;line-height:1.5}
+.placement-overview-quiet{padding:18px 0 20px;border:0;border-radius:0;background:transparent;box-shadow:none}
+.placement-overview-quiet .placement-overview-grid{grid-template-columns:1fr 1fr;gap:18px 28px}
+.placement-overview-quiet .placement-overview-grid span{display:block;margin-bottom:5px;color:#737b75;font-size:13px}
+.placement-overview-quiet .placement-overview-grid strong{color:var(--charcoal);font-size:17px;font-weight:650;line-height:1.3}
+.placement-overview-quiet .placement-hours-track{height:8px;margin-top:18px;background:#e4e8e3}
+.placement-focus-calm{padding:22px 20px;border:0;border-radius:20px;background:#294f3d;box-shadow:0 10px 24px rgba(41,79,61,.13)}
+.placement-focus-kicker{font-size:13px;font-weight:500;letter-spacing:0;text-transform:none}
+.placement-focus-calm h2{font-size:25px;font-weight:650;line-height:1.25}
+.placement-focus-calm .placement-focus-action{gap:12px;padding:12px 0;color:#fff;font-size:16px;line-height:1.4;text-align:left}
+.placement-focus-calm .placement-focus-action span:first-child{font-size:20px;opacity:.9}
+.placement-focus-calm .placement-all-tasks summary{padding-top:12px;color:#fff;font-size:14px;font-weight:550}
+.placement-assessments-calm,.placement-admin-quiet{padding:24px 18px;border-radius:20px;box-shadow:0 4px 16px rgba(37,42,38,.045)}
+.placement-assessments-calm .placement-section-heading h2,.placement-admin-quiet .placement-section-heading h2{font-size:23px;font-weight:650;color:var(--charcoal)}
+.assessment-list-clean{border-top:0}
+.assessment-list-row{
+  grid-template-columns:46px minmax(0,1fr) 20px;
+  gap:14px;
+  padding:19px 0;
+  border:0;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  text-align:left
+}
+.assessment-list-row:last-child{border-bottom:0}
+.assessment-list-icon{width:46px;height:46px;background:#e7eee8;color:#294f3d;font-size:22px}
+.assessment-list-main{gap:7px}
+.assessment-list-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.assessment-list-title{color:var(--charcoal);font-size:19px;font-weight:680;line-height:1.25}
+.assessment-list-head .status-inline{flex:none;margin-top:1px;padding:5px 8px;font-size:11px;font-weight:600}
+.assessment-list-timing{color:#59635c;font-size:14px;line-height:1.35}
+.assessment-list-next{display:flex;flex-direction:column;gap:2px;margin-top:3px;color:#333a35;font-size:15px;line-height:1.4;white-space:normal}
+.assessment-list-next small{color:#768078;font-size:12px;font-weight:500}
+.assessment-list-progress{gap:10px;margin-top:7px}
+.assessment-list-progress>span{height:7px;background:#e4e8e3}
+.assessment-list-progress strong{min-width:38px;color:#3b463f;font-size:13px;font-weight:600;text-align:right}
+.assessment-list-arrow{align-self:center;color:#536159;font-size:28px}
+.placement-project-quiet{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.placement-project-quiet .placement-project-title span{font-size:17px;font-weight:650;color:var(--charcoal)}
+.placement-admin-quiet .plain-row{padding:17px 0}
+.placement-admin-quiet .plain-row strong{color:var(--charcoal);font-size:17px;font-weight:620}
+.placement-admin-quiet .plain-row span{font-size:14px;line-height:1.4}
+
+.assessment-detail-readable{color:var(--charcoal)}
+.assessment-back-link{display:inline-flex;align-items:center;gap:7px;margin:0 0 16px;padding:6px 0;border:0;background:transparent;color:#315f4c;font-size:15px;font-weight:600}
+.assessment-back-link:first-letter{font-size:25px}
+.assessment-hero-readable{
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) auto;
+  gap:14px;
+  margin:0 0 30px;
+  padding:22px;
+  border-radius:22px;
+  background:#294f3d;
+  color:#fff;
+  box-shadow:0 12px 28px rgba(41,79,61,.14)
+}
+.assessment-hero-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.14);font-size:25px}
+.assessment-hero-copy{min-width:0}
+.assessment-hero-copy .status-inline{display:inline-block;margin-bottom:7px;background:#dce9dc;color:#264535;font-size:11px;font-weight:650}
+.assessment-hero-copy h2{margin:0;color:#fff;font-size:25px;font-weight:680;line-height:1.2;letter-spacing:-.015em}
+.assessment-hero-copy p{margin:6px 0 0;color:rgba(255,255,255,.82);font-size:14px;line-height:1.35}
+.assessment-hero-percent{align-self:start;color:#fff;font-size:21px;font-weight:650}
+.assessment-hero-readable .progress-track{grid-column:1/-1;height:8px;margin:3px 0 0;background:rgba(255,255,255,.18)}
+.assessment-hero-readable .progress-track div{background:#dfe9d8}
+.assessment-hero-readable .assessment-hero-counts{grid-column:1/-1;margin-top:0;color:rgba(255,255,255,.78);font-size:13px}
+.assessment-primary-section{margin-bottom:30px;padding:0}
+.assessment-primary-heading{margin-bottom:12px}
+.assessment-primary-heading h3{color:var(--charcoal);font-size:22px;font-weight:650}
+.assessment-primary-heading>span{font-size:13px}
+.assessment-detail-calm .assessment-priority-steps{border-top:0}
+.assessment-detail-calm .task-row{align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.assessment-detail-calm .task-copy{gap:12px;color:#303632;font-size:16px;line-height:1.45}
+.assessment-detail-calm .task-complete-check{width:22px;height:22px;flex:none}
+.assessment-detail-calm .task-status-select{max-width:112px;padding:7px 8px;color:#354039;font-size:12px}
+.assessment-detail-calm .assessment-all-steps summary{padding:13px 0;font-size:15px}
+.assessment-complete-message{padding:18px 0;color:#4e5a52;font-size:16px;line-height:1.5}
+.assessment-linked-evidence{border-top:0}
+.evidence-list-row{padding:15px 0;border-bottom:1px solid var(--line)}
+.evidence-list-row>span{font-size:22px}
+.evidence-list-row strong{color:var(--charcoal);font-size:16px;font-weight:620}
+.evidence-list-row small{margin-top:4px;color:#667069;font-size:14px;line-height:1.45}
+.assessment-secondary-details{border-top:1px solid var(--line)}
+.assessment-secondary-details>summary{padding:18px 0}
+.assessment-secondary-details>summary span{color:#313732;font-size:16px;font-weight:600}
+.assessment-secondary-details>summary small{font-size:13px}
+.assessment-secondary-content p{color:#414943;font-size:15px;line-height:1.6}
+
+@media(max-width:420px){
+  .placement-workspace-calm .placement-heading h1{font-size:30px}
+  .assessment-list-row{grid-template-columns:42px minmax(0,1fr) 18px;gap:12px}
+  .assessment-list-icon{width:42px;height:42px;font-size:20px}
+  .assessment-list-head{display:block}
+  .assessment-list-head .status-inline{display:inline-block;margin-top:7px}
+  .assessment-hero-readable{grid-template-columns:46px minmax(0,1fr) auto;padding:19px}
+  .assessment-hero-icon{width:46px;height:46px}
+  .assessment-hero-copy h2{font-size:22px}
+  .assessment-detail-calm .task-row{align-items:flex-start;flex-direction:column}
+  .assessment-detail-calm .task-status-select{margin-left:34px;max-width:130px}
+}

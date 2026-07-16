@@ -819,12 +819,15 @@ function assessmentPage(){
     return `<button class="assessment-list-row assessment" data-id="${a.id}">
       <span class="assessment-list-icon">${a.icon}</span>
       <span class="assessment-list-main">
-        <span class="assessment-list-title">${a.title}</span>
+        <span class="assessment-list-head">
+          <span class="assessment-list-title">${a.title}</span>
+          <span class="status-inline ${meta.className}">${meta.label}</span>
+        </span>
         <span class="assessment-list-timing">${timing}</span>
-        <span class="assessment-list-next">Next: ${nextAction}</span>
-        <span class="assessment-list-progress"><span><i style="width:${progress}%"></i></span><small>${progress}%</small></span>
+        <span class="assessment-list-next"><small>Next</small>${nextAction}</span>
+        <span class="assessment-list-progress"><span><i style="width:${progress}%"></i></span><strong>${progress}%</strong></span>
       </span>
-      <span class="assessment-list-side"><span class="status-inline ${meta.className}">${meta.label}</span><span class="assessment-list-arrow">›</span></span>
+      <span class="assessment-list-arrow">›</span>
     </button>`;
   };
 
@@ -917,14 +920,17 @@ function assessmentDetail(id,openPlanning=false){
   };
 
   document.getElementById("main").innerHTML=`
-    <div class="assessment-detail-calm">
-      <div class="screen-title assessment-detail-title">
-        <button class="back" id="backAssess" aria-label="Back to My Placement">‹</button>
-        <div><h2>${a.title}</h2><span class="assessment-detail-timing">${planning.date?`My target ${formatPlanningDate(planning.date)}`:a.when}</span></div>
-      </div>
+    <div class="assessment-detail-calm assessment-detail-readable">
+      <button class="assessment-back-link" id="backAssess" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
 
-      <section class="assessment-hero-quiet">
-        <div class="assessment-hero-status"><span class="status-inline ${overallMeta.className}">${overallMeta.label}</span><strong>${progress}%</strong></div>
+      <section class="assessment-hero-readable">
+        <div class="assessment-hero-icon">${a.icon}</div>
+        <div class="assessment-hero-copy">
+          <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
+          <h2>${a.title}</h2>
+          <p>${planning.date?`My target ${formatPlanningDate(planning.date)}`:a.when}</p>
+        </div>
+        <strong class="assessment-hero-percent">${progress}%</strong>
         <div class="progress-track"><div style="width:${progress}%"></div></div>
         <div class="assessment-hero-counts"><span>${completeCount} complete</span><span>${incomplete.length} remaining</span></div>
       </section>
