@@ -797,49 +797,33 @@ function assessmentPage(){
     .filter(Boolean);
   const activeAssessments=orderedAssessments.filter(a=>assessmentOverallStatus(a)!=="complete");
   const completedAssessments=orderedAssessments.filter(a=>assessmentOverallStatus(a)==="complete");
-  const currentAssessment=activeAssessments[0] || orderedAssessments[0];
 
-  const outstandingTasks=[];
-  activeAssessments.forEach(a=>{
-    (a.tasks||[]).forEach((task,index)=>{
-      const status=getTaskStatus(a.id,index);
-      if(status!=="complete") outstandingTasks.push({assessment:a,task,index,status});
-    });
-  });
-
-  const nextActions=outstandingTasks.slice(0,3);
   const assessmentRow=a=>{
     const status=assessmentOverallStatus(a);
     const meta=taskStatuses[status];
     const progress=assessmentProgress(a);
-    const nextIndex=(a.tasks||[]).findIndex((task,index)=>getTaskStatus(a.id,index)!=="complete");
-    const nextAction=nextIndex>=0?a.tasks[nextIndex]:"Check the official completion or submission step";
-    const planning=assessmentPlanning(a.id);
-    const timing=planning.date?`My target ${formatPlanningDate(planning.date)}`:a.when;
-    return `<button class="assessment-list-row assessment" data-id="${a.id}">
-      <span class="assessment-list-icon">${a.icon}</span>
-      <span class="assessment-list-main">
-        <span class="assessment-list-head">
-          <span class="assessment-list-title">${a.title}</span>
-          <span class="status-inline ${meta.className}">${meta.label}</span>
+    return `<article class="assessment-workspace-row">
+      <button class="assessment-workspace-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
+        <span class="assessment-workspace-icon">${a.icon}</span>
+        <span class="assessment-workspace-copy">
+          <span class="assessment-workspace-title">${a.title}</span>
+          <span class="assessment-workspace-meta"><span class="status-inline ${meta.className}">${meta.label}</span><span>${progress}%</span></span>
+          <span class="assessment-workspace-track"><i style="width:${progress}%"></i></span>
         </span>
-        <span class="assessment-list-timing">${timing}</span>
-        <span class="assessment-list-next"><small>Next</small>${nextAction}</span>
-        <span class="assessment-list-progress"><span><i style="width:${progress}%"></i></span><strong>${progress}%</strong></span>
-      </span>
-      <span class="assessment-list-arrow">›</span>
-    </button>`;
+        <span class="assessment-workspace-link">Open assessment <b>›</b></span>
+      </button>
+    </article>`;
   };
 
   const projectAssessments=activeAssessments.filter(a=>a.id==="project"||a.id==="reflections");
   const standardAssessments=activeAssessments.filter(a=>a.id!=="project"&&a.id!=="reflections");
 
   return `
-    <div class="placement-workspace placement-workspace-calm">
+    <div class="placement-workspace placement-one-purpose">
       <section class="welcome-block placement-heading">
         <div class="eyebrow">Placement</div>
         <h1>🌱 My Placement</h1>
-        <p class="welcome-text">See where you are and what matters next.</p>
+        <p class="welcome-text">Open an assessment to continue your work.</p>
       </section>
 
       <section class="placement-overview-card placement-overview-quiet">
@@ -852,28 +836,17 @@ function assessmentPage(){
         <div class="placement-hours-track"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>
       </section>
 
-      <section class="placement-focus-card placement-focus-calm">
-        <span class="placement-focus-kicker">Current focus</span>
-        <h2>${currentAssessment?currentAssessment.title:stage.title}</h2>
-        <div class="placement-next-actions">
-          ${nextActions.length?nextActions.map(item=>`<button class="placement-focus-action assessment" data-id="${item.assessment.id}"><span>○</span><span>${item.task}</span></button>`).join(""):`<div class="placement-empty-action">You are up to date. Open the next assessment when ready.</div>`}
-        </div>
-        ${outstandingTasks.length>3?`<details class="placement-all-tasks"><summary>View all tasks <span>${outstandingTasks.length}</span></summary><div>${outstandingTasks.map(item=>`<button class="placement-all-task assessment" data-id="${item.assessment.id}"><span>${item.assessment.title}</span><strong>${item.task}</strong></button>`).join("")}</div></details>`:""}
-      </section>
-
-      <section class="placement-section placement-assessments-calm">
+      <section class="placement-section placement-assessments-one-purpose">
         <div class="placement-section-heading"><div><h2>Assessments</h2></div></div>
-        <div class="assessment-list-clean">${standardAssessments.map(assessmentRow).join("")}</div>
-
-        ${projectAssessments.length?`<div class="placement-project-group placement-project-quiet"><div class="placement-project-title"><span>Placement project</span></div><div class="assessment-list-clean">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
-
-        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-list-clean">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
+        <div class="assessment-workspace-list">${standardAssessments.map(assessmentRow).join("")}</div>
+        ${projectAssessments.length?`<div class="placement-project-simple"><h3>Placement project</h3><div class="assessment-workspace-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
+        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-workspace-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
       </section>
 
       <section class="placement-section placement-admin-section placement-admin-quiet">
         <div class="placement-section-heading"><div><h2>Placement records</h2></div></div>
         <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
-        <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets &amp; hours</strong><span>Daily activities and detailed hour records</span></div><span>›</span></button>
+        <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets &amp; hours</strong><span>Daily activities and hour records</span></div><span>›</span></button>
       </section>
     </div>`;
 }
@@ -928,15 +901,13 @@ function assessmentDetail(id,openPlanning=false){
         <div class="assessment-hero-copy">
           <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
           <h2>${a.title}</h2>
-          <p>${planning.date?`My target ${formatPlanningDate(planning.date)}`:a.when}</p>
         </div>
         <strong class="assessment-hero-percent">${progress}%</strong>
         <div class="progress-track"><div style="width:${progress}%"></div></div>
-        <div class="assessment-hero-counts"><span>${completeCount} complete</span><span>${incomplete.length} remaining</span></div>
       </section>
 
       <section class="assessment-primary-section" aria-labelledby="next-steps">
-        <div class="assessment-primary-heading"><h3 id="next-steps">Next</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
+        <div class="assessment-primary-heading"><h3 id="next-steps">Checklist</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
         <div class="assessment-priority-steps">
           ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">Checklist complete. Check the official submission or sign off step.</div>`}
         </div>
@@ -978,7 +949,7 @@ function assessmentDetail(id,openPlanning=false){
         return `<div class="evidence-category-row"><span>${count?"✓":"○"}</span><span>${r}</span><strong>${count}</strong></div>`;
       }).join("")}</div></details>`:""}
 
-      ${toolkitLinks.length?`<details class="assessment-secondary-details"><summary><span>Helpful Toolkit topics</span><small>${toolkitLinks.length}</small></summary><div class="assessment-secondary-content linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></details>`:""}
+      ${toolkitLinks.length?`<section class="assessment-primary-section assessment-toolkit-suggestions" aria-labelledby="toolkit-suggestions"><div class="assessment-primary-heading"><h3 id="toolkit-suggestions">Toolkit suggestions</h3></div><div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></section>`:""}
 
       <details class="assessment-secondary-details official-sources-card">
         <summary><span>Official sources</span><small>${official.sources.length}</small></summary>
