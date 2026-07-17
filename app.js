@@ -803,51 +803,68 @@ function assessmentPage(){
     const status=assessmentOverallStatus(a);
     const meta=taskStatuses[status];
     const progress=assessmentProgress(a);
-    return `<article class="assessment-workspace-row">
-      <button class="assessment-workspace-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
-        <span class="assessment-workspace-icon">${a.icon}</span>
-        <span class="assessment-workspace-copy">
-          <span class="assessment-workspace-title">${a.title}</span>
-          <span class="assessment-workspace-meta"><span class="status-inline ${meta.className}">${meta.label}</span><span>${progress}%</span></span>
-          <span class="assessment-workspace-track"><i style="width:${progress}%"></i></span>
+    const planning=assessmentPlanning(a.id);
+    const timing=planning.date
+      ? `My target ${formatPlanningDate(planning.date)}`
+      : (a.when||"Check current JCU timing");
+    const showProgress=progress>0;
+    return `<article class="native-assessment-row">
+      <button class="native-assessment-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
+        <span class="native-assessment-icon" aria-hidden="true">${a.icon}</span>
+        <span class="native-assessment-copy">
+          <span class="native-assessment-head">
+            <strong>${a.title}</strong>
+            <span class="status-inline ${meta.className}">${meta.label}</span>
+          </span>
+          <span class="native-assessment-timing">${timing}</span>
+          ${showProgress?`<span class="native-assessment-progress"><span><i style="width:${progress}%"></i></span><small>${progress}%</small></span>`:""}
         </span>
-        <span class="assessment-workspace-link">Open assessment <b>›</b></span>
+        <span class="native-assessment-action">Open <b>›</b></span>
       </button>
     </article>`;
   };
 
   const projectAssessments=activeAssessments.filter(a=>a.id==="project"||a.id==="reflections");
   const standardAssessments=activeAssessments.filter(a=>a.id!=="project"&&a.id!=="reflections");
+  const placementTiming=info.started?`Week ${info.week}`:"Starts 20 July";
+  const hoursStarted=h>0;
 
   return `
-    <div class="placement-workspace placement-one-purpose">
-      <section class="welcome-block placement-heading">
+    <div class="placement-native-calm">
+      <section class="placement-native-heading">
         <div class="eyebrow">🌱 Placement</div>
         <h1>My Placement</h1>
-        <p class="welcome-text">Open an assessment to continue your work.</p>
+        <p>Everything you need to keep moving, without the noise.</p>
       </section>
 
-      <section class="placement-overview-card placement-overview-quiet">
-        <div class="placement-overview-grid">
-          <div><span>Organisation</span><strong>Mind Australia</strong></div>
-          <div><span>Placement week</span><strong>${info.started?`Week ${info.week}`:"Starts 20 July"}</strong></div>
-          <div><span>Placement stage</span><strong>${stage.title}</strong></div>
-          <div><span>Hours</span><strong>${h.toFixed(2)} / 500</strong></div>
+      <section class="placement-native-overview" aria-label="Placement overview">
+        <div class="placement-native-primary">
+          <span>Organisation</span>
+          <strong>Mind Australia</strong>
+          <small>Step Up Step Down</small>
         </div>
-        <div class="placement-hours-track"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>
+        <div class="placement-native-facts">
+          <div><span>Current stage</span><strong>${stage.title}</strong></div>
+          <div><span>${info.started?"Placement week":"Placement start"}</span><strong>${placementTiming}</strong></div>
+          <div class="placement-native-hours"><span>Hours completed</span><strong>${hoursStarted?h.toFixed(2):"Not started"}</strong>${hoursStarted?`<small>of 500 hours</small>`:`<small>🌱 Your placement journey begins soon.</small>`}</div>
+        </div>
+        ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/TOTAL_HOURS)*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>`:""}
       </section>
 
-      <section class="placement-section placement-assessments-one-purpose">
-        <div class="placement-section-heading"><div><h2>🗂️ Assessments</h2></div></div>
-        <div class="assessment-workspace-list">${standardAssessments.map(assessmentRow).join("")}</div>
-        ${projectAssessments.length?`<div class="placement-project-simple"><h3>Placement project</h3><div class="assessment-workspace-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
-        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-workspace-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
+      <section class="placement-native-section">
+        <div class="placement-native-section-heading">
+          <div><span aria-hidden="true">🗂️</span><h2>Assessments</h2></div>
+          ${!activeAssessments.length?`<p>✨ Progress will appear once you begin.</p>`:""}
+        </div>
+        <div class="native-assessment-list">${standardAssessments.map(assessmentRow).join("")}</div>
+        ${projectAssessments.length?`<div class="placement-native-project"><h3>Placement project</h3><div class="native-assessment-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
+        ${completedAssessments.length?`<details class="placement-native-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="native-assessment-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
       </section>
 
-      <section class="placement-section placement-admin-section placement-admin-quiet">
-        <div class="placement-section-heading"><div><h2>Placement records</h2></div></div>
-        <button class="plain-row" id="openSupervision"><div><strong>☕ Supervision</strong><span>Questions, feedback and actions</span></div><span>›</span></button>
-        <button class="plain-row" id="openTimesheets"><div><strong>⏱️ Timesheets &amp; hours</strong><span>Daily activities and hour records</span></div><span>›</span></button>
+      <section class="placement-native-records">
+        <h2>Placement records</h2>
+        <button class="native-record-row" id="openSupervision"><span class="native-record-icon">🤝</span><span><strong>Supervision</strong><small>Questions, feedback and actions</small></span><b>›</b></button>
+        <button class="native-record-row" id="openTimesheets"><span class="native-record-icon">⏱️</span><span><strong>Timesheets and hours</strong><small>Daily activities and hour records</small></span><b>›</b></button>
       </section>
     </div>`;
 }
