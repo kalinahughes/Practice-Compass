@@ -706,6 +706,7 @@ function todayPage(){
       <div>
         <div class="eyebrow">${dayLabel}</div>
         <h1>${g.title}</h1>
+        <p class="home-companion-line">${g.subtitle}</p>
         <p>${placementLabel} · ${h.toFixed(1)} of ${TOTAL_HOURS} hours</p>
       </div>
       <div class="home-compass-mark">${homeIcon('compass')}</div>
@@ -731,7 +732,7 @@ function todayPage(){
     <section class="home-card home-progress-card">
       <div class="home-card-heading compact">
         ${homeIcon('progress')}
-        <div><span class="home-kicker">Placement progress</span><h2>${progress}% complete</h2></div>
+        <div><span class="home-kicker">Placement progress</span><h2>${progress ? `${progress}% complete` : "🌱 Your placement journey begins soon"}</h2></div>
       </div>
       <div class="home-progress-track"><span style="width:${progress}%"></span></div>
       <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
@@ -740,7 +741,7 @@ function todayPage(){
     ${upcoming.length?`<section class="home-card home-upcoming-card">
       <div class="home-card-heading compact">
         ${homeIcon('calendar')}
-        <div><span class="home-kicker">What’s coming</span><h2>Next milestones</h2></div>
+        <div><span class="home-kicker">📅 What’s coming</span><h2>Next milestones</h2></div>
       </div>
       <div class="home-upcoming-list">
         ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
@@ -749,7 +750,7 @@ function todayPage(){
 
     <section class="home-reminder">
       ${homeIcon('heart')}
-      <div><strong>Take care</strong><p>${selfcare[new Date().getDay()]}</p></div>
+      <div><strong>🌿 Take care</strong><p>${selfcare[new Date().getDay()]}</p></div>
     </section>`;
 }
 
@@ -802,16 +803,15 @@ function assessmentPage(){
     const status=assessmentOverallStatus(a);
     const meta=taskStatuses[status];
     const progress=assessmentProgress(a);
-    return `<article class="assessment-list-item">
-      <button class="assessment-list-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
-        <span class="assessment-list-icon" aria-hidden="true">${a.icon}</span>
-        <span class="assessment-list-main">
-          <span class="assessment-list-title">${a.title}</span>
-          <span class="assessment-list-status status-inline ${meta.className}">${meta.label}</span>
-          <span class="assessment-list-progress" aria-label="${progress}% complete"><i style="width:${progress}%"></i></span>
+    return `<article class="assessment-workspace-row">
+      <button class="assessment-workspace-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
+        <span class="assessment-workspace-icon">${a.icon}</span>
+        <span class="assessment-workspace-copy">
+          <span class="assessment-workspace-title">${a.title}</span>
+          <span class="assessment-workspace-meta"><span class="status-inline ${meta.className}">${meta.label}</span><span>${progress}%</span></span>
+          <span class="assessment-workspace-track"><i style="width:${progress}%"></i></span>
         </span>
-        <span class="assessment-list-percent">${progress}%</span>
-        <span class="assessment-list-chevron" aria-hidden="true">›</span>
+        <span class="assessment-workspace-link">Open assessment <b>›</b></span>
       </button>
     </article>`;
   };
@@ -821,10 +821,11 @@ function assessmentPage(){
 
   return `
     <div class="placement-workspace placement-one-purpose">
-      <header class="placement-page-header">
-        <span class="eyebrow">Placement workspace</span>
+      <section class="welcome-block placement-heading">
+        <div class="eyebrow">🌱 Placement</div>
         <h1>My Placement</h1>
-      </header>
+        <p class="welcome-text">Open an assessment to continue your work.</p>
+      </section>
 
       <section class="placement-overview-card placement-overview-quiet">
         <div class="placement-overview-grid">
@@ -837,10 +838,10 @@ function assessmentPage(){
       </section>
 
       <section class="placement-section placement-assessments-one-purpose">
-        <div class="placement-section-heading"><div><h2>Assessments</h2></div></div>
-        <div class="assessment-list">${standardAssessments.map(assessmentRow).join("")}</div>
-        ${projectAssessments.length?`<div class="placement-project-simple"><h3>Placement project</h3><div class="assessment-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
-        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
+        <div class="placement-section-heading"><div><h2>🗂️ Assessments</h2></div></div>
+        <div class="assessment-workspace-list">${standardAssessments.map(assessmentRow).join("")}</div>
+        ${projectAssessments.length?`<div class="placement-project-simple"><h3>Placement project</h3><div class="assessment-workspace-list">${projectAssessments.map(assessmentRow).join("")}</div></div>`:""}
+        ${completedAssessments.length?`<details class="placement-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="assessment-workspace-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
       </section>
 
       <section class="placement-section placement-admin-section placement-admin-quiet">
@@ -896,25 +897,20 @@ function assessmentDetail(id,openPlanning=false){
     <div class="assessment-detail-calm assessment-detail-readable">
       <button class="assessment-back-link" id="backAssess" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
 
-      <section class="assessment-detail-header">
-        <div class="assessment-detail-title-row">
-          <span class="assessment-detail-icon" aria-hidden="true">${a.icon}</span>
-          <div>
-            <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
-            <h2>${a.title}</h2>
-          </div>
+      <section class="assessment-hero-readable">
+        <div class="assessment-hero-icon">${a.icon}</div>
+        <div class="assessment-hero-copy">
+          <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
+          <h2>${a.title}</h2>
         </div>
-        <div class="assessment-detail-progress-row">
-          <span>Progress</span>
-          <strong>${progress}%</strong>
-        </div>
+        <strong class="assessment-hero-percent">${progress}%</strong>
         <div class="progress-track"><div style="width:${progress}%"></div></div>
       </section>
 
       <section class="assessment-primary-section" aria-labelledby="next-steps">
         <div class="assessment-primary-heading"><h3 id="next-steps">Checklist</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
         <div class="assessment-priority-steps">
-          ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">Checklist complete. Check the official submission or sign off step.</div>`}
+          ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">🌿 Checklist complete. Check the official submission or sign off step.</div>`}
         </div>
         ${taskItems.length>3?`<details class="assessment-all-steps"><summary>View full checklist <span>${taskItems.length}</span></summary><div>${taskItems.map(taskRow).join("")}</div></details>`:""}
       </section>
@@ -923,7 +919,7 @@ function assessmentDetail(id,openPlanning=false){
         <div class="assessment-primary-heading"><h3 id="assessment-evidence">Evidence linked</h3><span>${entries.length}</span></div>
         ${entries.length
           ? `<div class="assessment-linked-evidence">${entries.map(e=>`<div class="evidence-list-row"><span>📝</span><div><strong>Reflection · ${e.date}</strong><small>${e.answer.slice(0,110)}${e.answer.length>110?"...":""}</small></div></div>`).join("")}</div>`
-          : `<p class="muted">No linked evidence yet.</p>`}
+          : `<p class="muted personality-empty">💭 Evidence will appear here as you save relevant reflections.</p>`}
       </section>
 
       <details class="assessment-secondary-details assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
@@ -1094,14 +1090,14 @@ function morePage(){
     </section>
 
     <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
-      <h2 id="growthSummaryHeading">Growth Summary</h2>
-      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">Your professional growth will appear as reflection evidence is added.</div>`}
+      <h2 id="growthSummaryHeading">Growth summary</h2>
+      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">✨ Your professional identity will grow here as you add reflections.</div>`}
     </section>
 
-    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to Strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
+    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
 
     <section class="journey-section-block" aria-labelledby="frameworkHeading">
-      <h2 id="frameworkHeading">My Practice Framework</h2>
+      <h2 id="frameworkHeading">My practice framework</h2>
       <div class="journey-framework-panel">
         <div class="journey-framework-summary">${groupSummary}</div>
         <button class="journey-text-action" id="frameworkMenu">View my developing framework <span>›</span></button>
@@ -1109,13 +1105,13 @@ function morePage(){
     </section>
 
     <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
-      <h2 id="professionalDevelopmentHeading">Professional Development</h2>
+      <h2 id="professionalDevelopmentHeading">Professional development</h2>
       <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
     </section>
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
       <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
-      <button class="journey-utility-row" id="exportHtml"><span><strong>Export Data</strong><small>Create a readable placement record</small></span><span>›</span></button>
+      <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
       <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
       <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
       <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
@@ -1263,13 +1259,13 @@ function timesheetPage(){
     <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>⏱️ Timesheets</h2></div>
     <div class="card green"><div class="label">Why am I doing this?</div><p>JCU requires a detailed record of placement hours and activities. Timesheets are reviewed, signed and submitted every two weeks.</p></div>
     <div class="card"><label class="label">Date</label><input id="tsDate" type="date" class="input"><div class="grid2" style="margin-top:10px"><input id="tsStart" type="time" class="input" value="09:00"><input id="tsFinish" type="time" class="input" value="17:00"></div><label class="label" style="display:block;margin-top:12px">Unpaid lunch minutes</label><input id="tsLunch" type="number" class="input" value="45"><label class="label" style="display:block;margin-top:12px">Activities</label><textarea id="tsActivities" class="textarea" placeholder="Orientation, team meeting, shadowing, documentation, group, supervision, research..."></textarea><button class="btn" id="saveTimesheet">Save timesheet entry</button></div>
-    <div class="card"><div class="label">Saved entries</div>${entries.length?entries.map(e=>`<div class="row"><div style="flex:1"><strong>${e.date}</strong><div class="small">${e.start} to ${e.finish} · ${Number(e.hours).toFixed(2)} hrs</div><div class="small">${e.activities||""}</div></div></div>`).join(""):`<p class="muted">No timesheet entries saved yet.</p>`}</div>`;
+    <div class="card"><div class="label">Saved entries</div>${entries.length?entries.map(e=>`<div class="row"><div style="flex:1"><strong>${e.date}</strong><div class="small">${e.start} to ${e.finish} · ${Number(e.hours).toFixed(2)} hrs</div><div class="small">${e.activities||""}</div></div></div>`).join(""):`<p class="muted personality-empty">📅 Your first timesheet entry will appear here.</p>`}</div>`;
   document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
   document.getElementById("saveTimesheet").onclick=()=>{
     const date=document.getElementById("tsDate").value,start=document.getElementById("tsStart").value,finish=document.getElementById("tsFinish").value,lunch=Number(document.getElementById("tsLunch").value||0),activities=document.getElementById("tsActivities").value.trim();
     if(!date||!start||!finish){alert("Add the date, start and finish time first.");return}
     const [sh,sm]=start.split(":").map(Number),[fh,fm]=finish.split(":").map(Number); const total=Math.max(((fh*60+fm)-(sh*60+sm)-lunch)/60,0);
-    const arr=timesheetEntries(); arr.unshift({id:Date.now(),date,start,finish,lunch,hours:total,activities}); state.set("timesheets",arr); state.set("hours",arr.reduce((sum,e)=>sum+Number(e.hours||0),0)); alert("Timesheet entry saved ⏱️"); timesheetPage();
+    const arr=timesheetEntries(); arr.unshift({id:Date.now(),date,start,finish,lunch,hours:total,activities}); state.set("timesheets",arr); state.set("hours",arr.reduce((sum,e)=>sum+Number(e.hours||0),0)); alert("✨ Timesheet entry saved"); timesheetPage();
   };
 }
 
@@ -1279,9 +1275,9 @@ function supervisionPage(){
     <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>☕ Supervision</h2></div>
     <div class="card green"><div class="label">Why am I doing this?</div><p>Supervision connects theory, ethics, feedback, use of self and professional development with your placement experiences.</p></div>
     <div class="card"><select id="supType" class="select"><option>Question</option><option>Feedback</option><option>Action item</option><option>Ethical issue</option><option>Use of self</option><option>Learning goal</option></select><textarea id="supText" class="textarea" placeholder="What would you like to discuss or remember?"></textarea><button class="btn" id="saveSupervision">Save for supervision</button></div>
-    <div class="card"><div class="label">My supervision list</div>${items.length?items.map(i=>`<div class="row"><div><strong>${i.type}</strong><div class="small">${i.date}</div><div>${i.text}</div></div></div>`).join(""):`<p class="muted">No items saved yet.</p>`}</div>`;
+    <div class="card"><div class="label">My supervision list</div>${items.length?items.map(i=>`<div class="row"><div><strong>${i.type}</strong><div class="small">${i.date}</div><div>${i.text}</div></div></div>`).join(""):`<p class="muted personality-empty">🤝 Save a question, feedback point or action when you are ready.</p>`}</div>`;
   document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
-  document.getElementById("saveSupervision").onclick=()=>{const text=document.getElementById("supText").value.trim();if(!text){alert("Add a supervision note first.");return}const arr=supervisionItems();arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text});state.set("supervisionItems",arr);alert("Saved for supervision ☕");supervisionPage();};
+  document.getElementById("saveSupervision").onclick=()=>{const text=document.getElementById("supText").value.trim();if(!text){alert("Add a supervision note first.");return}const arr=supervisionItems();arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text});state.set("supervisionItems",arr);alert("🤝 Saved for supervision");supervisionPage();};
 }
 
 function learningPlanPage(){
@@ -1326,7 +1322,7 @@ function evidenceBankPage(){
       ${(e.evidence||[]).map(x=>`<span class="pill">${x}</span>`).join("")}
       ${e.theory?`<span class="pill">${e.theory}</span>`:""}
       ${e.method?`<span class="pill">${e.method}</span>`:""}
-    </div>`).join(""):`<div class="card"><p class="muted">No entries yet. Your first saved example will appear here.</p></div>`}`;
+    </div>`).join(""):`<div class="card personality-empty-card"><p class="muted personality-empty">✨ Your first reflection will begin your evidence bank.</p></div>`}`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
 }
 
@@ -1342,7 +1338,7 @@ function weeklyReviewPage(){
   document.getElementById("saveWeekly").onclick=()=>{
     const reviews=state.get("weeklyReviews",[]);
     reviews.unshift({date:new Date().toLocaleDateString("en-AU"),answers:[...document.querySelectorAll(".weekly")].map(x=>({q:x.dataset.q,a:x.value}))});
-    state.set("weeklyReviews",reviews); alert("☕ Weekly check in saved.");
+    state.set("weeklyReviews",reviews); alert("✨ Weekly check in saved");
   };
 }
 
@@ -1365,7 +1361,7 @@ function myJourneyPage(){
       <section class="journey-day">
         <div class="journey-date">${date}</div>
         ${list.map(e=>`<div class="journey-moment"><span>⭐</span><div><strong>${(e.evidenceTypes||[])[0]||"Learning moment"}</strong><p>${e.answer}</p></div></div>`).join("")}
-      </section>`).join(""):`<div class="card"><p class="muted">Your saved moments will appear here as your placement begins.</p></div>`}
+      </section>`).join(""):`<div class="card personality-empty-card"><p class="muted personality-empty">🌱 Your placement journey begins here. Saved moments will appear naturally as you reflect.</p></div>`}
     ${reviews.length?`<div class="card"><div class="label">☕ Weekly check ins</div><p>${reviews.length} saved</p></div>`:""}`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
 }
