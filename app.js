@@ -761,6 +761,45 @@ const reflectionEthicsOptions=["Self Determination","Human Rights","Dignity","In
 const reflectionStandards=[
   ["1","Values and ethics"],["2","Professional conduct"],["3","Culturally responsive and inclusive practice"],["4","Knowledge for practice"],["5","Applying knowledge to practice"],["6","Communication and interpersonal skills"],["7","Information recording and sharing"],["8","Professional development and supervision"],["9","Professional leadership"]
 ];
+const reflectionTheoryContextMap={
+  "Recovery group":["Recovery Oriented Practice","CHIME","Strengths Based Practice","Person Centred Practice"],
+  "One to one conversation":["Person Centred Practice","Strengths Based Practice","Motivational Interviewing","Trauma Informed Practice"],
+  "Documentation":["Systems Theory","Rights Based Practice","Anti Oppressive Practice"],
+  "Risk assessment":["Crisis Intervention","Trauma Informed Practice","Rights Based Practice","Systems Theory"],
+  "Safety planning":["Crisis Intervention","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice"],
+  "Group facilitation":["Recovery Oriented Practice","CHIME","Strengths Based Practice","Person Centred Practice"],
+  "Home visit":["Ecological Systems Theory","Systems Theory","Trauma Informed Practice","Strengths Based Practice"],
+  "MDT":["Systems Theory","Ecological Systems Theory","Rights Based Practice","Anti Oppressive Practice"],
+  "Assessment":["Person Centred Practice","Strengths Based Practice","Systems Theory","Ecological Systems Theory"],
+  "Advocacy":["Rights Based Practice","Anti Oppressive Practice","Systems Theory","Strengths Based Practice"],
+  "Community engagement":["Ecological Systems Theory","Systems Theory","Anti Oppressive Practice","Rights Based Practice"],
+  "Crisis":["Crisis Intervention","Trauma Informed Practice","Person Centred Practice","Strengths Based Practice"],
+  "Other":["Person Centred Practice","Strengths Based Practice","Systems Theory"]
+};
+const reflectionEthicsContextMap={
+  "Choice":["Respect for Persons","Self Determination","Supported Decision Making","Informed Consent","Dignity of Risk"],
+  "Respect":["Respect for Persons","Dignity","Human Rights","Equity"],
+  "Safety":["Professional Integrity","Duty of Care","Dignity of Risk","Accountability"],
+  "Trust":["Professional Integrity","Confidentiality","Privacy","Accountability"],
+  "Confidentiality":["Professional Integrity","Confidentiality","Privacy","Informed Consent"],
+  "Boundaries":["Professional Integrity","Professional Boundaries","Accountability","Duty of Care"],
+  "Advocacy":["Social Justice","Advocacy","Equity","Human Rights"],
+  "Culture":["Respect for Persons","Cultural Safety","Equity","Self Determination"],
+  "Rights":["Social Justice","Human Rights","Self Determination","Advocacy"],
+  "Relationships":["Respect for Persons","Dignity","Professional Boundaries","Trust"]
+};
+const reflectionStandardContextMap={
+  "Observed practice":["Practice Standard 4: Knowledge for practice","Practice Standard 5: Applying knowledge to practice","Practice Standard 8: Professional development and supervision"],
+  "Engaged with a consumer":["Practice Standard 1: Values and ethics","Practice Standard 5: Applying knowledge to practice","Practice Standard 6: Communication and interpersonal skills"],
+  "Completed documentation":["Practice Standard 2: Professional conduct","Practice Standard 7: Information recording and sharing"],
+  "Participated in a group":["Practice Standard 5: Applying knowledge to practice","Practice Standard 6: Communication and interpersonal skills"],
+  "Attended supervision":["Practice Standard 2: Professional conduct","Practice Standard 8: Professional development and supervision"],
+  "Observed assessment":["Practice Standard 4: Knowledge for practice","Practice Standard 5: Applying knowledge to practice"],
+  "Discussed risk":["Practice Standard 1: Values and ethics","Practice Standard 4: Knowledge for practice","Practice Standard 5: Applying knowledge to practice"],
+  "Worked with another professional":["Practice Standard 2: Professional conduct","Practice Standard 6: Communication and interpersonal skills","Practice Standard 9: Professional leadership"],
+  "Completed training":["Practice Standard 4: Knowledge for practice","Practice Standard 8: Professional development and supervision"],
+  "Asked questions":["Practice Standard 2: Professional conduct","Practice Standard 8: Professional development and supervision"]
+};
 const deeperReflectionQuestions=["What surprised you?","What assumptions did you bring?","How did power influence this situation?","What strengths did the consumer demonstrate?","What ethical tension existed?","How did organisational systems influence practice?","What role did culture play?","What question will you take to supervision?","What might another professional have noticed?","What would you do differently next time?"];
 const reflectionConceptInfo={
   "Recovery Oriented Practice":["Supports hope, choice, identity and a meaningful life beyond symptoms.","Your reflection may involve collaboration, personal goals, autonomy or recognising strengths.","Recovery Oriented Practice"],
@@ -794,19 +833,40 @@ function reflectionLibrary(entries){
   return `<section class="reflection-library"><div class="reflection-section-heading"><span>📚</span><div><small>Your evidence library</small><h2>Previous reflections</h2></div></div><input id="reflectionSearch" class="input" placeholder="Search theory, standards, ethics, skills or tags"><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText((e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}</small></span><span>›</span></summary><p>${safeText((e.moment||e.answer||"").slice(0,300))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></details>`}).join("")}</div></section>`;
 }
 function journalPage(){
-  const entries=savedEntries(), theories=orderedReflectionTheories(entries), prompt=reflectionQuestionForToday();
-  return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Write freely first. Your Reflection Companion is here when you want help connecting experience with social work practice.</p></section>
+  const entries=savedEntries(), prompt=reflectionQuestionForToday();
+  return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Write freely first. Your Reflection Companion stays quiet until you want a little help.</p></section>
   ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved. Your learning has been added to your evidence library.</section>`:""}
   <form class="reflection-simple" id="reflectionForm" onsubmit="return false">
     <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What stayed with you today?</strong><span>One moment is enough.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Write in your own words..."></textarea></section>
-    <details class="conversation-card reflection-companion" open><summary><span><strong>🌱 Reflection Companion</strong><small>Optional guidance when it feels useful</small></span><span>›</span></summary><div class="reflection-companion-body">
-      <section class="companion-section"><div class="companion-heading"><h2>📚 Social work lens</h2><p>These are possibilities, not answers. Choose only what genuinely fits.</p></div><div class="chip-grid">${theories.map(x=>`<button type="button" class="select-chip theory-chip concept-chip" data-value="${safeText(x)}">${safeText(x)}</button>`).join("")}</div><button type="button" class="text-link" id="viewAllTheories">View all theories in Toolkit</button></section>
-      <section class="companion-section"><div class="companion-heading"><h2>🤝 Values and ethics</h2><p>Search or select concepts that were present.</p></div><input id="ethicsSearch" class="input compact-search" placeholder="Search values and ethical concepts"><h3>AASW Code of Ethics values</h3><div class="chip-grid ethics-chip-group">${reflectionCodeValues.map(x=>`<button type="button" class="select-chip value-chip concept-chip" data-value="${x}">${x}</button>`).join("")}</div><h3>Ethical principles and practice concepts</h3><div class="chip-grid ethics-chip-group">${reflectionEthicsOptions.map(x=>`<button type="button" class="select-chip ethics-chip concept-chip" data-value="${x}">${x}</button>`).join("")}</div></section>
-      <section class="companion-section"><div class="companion-heading"><h2>🌿 AASW Practice Standards</h2><p>This reflection may relate to…</p></div><div class="standards-chip-list">${reflectionStandards.map(([n,label])=>`<button type="button" class="select-chip standard-chip" data-value="Practice Standard ${n}: ${label}"><strong>${n}</strong><span>${label}</span></button>`).join("")}</div></section>
+
+    <details class="conversation-card reflection-companion"><summary><span><strong>🌱 Reflection Companion</strong><small>Need help connecting today’s experience with social work?</small></span><span>›</span></summary><div class="reflection-companion-body">
+      <p class="companion-intro">Write first. Think second. Explore only what feels useful.</p>
+
+      <details class="companion-help-card" data-companion-card="theory"><summary><span><strong>📚 Help me identify theory</strong><small>What theory or approach might fit?</small></span><span>›</span></summary><div class="companion-help-body">
+        <p class="companion-question">What best describes today’s experience?</p>
+        <div class="choice-chip-grid">${["Recovery group","One to one conversation","Documentation","Risk assessment","Safety planning","Group facilitation","Home visit","MDT","Assessment","Advocacy","Community engagement","Crisis","Other"].map(x=>`<button type="button" class="context-chip theory-context" data-context="${safeText(x)}">${safeText(x)}</button>`).join("")}</div>
+        <div id="theorySuggestions" class="progressive-suggestions hidden"></div>
+      </div></details>
+
+      <details class="companion-help-card" data-companion-card="ethics"><summary><span><strong>🤝 Help me identify values and ethics</strong><small>What values or ethical ideas were present?</small></span><span>›</span></summary><div class="companion-help-body">
+        <p class="companion-question">What stood out most?</p>
+        <div class="choice-chip-grid">${["Choice","Respect","Safety","Trust","Confidentiality","Boundaries","Advocacy","Culture","Rights","Relationships"].map(x=>`<button type="button" class="context-chip ethics-context" data-context="${safeText(x)}">${safeText(x)}</button>`).join("")}</div>
+        <div id="ethicsSuggestions" class="progressive-suggestions hidden"></div>
+      </div></details>
+
+      <details class="companion-help-card" data-companion-card="standards"><summary><span><strong>🌿 Help me identify Practice Standards</strong><small>What professional capability might this show?</small></span><span>›</span></summary><div class="companion-help-body">
+        <p class="companion-question">What did you do today?</p>
+        <div class="choice-chip-grid">${["Observed practice","Engaged with a consumer","Completed documentation","Participated in a group","Attended supervision","Observed assessment","Discussed risk","Worked with another professional","Completed training","Asked questions"].map(x=>`<button type="button" class="context-chip standard-context" data-context="${safeText(x)}">${safeText(x)}</button>`).join("")}</div>
+        <div id="standardSuggestions" class="progressive-suggestions hidden"></div>
+      </div></details>
+
+      <details class="companion-help-card companion-deeper-card"><summary><span><strong>💭 Help me think more deeply</strong><small>One optional question</small></span><span>›</span></summary><div class="companion-help-body">
+        <label for="deeperAnswer"><strong>${safeText(prompt)}</strong><span>A sentence or two is enough.</span></label><input type="hidden" id="deeperQuestion" value="${safeText(prompt)}"><textarea id="deeperAnswer" class="textarea" placeholder="Write only if it helps..."></textarea>
+      </div></details>
+
       <section id="conceptExplanation" class="concept-explanation hidden"></section>
-      <section class="companion-section companion-deeper"><div class="companion-heading"><h2>⭐ Looking a little deeper</h2><p>Optional. Stay curious rather than searching for a perfect answer.</p></div><label for="deeperAnswer"><strong>${safeText(prompt)}</strong></label><input type="hidden" id="deeperQuestion" value="${safeText(prompt)}"><textarea id="deeperAnswer" class="textarea" placeholder="A sentence or two is enough..."></textarea></section>
-      <section class="companion-section"><div class="companion-heading"><h2>🌱 What will you take into tomorrow?</h2><p>A learning, a small change, a supervision question or something to explore.</p></div><textarea id="futurePractice" class="textarea" placeholder="Something I learned, will try differently or want to ask..."></textarea></section>
-      <section class="companion-section"><label for="supervision"><strong>🤝 Question for supervision</strong><span>Optional</span></label><textarea id="supervision" class="textarea" placeholder="Something you want to discuss..."></textarea></section>
+      <section class="companion-future"><label for="futurePractice"><strong>🌱 What will you take into tomorrow?</strong><span>Optional</span></label><textarea id="futurePractice" class="textarea" placeholder="Something I learned, will try differently or want to ask..."></textarea></section>
+      <section class="companion-supervision"><label for="supervision"><strong>🤝 Question for supervision</strong><span>Optional</span></label><textarea id="supervision" class="textarea" placeholder="Something you want to discuss..."></textarea></section>
     </div></details>
     <button class="btn reflection-save-button" id="saveEntry">🌿 Save reflection</button>
   </form>
@@ -1462,6 +1522,28 @@ function backup(){
 
 function updateReflectionPreview(){}
 
+function suggestionReason(value){
+  const info=reflectionConceptInfo[value];
+  if(info)return info[1];
+  if(value.startsWith("Practice Standard"))return "This may relate because the activity you selected can demonstrate this area of professional practice. You decide whether it genuinely fits your reflection.";
+  return "This may relate to the experience you selected. Choose it only if it helps explain what happened or why it mattered.";
+}
+function renderProgressiveSuggestions(targetId,items,type){
+  const target=document.getElementById(targetId);if(!target)return;
+  const cls=type==="theory"?"theory-chip concept-chip":type==="standard"?"standard-chip":"";
+  target.classList.remove("hidden");
+  target.innerHTML=`<p class="suggestion-intro">These may relate. Select only what genuinely fits.</p><div class="suggestion-stack">${items.map(value=>{
+    const isValue=reflectionCodeValues.includes(value), isEthics=reflectionEthicsOptions.includes(value);
+    const chipClass=type==="ethics"?(isValue?"value-chip concept-chip":"ethics-chip concept-chip"):cls;
+    return `<article class="suggestion-item"><button type="button" class="select-chip ${chipClass}" data-value="${safeText(value)}"><span>${safeText(value)}</span></button><p>${safeText(suggestionReason(value))}</p>${type!=="standard"?`<button type="button" class="text-link suggestion-learn" data-topic="${safeText(value)}">📚 Learn More</button>`:""}</article>`;
+  }).join("")}</div>`;
+  target.querySelectorAll(".select-chip").forEach(btn=>btn.onclick=()=>{btn.classList.toggle("selected");if(btn.classList.contains("concept-chip"))showReflectionConcept(btn.dataset.value);});
+  target.querySelectorAll(".suggestion-learn").forEach(btn=>btn.onclick=()=>{const info=reflectionConceptInfo[btn.dataset.topic];openToolkitTopicByName(info?info[2]:btn.dataset.topic);});
+}
+function selectReflectionContext(button,selector,map,targetId,type){
+  document.querySelectorAll(selector).forEach(x=>x.classList.remove("selected"));button.classList.add("selected");renderProgressiveSuggestions(targetId,map[button.dataset.context]||[],type);
+}
+
 function showReflectionConcept(value){
   const box=document.getElementById("conceptExplanation");if(!box)return;
   const info=reflectionConceptInfo[value]||[`${value} is a practice concept you can explore in relation to this experience.`,`Consider what you noticed in your reflection and whether this concept helps explain the interaction, decision or context.`,value];
@@ -1479,10 +1561,10 @@ function bind(){
   document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(TOTAL_HOURS,hours()+HOURS_PER_DAY));render()});
   document.getElementById("adjustHours")?.addEventListener("click",()=>{const v=prompt("Enter total completed placement hours:",hours()); if(v!==null&&!isNaN(Number(v))){state.set("hours",Number(v));render()}});
   document.getElementById("saveEntry")?.addEventListener("click",saveEntry);
-  document.querySelectorAll(".select-chip").forEach(btn=>btn.onclick=()=>{btn.classList.toggle("selected");if(btn.classList.contains("concept-chip"))showReflectionConcept(btn.dataset.value);});
-  document.getElementById("ethicsSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".ethics-chip-group .select-chip").forEach(chip=>chip.classList.toggle("hidden",!chip.textContent.toLowerCase().includes(q)));});
+  document.querySelectorAll(".theory-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".theory-context",reflectionTheoryContextMap,"theorySuggestions","theory"));
+  document.querySelectorAll(".ethics-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".ethics-context",reflectionEthicsContextMap,"ethicsSuggestions","ethics"));
+  document.querySelectorAll(".standard-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".standard-context",reflectionStandardContextMap,"standardSuggestions","standard"));
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
-  document.getElementById("viewAllTheories")?.addEventListener("click",()=>{route="toolkit";render();setTimeout(()=>{const search=document.getElementById("toolkitSearch");if(search){search.value="theory";search.dispatchEvent(new Event("input"));}},0);});
   document.getElementById("openCurrentAssessment")?.addEventListener("click",e=>assessmentDetail(e.currentTarget.dataset.id));
   document.getElementById("openEvidenceMap")?.addEventListener("click",()=>evidenceMapPage());
   document.getElementById("openFramework")?.addEventListener("click",()=>frameworkPage());
