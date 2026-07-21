@@ -754,43 +754,138 @@ function todayPage(){
     </section>`;
 }
 
+let lastSavedReflection=null;
+const reflectionTheoryOptions=["Recovery Oriented Practice","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Systems Theory","Ecological Systems","CHIME","Motivational Interviewing","Solution Focused Practice","Narrative Practice","Anti Oppressive Practice","Human Rights","Crisis Intervention"];
+const reflectionValueOptions=["Self Determination","Human Dignity","Respect","Social Justice","Professional Integrity","Empathy","Advocacy","Cultural Safety","Human Relationships"];
+const deeperReflectionQuestions=["What assumptions did you bring into today?","What power dynamics were present?","What would the consumer say happened?","What wasn’t said?","How did organisational systems shape today’s interaction?","How did culture influence this experience?","What ethical tension existed?","What strengths did you notice?","What would you do differently now?","What question will you take to supervision?"];
+const reflectionInsightLabels=["Recovery","Trauma","Systems","Risk","Advocacy","Group Work","Communication","Use of Self","Cultural Safety","Professional Identity"];
+function reflectionQuestionForToday(){
+  const d=new Date();
+  const seed=Number(`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`);
+  return deeperReflectionQuestions[seed%deeperReflectionQuestions.length];
+}
+function reflectionInsightCounts(entries){
+  const counts=Object.fromEntries(reflectionInsightLabels.map(x=>[x,0]));
+  entries.forEach(entry=>{
+    const hay=[entry.answer,entry.useOfSelf,entry.futurePractice,...(entry.theories||[]),...(entry.values||[]),...(entry.evidenceTypes||[])].join(" ").toLowerCase();
+    const patterns={Recovery:["recovery","chime"],Trauma:["trauma"],Systems:["systems","ecological"],Risk:["risk","safety"],Advocacy:["advocacy","social justice"],"Group Work":["group"],Communication:["communication","communicate","listening"],"Use of Self":["use of self","emotion","strength"],"Cultural Safety":["cultural safety","culture"],"Professional Identity":["professional identity","integrity","social work student"]};
+    Object.entries(patterns).forEach(([label,terms])=>{if(terms.some(term=>hay.includes(term))) counts[label]++;});
+  });
+  return counts;
+}
+function reflectionSummary(entry){
+  const themes=[...(entry.theories||[]),...(entry.values||[])];
+  const standards=[];
+  if((entry.values||[]).length) standards.push("Practice Standard 1: Values and ethics");
+  if((entry.theories||[]).length) standards.push("Practice Standard 4: Knowledge for practice");
+  if(entry.useOfSelf) standards.push("Practice Standard 8: Professional development and supervision");
+  if((entry.values||[]).includes("Cultural Safety")||(entry.theories||[]).includes("Anti Oppressive Practice")) standards.push("Practice Standard 2: Culturally responsive and inclusive practice");
+  const evidence=[];
+  if(entry.answer) evidence.push("Description","Critical Reflection");
+  if((entry.theories||[]).length) evidence.push("Theory in Action");
+  if((entry.values||[]).length) evidence.push("Ethics");
+  if(entry.useOfSelf) evidence.push("Use of Self","Communication");
+  if(entry.futurePractice) evidence.push("Professional Development");
+  const supervision=(entry.supervision||"").trim()||((entry.deeperAnswer||"").trim()?`Explore: ${entry.deeperQuestion}`:"Discuss how today’s learning could shape your next practice interaction.");
+  return {themes:[...new Set(themes)].slice(0,8),standards:[...new Set(standards)],evidence:[...new Set(evidence)],supervision};
+}
+function reflectionSummaryCard(entry){
+  const summary=reflectionSummary(entry);
+  const checks=[
+    ["Description",!!entry.moment],["Reflection",!!entry.whyMatter],["Theory",(entry.theories||[]).length>0],["Values",(entry.values||[]).length>0],["Use of Self",!!entry.useOfSelf],["Future Practice",!!entry.futurePractice]
+  ];
+  return `<section class="reflection-summary-card">
+    <div class="reflection-section-heading"><span>✨</span><div><small>Reflection saved</small><h2>Today’s reflection at a glance</h2></div></div>
+    ${summary.themes.length?`<div class="reflection-summary-group"><strong>Today’s themes</strong><div class="reflection-tag-list">${summary.themes.map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div>`:""}
+    ${summary.standards.length?`<div class="reflection-summary-group"><strong>AASW Practice Standards</strong>${summary.standards.map(x=>`<p>${safeText(x)}</p>`).join("")}</div>`:""}
+    ${(entry.values||[]).length?`<div class="reflection-summary-group"><strong>Code of Ethics values</strong><p>${entry.values.map(safeText).join(" · ")}</p></div>`:""}
+    <div class="reflection-summary-group"><strong>Evidence collected</strong><div class="reflection-tag-list">${summary.evidence.map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div>
+    <div class="reflection-summary-group"><strong>Suggested supervision topic</strong><p>${safeText(summary.supervision)}</p></div>
+    <div class="reflection-completeness"><strong>🌱 Reflection completeness</strong><div class="reflection-check-grid">${checks.map(([label,done])=>`<span class="${done?"complete":"pending"}">${done?"✓":"○"} ${label}</span>`).join("")}</div>${checks.every(x=>x[1])?`<p>Beautifully rounded reflection. You captured the experience, meaning and next step.</p>`:`<p>Your reflection is saved. You can deepen future reflections by including the areas still open.</p>`}</div>
+  </section>`;
+}
 function journalPage(){
-  const info=placementInfo(), h=hours(), p=dailyPrompt(info,h);
-  const evidenceTypes=["Skill","Knowledge","Communication","Ethics or values","Cultural capability","Theory in action","Recovery","Use of self","Feedback","Teamwork","Systems issue","Documentation","Professional development"];
+  const entries=savedEntries();
+  const counts=reflectionInsightCounts(entries);
+  const maxCount=Math.max(1,...Object.values(counts));
+  const seventh=(entries.length+1)%7===0;
+  const deeperQuestion=reflectionQuestionForToday();
+  const insightPrompt=entries.length?(()=>{const high=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];const low=Object.entries(counts).sort((a,b)=>a[1]-b[1])[0];return high[1]>0?`You’ve reflected frequently on ${high[0]}. Consider intentionally noticing ${low[0]} this week.`:"Your insights will grow as you save reflections."})():"Your insights will grow as you save reflections.";
   return `
-    <section class="welcome-block">
+    <section class="welcome-block reflection-welcome">
       <div class="eyebrow">Reflect</div>
-      <h1>💬 What did you learn today?</h1>
-      <p class="welcome-text">Keep it simple. Practice Compass will organise the rest.</p>
+      <h1>💭 Reflection companion</h1>
+      <p class="welcome-text">Pause with one meaningful moment. You do not need to capture everything.</p>
     </section>
 
-    <div class="conversation-card">
-      <div class="chat-label">What happened?</div>
-      <textarea id="answer" class="textarea" placeholder="One conversation, observation, challenge or learning moment..."></textarea>
-    </div>
+    ${entries.length?`<section class="reflection-insights-card"><div class="reflection-section-heading"><span>🌿</span><div><small>Your learning patterns</small><h2>Reflection insights</h2></div></div><div class="reflection-insight-list">${reflectionInsightLabels.map(label=>`<div><span><strong>${label}</strong><small>${counts[label]} reflection${counts[label]===1?"":"s"}</small></span><i><b style="width:${counts[label]?Math.max(10,(counts[label]/maxCount)*100):0}%"></b></i></div>`).join("")}</div><p class="reflection-gentle-prompt">${safeText(insightPrompt)}</p></section>`:`<section class="reflection-empty-state">🌱 Your reflection insights will grow as you save learning moments.</section>`}
 
-    <div class="conversation-card">
-      <div class="chat-label">What did you learn?</div>
-      <textarea id="learningText" class="textarea" placeholder="What became clearer, challenged you, or changed your thinking?"></textarea>
-      <div class="why"><strong>Why am I being asked this?</strong><br>${p.why}</div>
-    </div>
+    ${lastSavedReflection?reflectionSummaryCard(lastSavedReflection):""}
 
-    <div class="conversation-card">
-      <div class="chat-label">What did this demonstrate?</div>
-      <p class="muted">Choose only what fits. These tags connect your reflection to relevant assessments.</p>
-      <div class="chip-grid">${evidenceTypes.map(x=>`<button class="select-chip evidence-chip" data-value="${x}">${x}</button>`).join("")}</div>
-    </div>
+    <form class="reflection-flow" id="reflectionForm" onsubmit="return false">
+      <section class="conversation-card reflection-step">
+        <div class="reflection-step-label">🌱 Step 1 <span>Today’s moment</span></div>
+        <h2>What stayed with you today?</h2>
+        <p>Focus on one interaction, conversation, observation or event that had the biggest impact on you today.</p>
+        <textarea id="answer" class="textarea reflection-large" placeholder="One moment is enough..."></textarea>
+      </section>
 
-    <div class="conversation-card">
-      <div class="chat-label">Anything for supervision?</div>
-      <textarea id="supervision" class="textarea" placeholder="Optional"></textarea>
-      <input type="hidden" id="mood" value="">
-      <select id="theoryPick" class="select hidden"><option value=""></option></select>
-      <select id="methodPick" class="select hidden"><option value=""></option></select>
-      <button class="btn" id="saveEntry">🌿 Save this moment</button>
-    </div>`;
+      <section class="conversation-card reflection-step">
+        <div class="reflection-step-label">🌿 Step 2 <span>Why it mattered</span></div>
+        <h2>Why has this experience stayed with you?</h2>
+        <details class="reflection-suggestions"><summary>Prompt suggestions</summary><div><span>It surprised me because…</span><span>It challenged me because…</span><span>It confirmed…</span><span>I kept thinking about…</span><span>It made me uncomfortable because…</span></div></details>
+        <textarea id="learningText" class="textarea reflection-large" placeholder="Explore what made the moment meaningful..."></textarea>
+      </section>
+
+      <section class="conversation-card reflection-step">
+        <div class="reflection-step-label">📚 Step 3 <span>Social work lens</span></div>
+        <h2>What practice ideas helped you understand this moment?</h2>
+        <p>Choose only what genuinely fits.</p>
+        <div class="chip-grid">${reflectionTheoryOptions.map(x=>`<button type="button" class="select-chip theory-chip" data-value="${x}">${x}</button>`).join("")}</div>
+        <div class="reflection-custom-row"><input id="customTheory" class="input" placeholder="Add a custom practice lens"><button type="button" class="btn secondary add-custom-chip" data-target="theory">Add</button></div>
+        <div id="customTheoryChips" class="chip-grid reflection-custom-chips"></div>
+      </section>
+
+      <section class="conversation-card reflection-step">
+        <div class="reflection-step-label">🤝 Step 4 <span>Values and ethics</span></div>
+        <h2>What values were present?</h2>
+        <div class="chip-grid">${reflectionValueOptions.map(x=>`<button type="button" class="select-chip value-chip" data-value="${x}">${x}</button>`).join("")}</div>
+        <div class="reflection-custom-row"><input id="customValue" class="input" placeholder="Add a custom value"><button type="button" class="btn secondary add-custom-chip" data-target="value">Add</button></div>
+        <div id="customValueChips" class="chip-grid reflection-custom-chips"></div>
+      </section>
+
+      <section class="conversation-card reflection-step">
+        <div class="reflection-step-label">💚 Step 5 <span>Use of self</span></div>
+        <h2>How did you use yourself today as a social work student?</h2>
+        <div class="reflection-subprompts"><span>How did you communicate?</span><span>Did you intentionally stay quiet?</span><span>What emotions did you notice?</span><span>How did previous experience influence your thinking?</span><span>What personal strengths did you draw upon?</span></div>
+        <textarea id="useOfSelf" class="textarea reflection-large" placeholder="Notice your communication, emotions, choices and strengths..."></textarea>
+      </section>
+
+      <section class="conversation-card reflection-step reflection-deeper">
+        <div class="reflection-step-label">⭐ Step 6 <span>Looking deeper</span></div>
+        <h2>${safeText(deeperQuestion)}</h2>
+        <input type="hidden" id="deeperQuestion" value="${safeText(deeperQuestion)}">
+        <textarea id="deeperAnswer" class="textarea reflection-large" placeholder="There is no perfect answer. Stay curious..."></textarea>
+      </section>
+
+      <section class="conversation-card reflection-step">
+        <div class="reflection-step-label">🌱 Step 7 <span>Future practice</span></div>
+        <h2>What will you intentionally practise next time?</h2>
+        <textarea id="futurePractice" class="textarea reflection-large" placeholder="One small intention for your next opportunity..."></textarea>
+      </section>
+
+      ${seventh?`<section class="conversation-card reflection-step weekly-identity"><div class="reflection-step-label">🌿 Weekly reflection <span>Professional identity</span></div><h2>How has your understanding of social work changed this week?</h2><textarea id="professionalIdentity" class="textarea reflection-large" placeholder="Notice what is changing in the social worker you are becoming..."></textarea></section>`:`<input type="hidden" id="professionalIdentity" value="">`}
+
+      <section class="conversation-card reflection-save-card">
+        <label for="supervision"><strong>🤝 Anything to take to supervision?</strong><span>Optional</span></label>
+        <textarea id="supervision" class="textarea" placeholder="A question, uncertainty or area to explore..."></textarea>
+        <div class="reflection-completeness-preview"><span>✓ Description</span><span>○ Reflection</span><span>○ Theory</span><span>○ Values</span><span>○ Use of self</span><span>○ Future practice</span></div>
+        <details class="why reflection-why"><summary>Why am I being asked this?</summary><p>These questions help you build evidence for supervision, your learning plan, AASW Practice Standards and placement assessment.</p></details>
+        <input type="hidden" id="mood" value=""><select id="theoryPick" class="select hidden"><option value=""></option></select><select id="methodPick" class="select hidden"><option value=""></option></select>
+        <button class="btn reflection-save-button" id="saveEntry">🌿 Save reflection</button>
+      </section>
+    </form>`;
 }
-
 function assessmentPage(){
   const info=placementInfo(), h=hours(), stage=currentStage(info);
   const orderedAssessments=assessmentPriority(info,h)
@@ -1402,24 +1497,33 @@ function wellbeingPage(){
 }
 
 function saveEntry(){
-  const what=document.getElementById("answer").value.trim();
-  const learnt=document.getElementById("learningText").value.trim();
-  if(!what){alert("Add one moment from today first.");return}
+  const moment=document.getElementById("answer")?.value.trim()||"";
+  const whyMatter=document.getElementById("learningText")?.value.trim()||"";
+  if(!moment){alert("Add one moment from today first.");return}
+  const theories=[...document.querySelectorAll(".theory-chip.selected")].map(x=>x.dataset.value);
+  const values=[...document.querySelectorAll(".value-chip.selected")].map(x=>x.dataset.value);
+  const useOfSelf=document.getElementById("useOfSelf")?.value.trim()||"";
+  const deeperQuestion=document.getElementById("deeperQuestion")?.value||"";
+  const deeperAnswer=document.getElementById("deeperAnswer")?.value.trim()||"";
+  const futurePractice=document.getElementById("futurePractice")?.value.trim()||"";
+  const professionalIdentity=document.getElementById("professionalIdentity")?.value.trim()||"";
+  const supervision=document.getElementById("supervision")?.value.trim()||"";
+  const evidenceTypes=[];
+  if(theories.length) evidenceTypes.push("Theory in action","Knowledge");
+  if(values.length) evidenceTypes.push("Ethics or values");
+  if(values.includes("Cultural Safety")||theories.includes("Anti Oppressive Practice")) evidenceTypes.push("Cultural capability");
+  if(useOfSelf) evidenceTypes.push("Use of self","Communication");
+  if(futurePractice||professionalIdentity) evidenceTypes.push("Professional development");
+  const autoMapped=mappedAssessments([...new Set(evidenceTypes)]);
+  const sections=[moment,whyMatter&&`Why it mattered: ${whyMatter}`,theories.length&&`Social work lens: ${theories.join(", ")}`,values.length&&`Values and ethics: ${values.join(", ")}`,useOfSelf&&`Use of self: ${useOfSelf}`,deeperAnswer&&`${deeperQuestion} ${deeperAnswer}`,futurePractice&&`Future practice: ${futurePractice}`,professionalIdentity&&`Weekly professional identity: ${professionalIdentity}`].filter(Boolean);
   const info=placementInfo(), p=dailyPrompt(info,hours());
-  const evidenceTypes=[...document.querySelectorAll(".evidence-chip.selected")].map(x=>x.dataset.value);
-  const autoMapped=mappedAssessments(evidenceTypes);
-  const answer=learnt?`${what}
-
-What I learnt: ${learnt}`:what;
-  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer,evidenceTypes,theory:"",method:"",supervision:document.getElementById("supervision").value.trim(),evidence:autoMapped};
+  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:sections.join("\n\n"),moment,whyMatter,theories,values,useOfSelf,deeperQuestion,deeperAnswer,futurePractice,professionalIdentity,evidenceTypes:[...new Set(evidenceTypes)],theory:theories[0]||"",method:"",supervision,evidence:autoMapped};
   const arr=savedEntries(); arr.unshift(entry); state.set("entries",arr);
-  if(entry.supervision){
-    const s=supervisionItems(); s.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:entry.supervision}); state.set("supervisionItems",s);
-  }
-  alert(autoMapped.length?`Saved 🌿 Linked to: ${autoMapped.join(", ")}.`:"Saved 🌿");
-  route="today"; render();
+  if(supervision){const items=supervisionItems();items.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:supervision});state.set("supervisionItems",items);}
+  lastSavedReflection=entry;
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 function triggerFileDownload(blob,filename){
   const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=filename; link.style.display="none"; document.body.appendChild(link); link.click(); setTimeout(()=>{URL.revokeObjectURL(url);link.remove();},1500);
@@ -1444,6 +1548,12 @@ function backup(){
   }catch(error){console.error(error);alert("The backup could not be created. Please try again.");}
 }
 
+function updateReflectionPreview(){
+  const box=document.querySelector(".reflection-completeness-preview"); if(!box) return;
+  const items=[["Description",!!document.getElementById("answer")?.value.trim()],["Reflection",!!document.getElementById("learningText")?.value.trim()],["Theory",document.querySelectorAll(".theory-chip.selected").length>0],["Values",document.querySelectorAll(".value-chip.selected").length>0],["Use of self",!!document.getElementById("useOfSelf")?.value.trim()],["Future practice",!!document.getElementById("futurePractice")?.value.trim()]];
+  box.innerHTML=items.map(([label,done])=>`<span class="${done?"complete":""}">${done?"✓":"○"} ${label}</span>`).join("");
+}
+
 function bind(){
   document.getElementById("startJournal")?.addEventListener("click",()=>{route="journal";render()});
   document.getElementById("openEvidence")?.addEventListener("click",evidenceBankPage);
@@ -1455,7 +1565,14 @@ function bind(){
   document.getElementById("adjustHours")?.addEventListener("click",()=>{const v=prompt("Enter total completed placement hours:",hours()); if(v!==null&&!isNaN(Number(v))){state.set("hours",Number(v));render()}});
   document.getElementById("saveEntry")?.addEventListener("click",saveEntry);
   document.querySelectorAll(".mood-chip").forEach(btn=>btn.onclick=()=>{document.querySelectorAll(".mood-chip").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");document.getElementById("mood").value=btn.dataset.mood;});
-  document.querySelectorAll(".select-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
+  document.querySelectorAll(".select-chip").forEach(btn=>btn.onclick=()=>{btn.classList.toggle("selected");updateReflectionPreview();});
+  document.querySelectorAll(".add-custom-chip").forEach(btn=>btn.onclick=()=>{
+    const type=btn.dataset.target, input=document.getElementById(type==="theory"?"customTheory":"customValue");
+    const value=input?.value.trim(); if(!value) return;
+    const holder=document.getElementById(type==="theory"?"customTheoryChips":"customValueChips");
+    const chip=document.createElement("button");chip.type="button";chip.className=`select-chip ${type}-chip selected`;chip.dataset.value=value;chip.textContent=value;chip.onclick=()=>{chip.classList.toggle("selected");updateReflectionPreview();};holder.appendChild(chip);input.value="";updateReflectionPreview();
+  });
+  ["answer","learningText","useOfSelf","futurePractice"].forEach(id=>document.getElementById(id)?.addEventListener("input",updateReflectionPreview));
   document.getElementById("openCurrentAssessment")?.addEventListener("click",e=>assessmentDetail(e.currentTarget.dataset.id));
   document.getElementById("openEvidenceMap")?.addEventListener("click",()=>evidenceMapPage());
   document.getElementById("openFramework")?.addEventListener("click",()=>frameworkPage());
