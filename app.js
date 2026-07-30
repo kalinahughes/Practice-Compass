@@ -972,38 +972,38 @@ function todayPage(){
 }
 
 let lastSavedReflection=null;
-const reflectionTheoryOptions=["Recovery Oriented Practice","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Systems Theory","Ecological Systems Theory","CHIME","Motivational Interviewing","Solution Focused Practice","Narrative Practice","Anti Oppressive Practice","Rights Based Practice","Crisis Intervention","Feminist Social Work","Intersectionality","Critical Social Work","Empowerment Theory","Social Constructionism","Family Systems Theory","Relational Practice","Task Centred Practice"];
-const reflectionCodeValues=["Respect for Persons","Social Justice","Professional Integrity"];
-const reflectionEthicsOptions=["Self Determination","Human Rights","Dignity","Informed Consent","Confidentiality","Privacy","Professional Boundaries","Duty of Care","Supported Decision Making","Cultural Safety","Advocacy","Equity","Accountability","Dignity of Risk","Consumer Autonomy and Choice","Transparency","Least Restrictive Practice","Ethical Use of Power","Cultural Humility"];
+const reflectionTheoryOptions=["Recovery Oriented Practice","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Systems Theory","Ecological Systems Theory","CHIME","Motivational Interviewing","Solution Focused Practice","Narrative Practice","Anti Oppressive Practice","Rights Based Practice","Crisis Intervention"];
+const reflectionCodeValues=["Respect for Persons","Social Justice","AASW Code of Ethics"];
+const reflectionEthicsOptions=["Self Determination","Human Rights","Dignity","Informed Consent","Confidentiality","Privacy","Professional Boundaries","Duty of Care","Supported Decision Making","Cultural Safety","Advocacy","Equity","Accountability","Supported Decision Making"];
 const reflectionStandards=[
   ["1","Values and ethics"],["2","Professional conduct"],["3","Culturally responsive and inclusive practice"],["4","Knowledge for practice"],["5","Applying knowledge to practice"],["6","Communication and interpersonal skills"],["7","Information recording and sharing"],["8","Professional development and supervision"],["9","Professional leadership"]
 ];
 const reflectionTheoryContextMap={
-  "Recovery group":["Recovery Oriented Practice","CHIME","Strengths Based Practice","Person Centred Practice","Empowerment Theory","Relational Practice"],
-  "One to one conversation":["Person Centred Practice","Strengths Based Practice","Motivational Interviewing","Trauma Informed Practice","Relational Practice","Social Constructionism"],
-  "Documentation":["Systems Theory","Rights Based Practice","Anti Oppressive Practice","Critical Social Work","Social Constructionism"],
-  "Risk assessment":["Crisis Intervention","Trauma Informed Practice","Rights Based Practice","Systems Theory","Critical Social Work","Intersectionality"],
-  "Safety planning":["Crisis Intervention","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Empowerment Theory","Task Centred Practice"],
-  "Group facilitation":["Recovery Oriented Practice","CHIME","Strengths Based Practice","Person Centred Practice","Relational Practice","Empowerment Theory"],
-  "Home visit":["Ecological Systems Theory","Systems Theory","Trauma Informed Practice","Strengths Based Practice","Family Systems Theory","Intersectionality"],
-  "MDT":["Systems Theory","Ecological Systems Theory","Rights Based Practice","Anti Oppressive Practice","Critical Social Work","Relational Practice"],
-  "Assessment":["Person Centred Practice","Strengths Based Practice","Systems Theory","Ecological Systems Theory","Family Systems Theory","Intersectionality"],
-  "Advocacy":["Rights Based Practice","Anti Oppressive Practice","Systems Theory","Strengths Based Practice","Feminist Social Work","Critical Social Work","Empowerment Theory","Intersectionality"],
-  "Community engagement":["Ecological Systems Theory","Systems Theory","Anti Oppressive Practice","Rights Based Practice","Critical Social Work","Empowerment Theory","Intersectionality"],
-  "Crisis":["Crisis Intervention","Trauma Informed Practice","Person Centred Practice","Strengths Based Practice","Task Centred Practice","Intersectionality"],
-  "Other":["Person Centred Practice","Strengths Based Practice","Systems Theory","Social Constructionism","Relational Practice"]
+  "Recovery group":["Recovery Oriented Practice","CHIME","Strengths Based Practice","Person Centred Practice"],
+  "One to one conversation":["Person Centred Practice","Strengths Based Practice","Motivational Interviewing","Trauma Informed Practice"],
+  "Documentation":["Systems Theory","Rights Based Practice","Anti Oppressive Practice"],
+  "Risk assessment":["Crisis Intervention","Trauma Informed Practice","Rights Based Practice","Systems Theory"],
+  "Safety planning":["Crisis Intervention","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice"],
+  "Group facilitation":["Recovery Oriented Practice","CHIME","Strengths Based Practice","Person Centred Practice"],
+  "Home visit":["Ecological Systems Theory","Systems Theory","Trauma Informed Practice","Strengths Based Practice"],
+  "MDT":["Systems Theory","Ecological Systems Theory","Rights Based Practice","Anti Oppressive Practice"],
+  "Assessment":["Person Centred Practice","Strengths Based Practice","Systems Theory","Ecological Systems Theory"],
+  "Advocacy":["Rights Based Practice","Anti Oppressive Practice","Systems Theory","Strengths Based Practice"],
+  "Community engagement":["Ecological Systems Theory","Systems Theory","Anti Oppressive Practice","Rights Based Practice"],
+  "Crisis":["Crisis Intervention","Trauma Informed Practice","Person Centred Practice","Strengths Based Practice"],
+  "Other":["Person Centred Practice","Strengths Based Practice","Systems Theory"]
 };
 const reflectionEthicsContextMap={
-  "Choice":["Respect for Persons","Self Determination","Supported Decision Making","Informed Consent","Consumer Autonomy and Choice","Dignity of Risk","Least Restrictive Practice"],
-  "Respect":["Respect for Persons","Dignity","Human Rights","Equity","Cultural Humility"],
-  "Safety":["Professional Integrity","Duty of Care","Supported Decision Making","Accountability","Dignity of Risk","Least Restrictive Practice"],
-  "Trust":["Professional Integrity","Confidentiality","Privacy","Accountability","Transparency"],
-  "Confidentiality":["Professional Integrity","Confidentiality","Privacy","Informed Consent","Transparency"],
-  "Boundaries":["Professional Integrity","Professional Boundaries","Accountability","Duty of Care","Ethical Use of Power","Transparency"],
-  "Advocacy":["Social Justice","Advocacy","Equity","Human Rights","Ethical Use of Power"],
-  "Culture":["Respect for Persons","Cultural Safety","Cultural Humility","Equity","Self Determination","Ethical Use of Power"],
-  "Rights":["Social Justice","Human Rights","Self Determination","Advocacy","Consumer Autonomy and Choice","Least Restrictive Practice"],
-  "Relationships":["Respect for Persons","Dignity","Professional Boundaries","Professional Integrity","Transparency","Ethical Use of Power"]
+  "Choice":["Respect for Persons","Self Determination","Supported Decision Making","Informed Consent","Supported Decision Making"],
+  "Respect":["Respect for Persons","Dignity","Human Rights","Equity"],
+  "Safety":["AASW Code of Ethics","Duty of Care","Supported Decision Making","Accountability"],
+  "Trust":["AASW Code of Ethics","Confidentiality","Privacy","Accountability"],
+  "Confidentiality":["AASW Code of Ethics","Confidentiality","Privacy","Informed Consent"],
+  "Boundaries":["AASW Code of Ethics","Professional Boundaries","Accountability","Duty of Care"],
+  "Advocacy":["Social Justice","Advocacy","Equity","Human Rights"],
+  "Culture":["Respect for Persons","Cultural Safety","Equity","Self Determination"],
+  "Rights":["Social Justice","Human Rights","Self Determination","Advocacy"],
+  "Relationships":["Respect for Persons","Dignity","Professional Boundaries","Trust"]
 };
 const reflectionStandardContextMap={
   "Observed practice":["Practice Standard 4: Knowledge for practice","Practice Standard 5: Applying knowledge to practice","Practice Standard 8: Professional development and supervision"],
@@ -1034,15 +1034,7 @@ const reflectionConceptInfo={
   "Crisis Intervention":["Prioritises immediate safety, stabilisation and practical support during acute distress.","Your reflection may involve risk, de escalation, safety planning or urgent coordination.","Risk & Safety Planning"],
   "Respect for Persons":["Recognises each person’s inherent dignity, worth and right to participate in decisions.","This may relate where you listened, respected choice or adjusted practice to the person.","AASW Code of Ethics"],
   "Social Justice":["Focuses on fairness, access, participation and challenging structural disadvantage.","This may relate where barriers, inequity, advocacy or resource access were present.","AASW Code of Ethics"],
-  "Professional Integrity":["Requires honest, accountable and ethically responsible professional practice.","This may relate where boundaries, transparency, supervision, use of power or professional judgement were important.","AASW Code of Ethics"],
-  "Feminist Social Work":["Examines how gender, power and structural inequality shape lived experience and service responses.","Your reflection may involve gendered expectations, violence, inequality, voice or access to resources.","Feminist Social Work"],
-  "Intersectionality":["Explores how overlapping identities and systems of power shape different experiences of advantage and disadvantage.","Your reflection may involve mental health alongside gender, culture, disability, poverty, housing, DFV or other social locations.","Intersectionality"],
-  "Critical Social Work":["Connects individual experiences with power, policy, institutions and broader social structures.","Your reflection may involve questioning organisational practice, dominant assumptions or structural causes of distress.","Critical Social Work"],
-  "Empowerment Theory":["Supports people to strengthen control, participation and influence over decisions affecting their lives.","Your reflection may involve shared decision making, advocacy, confidence, resources or reducing professional power.","Empowerment Theory"],
-  "Social Constructionism":["Considers how language, relationships and social contexts shape what is understood as normal, true or possible.","Your reflection may involve labels, assumptions, dominant stories or how different people understood the same experience.","Social Constructionism"],
-  "Family Systems Theory":["Understands individuals as part of interconnected family relationships, roles and patterns.","Your reflection may involve family dynamics, boundaries, communication, caregiving or how change affects the wider family system.","Systems & Ecological Theory"],
-  "Relational Practice":["Recognises that trust, connection and the helping relationship are central to meaningful practice.","Your reflection may involve rapport, presence, empathy, repair, boundaries or how the relationship influenced engagement.","Use of Self"],
-  "Task Centred Practice":["Uses collaborative, practical and time limited steps to address clearly identified concerns.","Your reflection may involve shared goals, manageable actions, review or building progress through small steps.","Task Centred Practice"]
+  "AASW Code of Ethics":["Requires accountable, honest and ethically responsible professional practice.","This may relate where boundaries, transparency, supervision or professional judgement were important.","AASW Code of Ethics"]
 };
 function reflectionQuestionForToday(){const d=new Date();const seed=Number(`${d.getFullYear()}${d.getMonth()+1}${d.getDate()}`);return deeperReflectionQuestions[seed%deeperReflectionQuestions.length];}
 function orderedReflectionTheories(entries){const counts={};entries.forEach(e=>(e.theories||[]).forEach(x=>counts[x]=(counts[x]||0)+1));return [...reflectionTheoryOptions].sort((a,b)=>(counts[b]||0)-(counts[a]||0));}
@@ -1800,31 +1792,20 @@ function suggestionReason(value){
   if(value.startsWith("Practice Standard"))return "This may relate because the activity you selected can demonstrate this area of professional practice. You decide whether it genuinely fits your reflection.";
   return "This may relate to the experience you selected. Choose it only if it helps explain what happened or why it mattered.";
 }
-function reflectionSelectedValues(type){
-  const selector=type==="theory"?".theory-chip.selected":type==="standard"?".standard-chip.selected":".value-chip.selected, .ethics-chip.selected";
-  return [...document.querySelectorAll(selector)].map(x=>x.dataset.value);
-}
-function renderProgressiveSuggestions(targetId,items,type,selectedValues=[]){
+function renderProgressiveSuggestions(targetId,items,type){
   const target=document.getElementById(targetId);if(!target)return;
   const cls=type==="theory"?"theory-chip concept-chip":type==="standard"?"standard-chip":"";
-  const selected=new Set(selectedValues);
-  const uniqueItems=[...new Set([...items,...selectedValues])];
-  if(!uniqueItems.length){target.classList.add("hidden");target.innerHTML="";return;}
   target.classList.remove("hidden");
-  target.innerHTML=`<p class="suggestion-intro">These may relate. You can choose more than one experience and select everything that genuinely fits.</p><div class="suggestion-stack">${uniqueItems.map(value=>{
-    const isValue=reflectionCodeValues.includes(value);
+  target.innerHTML=`<p class="suggestion-intro">These may relate. Select only what genuinely fits.</p><div class="suggestion-stack">${items.map(value=>{
+    const isValue=reflectionCodeValues.includes(value), isEthics=reflectionEthicsOptions.includes(value);
     const chipClass=type==="ethics"?(isValue?"value-chip concept-chip":"ethics-chip concept-chip"):cls;
-    return `<article class="suggestion-item"><button type="button" class="select-chip ${chipClass}${selected.has(value)?" selected":""}" data-value="${safeText(value)}"><span>${safeText(value)}</span></button><p>${safeText(suggestionReason(value))}</p>${type!=="standard"?`<button type="button" class="text-link suggestion-learn" data-topic="${safeText(value)}">📚 Learn More</button>`:""}</article>`;
+    return `<article class="suggestion-item"><button type="button" class="select-chip ${chipClass}" data-value="${safeText(value)}"><span>${safeText(value)}</span></button><p>${safeText(suggestionReason(value))}</p>${type!=="standard"?`<button type="button" class="text-link suggestion-learn" data-topic="${safeText(value)}">📚 Learn More</button>`:""}</article>`;
   }).join("")}</div>`;
   target.querySelectorAll(".select-chip").forEach(btn=>btn.onclick=()=>{btn.classList.toggle("selected");if(btn.classList.contains("concept-chip"))showReflectionConcept(btn.dataset.value);});
   target.querySelectorAll(".suggestion-learn").forEach(btn=>btn.onclick=()=>{const info=reflectionConceptInfo[btn.dataset.topic];openToolkitTopicByName(info?info[2]:btn.dataset.topic);});
 }
 function selectReflectionContext(button,selector,map,targetId,type){
-  const selectedValues=reflectionSelectedValues(type);
-  button.classList.toggle("selected");
-  const contexts=[...document.querySelectorAll(`${selector}.selected`)].map(x=>x.dataset.context);
-  const suggestions=[...new Set(contexts.flatMap(context=>map[context]||[]))];
-  renderProgressiveSuggestions(targetId,suggestions,type,selectedValues);
+  document.querySelectorAll(selector).forEach(x=>x.classList.remove("selected"));button.classList.add("selected");renderProgressiveSuggestions(targetId,map[button.dataset.context]||[],type);
 }
 
 function showReflectionConcept(value){

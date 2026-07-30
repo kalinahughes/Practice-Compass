@@ -2174,3 +2174,29 @@ body,
 .companion-future label span,.companion-supervision label span,.companion-deeper-card label span{font-size:.84rem;color:var(--muted);font-weight:400}
 .companion-future .textarea,.companion-supervision .textarea,.companion-deeper-card .textarea{margin-top:10px}
 @media(max-width:520px){.companion-help-card>summary{padding:16px 0}.choice-chip-grid{gap:7px}.context-chip{padding:8px 10px}.suggestion-item{padding:13px}}
+
+/* Home Hours Quick Entry */
+.home-hours-card{padding:20px}
+.home-hours-icon{font-size:23px;line-height:1}
+.home-hours-reminder{margin:14px 0 0;padding:11px 13px;border-radius:14px;background:var(--sage-soft,#edf3ed);color:var(--muted);font-size:.88rem;line-height:1.4}
+.home-hours-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:17px;align-items:end}
+.home-hours-form label:not(.home-hours-checkbox){display:grid;gap:6px}
+.home-hours-form label>span{font-size:.78rem;font-weight:750;color:var(--muted)}
+.home-hours-form .input{margin:0;min-width:0}
+.home-hours-checkbox{display:flex;align-items:center;gap:9px;min-height:44px;color:var(--charcoal);font-size:.9rem;font-weight:650}
+.home-hours-checkbox input{width:18px;height:18px;accent-color:var(--forest,var(--eucalyptus-deep))}
+.home-hours-save{margin:0;width:100%;min-height:44px}
+.home-hours-recent{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+.home-hours-recent-title{display:block;margin-bottom:5px;color:var(--muted);font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.home-hours-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);color:var(--charcoal);font-size:.88rem}
+.home-hours-row:last-child{border-bottom:0;padding-bottom:0}
+.home-hours-edit-link{border:0;background:transparent;color:var(--forest,var(--eucalyptus-deep));font:inherit;font-size:.85rem;font-weight:750;padding:5px;cursor:pointer}
+.home-hours-logged{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 20px;background:var(--sage-soft,#edf3ed)}
+.home-hours-logged-copy{display:flex;align-items:center;gap:12px}
+.home-hours-check{font-size:20px}
+.home-hours-logged h2{margin:3px 0 0;font-size:17px;color:var(--brown-deep,var(--charcoal))}
+@media(max-width:520px){
+  .home-hours-form{grid-template-columns:1fr}
+  .home-hours-checkbox{min-height:auto;padding:3px 0}
+  .home-hours-logged{align-items:flex-start}
+}
