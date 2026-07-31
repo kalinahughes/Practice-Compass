@@ -769,6 +769,8 @@ function frameworkDevelopmentData(){return state.get("frameworkDevelopment",{});
 function saveFrameworkDevelopmentData(data){state.set("frameworkDevelopment",data);}
 function frameworkEvidenceLinksData(){return state.get("frameworkEvidenceLinks",{});}
 function saveFrameworkEvidenceLinksData(data){state.set("frameworkEvidenceLinks",data);}
+function frameworkSummaryData(){return state.get("frameworkSummary",{vision:"",purpose:"",values:"",theories:"",tools:"",reflection:""});}
+function saveFrameworkSummaryData(data){state.set("frameworkSummary",data);}
 function normaliseFrameworkEvidenceArea(value){
   const area=value&&typeof value==="object"?value:{};
   return {
@@ -1656,6 +1658,26 @@ function frameworkPage(){
     const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
     return sum+linked.reflectionIds.length+linked.supervisionIds.length+linked.manualExamples.length;
   },0);
+  const summary=frameworkSummaryData();
+  const developmentAnswer=id=>String((development[id]||{}).answer||"").trim();
+  const joinSuggestions=items=>items.filter(Boolean).join("\n\n");
+  const summarySuggestions={
+    vision:joinSuggestions([developmentAnswer("identity"),developmentAnswer("development"),data.professionalIdentity]),
+    purpose:joinSuggestions([developmentAnswer("identity"),developmentAnswer("framework")]),
+    values:joinSuggestions([developmentAnswer("dignity"),developmentAnswer("selfDetermination"),developmentAnswer("strengths"),developmentAnswer("culture"),developmentAnswer("justice"),(data.values||[]).length?`Values already selected: ${(data.values||[]).join(", ")}`:""]),
+    theories:joinSuggestions([developmentAnswer("theories"),(data.theories||[]).length?`Theories and approaches already selected: ${(data.theories||[]).join(", ")}`:""]),
+    tools:joinSuggestions([developmentAnswer("tools"),developmentAnswer("relationships"),(data.skills||[]).length?`Developing skills already selected: ${(data.skills||[]).join(", ")}`:""]),
+    reflection:joinSuggestions([developmentAnswer("reflection"),developmentAnswer("development"),data.useOfSelf])
+  };
+  const summaryFields=[
+    {id:"vision",title:"Vision",starter:"The social worker I aspire to become is…",prompt:"Describe the practitioner you are becoming and how you want people to experience you."},
+    {id:"purpose",title:"Purpose",starter:"I practise social work because…",prompt:"What draws you to social work and what difference do you hope to make?"},
+    {id:"values",title:"Values",starter:"The principles that guide me are…",prompt:"Name the values that shape how you engage, decide and advocate."},
+    {id:"theories",title:"Theories",starter:"The theories that shape my understanding are…",prompt:"Include only theories and frameworks you can connect to your actual practice."},
+    {id:"tools",title:"Practice tools",starter:"The approaches I use in practice are…",prompt:"Describe how your values and theories translate into practical social work activity."},
+    {id:"reflection",title:"Reflection and accountability",starter:"I remain accountable by…",prompt:"Explain how reflection, supervision, feedback and ongoing learning guide your practice."}
+  ];
+  const summaryEditor=summaryFields.map(field=>`<section class="framework-summary-editor-field"><div class="framework-summary-editor-heading"><div><strong>${field.title}</strong><small>${field.starter}</small></div>${summarySuggestions[field.id]?`<button type="button" class="framework-use-notes" data-summary-notes="${field.id}">Use my saved notes</button>`:""}</div><p>${field.prompt}</p><textarea class="textarea framework-summary-text" id="frameworkSummary-${field.id}" placeholder="Write this in your own words. You can keep changing it as placement develops.">${safeText(summary[field.id]||"")}</textarea>${summarySuggestions[field.id]?`<details class="framework-summary-notes"><summary>See the notes this draws from</summary><div>${safeText(summarySuggestions[field.id]).replace(/\n/g,"<br>")}</div></details>`:""}</section>`).join("");
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
@@ -1679,7 +1701,15 @@ function frameworkPage(){
     <details class="framework-calm-details" id="frameworkSummarySection">
       <summary><span><strong>My emerging framework</strong><small>A summary drawn from your saved reflections and personal additions</small></span><span>›</span></summary>
       <div class="framework-calm-details-body">
-        ${evidencedItems.length?`${groupSection("values",intelligence.groups.values)}${groupSection("theories",intelligence.groups.theories)}${groupSection("models",intelligence.groups.models)}${groupSection("skills",intelligence.groups.skills)}${groupSection("useOfSelf",intelligence.groups.useOfSelf)}`:`<p class="muted">Your summary will appear as you save reflections and link evidence.</p>`}
+        <section class="framework-six-part-summary">
+          <div class="framework-six-part-intro"><strong>My six part framework</strong><p>This is an editable working summary, not a final assessment response. Use your saved notes as prompts, then shape the wording so it sounds like you.</p></div>
+          ${summaryEditor}
+          <button type="button" class="btn framework-summary-save" id="saveFrameworkSummary">Save emerging framework</button>
+        </section>
+        <details class="framework-existing-signals">
+          <summary>Values, theories and skills already appearing</summary>
+          <div>${evidencedItems.length?`${groupSection("values",intelligence.groups.values)}${groupSection("theories",intelligence.groups.theories)}${groupSection("models",intelligence.groups.models)}${groupSection("skills",intelligence.groups.skills)}${groupSection("useOfSelf",intelligence.groups.useOfSelf)}`:`<p class="muted">These will appear as you save reflections and link evidence.</p>`}</div>
+        </details>
         <details class="framework-personal-additions-simple">
           <summary>Personal additions</summary>
           <div class="framework-manual-body">
@@ -1704,6 +1734,22 @@ function frameworkPage(){
   document.getElementById("continueFramework").onclick=()=>document.getElementById("frameworkDevelopmentSection").scrollIntoView({behavior:"smooth",block:"start"});
   document.getElementById("openFrameworkSummary").onclick=()=>{const el=document.getElementById("frameworkSummarySection");el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};
   document.getElementById("openFrameworkGaps").onclick=()=>{const el=document.getElementById("frameworkGapsSection");el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};
+  document.querySelectorAll(".framework-use-notes").forEach(button=>button.addEventListener("click",()=>{
+    const id=button.dataset.summaryNotes;
+    const textarea=document.getElementById(`frameworkSummary-${id}`);
+    const notes=summarySuggestions[id]||"";
+    if(!textarea||!notes)return;
+    if(textarea.value.trim()&&!confirm("Replace the current wording with your saved notes?"))return;
+    textarea.value=notes;
+    textarea.focus();
+  }));
+  document.getElementById("saveFrameworkSummary")?.addEventListener("click",()=>{
+    const next={};
+    summaryFields.forEach(field=>next[field.id]=document.getElementById(`frameworkSummary-${field.id}`).value.trim());
+    saveFrameworkSummaryData(next);
+    alert("Your emerging framework has been saved 🧭");
+    frameworkPage();
+  });
   document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
   const workingEvidence={};
   practiceFrameworkDevelopmentAreas.forEach(area=>workingEvidence[area.id]=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]));

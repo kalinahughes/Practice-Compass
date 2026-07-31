@@ -2364,3 +2364,29 @@ body,
   .framework-linked-row{grid-template-columns:22px minmax(0,1fr)}
   .framework-linked-row .framework-remove-example{grid-column:2;justify-self:start;padding:0}
 }
+
+/* Emerging Framework Summary Sprint */
+.framework-six-part-summary{display:grid;gap:0;margin-bottom:18px}
+.framework-six-part-intro{padding:2px 0 16px}
+.framework-six-part-intro>strong{display:block;color:var(--charcoal);font-size:18px;font-weight:650}
+.framework-six-part-intro p{margin:7px 0 0;color:var(--muted);font-size:14px;line-height:1.55}
+.framework-summary-editor-field{padding:18px 0;border-top:1px solid #e5e9e4}
+.framework-summary-editor-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.framework-summary-editor-heading>div{display:grid;gap:4px}
+.framework-summary-editor-heading strong{color:var(--charcoal);font-size:16px;font-weight:650}
+.framework-summary-editor-heading small{color:#607068;font-size:13px;line-height:1.4}
+.framework-summary-editor-field>p{margin:10px 0;color:var(--muted);font-size:13px;line-height:1.5}
+.framework-summary-text{min-height:116px;background:#fff}
+.framework-use-notes{flex:0 0 auto;border:0;background:transparent;color:#315b45;padding:2px 0;font-size:12px;font-weight:700}
+.framework-summary-notes{margin-top:10px;padding:0;border:0}
+.framework-summary-notes>summary{cursor:pointer;color:#59655d;font-size:12px;font-weight:650;list-style:none}
+.framework-summary-notes>summary::-webkit-details-marker{display:none}
+.framework-summary-notes>div{margin-top:9px;padding:12px;border-radius:12px;background:#f3f6f2;color:#5e6861;font-size:12px;line-height:1.55}
+.framework-summary-save{margin-top:6px}
+.framework-existing-signals{margin:10px 0 0;border-top:1px solid #e5e9e4}
+.framework-existing-signals>summary{padding:17px 0;cursor:pointer;color:#405149;font-size:14px;font-weight:650;list-style:none}
+.framework-existing-signals>summary::-webkit-details-marker{display:none}
+.framework-existing-signals>summary:after{content:"⌄";float:right;color:var(--muted)}
+.framework-existing-signals[open]>summary:after{content:"⌃"}
+.framework-existing-signals>div{padding-bottom:12px}
+@media(max-width:420px){.framework-summary-editor-heading{display:grid;gap:8px}.framework-use-notes{justify-self:start}.framework-summary-text{min-height:132px}}
