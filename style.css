@@ -2488,3 +2488,33 @@ body,
   .reflection-insight-collapsible>summary,.reflection-library-summary{padding:16px}
   .reflection-insight-body,.reflection-library-body{padding:0 16px 16px}
 }
+
+/* My Placement streamlining: assessment focused, less duplication and scrolling */
+.placement-native-heading-compact{margin-bottom:20px}
+.placement-native-heading-compact p{margin-top:7px}
+.placement-native-overview-compact{margin-bottom:30px;padding:19px 20px}
+.placement-overview-line{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(110px,.8fr);gap:18px;padding-bottom:15px;border-bottom:1px solid #edf0ec}
+.placement-overview-line>div,.placement-hours-line>span{display:grid;gap:3px;min-width:0}
+.placement-overview-line span,.placement-hours-line small{color:#748078;font-size:12px;font-weight:530}
+.placement-overview-line strong{color:#253029;font-size:17px;font-weight:650;line-height:1.3}
+.placement-overview-line small{color:#65736a;font-size:12px;line-height:1.35}
+.placement-hours-line{display:grid;grid-template-columns:.8fr 1.4fr;gap:18px;padding-top:15px}
+.placement-hours-line strong{color:#303733;font-size:15px;font-weight:620;line-height:1.35}
+.placement-hours-line>span:first-child strong{color:#315b45;font-size:18px}
+.placement-native-overview-compact .placement-native-hours-track{height:6px;margin-top:15px}
+.placement-native-section{margin-bottom:32px}
+.placement-native-section-heading{margin-bottom:11px}
+.placement-native-records-compact{margin-top:0;padding-top:0}
+.placement-native-records-compact>h2{margin-bottom:9px;font-size:21px}
+.placement-record-list{overflow:hidden;border:1px solid #e8ece8;border-radius:18px;background:#fff}
+.placement-record-list .native-record-row{padding:14px 15px}
+.placement-record-list .native-record-row:last-child{border-bottom:0}
+.placement-record-list .native-record-icon{width:36px;height:36px;border-radius:12px;font-size:18px}
+.placement-record-list .native-record-row strong{font-size:15px}
+.placement-record-list .native-record-row small{font-size:12px}
+@media(max-width:520px){
+  .placement-native-overview-compact{padding:17px 16px;margin-bottom:26px}
+  .placement-overview-line{grid-template-columns:1fr auto;gap:14px}
+  .placement-hours-line{grid-template-columns:1fr;gap:12px}
+  .placement-native-section{margin-bottom:28px}
+}

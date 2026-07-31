@@ -1154,8 +1154,11 @@ function assessmentPage(){
   const orderedAssessments=assessmentPriority(info,h)
     .map(id=>assessments.find(item=>item.id===id))
     .filter(Boolean);
-  const activeAssessments=orderedAssessments.filter(a=>assessmentOverallStatus(a)!=="complete");
-  const completedAssessments=orderedAssessments.filter(a=>assessmentOverallStatus(a)==="complete");
+  // Timesheets remain available through Home quick entry and Placement records.
+  // They are not repeated in the assessment list.
+  const visibleAssessments=orderedAssessments.filter(a=>a.id!=="timesheets");
+  const activeAssessments=visibleAssessments.filter(a=>assessmentOverallStatus(a)!=="complete");
+  const completedAssessments=visibleAssessments.filter(a=>assessmentOverallStatus(a)==="complete");
 
   const assessmentRow=a=>{
     const status=assessmentOverallStatus(a);
@@ -1189,29 +1192,27 @@ function assessmentPage(){
 
   return `
     <div class="placement-native-calm">
-      <section class="placement-native-heading">
+      <section class="placement-native-heading placement-native-heading-compact">
         <div class="eyebrow">🌱 Placement</div>
         <h1>My Placement</h1>
-        <p>Everything you need to keep moving, without the noise.</p>
+        <p>Assessment progress, evidence and placement records.</p>
       </section>
 
-      <section class="placement-native-overview" aria-label="Placement overview">
-        <div class="placement-native-primary">
-          <span>Organisation</span>
-          <strong>Mind Australia</strong>
-          <small>Step Up Step Down</small>
+      <section class="placement-native-overview placement-native-overview-compact" aria-label="Placement overview">
+        <div class="placement-overview-line">
+          <div><span>Placement</span><strong>Mind Australia</strong><small>Step Up Step Down</small></div>
+          <div><span>${info.started?"Current week":"Starts"}</span><strong>${placementTiming}</strong></div>
         </div>
-        <div class="placement-native-facts">
-          <div><span>Current stage</span><strong>${stage.title}</strong></div>
-          <div><span>${info.started?"Placement week":"Placement start"}</span><strong>${placementTiming}</strong></div>
-          <div class="placement-native-hours"><span>Hours completed</span><strong>${hoursStarted?h.toFixed(2):"Not started"}</strong>${hoursStarted?`<small>of 500 hours</small>`:`<small>🌱 Your placement journey begins soon.</small>`}</div>
+        <div class="placement-hours-line">
+          <span><small>Hours</small><strong>${hoursStarted?`${h.toFixed(1)} / 500`:"Not started"}</strong></span>
+          <span><small>Stage</small><strong>${stage.title}</strong></span>
         </div>
         ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/TOTAL_HOURS)*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>`:""}
       </section>
 
       <section class="placement-native-section">
         <div class="placement-native-section-heading">
-          <div><span aria-hidden="true">🗂️</span><h2>Assessments</h2></div>
+          <div><span aria-hidden="true">🗂️</span><h2>Assessment work</h2></div>
           ${!activeAssessments.length?`<p>✨ Progress will appear once you begin.</p>`:""}
         </div>
         <div class="native-assessment-list">${standardAssessments.map(assessmentRow).join("")}</div>
@@ -1219,10 +1220,12 @@ function assessmentPage(){
         ${completedAssessments.length?`<details class="placement-native-completed"><summary>Completed <span>${completedAssessments.length}</span></summary><div class="native-assessment-list">${completedAssessments.map(assessmentRow).join("")}</div></details>`:""}
       </section>
 
-      <section class="placement-native-records">
-        <h2>Placement records</h2>
-        <button class="native-record-row" id="openSupervision"><span class="native-record-icon">🤝</span><span><strong>Supervision</strong><small>Questions, feedback and actions</small></span><b>›</b></button>
-        <button class="native-record-row" id="openTimesheets"><span class="native-record-icon">⏱️</span><span><strong>Timesheets and hours</strong><small>Daily activities and hour records</small></span><b>›</b></button>
+      <section class="placement-native-records placement-native-records-compact">
+        <h2>Records</h2>
+        <div class="placement-record-list">
+          <button class="native-record-row" id="openSupervision"><span class="native-record-icon">🤝</span><span><strong>Supervision</strong><small>Questions, feedback and actions</small></span><b>›</b></button>
+          <button class="native-record-row" id="openTimesheets"><span class="native-record-icon">⏱️</span><span><strong>Timesheets and hours</strong><small>${hoursStarted?`${h.toFixed(1)} hours logged · open full record`:"Open full record"}</small></span><b>›</b></button>
+        </div>
       </section>
     </div>`;
 }
