@@ -2200,3 +2200,39 @@ body,
   .home-hours-checkbox{min-height:auto;padding:3px 0}
   .home-hours-logged{align-items:flex-start}
 }
+
+/* Sprint 1: Practice Framework Foundation */
+.framework-foundation-section{margin:22px 0 28px}
+.framework-foundation-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 2px 13px}
+.framework-foundation-heading h3{margin:5px 0 0;color:var(--charcoal);font-size:21px;font-weight:650}
+.framework-foundation-heading>span{flex:0 0 auto;color:var(--muted);font-size:12px}
+.framework-foundation-list{overflow:hidden;border:1px solid #e3e8e2;border-radius:20px;background:#fff}
+.framework-foundation-item{border-bottom:1px solid #e7ebe6}
+.framework-foundation-item:last-child{border-bottom:0}
+.framework-foundation-item>summary{display:grid;grid-template-columns:42px minmax(0,1fr) 18px;gap:12px;align-items:start;padding:17px 15px;cursor:pointer;list-style:none}
+.framework-foundation-item>summary::-webkit-details-marker{display:none}
+.framework-foundation-item[open]>summary{background:#f7f9f6}
+.framework-foundation-icon{display:grid;width:42px;height:42px;place-items:center;border-radius:14px;background:#edf3ec;font-size:20px}
+.framework-foundation-copy{display:grid;min-width:0;gap:4px}
+.framework-foundation-copy strong{color:var(--charcoal);font-size:16px;font-weight:640;line-height:1.35}
+.framework-foundation-copy small{color:var(--muted);font-size:12px;line-height:1.45}
+.framework-foundation-copy .status-inline{margin-top:4px}
+.framework-foundation-arrow{align-self:center;color:#647168;font-size:23px;transition:transform .18s ease}
+.framework-foundation-item[open] .framework-foundation-arrow{transform:rotate(90deg)}
+.framework-foundation-body{display:grid;gap:14px;padding:18px 16px 20px;border-top:1px solid #e7ebe6;background:#fff}
+.framework-foundation-prompt{color:#28322c;font-size:17px;font-weight:650;line-height:1.45}
+.framework-foundation-questions{display:grid;gap:7px;padding:13px 14px;border-radius:14px;background:#f2f6f1}
+.framework-foundation-questions span{display:flex;gap:8px;color:#566159;font-size:13px;line-height:1.45}
+.framework-foundation-questions span:before{content:"•";color:#557361;font-weight:800}
+.framework-foundation-body label{display:grid;gap:7px}
+.framework-foundation-body label>span{color:var(--muted);font-size:12px;font-weight:700}
+.framework-foundation-body .textarea{min-height:120px}
+.framework-foundation-body .select{max-width:190px}
+.framework-development-save{margin-top:14px}
+@media(max-width:420px){
+  .framework-foundation-heading{align-items:flex-start;flex-direction:column;gap:6px}
+  .framework-foundation-item>summary{grid-template-columns:38px minmax(0,1fr) 16px;padding:15px 12px}
+  .framework-foundation-icon{width:38px;height:38px;border-radius:12px;font-size:18px}
+  .framework-foundation-body{padding:16px 13px 18px}
+  .framework-foundation-body .select{max-width:none}
+}

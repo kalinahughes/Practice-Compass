@@ -749,6 +749,25 @@ const assessmentRequirements = {
 };
 function frameworkData(){return state.get("framework",{values:[],theories:[],cultural:[],skills:[],useOfSelf:"",professionalIdentity:""});}
 function saveFrameworkData(data){state.set("framework",data);}
+
+const practiceFrameworkDevelopmentAreas = [
+  {id:"identity",icon:"🧭",title:"My social work identity",purpose:"The kind of social worker I hope to become and the purpose guiding my practice.",prompt:"What is my vision for social work practice?",questions:["Why did I choose social work?","How do I want people to experience me as a social worker?","What does ethical and effective practice look like to me?"]},
+  {id:"framework",icon:"🌿",title:"Understanding my practice framework",purpose:"How I understand people, situations and practice decisions.",prompt:"My framework is based on my understanding that…",questions:["How do I understand human behaviour and change?","What beliefs do I hold about people and families?","What influences my practice decisions?"]},
+  {id:"dignity",icon:"🤍",title:"Respect and human dignity",purpose:"The values that guide how I engage with people.",prompt:"What does respecting people mean in my practice?",questions:["How do I help people feel heard and valued?","How do I recognise people as experts in their own lives?","How do I avoid judgement?"]},
+  {id:"selfDetermination",icon:"🗝️",title:"Self determination",purpose:"How I support autonomy, informed choice and participation.",prompt:"How will I support people to have control over decisions affecting their lives?",questions:["How do I balance professional responsibilities with a person's right to choose?","How will I avoid doing things to people rather than with people?","How do I support informed choices?"]},
+  {id:"strengths",icon:"🌱",title:"Strengths based practice",purpose:"How I notice strengths, resilience and possibilities rather than focusing only on problems.",prompt:"How do I recognise strengths?",questions:["What strengths do I notice in individuals, families and communities?","How do I keep assessment from becoming deficit focused?","How do I recognise cultural, family and community strengths?"]},
+  {id:"culture",icon:"🌏",title:"Cultural humility and responsiveness",purpose:"Ongoing reflection about culture, identity, power and difference.",prompt:"How will I practise in culturally safe ways?",questions:["What assumptions or biases might I hold?","How do I learn from people's lived experiences?","How do I recognise historical and systemic experiences?"]},
+  {id:"justice",icon:"⚖️",title:"Social justice and advocacy",purpose:"Connecting individual experiences with broader systems, rights and structural barriers.",prompt:"How will I address systemic barriers?",questions:["What social issues influence the people I work with?","How can I advocate beyond individual support?","How do policies and systems affect people's lives?"]},
+  {id:"theories",icon:"🧠",title:"Theories informing my practice",purpose:"The knowledge and theories that shape how I understand people and situations.",prompt:"Which theories influence how I think and practise?",questions:["What theories help me understand behaviour?","What theories challenge my assumptions?","How do theories influence assessment and intervention?"]},
+  {id:"tools",icon:"🛠️",title:"Practice tools and approaches",purpose:"How theory and values translate into practical social work activity.",prompt:"How will I apply my framework in practice?",questions:["What approaches will I use when engaging with people?","How will I assess needs and strengths?","How will I evaluate whether my approach is helpful?"]},
+  {id:"relationships",icon:"🤝",title:"Relationship based practice",purpose:"The professional relationship as a central part of social work.",prompt:"How will I build meaningful relationships?",questions:["How will I develop trust?","How will I respond when trust has been affected by previous services?","How will I manage professional boundaries?"]},
+  {id:"reflection",icon:"🪞",title:"Reflective practice and supervision",purpose:"Ongoing learning, accountability and critical reflection.",prompt:"How will I continue developing as a practitioner?",questions:["What assumptions influenced my thinking?","Whose voice was centred?","What might I have missed, and what did I learn?"]},
+  {id:"development",icon:"📈",title:"Ongoing professional development",purpose:"The strengths, goals and commitments that will guide my continued growth.",prompt:"What kind of social worker am I becoming?",questions:["What strengths do I bring?","What skills or knowledge do I want to develop?","What commitments will guide my future practice?"]}
+];
+
+function frameworkDevelopmentData(){return state.get("frameworkDevelopment",{});}
+function saveFrameworkDevelopmentData(data){state.set("frameworkDevelopment",data);}
+
 function mappedAssessments(types){const found=new Set();(types||[]).forEach(t=>(evidenceMapRules[t]||[]).forEach(a=>found.add(a)));return [...found];}
 function evidenceCoverage(){const entries=savedEntries(),counts={};Object.keys(assessmentRequirements).forEach(a=>{counts[a]=assessmentRequirements[a].map(r=>({requirement:r,count:entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length}));});return counts;}
 
@@ -1550,6 +1569,7 @@ function practiceFrameworkIntelligence(){
 function frameworkPage(){
   const intelligence=practiceFrameworkIntelligence();
   const data=intelligence.manual;
+  const development=frameworkDevelopmentData();
   const groups={
     values:["Human dignity","Social justice","Self determination","Respect","Hope","Compassion","Accountability","Cultural safety"],
     theories:["Recovery Oriented Practice","Strengths Based Practice","Systems and Ecological Theory","Trauma Informed Practice","Person Centred Practice","Anti Oppressive Practice","Feminist Social Work","Intersectionality","Narrative Practice","Motivational Interviewing"],
@@ -1578,16 +1598,41 @@ function frameworkPage(){
   </details>`;
   const groupSection=(key,map)=>map.size?`<section class="framework-growth-group"><div class="label">${labels[key]}</div><div class="framework-evidence-list">${[...map.values()].map(frameworkItem).join("")}</div></section>`:"";
   const chips=(group,items)=>items.map(v=>`<button class="select-chip framework-chip ${(data[group]||[]).includes(v)?"selected":""}" data-group="${group}" data-value="${v}">${v}</button>`).join("");
+  const developmentRows=practiceFrameworkDevelopmentAreas.map((area,index)=>{
+    const saved=development[area.id]||{};
+    const answer=saved.answer||"";
+    const status=saved.status||(answer?"Developing":"Not started");
+    const statusClass=status==="Evidence added"?"status-complete":status==="Developing"?"status-in-progress":"status-not-started";
+    return `<details class="framework-foundation-item" data-framework-area="${area.id}">
+      <summary>
+        <span class="framework-foundation-icon">${area.icon}</span>
+        <span class="framework-foundation-copy"><strong>${index+1}. ${safeText(area.title)}</strong><small>${safeText(area.purpose)}</small><span class="status-inline ${statusClass}">${safeText(status)}</span></span>
+        <span class="framework-foundation-arrow">›</span>
+      </summary>
+      <div class="framework-foundation-body">
+        <div class="framework-foundation-prompt">${safeText(area.prompt)}</div>
+        <div class="framework-foundation-questions">${area.questions.map(question=>`<span>${safeText(question)}</span>`).join("")}</div>
+        <label><span>My current thinking</span><textarea class="textarea framework-development-answer" placeholder="Add a short thought, example or reflection. You can return to this throughout placement.">${safeText(answer)}</textarea></label>
+        <label><span>Status</span><select class="select framework-development-status"><option ${status==="Not started"?"selected":""}>Not started</option><option ${status==="Developing"?"selected":""}>Developing</option><option ${status==="Evidence added"?"selected":""}>Evidence added</option></select></label>
+      </div>
+    </details>`;
+  }).join("");
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
-    <section class="card green framework-intelligence-hero"><div class="label">How am I developing as a social worker?</div><p>Your framework grows from the reflections and evidence you already save. Capture once, then use it across your placement journey.</p></section>
+    <section class="card green framework-intelligence-hero"><div class="label">How am I developing as a social worker?</div><p>Your practice framework is something you build over time. Add short thoughts and examples as your placement develops.</p></section>
 
-    ${growth.length?`<section class="card framework-growth-summary"><div class="label">You’re demonstrating</div><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></section>`:`<section class="card framework-empty"><div class="label">Your framework will grow here</div><p>Save reflections and choose what they demonstrate. Practice Compass will organise the supporting evidence for you.</p></section>`}
+    <section class="framework-foundation-section">
+      <div class="framework-foundation-heading"><div><span class="label">Developing my practice framework</span><h3>Build it one area at a time</h3></div><span>${practiceFrameworkDevelopmentAreas.filter(area=>development[area.id]?.answer).length} of 12 started</span></div>
+      <div class="framework-foundation-list">${developmentRows}</div>
+      <button class="btn framework-development-save" id="saveFrameworkDevelopment">Save framework progress</button>
+    </section>
+
+    ${growth.length?`<section class="card framework-growth-summary"><div class="label">You’re demonstrating</div><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></section>`:`<section class="card framework-empty"><div class="label">Your reflection evidence will grow here</div><p>When you save reflections and choose what they demonstrate, Practice Compass will organise the supporting evidence below.</p></section>`}
 
     ${opportunities.length?`<section class="card sage framework-opportunities"><div class="label">Opportunities to strengthen</div><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p class="muted">These are gentle prompts for future learning, not missing requirements.</p></section>`:""}
 
-    <section class="card framework-development"><div class="label">My developing framework</div>
+    <section class="card framework-development"><div class="label">Evidence already appearing in my framework</div>
       ${groupSection("values",intelligence.groups.values)}
       ${groupSection("theories",intelligence.groups.theories)}
       ${groupSection("models",intelligence.groups.models)}
@@ -1609,6 +1654,19 @@ function frameworkPage(){
     </details>`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
   document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
+  document.getElementById("saveFrameworkDevelopment").onclick=()=>{
+    const current={};
+    document.querySelectorAll("[data-framework-area]").forEach(item=>{
+      const id=item.dataset.frameworkArea;
+      const answer=item.querySelector(".framework-development-answer").value.trim();
+      let status=item.querySelector(".framework-development-status").value;
+      if(answer && status==="Not started") status="Developing";
+      current[id]={answer,status,updatedAt:new Date().toISOString()};
+    });
+    saveFrameworkDevelopmentData(current);
+    alert("Your developing practice framework has been saved 🌿");
+    frameworkPage();
+  };
   document.getElementById("saveFramework").onclick=()=>{
     const current={values:[],theories:[],cultural:[],skills:[],useOfSelf:document.getElementById("frameworkSelf").value.trim(),professionalIdentity:document.getElementById("frameworkIdentity").value.trim()};
     document.querySelectorAll(".framework-chip.selected").forEach(btn=>current[btn.dataset.group].push(btn.dataset.value));
