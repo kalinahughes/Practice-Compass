@@ -717,18 +717,17 @@ function quickHoursCard(){
   const selectedDate=quickHoursEditingDate||today;
   const selectedEntry=quickHoursEntryForDate(selectedDate);
   const reminder=quickHoursReminder();
-  return `<details class="home-card home-hours-card home-hours-collapsible" ${quickHoursEditingDate!==null?'open':''}>
-    <summary><span class="home-hours-summary-copy"><span class="home-hours-icon">⏱️</span><span><small>Placement hours</small><strong>Quick daily entry</strong></span></span><span class="home-hours-summary-arrow">›</span></summary>
-    <div class="home-hours-collapsible-body">
-      ${reminder?`<p class="home-hours-reminder">${reminder}</p>`:""}
-      <div class="home-hours-form">
-        <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
-        <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
-        <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
-        <button type="button" class="btn home-hours-save" id="saveQuickHours">Save hours</button>
-      </div>
+  return `<section class="home-card home-hours-card">
+    <div class="home-card-heading compact"><span class="home-hours-icon">⏱️</span><div><span class="home-kicker">Placement hours</span><h2>Quick daily entry</h2></div></div>
+    ${reminder?`<p class="home-hours-reminder">${reminder}</p>`:""}
+    <div class="home-hours-form">
+      <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
+      <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
+      <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
+      <button type="button" class="btn home-hours-save" id="saveQuickHours">Save Hours</button>
     </div>
-  </details>`;
+    <div class="home-hours-recent"><span class="home-hours-recent-title">Recent entries</span>${recentQuickHoursRows().map(({date,entry})=>`<div class="home-hours-row"><span>${formatQuickHoursDate(date)} · ${entry?`${Number(entry.hours||0).toFixed(1)} hrs`:`Missing`}</span>${entry?`<button type="button" class="home-hours-edit-link" data-hours-date="${date}" aria-label="Edit hours for ${formatQuickHoursDate(date)}">✏️</button>`:""}</div>`).join("")}</div>
+  </section>`;
 }
 function saveQuickHours(){
   const date=document.getElementById("quickHoursDate")?.value;
@@ -1106,7 +1105,7 @@ function reflectionInsights(entries){
 }
 function reflectionLibrary(entries){
   if(!entries.length)return `<section class="reflection-empty-state">🌱 Your reflection library will grow as you save learning moments.</section>`;
-  return `<details class="reflection-library reflection-library-collapsed"><summary><span><strong>Previous reflections</strong><small>${entries.length} saved</small></span><span>›</span></summary><div class="reflection-library-body"><input id="reflectionSearch" class="input" placeholder="Search reflections"><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").slice(0,105);return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview)}${preview.length>=105?'…':''}</small></span><span>›</span></summary><div class="reflection-library-entry"><p>${safeText(e.answer||e.moment||"")}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.practiceStandards||[])].slice(0,5).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
+  return `<section class="reflection-library"><div class="reflection-section-heading"><span>📚</span><div><small>Your evidence library</small><h2>Previous reflections</h2></div></div><input id="reflectionSearch" class="input" placeholder="Search theory, standards, ethics, skills or tags"><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText((e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}</small></span><span>›</span></summary><p>${safeText((e.moment||e.answer||"").slice(0,300))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></details>`}).join("")}</div></section>`;
 }
 function journalPage(){
   const entries=savedEntries(), prompt=reflectionQuestionForToday();
@@ -1146,7 +1145,7 @@ function journalPage(){
     </div></details>
     <button class="btn reflection-save-button" id="saveEntry">🌿 Save reflection</button>
   </form>
-  <details class="reflection-growth-note reflection-insight-collapsed"><summary><span><strong>Reflection insight</strong><small>A pattern Practice Compass has noticed</small></span><span>›</span></summary><p>${safeText(reflectionInsights(entries))}</p></details>
+  <section class="reflection-growth-note"><div class="reflection-section-heading"><span>🌿</span><div><small>Your practice is growing</small><h2>Reflection insight</h2></div></div><p>${safeText(reflectionInsights(entries))}</p></section>
   ${reflectionLibrary(entries)}`;
 }
 function assessmentPage(){
@@ -1367,47 +1366,24 @@ function assessmentDetail(id,openPlanning=false){
   });
 }
 
-
-function condensedToolkitCategories(){
-  const groups=[
-    ["🌿","Social work foundations","Ethics, standards, identity and reflective practice",["Ethics & Professional Practice","Use of Self"]],
-    ["🧠","Mental health practice","Recovery, safety and person centred mental health learning",["Practice Areas"]],
-    ["🛠️","Practice approaches","Theories, frameworks and core practice skills",["Theories & Frameworks","Practice Skills","Communication","Documentation"]],
-    ["🌏","Culture and inclusion","Cultural humility, identity and inclusive practice",["Cultural Capability & Inclusion","Working with Different Populations"]],
-    ["⚖️","Systems and social justice","Policy, law, community and structural practice",["Legislation & Policy","Community Development","Social Policy"]],
-    ["📚","Research and evidence","Evidence informed practice and university learning",["Research & Evidence"]]
-  ];
-  return groups.map(group=>{
-    const items=[];
-    toolkitCategories.forEach((category,categoryIndex)=>{
-      if(!group[3].includes(category[1])) return;
-      category[3].forEach((topic,topicIndex)=>{
-        if(stage1ToolkitContent[topic[0]] || verifiedKnowledgeTopics[topic[0]]) items.push({topic,categoryIndex,topicIndex});
-      });
-    });
-    return {...{icon:group[0],title:group[1],subtitle:group[2]},items};
-  }).filter(group=>group.items.length);
-}
-
 function learnPage(){
-  const groups=condensedToolkitCategories();
   return `
-    <section class="toolkit-welcome toolkit-welcome-calm">
-      <div class="eyebrow">Toolkit</div>
-      <h1>📚 Social work learning</h1>
-      <p class="welcome-text">Open one area when it supports a reflection, supervision discussion or assessment.</p>
-      <input id="toolkitSearch" class="input" placeholder="Search the Toolkit">
+    <section class="toolkit-welcome">
+      <div class="eyebrow">Social work in your pocket</div>
+      <h1>📚 Practice Toolkit</h1>
+      <p class="welcome-text">You do not need to know everything. Open one area when you need it.</p>
+      <input id="toolkitSearch" class="input" placeholder="Search domestic violence, theory, skills, culture or policy">
     </section>
-    <div id="toolkitList" class="toolkit-list toolkit-list-calm">
-      ${groups.map((group,index)=>`
-        <section class="toolkit-folder toolkit-folder-calm" data-search="${safeText((group.title+' '+group.subtitle+' '+group.items.map(x=>x.topic.join(' ')).join(' ')).toLowerCase())}">
+    <div id="toolkitList" class="toolkit-list">
+      ${toolkitCategories.map((category,index)=>`
+        <section class="toolkit-folder" data-search="${(category[1]+' '+category[2]+' '+category[3].map(x=>x.join(' ')).join(' ')).toLowerCase()}">
           <button class="folder-header" data-folder="${index}">
-            <div class="folder-icon">${group.icon}</div>
-            <div class="folder-text"><div class="folder-title">${group.title}</div><div class="folder-subtitle">${group.subtitle} · ${group.items.length} topics</div></div>
-            <div class="folder-arrow">›</div>
+            <div class="folder-icon">${category[0]}</div>
+            <div class="folder-text"><div class="folder-title">${category[1]}</div><div class="folder-subtitle">${category[2]}</div></div>
+            <div class="folder-arrow">⌄</div>
           </button>
           <div class="folder-content hidden" id="folder-${index}">
-            ${group.items.map(item=>`<button class="toolkit-topic" data-category="${item.categoryIndex}" data-topic="${item.topicIndex}"><div><strong>${item.topic[0]}</strong><span>${item.topic[1]}</span></div><span>›</span></button>`).join('')}
+            ${category[3].map((item,itemIndex)=>`<button class="toolkit-topic" data-category="${index}" data-topic="${itemIndex}"><div><strong>${item[0]}</strong><span>${item[1]}</span></div><span>›</span></button>`).join('')}
           </div>
         </section>`).join('')}
     </div>`;
@@ -1430,13 +1406,13 @@ function toolkitDetail(categoryIndex,topicIndex){
         <p>${guide.what}</p>
       </div>
 
-      <details class="card toolkit-info">
-        <summary><strong>Practice examples</strong></summary>
+      <details class="card toolkit-info" open>
+        <summary><strong>💼 What does this look like in practice?</strong></summary>
         <ul>${guide.practice.map(item=>`<li>${item}</li>`).join("")}</ul>
       </details>
 
-      <details class="card toolkit-info">
-        <summary><strong>Remember</strong></summary>
+      <details class="card toolkit-info" open>
+        <summary><strong>✅ Remember</strong></summary>
         <ul>${guide.remember.map(item=>`<li>${item}</li>`).join("")}</ul>
       </details>
 
@@ -1510,28 +1486,57 @@ function toolkitDetail(categoryIndex,topicIndex){
 function morePage(){
   const intelligence=practiceFrameworkIntelligence();
   const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
-  const evidenced=allItems.filter(item=>item.evidence.length);
-  const entries=intelligence.entries;
-  const frameworkStarted=Object.values(frameworkFoundationData()).filter(item=>item && (item.thinking||item.note)).length;
-  const summary=evidenced.slice(0,3);
-  return `<div class="journey-page journey-home-calm">
-    <section class="journey-hero-card">
-      <div><span class="eyebrow">Me</span><h1>How I am developing</h1><p>Your placement learning, gathered in one clear place.</p></div>
-      <span class="journey-hero-icon">🌿</span>
-      <div class="journey-hero-stats"><span><strong>${entries.length}</strong><small>reflections</small></span><span><strong>${evidenced.length}</strong><small>strengths evidenced</small></span><span><strong>${frameworkStarted}</strong><small>framework areas</small></span></div>
+  const evidencedItems=allItems.filter(item=>item.evidence.length);
+  const growth=evidencedItems.slice(0,4);
+  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
+  const opportunityRules=[
+    {label:"Ethical decision making",tags:["Ethics or values"]},
+    {label:"Cultural capability",tags:["Cultural capability"]},
+    {label:"Interprofessional collaboration",tags:["Teamwork"]},
+    {label:"Use of self",tags:["Use of self"]},
+    {label:"Theory informed practice",tags:["Theory in action"]}
+  ];
+  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
+  const groupLabels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
+  const groupSummary=Object.entries(intelligence.groups).map(([key,map])=>{
+    const supported=[...map.values()].filter(item=>item.evidence.length).length;
+    return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
+  }).join("");
+
+  return `<div class="journey-page">
+    <section class="welcome-block journey-welcome">
+      <div class="eyebrow">My Journey</div>
+      <h1>💚 Professional Growth</h1>
+      <p class="welcome-text">See how your professional identity is developing through the evidence you already capture.</p>
     </section>
-    ${summary.length?`<section class="journey-quiet-summary"><span>Emerging strengths</span><div>${summary.map(item=>`<strong>${safeText(item.name)}</strong>`).join('')}</div></section>`:''}
-    <nav class="journey-destination-list" aria-label="Professional growth">
-      <button class="journey-destination-row" id="openEvidenceMap"><span class="journey-destination-icon">🌱</span><span><strong>My growth</strong><small>Strengths and evidence across placement</small></span><b>›</b></button>
-      <button class="journey-destination-row" id="frameworkMenu"><span class="journey-destination-icon">🧭</span><span><strong>My practice framework</strong><small>Values, theories, tools and professional identity</small></span><b>›</b></button>
-      <button class="journey-destination-row" id="evidenceBank"><span class="journey-destination-icon">🎓</span><span><strong>Assessment evidence</strong><small>What you have captured for university</small></span><b>›</b></button>
-      <button class="journey-destination-row" id="weeklyReview"><span class="journey-destination-icon">💭</span><span><strong>Weekly check in</strong><small>Pause and notice what is changing</small></span><b>›</b></button>
-    </nav>
-    <details class="journey-app-tools"><summary><span><strong>App and personal tools</strong><small>Exports, backup, wellbeing and settings</small></span><span>›</span></summary><div>
-      <button class="journey-utility-row" id="wellbeing"><span><strong>Looking after me</strong><small>Gentle wellbeing prompts</small></span><span>›</span></button>
+
+    <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
+      <h2 id="growthSummaryHeading">Growth summary</h2>
+      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">✨ Your professional identity will grow here as you add reflections.</div>`}
+    </section>
+
+    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
+
+    <section class="journey-section-block" aria-labelledby="frameworkHeading">
+      <h2 id="frameworkHeading">My practice framework</h2>
+      <div class="journey-framework-panel">
+        <div class="journey-framework-summary">${groupSummary}</div>
+        <button class="journey-text-action" id="frameworkMenu">View my developing framework <span>›</span></button>
+      </div>
+    </section>
+
+    <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
+      <h2 id="professionalDevelopmentHeading">Professional development</h2>
+      <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
+    </section>
+
+    <section class="journey-app-section" aria-labelledby="journeyAppHeading">
+      <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
       <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
-      <button class="journey-utility-row" id="backupJson"><span><strong>Backup</strong><small>Download a private copy</small></span><span>›</span></button>
-    </div></details>
+      <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
+      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
+      <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
+    </section>
   </div>`;
 }
 
