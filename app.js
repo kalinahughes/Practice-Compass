@@ -767,6 +767,16 @@ const practiceFrameworkDevelopmentAreas = [
 
 function frameworkDevelopmentData(){return state.get("frameworkDevelopment",{});}
 function saveFrameworkDevelopmentData(data){state.set("frameworkDevelopment",data);}
+function frameworkEvidenceLinksData(){return state.get("frameworkEvidenceLinks",{});}
+function saveFrameworkEvidenceLinksData(data){state.set("frameworkEvidenceLinks",data);}
+function normaliseFrameworkEvidenceArea(value){
+  const area=value&&typeof value==="object"?value:{};
+  return {
+    reflectionIds:Array.isArray(area.reflectionIds)?area.reflectionIds.map(String):[],
+    supervisionIds:Array.isArray(area.supervisionIds)?area.supervisionIds.map(String):[],
+    manualExamples:Array.isArray(area.manualExamples)?area.manualExamples.filter(item=>item&&item.text).map(item=>({id:item.id||Date.now(),text:String(item.text),date:item.date||new Date().toLocaleDateString("en-AU")})):[]
+  };
+}
 
 function mappedAssessments(types){const found=new Set();(types||[]).forEach(t=>(evidenceMapRules[t]||[]).forEach(a=>found.add(a)));return [...found];}
 function evidenceCoverage(){const entries=savedEntries(),counts={};Object.keys(assessmentRequirements).forEach(a=>{counts[a]=assessmentRequirements[a].map(r=>({requirement:r,count:entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length}));});return counts;}
@@ -1570,6 +1580,9 @@ function frameworkPage(){
   const intelligence=practiceFrameworkIntelligence();
   const data=intelligence.manual;
   const development=frameworkDevelopmentData();
+  const evidenceLinks=frameworkEvidenceLinksData();
+  const reflectionOptions=savedEntries();
+  const supervisionOptions=supervisionItems();
   const groups={
     values:["Human dignity","Social justice","Self determination","Respect","Hope","Compassion","Accountability","Cultural safety"],
     theories:["Recovery Oriented Practice","Strengths Based Practice","Systems and Ecological Theory","Trauma Informed Practice","Person Centred Practice","Anti Oppressive Practice","Feminist Social Work","Intersectionality","Narrative Practice","Motivational Interviewing"],
@@ -1603,10 +1616,28 @@ function frameworkPage(){
     const answer=saved.answer||"";
     const status=saved.status||(answer?"Developing":"Not started");
     const statusClass=status==="Evidence added"?"status-complete":status==="Developing"?"status-in-progress":"status-not-started";
+    const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
+    const linkedReflections=reflectionOptions.filter(item=>linked.reflectionIds.includes(String(item.id)));
+    const linkedSupervision=supervisionOptions.filter(item=>linked.supervisionIds.includes(String(item.id)));
+    const evidenceCount=linkedReflections.length+linkedSupervision.length+linked.manualExamples.length;
+    const reflectionChoices=reflectionOptions.length?reflectionOptions.map(item=>{
+      const checked=linked.reflectionIds.includes(String(item.id))?"checked":"";
+      const preview=(item.answer||item.moment||item.whyMatter||"Saved reflection").replace(/\s+/g," ").slice(0,90);
+      return `<label class="framework-evidence-choice"><input type="checkbox" class="framework-reflection-link" value="${safeText(String(item.id))}" ${checked}><span><strong>${safeText(item.date||"Reflection")}</strong><small>${safeText(preview)}${preview.length>=90?"…":""}</small></span></label>`;
+    }).join(""):`<p class="muted framework-evidence-empty">No reflections have been saved yet.</p>`;
+    const supervisionChoices=supervisionOptions.length?supervisionOptions.map(item=>{
+      const checked=linked.supervisionIds.includes(String(item.id))?"checked":"";
+      return `<label class="framework-evidence-choice"><input type="checkbox" class="framework-supervision-link" value="${safeText(String(item.id))}" ${checked}><span><strong>${safeText(item.type||"Supervision")} · ${safeText(item.date||"")}</strong><small>${safeText((item.text||"").slice(0,100))}${(item.text||"").length>100?"…":""}</small></span></label>`;
+    }).join(""):`<p class="muted framework-evidence-empty">No supervision notes have been saved yet.</p>`;
+    const linkedEvidenceHtml=evidenceCount?`<div class="framework-linked-evidence">
+      ${linkedReflections.map(item=>`<div class="framework-linked-row"><span>📝</span><div><strong>Reflection · ${safeText(item.date||"")}</strong><small>${safeText(((item.answer||item.moment||"Saved reflection").replace(/\s+/g," ")).slice(0,110))}</small></div></div>`).join("")}
+      ${linkedSupervision.map(item=>`<div class="framework-linked-row"><span>🤝</span><div><strong>${safeText(item.type||"Supervision")} · ${safeText(item.date||"")}</strong><small>${safeText((item.text||"").slice(0,110))}</small></div></div>`).join("")}
+      ${linked.manualExamples.map(item=>`<div class="framework-linked-row framework-manual-example-row" data-example-id="${safeText(String(item.id))}"><span>🌿</span><div><strong>Practice example · ${safeText(item.date||"")}</strong><small>${safeText(item.text)}</small></div><button type="button" class="framework-remove-example" aria-label="Remove this practice example">Remove</button></div>`).join("")}
+    </div>`:`<p class="muted framework-evidence-empty">No evidence linked yet. Add a reflection, supervision note or short practice example below.</p>`;
     return `<details class="framework-foundation-item" data-framework-area="${area.id}">
       <summary>
         <span class="framework-foundation-icon">${area.icon}</span>
-        <span class="framework-foundation-copy"><strong>${index+1}. ${safeText(area.title)}</strong><small>${safeText(area.purpose)}</small><span class="status-inline ${statusClass}">${safeText(status)}</span></span>
+        <span class="framework-foundation-copy"><strong>${index+1}. ${safeText(area.title)}</strong><small>${safeText(area.purpose)}</small><span class="framework-foundation-meta"><span class="status-inline ${statusClass}">${safeText(status)}</span><span>${evidenceCount} evidence item${evidenceCount===1?"":"s"}</span></span></span>
         <span class="framework-foundation-arrow">›</span>
       </summary>
       <div class="framework-foundation-body">
@@ -1614,6 +1645,18 @@ function frameworkPage(){
         <div class="framework-foundation-questions">${area.questions.map(question=>`<span>${safeText(question)}</span>`).join("")}</div>
         <label><span>My current thinking</span><textarea class="textarea framework-development-answer" placeholder="Add a short thought, example or reflection. You can return to this throughout placement.">${safeText(answer)}</textarea></label>
         <label><span>Status</span><select class="select framework-development-status"><option ${status==="Not started"?"selected":""}>Not started</option><option ${status==="Developing"?"selected":""}>Developing</option><option ${status==="Evidence added"?"selected":""}>Evidence added</option></select></label>
+        <section class="framework-area-evidence">
+          <div class="framework-area-evidence-heading"><div><strong>Evidence connected to this area</strong><small>Links organise your evidence here. The original reflection or supervision note stays unchanged.</small></div><span>${evidenceCount}</span></div>
+          ${linkedEvidenceHtml}
+          <details class="framework-evidence-picker">
+            <summary><span>Add or manage evidence</span><span>›</span></summary>
+            <div class="framework-evidence-picker-body">
+              <div class="framework-evidence-source"><strong>Link reflections</strong><div class="framework-evidence-choice-list">${reflectionChoices}</div></div>
+              <div class="framework-evidence-source"><strong>Link supervision notes</strong><div class="framework-evidence-choice-list">${supervisionChoices}</div></div>
+              <div class="framework-evidence-source"><strong>Add a short practice example</strong><textarea class="textarea framework-manual-example" placeholder="For example: I supported a consumer to identify their own discharge priorities rather than deciding for them."></textarea><button type="button" class="btn secondary framework-add-example">Add practice example</button></div>
+            </div>
+          </details>
+        </section>
       </div>
     </details>`;
   }).join("");
@@ -1654,17 +1697,50 @@ function frameworkPage(){
     </details>`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
   document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
+  const workingEvidence={};
+  practiceFrameworkDevelopmentAreas.forEach(area=>workingEvidence[area.id]=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]));
+  document.querySelectorAll("[data-framework-area]").forEach(item=>{
+    const id=item.dataset.frameworkArea;
+    item.querySelectorAll(".framework-reflection-link").forEach(input=>input.addEventListener("change",()=>{
+      const selected=[...item.querySelectorAll(".framework-reflection-link:checked")].map(input=>String(input.value));
+      workingEvidence[id].reflectionIds=selected;
+    }));
+    item.querySelectorAll(".framework-supervision-link").forEach(input=>input.addEventListener("change",()=>{
+      const selected=[...item.querySelectorAll(".framework-supervision-link:checked")].map(input=>String(input.value));
+      workingEvidence[id].supervisionIds=selected;
+    }));
+    item.querySelector(".framework-add-example")?.addEventListener("click",()=>{
+      const textarea=item.querySelector(".framework-manual-example");
+      const text=textarea.value.trim();
+      if(!text){alert("Add a short practice example first.");return;}
+      workingEvidence[id].manualExamples.push({id:Date.now(),text,date:new Date().toLocaleDateString("en-AU")});
+      saveFrameworkEvidenceLinksData({...evidenceLinks,...workingEvidence});
+      frameworkPage();
+    });
+    item.querySelectorAll(".framework-remove-example").forEach(button=>button.addEventListener("click",()=>{
+      const exampleId=String(button.closest("[data-example-id]")?.dataset.exampleId||"");
+      workingEvidence[id].manualExamples=workingEvidence[id].manualExamples.filter(example=>String(example.id)!==exampleId);
+      saveFrameworkEvidenceLinksData({...evidenceLinks,...workingEvidence});
+      frameworkPage();
+    }));
+  });
   document.getElementById("saveFrameworkDevelopment").onclick=()=>{
     const current={};
     document.querySelectorAll("[data-framework-area]").forEach(item=>{
       const id=item.dataset.frameworkArea;
       const answer=item.querySelector(".framework-development-answer").value.trim();
       let status=item.querySelector(".framework-development-status").value;
-      if(answer && status==="Not started") status="Developing";
+      const selectedReflections=[...item.querySelectorAll(".framework-reflection-link:checked")].map(input=>String(input.value));
+      const selectedSupervision=[...item.querySelectorAll(".framework-supervision-link:checked")].map(input=>String(input.value));
+      workingEvidence[id].reflectionIds=selectedReflections;
+      workingEvidence[id].supervisionIds=selectedSupervision;
+      const evidenceCount=selectedReflections.length+selectedSupervision.length+workingEvidence[id].manualExamples.length;
+      if((answer||evidenceCount) && status==="Not started") status=evidenceCount?"Evidence added":"Developing";
       current[id]={answer,status,updatedAt:new Date().toISOString()};
     });
     saveFrameworkDevelopmentData(current);
-    alert("Your developing practice framework has been saved 🌿");
+    saveFrameworkEvidenceLinksData(workingEvidence);
+    alert("Your framework progress and evidence links have been saved 🌿");
     frameworkPage();
   };
   document.getElementById("saveFramework").onclick=()=>{
