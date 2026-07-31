@@ -50,7 +50,7 @@ const assessments = [
   why:"Timesheets verify your 500 placement hours and demonstrate accountability for how placement time is used.",
   tasks:["Record start and finish times","Record at least a 30 minute unpaid lunch when working five or more hours","Describe daily activities and tasks","Record library time and absences","Have the timesheet reviewed and signed","Submit to the FELO every two weeks"],
   collect:["Daily hours","Daily activities","Library or research time","Absences or altered hours","Supervisor signature and submission date"],
-  toolkit:["Documentation","Professional Accountability","Information Recording"]},
+  toolkit:["Documentation","AASW Practice Standards","Information Recording"]},
 
  {id:"midfinal",title:"Mid and End Placement Assessments",when:"Mid: about 250 hours · Final: Weeks 12 to 14",icon:"📝",color:"green",
   purpose:"Complete your self assessments against each Learning Plan goal before the mid and final liaison meetings. Your supervisor completes a corresponding assessment.",
@@ -224,8 +224,167 @@ const toolkitCategories = [["🏥", "Practice Areas", "Evidence informed introdu
   ["Alcohol and Other Drugs", "Harm reduction, stigma, risk and person centred support."],
   ["Homelessness and Housing", "Housing insecurity, structural barriers, safety and advocacy."],
   ["Child and Family Practice", "Safety, development, participation and family systems."],
+  ["Family and Carer Inclusive Practice", "Consent, collaboration, chosen family, carer needs and recovery planning."],
   ["Sexual Violence", "Trauma and violence informed, survivor centred responses."]
-]], ["🧠", "Theories & Frameworks", "Different lenses for understanding people, relationships, systems and change.", [["Recovery Oriented Practice", "Hope, choice, meaning and a life beyond symptoms."], ["CHIME", "Connectedness, Hope, Identity, Meaning and Empowerment."], ["Strengths Based Practice", "Start with capacity, resources and possibility."], ["Systems & Ecological Theory", "Understand the person within interacting environments."], ["Narrative Practice", "Separate the person from the problem."], ["Feminist Social Work", "Examine gender, power and structural inequality."], ["Anti Oppressive Practice", "Notice and challenge power, privilege and oppression."], ["Intersectionality", "Explore overlapping identities and structures."], ["Trauma Informed Practice", "Prioritise safety, trust, choice and collaboration."], ["Attachment Theory", "Consider how safety and connection shape relationships."]]], ["🛠️", "Practice Skills", "Practical methods you may observe, practise or discuss in supervision.", [["Engagement & Rapport", "Build trust through warmth, clarity and respectful pacing."], ["Active Listening", "Use reflection, summarising, silence and clarification."], ["Assessment", "Explore needs, strengths, goals, risks and context."], ["Risk & Safety Planning", "Work collaboratively around risk and protective factors."], ["Advocacy", "Address barriers, rights and access to services."], ["Case Management", "Coordinate planning, services, referrals and review."], ["Group Facilitation", "Support participation, purpose and group safety."], ["Documentation", "Record clearly, objectively and ethically."]]], ["🪞", "Use of Self", "Understand how your values, emotions, communication and identity shape practice.", [["Self Awareness", "Notice your emotions, assumptions and responses."], ["Boundaries", "Balance warmth, care and professional responsibility."], ["Values", "Reflect on what matters to you and how it affects decisions."], ["Bias & Assumptions", "Notice what you may be taking for granted."], ["Professional Identity", "Explore the social worker you are becoming."], ["Emotional Regulation", "Stay grounded in complex interactions."], ["Reflective Practice", "Consider what happened, why it mattered and what comes next."]]], ["🌏", "Cultural Capability & Inclusion", "Support culturally safe, inclusive, anti racist and responsive practice.", [["Aboriginal & Torres Strait Islander Practice", "Centre self determination, Country, kinship and community."], ["Cultural Humility", "Stay curious, reflective and accountable."], ["Cultural Safety", "Consider whether practice is experienced as safe by the person."], ["Decolonising Practice", "Question colonial assumptions and systems."], ["CALD Practice", "Respond to language, migration, culture and settlement experiences."], ["Working with Interpreters", "Use qualified interpreters respectfully and effectively."], ["Refugee & Asylum Seeker Practice", "Consider trauma, displacement, legal status and settlement."], ["LGBTQIA+ Affirmative Practice", "Support identity, dignity and self determination."], ["Disability Inclusive Practice", "Remove barriers and support participation."], ["Neurodiversity Affirming Practice", "Respect neurological difference and communication needs."], ["Intersectionality", "Understand how identities and structures overlap."], ["Anti Racist Practice", "Identify and challenge racism in systems and practice."]]], ["⚖️", "Ethics & Professional Practice", "Connect daily practice with social work values, ethics and standards.", [["AASW Code of Ethics", "Respect, social justice and professional integrity."], ["Professional Boundaries", "Maintain safe and purposeful relationships."], ["Confidentiality", "Protect privacy while understanding limits."], ["Informed Consent", "Support genuine understanding and choice."], ["Ethical Decision Making", "Work through competing values and responsibilities."], ["Supervision", "Use reflection, feedback and accountability to grow."], ["Professional Sustainability", "Recognise stress and the need for support."]]], ["📖", "Legislation & Policy", "Organise laws, policies and guidance relevant to placement.", [["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."], ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."], ["Privacy & Confidentiality", "Information handling, consent and disclosure."], ["Guardianship & Decision Making", "Capacity and supported decision making."], ["AASW Practice Standards", "Professional expectations across social work practice."], ["Organisation Policies", "Mind Australia procedures and local guidance."]]], ["👥", "Working with Different Populations", "Prompts for inclusive and responsive practice.", [["Adults experiencing mental ill health", "Recovery, dignity, autonomy and social context."], ["Children & Young People", "Development, safety, participation and family context."], ["Older People", "Ageing, autonomy, care, loss and connection."], ["People with Disability", "Access, rights, communication and inclusion."], ["People experiencing homelessness", "Housing, safety and structural barriers."], ["People who use alcohol and other drugs", "Harm reduction, stigma and choice."], ["Rural & Remote Communities", "Distance, access, privacy and relationships."], ["Justice Involved People", "Rights, stigma and reintegration."]]], ["💬", "Communication", "Communication that supports dignity, clarity, safety and participation.", [["Difficult Conversations", "Stay clear, respectful and grounded."], ["Trauma Informed Communication", "Support safety, choice and control."], ["De escalation", "Reduce intensity while maintaining dignity and safety."], ["Strengths Based Language", "Describe people with respect and possibility."], ["Working with Interpreters", "Speak to the person, not the interpreter."], ["Email & Phone Communication", "Be clear, professional and purposeful."], ["Documentation Language", "Use objective, respectful and relevant wording."]]], ["📝", "Documentation", "Support clear, ethical and useful information recording.", [["Case Notes", "Relevant, factual and timely records."], ["Assessment Writing", "Bring together needs, strengths, risk and context."], ["Reflective Notes", "Capture learning without identifying details."], ["Professional Emails", "Clear purpose, tone and concise information."], ["Reports", "Structured, evidence informed and audience aware writing."]]], ["🔬", "Research & Evidence", "Use evidence to strengthen practice and reflection.", [["Evidence Informed Practice", "Combine research, expertise and lived experience."], ["Finding Quality Sources", "Use peer reviewed and authoritative material."], ["Critical Appraisal", "Consider strengths, limits and relevance."], ["Reflective Inquiry", "Turn practice questions into learning."], ["Small Project Skills", "Plan, gather information, analyse and report."], ["APA 7 Referencing", "Credit sources accurately."]]], ["🤝", "Community Development", "Think beyond individual work toward participation and collective change.", [["Participation", "Support people to influence decisions."], ["Capacity Building", "Strengthen skills, resources and confidence."], ["Social Capital", "Build connection, trust and mutual support."], ["Community Led Practice", "Start with local knowledge and priorities."], ["Collective Advocacy", "Work together to challenge barriers."]]], ["🏛️", "Social Policy", "Understand how policy shapes services and people’s lives.", [["Policy Analysis", "Examine goals, assumptions, impacts and gaps."], ["Structural Inequality", "Connect experiences to wider systems."], ["Service Systems", "Understand funding, eligibility and responses."], ["Advocacy", "Use evidence and lived experience to influence change."], ["Implementation", "Explore how policy becomes everyday practice."]]]];
+]], ["🧠", "Theories & Frameworks", "Different lenses for understanding people, relationships, systems and change.", [["Recovery Oriented Practice", "Hope, choice, meaning and a life beyond symptoms."], ["CHIME", "Connectedness, Hope, Identity, Meaning and Empowerment."], ["Strengths Based Practice", "Start with capacity, resources and possibility."], ["Systems & Ecological Theory", "Understand the person within interacting environments."], ["Narrative Practice", "Separate the person from the problem."], ["Feminist Social Work", "Examine gender, power and structural inequality."], ["Anti Oppressive Practice", "Notice and challenge power, privilege and oppression."], ["Intersectionality", "Explore overlapping identities and structures."], ["Trauma Informed Practice", "Prioritise safety, trust, choice and collaboration."], ["Person Centred Practice", "Keep the person’s goals, preferences and lived experience central."], ["Motivational Interviewing", "Explore ambivalence and strengthen the person’s own reasons for change."], ["Attachment Theory", "Consider how safety and connection shape relationships."]]], ["🛠️", "Practice Skills", "Practical methods you may observe, practise or discuss in supervision.", [["Engagement & Rapport", "Build trust through warmth, clarity and respectful pacing."], ["Active Listening", "Use reflection, summarising, silence and clarification."], ["Assessment", "Explore needs, strengths, goals, risks and context."], ["Risk & Safety Planning", "Work collaboratively around risk and protective factors."], ["Suicide Risk Assessment", "Explore suicidal distress, immediate safety, supports and next steps within scope."], ["Safety Planning", "Develop practical, collaborative steps for periods of increased distress or risk."], ["Advocacy", "Address barriers, rights and access to services."], ["Case Management", "Coordinate planning, services, referrals and review."], ["Group Facilitation", "Support participation, purpose and group safety."], ["Documentation", "Record clearly, objectively and ethically."]]], ["🪞", "Use of Self", "Understand how your values, emotions, communication and identity shape practice.", [["Self Awareness", "Notice your emotions, assumptions and responses."], ["Boundaries", "Balance warmth, care and professional responsibility."], ["Values", "Reflect on what matters to you and how it affects decisions."], ["Bias & Assumptions", "Notice what you may be taking for granted."], ["Professional Identity", "Explore the social worker you are becoming."], ["Emotional Regulation", "Stay grounded in complex interactions."], ["Reflective Practice", "Consider what happened, why it mattered and what comes next."]]], ["🌏", "Cultural Capability & Inclusion", "Support culturally safe, inclusive, anti racist and responsive practice.", [["Aboriginal & Torres Strait Islander Practice", "Centre self determination, Country, kinship and community."], ["Cultural Humility", "Stay curious, reflective and accountable."], ["Cultural Safety", "Consider whether practice is experienced as safe by the person."], ["Decolonising Practice", "Question colonial assumptions and systems."], ["CALD Practice", "Respond to language, migration, culture and settlement experiences."], ["Working with Interpreters", "Use qualified interpreters respectfully and effectively."], ["Refugee & Asylum Seeker Practice", "Consider trauma, displacement, legal status and settlement."], ["LGBTQIA+ Affirmative Practice", "Support identity, dignity and self determination."], ["Disability Inclusive Practice", "Remove barriers and support participation."], ["Neurodiversity Affirming Practice", "Respect neurological difference and communication needs."], ["Intersectionality", "Understand how identities and structures overlap."], ["Anti Racist Practice", "Identify and challenge racism in systems and practice."]]], ["⚖️", "Ethics & Professional Practice", "Connect daily practice with social work values, ethics and standards.", [["AASW Code of Ethics", "Respect, social justice and professional integrity."], ["Professional Boundaries", "Maintain safe and purposeful relationships."], ["Confidentiality", "Protect privacy while understanding limits."], ["Informed Consent", "Support genuine understanding and choice."], ["Supported Decision Making", "Provide the support a person needs to understand, consider and communicate decisions."], ["Ethical Decision Making", "Work through competing values and responsibilities."], ["Supervision", "Use reflection, feedback and accountability to grow."], ["Professional Sustainability", "Recognise stress and the need for support."]]], ["📖", "Legislation & Policy", "Organise laws, policies and guidance relevant to placement.", [["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."], ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."], ["Privacy & Confidentiality", "Information handling, consent and disclosure."], ["Guardianship & Decision Making", "Capacity and supported decision making."], ["AASW Practice Standards", "Professional expectations across social work practice."], ["Organisation Policies", "Mind Australia procedures and local guidance."]]], ["👥", "Working with Different Populations", "Prompts for inclusive and responsive practice.", [["Adults experiencing mental ill health", "Recovery, dignity, autonomy and social context."], ["Children & Young People", "Development, safety, participation and family context."], ["Older People", "Ageing, autonomy, care, loss and connection."], ["People with Disability", "Access, rights, communication and inclusion."], ["People experiencing homelessness", "Housing, safety and structural barriers."], ["People who use alcohol and other drugs", "Harm reduction, stigma and choice."], ["Rural & Remote Communities", "Distance, access, privacy and relationships."], ["Justice Involved People", "Rights, stigma and reintegration."]]], ["💬", "Communication", "Communication that supports dignity, clarity, safety and participation.", [["Difficult Conversations", "Stay clear, respectful and grounded."], ["Trauma Informed Communication", "Support safety, choice and control."], ["De escalation", "Reduce intensity while maintaining dignity and safety."], ["Strengths Based Language", "Describe people with respect and possibility."], ["Working with Interpreters", "Speak to the person, not the interpreter."], ["Email & Phone Communication", "Be clear, professional and purposeful."], ["Documentation Language", "Use objective, respectful and relevant wording."]]], ["📝", "Documentation", "Support clear, ethical and useful information recording.", [["Case Notes", "Relevant, factual and timely records."], ["Assessment Writing", "Bring together needs, strengths, risk and context."], ["Reflective Notes", "Capture learning without identifying details."], ["Professional Emails", "Clear purpose, tone and concise information."], ["Reports", "Structured, evidence informed and audience aware writing."]]], ["🔬", "Research & Evidence", "Use evidence to strengthen practice and reflection.", [["Evidence Informed Practice", "Combine research, expertise and lived experience."], ["Finding Quality Sources", "Use peer reviewed and authoritative material."], ["Critical Appraisal", "Consider strengths, limits and relevance."], ["Reflective Inquiry", "Turn practice questions into learning."], ["Small Project Skills", "Plan, gather information, analyse and report."], ["APA 7 Referencing", "Credit sources accurately."]]], ["🤝", "Community Development", "Think beyond individual work toward participation and collective change.", [["Participation", "Support people to influence decisions."], ["Capacity Building", "Strengthen skills, resources and confidence."], ["Social Capital", "Build connection, trust and mutual support."], ["Community Led Practice", "Start with local knowledge and priorities."], ["Collective Advocacy", "Work together to challenge barriers."]]], ["🏛️", "Social Policy", "Understand how policy shapes services and people’s lives.", [["Policy Analysis", "Examine goals, assumptions, impacts and gaps."], ["Structural Inequality", "Connect experiences to wider systems."], ["Service Systems", "Understand funding, eligibility and responses."], ["Advocacy", "Use evidence and lived experience to influence change."], ["Implementation", "Explore how policy becomes everyday practice."]]]];
+
+
+// Stage 1 Toolkit content: Mental Health and Professional Practice.
+// This content is deliberately topic specific and uses recognised Australian guidance.
+const stage1ToolkitContent = {
+  "Mental Health": {
+    what:"Mental health social work considers emotional wellbeing alongside relationships, housing, income, culture, physical health, trauma, identity and access to services. The role is not limited to symptoms or diagnosis. Social workers support recovery, rights, practical needs, family and community connections, and coordination across service systems.",
+    practice:["Ask what matters to the person, not only what is wrong.","Explore strengths, goals, relationships, housing, finances, safety and community supports.","Work alongside peer workers, clinicians, families and other services while keeping the person’s voice central.","Notice how stigma, poverty, discrimination and service barriers affect wellbeing and recovery."],
+    remember:["Use recovery oriented and rights based language.","Stay within your role and seek supervision when clinical or legal questions arise.","Mental distress does not remove a person’s right to participate in decisions."],
+    related:["Recovery Oriented Practice","Trauma Informed Practice","Risk & Safety Planning","Supported Decision Making"],
+    refs:[["Australian Government Department of Health and Aged Care, National framework for recovery oriented mental health services","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-guide-for-practitioners-and-providers"],["Queensland Health, mental health, alcohol and other drugs clinical guidance","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/clinical-guidelines-policies-and-resources/guidelines-and-frameworks"]]
+  },
+  "Recovery Oriented Practice": {
+    what:"Recovery oriented practice supports people to live meaningful and self directed lives, whether or not symptoms continue. Recovery is personal and is defined by the person rather than the service. Practice focuses on hope, choice, identity, relationships, strengths, participation and access to the social conditions that support wellbeing.",
+    practice:["Ask the person what a meaningful life looks like for them.","Use the person’s goals to guide planning rather than imposing service goals.","Recognise strengths, lived expertise and existing coping strategies.","Support connection with family, culture, community, education, work and ordinary life roles."],
+    remember:["Recovery is not the same as cure or discharge.","Avoid defining progress only through symptom reduction or compliance.","Balance safety responsibilities with autonomy, dignity of risk and least restrictive practice."],
+    related:["CHIME","Strengths Based Practice","Person Centred Practice","Supported Decision Making"],
+    refs:[["Australian Government Department of Health and Aged Care, National framework for recovery oriented mental health services","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-guide-for-practitioners-and-providers"],["National Mental Health Commission, recovery oriented practice resources","https://www.mentalhealthcommission.gov.au/"]]
+  },
+  "CHIME": {
+    what:"CHIME is a widely used way of understanding personal recovery in mental health. It highlights five interconnected processes: Connectedness, Hope and optimism, Identity, Meaning in life, and Empowerment. It is a reflective framework, not a checklist or clinical assessment tool.",
+    practice:["Connectedness: notice supportive relationships, belonging and peer connection.","Hope: listen for possibilities, aspirations and reasons to keep going.","Identity: support a sense of self beyond illness, diagnosis or service use.","Meaning and empowerment: explore purpose, valued roles, choice, confidence and control."],
+    remember:["Ask which elements matter to the person rather than assuming all five are equally important.","Use CHIME to notice recovery processes, not to score a person’s recovery.","Social conditions such as housing, income, discrimination and safety can enable or restrict every CHIME element."],
+    related:["Recovery Oriented Practice","Strengths Based Practice","Person Centred Practice","Mental Health"],
+    refs:[["Australian Government Department of Health and Aged Care, National framework for recovery oriented mental health services","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-policy-and-theory"],["Leamy et al. conceptual framework for personal recovery, British Journal of Psychiatry","https://doi.org/10.1192/bjp.bp.110.083733"]]
+  },
+  "Trauma Informed Practice": {
+    what:"Trauma informed practice recognises that trauma can shape safety, trust, relationships, coping and responses to services. It does not require a person to disclose trauma. The focus is on creating emotional, cultural and physical safety, avoiding re traumatisation, and increasing choice, collaboration and control.",
+    practice:["Explain who you are, what will happen and why information is being requested.","Offer realistic choices about timing, pace, seating, support people and next steps.","Notice distress and respond with grounding, validation and a slower pace.","Ask what would help the person feel safer rather than assuming."],
+    remember:["Do not pressure a person to tell their trauma story.","Trauma informed practice is an organisational responsibility, not only an individual communication style.","Consider structural and collective trauma, including colonisation, racism, violence and poverty."],
+    related:["Recovery Oriented Practice","Cultural Safety","Professional Boundaries","Safety Planning"],
+    refs:[["Blue Knot Foundation, trauma informed practice resources","https://blueknot.org.au/resources/blue-knot-resources/"],["Queensland Health, Better Crisis Care framework","https://www.health.qld.gov.au/__data/assets/pdf_file/0031/1439482/qh-better-crisis-care-framework.pdf"]]
+  },
+  "Strengths Based Practice": {
+    what:"Strengths based practice begins with people’s abilities, knowledge, relationships, resources and hopes rather than treating problems as their whole identity. It does not ignore risk or hardship. It broadens assessment so that planning includes what is already working and what the person can build upon.",
+    practice:["Ask how the person has managed difficult situations before.","Identify personal, family, cultural and community strengths.","Use language that describes capacity and context rather than labels.","Build goals from the person’s existing skills, interests and supports."],
+    remember:["Do not use strengths language to minimise pain, risk or structural disadvantage.","Let the person define what they see as a strength.","Document strengths with the same specificity used to document concerns."],
+    related:["Recovery Oriented Practice","CHIME","Person Centred Practice","Advocacy"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Australian Government Department of Health and Aged Care, recovery oriented mental health framework","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-guide-for-practitioners-and-providers"]]
+  },
+  "Person Centred Practice": {
+    what:"Person centred practice treats the person as an active partner with expertise in their own life. Support is shaped around their goals, preferences, communication needs, identity and circumstances rather than expecting them to fit a standard service response.",
+    practice:["Ask what the person wants from the conversation or service.","Check understanding and invite the person to correct your interpretation.","Adapt communication, pace and planning to the person’s needs.","Record the person’s own goals and views clearly in documentation."],
+    remember:["Person centred does not mean the worker has no professional responsibilities.","Be transparent when options are limited or safety duties affect choice.","Include family or carers only with consent or another clear lawful basis."],
+    related:["Recovery Oriented Practice","Supported Decision Making","Informed Consent","Strengths Based Practice"],
+    refs:[["Australian Commission on Safety and Quality in Health Care, person centred care","https://www.safetyandquality.gov.au/our-work/partnering-consumers/person-centred-care"],["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"]]
+  },
+  "Motivational Interviewing": {
+    what:"Motivational Interviewing is a collaborative communication approach used to explore ambivalence and strengthen a person’s own motivation for change. It avoids arguing, persuading or directing. The worker listens for the person’s reasons, confidence and readiness, while respecting autonomy.",
+    practice:["Use open questions, affirmations, reflections and summaries.","Ask about both the benefits and costs of the current situation.","Reflect change talk without exaggerating it.","Ask permission before offering information or suggestions."],
+    remember:["Motivational Interviewing is not a technique for making someone comply.","Respect a person’s right not to change or to choose a different goal.","Use supervision and training before presenting yourself as competent in the full model."],
+    related:["Active Listening","Strengths Based Practice","Person Centred Practice","Harm Reduction"],
+    refs:[["Miller and Rollnick, Motivational Interviewing, 3rd edition","https://www.guilford.com/books/Motivational-Interviewing/Miller-Rollnick/9781609182274"],["Queensland Health, mental health alcohol and other drugs clinical resources","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/clinical-guidelines-policies-and-resources/guidelines-and-frameworks"]]
+  },
+  "Risk & Safety Planning": {
+    what:"Risk and safety planning is a collaborative process for understanding current concerns, protective factors, context, likely changes and practical actions that may reduce harm. It should inform proportionate support and review. It is broader than completing a risk form and should include the person’s own knowledge of what increases or reduces risk.",
+    practice:["Ask directly and respectfully about current concerns, recent changes and immediate safety.","Identify strengths, protective relationships, coping strategies and reasons for living.","Clarify who will do what, when review will occur and how urgent help can be accessed.","Document the information considered, the person’s views, consultation and rationale for decisions."],
+    remember:["Risk cannot be predicted with certainty or reduced to a low, medium or high label.","Follow organisational policy, scope of practice and escalation procedures.","If there is immediate danger, seek urgent senior or emergency support rather than managing alone."],
+    related:["Suicide Risk Assessment","Safety Planning","Documentation","Supervision"],
+    refs:[["Queensland Health, Suicide Prevention Practice guideline","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/clinical-guidelines-policies-and-resources/guidelines-frameworks/suicide-prevention-practice-queensland-health-guideline"],["Queensland Health, Better Crisis Care framework","https://www.health.qld.gov.au/__data/assets/pdf_file/0031/1439482/qh-better-crisis-care-framework.pdf"]]
+  },
+  "Suicide Risk Assessment": {
+    what:"Suicide risk assessment is a compassionate, direct and ongoing conversation about suicidal thoughts, intent, planning, access to means, past behaviour, recent stressors, supports and reasons for living. Its purpose is to guide immediate care and safety, not to predict suicide with certainty or assign a permanent risk category.",
+    practice:["Ask clearly about thoughts of suicide, intent, plans, preparation and access to means.","Explore what has changed, what has stopped the person acting, and what support feels possible.","Consult promptly with the appropriate practitioner and follow service escalation procedures.","Record the person’s words, relevant context, actions taken and review plan."],
+    remember:["Asking about suicide does not put the idea into someone’s mind.","Do not rely only on a checklist or a person’s denial of intent.","Students should not carry suicide risk decisions alone. Seek immediate supervision and follow policy."],
+    related:["Risk & Safety Planning","Safety Planning","Crisis Intervention","Documentation"],
+    refs:[["Queensland Health, Suicide Prevention Practice guideline","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/clinical-guidelines-policies-and-resources/guidelines-frameworks/suicide-prevention-practice-queensland-health-guideline"],["Australian Government Department of Health and Aged Care, suicide prevention resources","https://www.health.gov.au/topics/mental-health-and-suicide-prevention"]]
+  },
+  "Safety Planning": {
+    what:"A safety plan is a practical, personalised plan developed with a person for times when distress or risk increases. It usually identifies warning signs, internal coping strategies, supportive people and places, professional contacts, urgent help options and ways to reduce access to lethal means where relevant.",
+    practice:["Use the person’s own words and make the plan easy to access.","Identify steps that are realistic at different levels of distress.","Confirm contact details and discuss what may make it hard to use the plan.","Review and update the plan after changes, crises or learning about what helped."],
+    remember:["A safety plan is not a no suicide contract and does not replace assessment or care.","Complete it collaboratively rather than handing over a generic form.","Follow local procedures about family involvement, escalation and emergency response."],
+    related:["Suicide Risk Assessment","Risk & Safety Planning","Trauma Informed Practice","Supported Decision Making"],
+    refs:[["Queensland Health, Suicide Prevention Practice guideline","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/clinical-guidelines-policies-and-resources/guidelines-frameworks/suicide-prevention-practice-queensland-health-guideline"],["Beyond Blue, safety planning resources","https://www.beyondblue.org.au/mental-health/suicide-prevention/safety-planning"]]
+  },
+  "AASW Code of Ethics": {
+    what:"The AASW Code of Ethics 2020 sets out the values and ethical responsibilities that guide Australian social work. Its three core values are respect for persons, social justice and professional integrity. The Code supports ethical reasoning and accountability across different practice contexts rather than providing a rule for every situation.",
+    practice:["Use the Code to identify the values and responsibilities involved in a decision.","Discuss tensions openly in supervision, including conflicts between autonomy, safety, privacy and organisational demands.","Explain decisions transparently and document the reasoning where appropriate.","Consider how power, culture, rights and structural inequality affect the situation."],
+    remember:["Ethical practice requires judgement, consultation and reflection, not simply quoting a value.","Read the Code alongside the AASW Practice Standards and relevant law or policy.","Raise concerns when organisational practice may conflict with ethical responsibilities."],
+    related:["AASW Practice Standards","Ethical Decision Making","Professional Boundaries","Confidentiality"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Ethics and Practice Guidelines","https://www.aasw.asn.au/about-aasw/ethics-standards/ethics-and-practice-guidelines/"]]
+  },
+  "AASW Practice Standards": {
+    what:"The AASW Practice Standards 2023 describe the core expectations for safe, ethical and accountable social work practice in Australia. They cover professional conduct, working with Aboriginal and Torres Strait Islander peoples, human rights and social justice, culture and identity, critical thinking, professional judgement, professional identity and supervision, and ongoing professional development.",
+    practice:["Link placement examples to the Standard they genuinely demonstrate.","Use supervision to identify evidence, gaps and next learning steps.","Show how knowledge, values and skills informed your actions, not only that an activity occurred.","Revisit the Standards across placement rather than waiting until assessment time."],
+    remember:["The Standards are interconnected and one experience may relate to several.","Do not force every reflection to fit a Standard.","Use the official 2023 document for exact wording and assessment evidence."],
+    related:["AASW Code of Ethics","Supervision","Reflective Practice","Professional Identity"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"]]
+  },
+  "Professional Boundaries": {
+    what:"Professional boundaries keep the relationship safe, purposeful and centred on the person’s needs. They clarify the worker’s role, availability, use of personal information, contact, gifts, social media and limits of the service. Boundaries allow warmth and genuine human connection without turning the relationship into a friendship or meeting the worker’s needs.",
+    practice:["Explain your role, student status, availability and limits clearly.","Use self disclosure only when it has a clear benefit for the person.","Follow policy about contact outside appointments, gifts, transport and social media.","Bring feelings of rescue, avoidance, over involvement or discomfort to supervision."],
+    remember:["Boundaries are contextual, but they are never solely a private decision between worker and service user.","Avoid abrupt or punitive boundary setting. Explain limits respectfully.","Document and seek advice about boundary crossings, dual relationships or conflicts of interest."],
+    related:["AASW Code of Ethics","Supervision","Use of Self","AASW Code of Ethics"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Ethics and Practice Guidelines","https://www.aasw.asn.au/about-aasw/ethics-standards/ethics-and-practice-guidelines/"]]
+  },
+  "Confidentiality": {
+    what:"Confidentiality is the professional responsibility to protect information shared in the helping relationship. It supports trust and privacy, but it is not absolute. Information may sometimes be disclosed with consent, under law, to address serious safety concerns, or for authorised service purposes. The exact limits depend on legislation, policy and the practice setting.",
+    practice:["Explain privacy and its limits before sensitive information is discussed.","Seek informed consent before sharing information whenever possible.","Share only information that is relevant and necessary with appropriate people.","Use secure systems and avoid identifiable discussions in public or informal settings."],
+    remember:["Do not promise complete secrecy.","Consult a supervisor before disclosing without consent unless urgent action is required.","Record what was shared, with whom, the authority or rationale, and whether the person was informed."],
+    related:["Informed Consent","Documentation","Professional Boundaries","AASW Code of Ethics"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["Office of the Australian Information Commissioner, Australian Privacy Principles","https://www.oaic.gov.au/privacy/australian-privacy-principles"]]
+  },
+  "Informed Consent": {
+    what:"Informed consent means a person has understandable information, decision making ability for the specific decision, and a genuine opportunity to choose without coercion. Consent is a continuing process, not a one time signature. It should cover the purpose of contact, options, likely consequences, information sharing and the limits of confidentiality.",
+    practice:["Use plain language and interpreters or communication supports where needed.","Check understanding by asking the person to explain information in their own words.","Allow time, questions and the option to reconsider.","Record what was explained, the person’s decision and any limits on consent."],
+    remember:["Do not assume consent because a person attended or did not object.","Capacity is decision specific and may fluctuate.","When consent cannot be obtained, identify the lawful authority and use the least restrictive approach."],
+    related:["Supported Decision Making","Confidentiality","Person Centred Practice","Supported Decision Making"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["Queensland Health, consent resources","https://www.health.qld.gov.au/consent"]]
+  },
+  "Supported Decision Making": {
+    what:"Supported decision making helps a person make and communicate their own decisions by providing the support they need. Support may include accessible information, extra time, trusted supporters, interpreters, communication aids or help comparing options. It starts from the presumption that people can make decisions and seeks to preserve autonomy as far as possible.",
+    practice:["Ask the person how they prefer to receive information and who they want involved.","Break decisions into smaller parts and explain options, benefits and risks clearly.","Distinguish an unwise decision from an inability to decide.","Document the supports offered and the person’s own preferences and decision."],
+    remember:["Do not replace the person’s decision with what others think is best unless lawful substitute decision making is required.","Capacity is specific to the decision and time.","Check Queensland law and organisational policy when guardianship or involuntary treatment may be relevant."],
+    related:["Informed Consent","Supported Decision Making","Person Centred Practice","Mental Health Act 2016 (Qld)"],
+    refs:[["Queensland Government, capacity and decision making","https://www.qld.gov.au/law/legal-mediation-and-justice-of-the-peace/power-of-attorney-and-making-decisions-for-others/capacity-guidelines"],["Queensland Health, Mental Health Act 2016 resources","https://www.health.qld.gov.au/public-health/topics/mhaod/legislation-and-courts/mental-health-act-2016"]]
+  },
+  "Supervision": {
+    what:"Professional supervision is a regular, purposeful space for reflection, learning, accountability and support. It helps social workers connect practice with ethics, theory, evidence and organisational responsibilities. For students, supervision is also where uncertainty, feedback, emotional responses and evidence for placement learning can be explored safely.",
+    practice:["Bring a brief agenda with practice questions, ethical tensions and learning goals.","Use specific examples rather than reporting only what happened.","Ask for feedback and agree on actions to try before the next session.","Record key learning and follow up tasks without including unnecessary identifying information."],
+    remember:["Supervision is not only case management or task allocation.","Raise risk, safety or ethical concerns promptly rather than waiting for the next scheduled session.","Be honest about uncertainty. Seeking guidance is part of accountable practice."],
+    related:["Reflective Practice","AASW Practice Standards","Professional Identity","Professional Sustainability"],
+    refs:[["AASW Supervision resources","https://www.aasw.asn.au/support-and-resources/supervision/"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  },
+  "Family and Carer Inclusive Practice": {
+    what:"Family and carer inclusive practice recognises that a person may have relatives, friends, chosen family or other supporters who contribute knowledge, care, connection and continuity. Inclusion should be guided by the consumer’s preferences, informed consent, safety, culture and rights. It also recognises that carers may need information, support and referral in their own right.",
+    practice:[
+      "Ask the consumer who they consider important in their life rather than assuming biological family is their preferred support network.",
+      "Discuss consent early, record what the person agrees can be shared, and review consent when circumstances or relationships change.",
+      "Explain confidentiality clearly. Even where information cannot be disclosed, workers can usually listen to relevant information from a carer and provide general service information within policy.",
+      "Invite agreed supporters into recovery planning, reviews, family meetings and exit planning where this reflects the consumer’s wishes and is safe.",
+      "Consider whether the carer has separate needs for information, emotional support, practical assistance or referral.",
+      "Explore culture, kinship, chosen family, family violence, conflict, young carer responsibilities and accessibility rather than applying one model of family involvement.",
+      "Use this quick check: Who matters to the consumer? What consent exists? What can be shared? What can be received? Is there a safety or lawful disclosure issue? Does consent need review? Does the carer need support?"
+    ],
+    remember:[
+      "Consumer autonomy remains central. Family inclusion should not become family control.",
+      "Do not use confidentiality as a blanket reason to avoid all communication with carers. Check the exact limits, organisational policy and lawful basis.",
+      "A carer’s view may add important context, but it should be identified as their perspective rather than treated automatically as fact.",
+      "Where family involvement may create risk, coercion or distress, prioritise safety and discuss the situation in supervision.",
+      "Follow current Mind Australia policy, consent documentation, privacy requirements and supervisor guidance."
+    ],
+    related:["Informed Consent","Confidentiality","Supported Decision Making","Recovery Oriented Practice","Systems & Ecological Theory","Safety Planning"],
+    refs:[
+      ["Mind Australia, Family and Carer Inclusion Policy and practice guidance reviewed during placement",""],
+      ["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],
+      ["Australian Government, National framework for recovery oriented mental health services","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-guide-for-practitioners-and-providers"],
+      ["Carer Gateway, support for carers","https://www.carergateway.gov.au/"]
+    ]
+  },
+  "Documentation": {
+    what:"Social work documentation creates an accountable record of contact, assessment, decisions, actions and follow up. Good records support continuity, communication, safety and the person’s rights. They should be relevant, timely, respectful, accurate and clear about the source of information and the worker’s professional judgement.",
+    practice:["Record the purpose of contact, relevant facts, the person’s views, strengths, risks, actions and next steps.","Separate direct observations, reported information and professional interpretation.","Use objective, person respecting language and avoid unnecessary detail.","Complete records promptly and follow correction, access and security procedures."],
+    remember:["Write as though the person may read the record.","Do not copy forward outdated assumptions or use stigmatising labels.","Document consultation and the rationale for significant decisions."],
+    related:["Case Notes","Confidentiality","Risk & Safety Planning","AASW Practice Standards"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  }
+};
 
 
 const verifiedKnowledgeTopics = {
@@ -507,6 +666,90 @@ function currentStage(info){
   return placementWeeks.find(s=>info.week>=s.from && info.week<=s.to) || placementWeeks[placementWeeks.length-1];
 }
 function timesheetEntries(){ return state.get("timesheets",[]); }
+
+let quickHoursEditingDate=null;
+function localDateValue(date=new Date()){
+  const year=date.getFullYear();
+  const month=String(date.getMonth()+1).padStart(2,"0");
+  const day=String(date.getDate()).padStart(2,"0");
+  return `${year}-${month}-${day}`;
+}
+function parseLocalDate(value){
+  const [year,month,day]=String(value||"").split("-").map(Number);
+  return new Date(year,Math.max(0,(month||1)-1),day||1);
+}
+function formatQuickHoursDate(value,includeWeekday=false){
+  return new Intl.DateTimeFormat("en-AU",includeWeekday?{weekday:"long",day:"numeric",month:"short"}:{day:"numeric",month:"short"}).format(parseLocalDate(value));
+}
+function quickHoursEntryForDate(date){
+  return timesheetEntries().find(entry=>entry.date===date);
+}
+function recentQuickHoursRows(){
+  const rows=[];
+  const today=parseLocalDate(localDateValue());
+  for(let i=0;i<5;i++){
+    const date=new Date(today);
+    date.setDate(today.getDate()-i);
+    const value=localDateValue(date);
+    rows.push({date:value,entry:quickHoursEntryForDate(value)});
+  }
+  return rows;
+}
+function quickHoursReminder(){
+  const today=localDateValue();
+  if(quickHoursEntryForDate(today)) return "";
+  const dated=timesheetEntries().filter(entry=>entry.date && Number(entry.hours||0)>0).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!dated.length) return "💚 You haven’t logged your placement hours yet.";
+  const latest=dated[0];
+  const elapsed=Math.max(0,Math.round((parseLocalDate(today)-parseLocalDate(latest.date))/86400000));
+  if(elapsed>=2) return `💚 You haven’t logged your placement hours for ${elapsed} days.`;
+  return `💚 Last hours entry: ${new Intl.DateTimeFormat("en-AU",{weekday:"long"}).format(parseLocalDate(latest.date))}.`;
+}
+function quickHoursCard(){
+  const today=localDateValue();
+  const todayEntry=quickHoursEntryForDate(today);
+  if(todayEntry && quickHoursEditingDate===null){
+    return `<section class="home-card home-hours-card home-hours-logged">
+      <div class="home-hours-logged-copy"><span class="home-hours-check">✔️</span><div><span class="home-kicker">Hours logged today</span><h2>${formatQuickHoursDate(today)} · ${Number(todayEntry.hours||0).toFixed(1)} hours</h2></div></div>
+      <button type="button" class="home-hours-edit-link" data-hours-date="${today}">Edit</button>
+    </section>`;
+  }
+  const selectedDate=quickHoursEditingDate||today;
+  const selectedEntry=quickHoursEntryForDate(selectedDate);
+  const reminder=quickHoursReminder();
+  return `<details class="home-card home-hours-card home-hours-collapsible" ${quickHoursEditingDate!==null?'open':''}>
+    <summary><span class="home-hours-summary-copy"><span class="home-hours-icon">⏱️</span><span><small>Placement hours</small><strong>Quick daily entry</strong></span></span><span class="home-hours-summary-arrow">›</span></summary>
+    <div class="home-hours-collapsible-body">
+      ${reminder?`<p class="home-hours-reminder">${reminder}</p>`:""}
+      <div class="home-hours-form">
+        <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
+        <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
+        <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
+        <button type="button" class="btn home-hours-save" id="saveQuickHours">Save hours</button>
+      </div>
+    </div>
+  </details>`;
+}
+function saveQuickHours(){
+  const date=document.getElementById("quickHoursDate")?.value;
+  const hoursValue=Number(document.getElementById("quickHoursValue")?.value);
+  const placementDay=Boolean(document.getElementById("quickPlacementDay")?.checked);
+  if(!date || !Number.isFinite(hoursValue) || hoursValue<0 || hoursValue>24){
+    alert("Please enter a valid date and hours worked.");
+    return;
+  }
+  const entries=timesheetEntries();
+  const index=entries.findIndex(entry=>entry.date===date);
+  if(index>=0){
+    entries[index]={...entries[index],hours:hoursValue,placementDay};
+  }else{
+    entries.unshift({id:Date.now(),date,start:"",finish:"",lunch:0,hours:hoursValue,activities:placementDay?"Placement hours logged from Home":"Not a placement day",placementDay});
+  }
+  state.set("timesheets",entries);
+  state.set("hours",entries.reduce((sum,entry)=>sum+Number(entry.hours||0),0));
+  quickHoursEditingDate=null;
+  render();
+}
 function supervisionItems(){ return state.get("supervisionItems",[]); }
 function assessmentCount(title){ return savedEntries().filter(e=>(e.evidence||[]).includes(title)).length; }
 
@@ -534,6 +777,37 @@ const assessmentRequirements = {
 };
 function frameworkData(){return state.get("framework",{values:[],theories:[],cultural:[],skills:[],useOfSelf:"",professionalIdentity:""});}
 function saveFrameworkData(data){state.set("framework",data);}
+
+const practiceFrameworkDevelopmentAreas = [
+  {id:"identity",icon:"🧭",title:"My social work identity",purpose:"The kind of social worker I hope to become and the purpose guiding my practice.",prompt:"What is my vision for social work practice?",questions:["Why did I choose social work?","How do I want people to experience me as a social worker?","What does ethical and effective practice look like to me?"]},
+  {id:"framework",icon:"🌿",title:"Understanding my practice framework",purpose:"How I understand people, situations and practice decisions.",prompt:"My framework is based on my understanding that…",questions:["How do I understand human behaviour and change?","What beliefs do I hold about people and families?","What influences my practice decisions?"]},
+  {id:"dignity",icon:"🤍",title:"Respect and human dignity",purpose:"The values that guide how I engage with people.",prompt:"What does respecting people mean in my practice?",questions:["How do I help people feel heard and valued?","How do I recognise people as experts in their own lives?","How do I avoid judgement?"]},
+  {id:"selfDetermination",icon:"🗝️",title:"Self determination",purpose:"How I support autonomy, informed choice and participation.",prompt:"How will I support people to have control over decisions affecting their lives?",questions:["How do I balance professional responsibilities with a person's right to choose?","How will I avoid doing things to people rather than with people?","How do I support informed choices?"]},
+  {id:"strengths",icon:"🌱",title:"Strengths based practice",purpose:"How I notice strengths, resilience and possibilities rather than focusing only on problems.",prompt:"How do I recognise strengths?",questions:["What strengths do I notice in individuals, families and communities?","How do I keep assessment from becoming deficit focused?","How do I recognise cultural, family and community strengths?"]},
+  {id:"culture",icon:"🌏",title:"Cultural humility and responsiveness",purpose:"Ongoing reflection about culture, identity, power and difference.",prompt:"How will I practise in culturally safe ways?",questions:["What assumptions or biases might I hold?","How do I learn from people's lived experiences?","How do I recognise historical and systemic experiences?"]},
+  {id:"justice",icon:"⚖️",title:"Social justice and advocacy",purpose:"Connecting individual experiences with broader systems, rights and structural barriers.",prompt:"How will I address systemic barriers?",questions:["What social issues influence the people I work with?","How can I advocate beyond individual support?","How do policies and systems affect people's lives?"]},
+  {id:"theories",icon:"🧠",title:"Theories informing my practice",purpose:"The knowledge and theories that shape how I understand people and situations.",prompt:"Which theories influence how I think and practise?",questions:["What theories help me understand behaviour?","What theories challenge my assumptions?","How do theories influence assessment and intervention?"]},
+  {id:"tools",icon:"🛠️",title:"Practice tools and approaches",purpose:"How theory and values translate into practical social work activity.",prompt:"How will I apply my framework in practice?",questions:["What approaches will I use when engaging with people?","How will I assess needs and strengths?","How will I evaluate whether my approach is helpful?"]},
+  {id:"relationships",icon:"🤝",title:"Relationship based practice",purpose:"The professional relationship as a central part of social work.",prompt:"How will I build meaningful relationships?",questions:["How will I develop trust?","How will I respond when trust has been affected by previous services?","How will I manage professional boundaries?"]},
+  {id:"reflection",icon:"🪞",title:"Reflective practice and supervision",purpose:"Ongoing learning, accountability and critical reflection.",prompt:"How will I continue developing as a practitioner?",questions:["What assumptions influenced my thinking?","Whose voice was centred?","What might I have missed, and what did I learn?"]},
+  {id:"development",icon:"📈",title:"Ongoing professional development",purpose:"The strengths, goals and commitments that will guide my continued growth.",prompt:"What kind of social worker am I becoming?",questions:["What strengths do I bring?","What skills or knowledge do I want to develop?","What commitments will guide my future practice?"]}
+];
+
+function frameworkDevelopmentData(){return state.get("frameworkDevelopment",{});}
+function saveFrameworkDevelopmentData(data){state.set("frameworkDevelopment",data);}
+function frameworkEvidenceLinksData(){return state.get("frameworkEvidenceLinks",{});}
+function saveFrameworkEvidenceLinksData(data){state.set("frameworkEvidenceLinks",data);}
+function frameworkSummaryData(){return state.get("frameworkSummary",{vision:"",purpose:"",values:"",theories:"",tools:"",reflection:""});}
+function saveFrameworkSummaryData(data){state.set("frameworkSummary",data);}
+function normaliseFrameworkEvidenceArea(value){
+  const area=value&&typeof value==="object"?value:{};
+  return {
+    reflectionIds:Array.isArray(area.reflectionIds)?area.reflectionIds.map(String):[],
+    supervisionIds:Array.isArray(area.supervisionIds)?area.supervisionIds.map(String):[],
+    manualExamples:Array.isArray(area.manualExamples)?area.manualExamples.filter(item=>item&&item.text).map(item=>({id:item.id||Date.now(),text:String(item.text),date:item.date||new Date().toLocaleDateString("en-AU")})):[]
+  };
+}
+
 function mappedAssessments(types){const found=new Set();(types||[]).forEach(t=>(evidenceMapRules[t]||[]).forEach(a=>found.add(a)));return [...found];}
 function evidenceCoverage(){const entries=savedEntries(),counts={};Object.keys(assessmentRequirements).forEach(a=>{counts[a]=assessmentRequirements[a].map(r=>({requirement:r,count:entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length}));});return counts;}
 
@@ -729,6 +1003,8 @@ function todayPage(){
       </div>
     </section>
 
+    ${quickHoursCard()}
+
     <section class="home-card home-progress-card">
       <div class="home-card-heading compact">
         ${homeIcon('progress')}
@@ -756,8 +1032,8 @@ function todayPage(){
 
 let lastSavedReflection=null;
 const reflectionTheoryOptions=["Recovery Oriented Practice","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Systems Theory","Ecological Systems Theory","CHIME","Motivational Interviewing","Solution Focused Practice","Narrative Practice","Anti Oppressive Practice","Rights Based Practice","Crisis Intervention"];
-const reflectionCodeValues=["Respect for Persons","Social Justice","Professional Integrity"];
-const reflectionEthicsOptions=["Self Determination","Human Rights","Dignity","Informed Consent","Confidentiality","Privacy","Professional Boundaries","Duty of Care","Dignity of Risk","Cultural Safety","Advocacy","Equity","Accountability","Supported Decision Making"];
+const reflectionCodeValues=["Respect for Persons","Social Justice","AASW Code of Ethics"];
+const reflectionEthicsOptions=["Self Determination","Human Rights","Dignity","Informed Consent","Confidentiality","Privacy","Professional Boundaries","Duty of Care","Supported Decision Making","Cultural Safety","Advocacy","Equity","Accountability","Supported Decision Making"];
 const reflectionStandards=[
   ["1","Values and ethics"],["2","Professional conduct"],["3","Culturally responsive and inclusive practice"],["4","Knowledge for practice"],["5","Applying knowledge to practice"],["6","Communication and interpersonal skills"],["7","Information recording and sharing"],["8","Professional development and supervision"],["9","Professional leadership"]
 ];
@@ -777,12 +1053,12 @@ const reflectionTheoryContextMap={
   "Other":["Person Centred Practice","Strengths Based Practice","Systems Theory"]
 };
 const reflectionEthicsContextMap={
-  "Choice":["Respect for Persons","Self Determination","Supported Decision Making","Informed Consent","Dignity of Risk"],
+  "Choice":["Respect for Persons","Self Determination","Supported Decision Making","Informed Consent","Supported Decision Making"],
   "Respect":["Respect for Persons","Dignity","Human Rights","Equity"],
-  "Safety":["Professional Integrity","Duty of Care","Dignity of Risk","Accountability"],
-  "Trust":["Professional Integrity","Confidentiality","Privacy","Accountability"],
-  "Confidentiality":["Professional Integrity","Confidentiality","Privacy","Informed Consent"],
-  "Boundaries":["Professional Integrity","Professional Boundaries","Accountability","Duty of Care"],
+  "Safety":["AASW Code of Ethics","Duty of Care","Supported Decision Making","Accountability"],
+  "Trust":["AASW Code of Ethics","Confidentiality","Privacy","Accountability"],
+  "Confidentiality":["AASW Code of Ethics","Confidentiality","Privacy","Informed Consent"],
+  "Boundaries":["AASW Code of Ethics","Professional Boundaries","Accountability","Duty of Care"],
   "Advocacy":["Social Justice","Advocacy","Equity","Human Rights"],
   "Culture":["Respect for Persons","Cultural Safety","Equity","Self Determination"],
   "Rights":["Social Justice","Human Rights","Self Determination","Advocacy"],
@@ -817,7 +1093,7 @@ const reflectionConceptInfo={
   "Crisis Intervention":["Prioritises immediate safety, stabilisation and practical support during acute distress.","Your reflection may involve risk, de escalation, safety planning or urgent coordination.","Risk & Safety Planning"],
   "Respect for Persons":["Recognises each person’s inherent dignity, worth and right to participate in decisions.","This may relate where you listened, respected choice or adjusted practice to the person.","AASW Code of Ethics"],
   "Social Justice":["Focuses on fairness, access, participation and challenging structural disadvantage.","This may relate where barriers, inequity, advocacy or resource access were present.","AASW Code of Ethics"],
-  "Professional Integrity":["Requires accountable, honest and ethically responsible professional practice.","This may relate where boundaries, transparency, supervision or professional judgement were important.","AASW Code of Ethics"]
+  "AASW Code of Ethics":["Requires accountable, honest and ethically responsible professional practice.","This may relate where boundaries, transparency, supervision or professional judgement were important.","AASW Code of Ethics"]
 };
 function reflectionQuestionForToday(){const d=new Date();const seed=Number(`${d.getFullYear()}${d.getMonth()+1}${d.getDate()}`);return deeperReflectionQuestions[seed%deeperReflectionQuestions.length];}
 function orderedReflectionTheories(entries){const counts={};entries.forEach(e=>(e.theories||[]).forEach(x=>counts[x]=(counts[x]||0)+1));return [...reflectionTheoryOptions].sort((a,b)=>(counts[b]||0)-(counts[a]||0));}
@@ -830,7 +1106,7 @@ function reflectionInsights(entries){
 }
 function reflectionLibrary(entries){
   if(!entries.length)return `<section class="reflection-empty-state">🌱 Your reflection library will grow as you save learning moments.</section>`;
-  return `<section class="reflection-library"><div class="reflection-section-heading"><span>📚</span><div><small>Your evidence library</small><h2>Previous reflections</h2></div></div><input id="reflectionSearch" class="input" placeholder="Search theory, standards, ethics, skills or tags"><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText((e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}</small></span><span>›</span></summary><p>${safeText((e.moment||e.answer||"").slice(0,300))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></details>`}).join("")}</div></section>`;
+  return `<details class="reflection-library reflection-library-collapsed"><summary><span><strong>Previous reflections</strong><small>${entries.length} saved</small></span><span>›</span></summary><div class="reflection-library-body"><input id="reflectionSearch" class="input" placeholder="Search reflections"><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").slice(0,105);return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview)}${preview.length>=105?'…':''}</small></span><span>›</span></summary><div class="reflection-library-entry"><p>${safeText(e.answer||e.moment||"")}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.practiceStandards||[])].slice(0,5).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
 }
 function journalPage(){
   const entries=savedEntries(), prompt=reflectionQuestionForToday();
@@ -870,7 +1146,7 @@ function journalPage(){
     </div></details>
     <button class="btn reflection-save-button" id="saveEntry">🌿 Save reflection</button>
   </form>
-  <section class="reflection-growth-note"><div class="reflection-section-heading"><span>🌿</span><div><small>Your practice is growing</small><h2>Reflection insight</h2></div></div><p>${safeText(reflectionInsights(entries))}</p></section>
+  <details class="reflection-growth-note reflection-insight-collapsed"><summary><span><strong>Reflection insight</strong><small>A pattern Practice Compass has noticed</small></span><span>›</span></summary><p>${safeText(reflectionInsights(entries))}</p></details>
   ${reflectionLibrary(entries)}`;
 }
 function assessmentPage(){
@@ -1091,24 +1367,47 @@ function assessmentDetail(id,openPlanning=false){
   });
 }
 
+
+function condensedToolkitCategories(){
+  const groups=[
+    ["🌿","Social work foundations","Ethics, standards, identity and reflective practice",["Ethics & Professional Practice","Use of Self"]],
+    ["🧠","Mental health practice","Recovery, safety and person centred mental health learning",["Practice Areas"]],
+    ["🛠️","Practice approaches","Theories, frameworks and core practice skills",["Theories & Frameworks","Practice Skills","Communication","Documentation"]],
+    ["🌏","Culture and inclusion","Cultural humility, identity and inclusive practice",["Cultural Capability & Inclusion","Working with Different Populations"]],
+    ["⚖️","Systems and social justice","Policy, law, community and structural practice",["Legislation & Policy","Community Development","Social Policy"]],
+    ["📚","Research and evidence","Evidence informed practice and university learning",["Research & Evidence"]]
+  ];
+  return groups.map(group=>{
+    const items=[];
+    toolkitCategories.forEach((category,categoryIndex)=>{
+      if(!group[3].includes(category[1])) return;
+      category[3].forEach((topic,topicIndex)=>{
+        if(stage1ToolkitContent[topic[0]] || verifiedKnowledgeTopics[topic[0]]) items.push({topic,categoryIndex,topicIndex});
+      });
+    });
+    return {...{icon:group[0],title:group[1],subtitle:group[2]},items};
+  }).filter(group=>group.items.length);
+}
+
 function learnPage(){
+  const groups=condensedToolkitCategories();
   return `
-    <section class="toolkit-welcome">
-      <div class="eyebrow">Social work in your pocket</div>
-      <h1>📚 Practice Toolkit</h1>
-      <p class="welcome-text">You do not need to know everything. Open one area when you need it.</p>
-      <input id="toolkitSearch" class="input" placeholder="Search domestic violence, theory, skills, culture or policy">
+    <section class="toolkit-welcome toolkit-welcome-calm">
+      <div class="eyebrow">Toolkit</div>
+      <h1>📚 Social work learning</h1>
+      <p class="welcome-text">Open one area when it supports a reflection, supervision discussion or assessment.</p>
+      <input id="toolkitSearch" class="input" placeholder="Search the Toolkit">
     </section>
-    <div id="toolkitList" class="toolkit-list">
-      ${toolkitCategories.map((category,index)=>`
-        <section class="toolkit-folder" data-search="${(category[1]+' '+category[2]+' '+category[3].map(x=>x.join(' ')).join(' ')).toLowerCase()}">
+    <div id="toolkitList" class="toolkit-list toolkit-list-calm">
+      ${groups.map((group,index)=>`
+        <section class="toolkit-folder toolkit-folder-calm" data-search="${safeText((group.title+' '+group.subtitle+' '+group.items.map(x=>x.topic.join(' ')).join(' ')).toLowerCase())}">
           <button class="folder-header" data-folder="${index}">
-            <div class="folder-icon">${category[0]}</div>
-            <div class="folder-text"><div class="folder-title">${category[1]}</div><div class="folder-subtitle">${category[2]}</div></div>
-            <div class="folder-arrow">⌄</div>
+            <div class="folder-icon">${group.icon}</div>
+            <div class="folder-text"><div class="folder-title">${group.title}</div><div class="folder-subtitle">${group.subtitle} · ${group.items.length} topics</div></div>
+            <div class="folder-arrow">›</div>
           </button>
           <div class="folder-content hidden" id="folder-${index}">
-            ${category[3].map((item,itemIndex)=>`<button class="toolkit-topic" data-category="${index}" data-topic="${itemIndex}"><div><strong>${item[0]}</strong><span>${item[1]}</span></div><span>›</span></button>`).join('')}
+            ${group.items.map(item=>`<button class="toolkit-topic" data-category="${item.categoryIndex}" data-topic="${item.topicIndex}"><div><strong>${item.topic[0]}</strong><span>${item.topic[1]}</span></div><span>›</span></button>`).join('')}
           </div>
         </section>`).join('')}
     </div>`;
@@ -1117,6 +1416,53 @@ function toolkitDetail(categoryIndex,topicIndex){
   const category=toolkitCategories[categoryIndex];
   const topic=category[3][topicIndex];
   if(verifiedKnowledgePage(topic,category)) return;
+  const guide=stage1ToolkitContent[topic[0]];
+
+  if(guide){
+    document.getElementById("main").innerHTML=`
+      <div class="screen-title">
+        <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+        <h2>${category[0]} ${topic[0]}</h2>
+      </div>
+
+      <div class="card green">
+        <div class="label">🌿 What is this?</div>
+        <p>${guide.what}</p>
+      </div>
+
+      <details class="card toolkit-info">
+        <summary><strong>Practice examples</strong></summary>
+        <ul>${guide.practice.map(item=>`<li>${item}</li>`).join("")}</ul>
+      </details>
+
+      <details class="card toolkit-info">
+        <summary><strong>Remember</strong></summary>
+        <ul>${guide.remember.map(item=>`<li>${item}</li>`).join("")}</ul>
+      </details>
+
+      <details class="card toolkit-info">
+        <summary><strong>🔗 Related Toolkit cards</strong></summary>
+        <div class="linked-resource-list">${guide.related.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div>
+      </details>
+
+      <details class="card toolkit-info">
+        <summary><strong>📚 References</strong></summary>
+        <ul>${guide.refs.map(ref=>ref[1]?`<li><a href="${ref[1]}" target="_blank" rel="noopener noreferrer">${ref[0]}</a></li>`:`<li>${ref[0]}</li>`).join("")}</ul>
+      </details>
+
+      <div class="card">
+        <p class="muted">Practice Compass is a quick practice guide for placement learning. Follow current legislation, organisational policy, supervision and official guidance.</p>
+        <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
+      </div>`;
+
+    const goBack=()=>{route="learn";render()};
+    document.getElementById("backToolkit").onclick=goBack;
+    document.getElementById("returnToolkit").onclick=goBack;
+    document.querySelectorAll("[data-toolkit-name]").forEach(button=>{
+      button.onclick=()=>openToolkitTopicByName(button.dataset.toolkitName);
+    });
+    return;
+  }
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title">
@@ -1164,57 +1510,28 @@ function toolkitDetail(categoryIndex,topicIndex){
 function morePage(){
   const intelligence=practiceFrameworkIntelligence();
   const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
-  const evidencedItems=allItems.filter(item=>item.evidence.length);
-  const growth=evidencedItems.slice(0,4);
-  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
-  const opportunityRules=[
-    {label:"Ethical decision making",tags:["Ethics or values"]},
-    {label:"Cultural capability",tags:["Cultural capability"]},
-    {label:"Interprofessional collaboration",tags:["Teamwork"]},
-    {label:"Use of self",tags:["Use of self"]},
-    {label:"Theory informed practice",tags:["Theory in action"]}
-  ];
-  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
-  const groupLabels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
-  const groupSummary=Object.entries(intelligence.groups).map(([key,map])=>{
-    const supported=[...map.values()].filter(item=>item.evidence.length).length;
-    return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
-  }).join("");
-
-  return `<div class="journey-page">
-    <section class="welcome-block journey-welcome">
-      <div class="eyebrow">My Journey</div>
-      <h1>💚 Professional Growth</h1>
-      <p class="welcome-text">See how your professional identity is developing through the evidence you already capture.</p>
+  const evidenced=allItems.filter(item=>item.evidence.length);
+  const entries=intelligence.entries;
+  const frameworkStarted=Object.values(frameworkFoundationData()).filter(item=>item && (item.thinking||item.note)).length;
+  const summary=evidenced.slice(0,3);
+  return `<div class="journey-page journey-home-calm">
+    <section class="journey-hero-card">
+      <div><span class="eyebrow">Me</span><h1>How I am developing</h1><p>Your placement learning, gathered in one clear place.</p></div>
+      <span class="journey-hero-icon">🌿</span>
+      <div class="journey-hero-stats"><span><strong>${entries.length}</strong><small>reflections</small></span><span><strong>${evidenced.length}</strong><small>strengths evidenced</small></span><span><strong>${frameworkStarted}</strong><small>framework areas</small></span></div>
     </section>
-
-    <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
-      <h2 id="growthSummaryHeading">Growth summary</h2>
-      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">✨ Your professional identity will grow here as you add reflections.</div>`}
-    </section>
-
-    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
-
-    <section class="journey-section-block" aria-labelledby="frameworkHeading">
-      <h2 id="frameworkHeading">My practice framework</h2>
-      <div class="journey-framework-panel">
-        <div class="journey-framework-summary">${groupSummary}</div>
-        <button class="journey-text-action" id="frameworkMenu">View my developing framework <span>›</span></button>
-      </div>
-    </section>
-
-    <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
-      <h2 id="professionalDevelopmentHeading">Professional development</h2>
-      <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
-    </section>
-
-    <section class="journey-app-section" aria-labelledby="journeyAppHeading">
-      <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
+    ${summary.length?`<section class="journey-quiet-summary"><span>Emerging strengths</span><div>${summary.map(item=>`<strong>${safeText(item.name)}</strong>`).join('')}</div></section>`:''}
+    <nav class="journey-destination-list" aria-label="Professional growth">
+      <button class="journey-destination-row" id="openEvidenceMap"><span class="journey-destination-icon">🌱</span><span><strong>My growth</strong><small>Strengths and evidence across placement</small></span><b>›</b></button>
+      <button class="journey-destination-row" id="frameworkMenu"><span class="journey-destination-icon">🧭</span><span><strong>My practice framework</strong><small>Values, theories, tools and professional identity</small></span><b>›</b></button>
+      <button class="journey-destination-row" id="evidenceBank"><span class="journey-destination-icon">🎓</span><span><strong>Assessment evidence</strong><small>What you have captured for university</small></span><b>›</b></button>
+      <button class="journey-destination-row" id="weeklyReview"><span class="journey-destination-icon">💭</span><span><strong>Weekly check in</strong><small>Pause and notice what is changing</small></span><b>›</b></button>
+    </nav>
+    <details class="journey-app-tools"><summary><span><strong>App and personal tools</strong><small>Exports, backup, wellbeing and settings</small></span><span>›</span></summary><div>
+      <button class="journey-utility-row" id="wellbeing"><span><strong>Looking after me</strong><small>Gentle wellbeing prompts</small></span><span>›</span></button>
       <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
-      <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
-      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
-      <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
-    </section>
+      <button class="journey-utility-row" id="backupJson"><span><strong>Backup</strong><small>Download a private copy</small></span><span>›</span></button>
+    </div></details>
   </div>`;
 }
 
@@ -1286,6 +1603,10 @@ function practiceFrameworkIntelligence(){
 function frameworkPage(){
   const intelligence=practiceFrameworkIntelligence();
   const data=intelligence.manual;
+  const development=frameworkDevelopmentData();
+  const evidenceLinks=frameworkEvidenceLinksData();
+  const reflectionOptions=savedEntries();
+  const supervisionOptions=supervisionItems();
   const groups={
     values:["Human dignity","Social justice","Self determination","Respect","Hope","Compassion","Accountability","Cultural safety"],
     theories:["Recovery Oriented Practice","Strengths Based Practice","Systems and Ecological Theory","Trauma Informed Practice","Person Centred Practice","Anti Oppressive Practice","Feminist Social Work","Intersectionality","Narrative Practice","Motivational Interviewing"],
@@ -1294,7 +1615,6 @@ function frameworkPage(){
   };
   const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
   const evidencedItems=allItems.filter(item=>item.evidence.length);
-  const growth=evidencedItems.slice(0,4);
   const opportunityRules=[
     {label:"Ethical decision making",tags:["Ethics or values"]},
     {label:"Cultural capability",tags:["Cultural capability"]},
@@ -1304,53 +1624,202 @@ function frameworkPage(){
   ];
   const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
   const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
-  const labels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
-  const frameworkItem=item=>`<details class="framework-evidence-item">
-    <summary><span>${safeText(item.name)}</span><span>${item.evidence.length?`${item.evidence.length} reflection${item.evidence.length===1?"":"s"}`:"Personal addition"}</span></summary>
-    <div class="framework-evidence-body">
-      ${item.evidence.length?`<strong>Evidence from</strong><div class="framework-source-list">${item.evidence.map(source=>`<span>${safeText(source.label)}${source.date?` · ${safeText(source.date)}`:""}</span>`).join("")}</div>`:`<p class="muted">This was added by you. Supporting reflection evidence will appear here when available.</p>`}
-      ${item.assessments.size?`<strong>Supports</strong><div class="framework-support-list">${[...item.assessments].map(a=>`<span>✓ ${safeText(a)}</span>`).join("")}</div>`:""}
-    </div>
-  </details>`;
-  const groupSection=(key,map)=>map.size?`<section class="framework-growth-group"><div class="label">${labels[key]}</div><div class="framework-evidence-list">${[...map.values()].map(frameworkItem).join("")}</div></section>`:"";
-  const chips=(group,items)=>items.map(v=>`<button class="select-chip framework-chip ${(data[group]||[]).includes(v)?"selected":""}" data-group="${group}" data-value="${v}">${v}</button>`).join("");
+  const labels={values:"Values",theories:"Theories",models:"Practice approaches",skills:"Skills",useOfSelf:"Use of self"};
+  const frameworkItem=item=>`<div class="framework-summary-item"><strong>${safeText(item.name)}</strong><small>${item.evidence.length?`${item.evidence.length} linked reflection${item.evidence.length===1?"":"s"}`:"Personal addition"}</small></div>`;
+  const groupSection=(key,map)=>map.size?`<section class="framework-summary-group"><h4>${labels[key]}</h4>${[...map.values()].map(frameworkItem).join("")}</section>`:"";
+  const chips=(group,items)=>items.map(v=>`<button class="select-chip framework-chip ${(data[group]||[]).includes(v)?"selected":""}" data-group="${group}" data-value="${safeText(v)}">${safeText(v)}</button>`).join("");
+
+  const developmentRows=practiceFrameworkDevelopmentAreas.map((area,index)=>{
+    const saved=development[area.id]||{};
+    const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
+    const linkedReflections=reflectionOptions.filter(entry=>linked.reflectionIds.includes(String(entry.id)));
+    const linkedSupervision=supervisionOptions.filter(entry=>linked.supervisionIds.includes(String(entry.id)));
+    const evidenceCount=linkedReflections.length+linkedSupervision.length+linked.manualExamples.length;
+    const answer=saved.answer||"";
+    const status=evidenceCount?"Evidence added":answer?"Developing":"Not started";
+    const statusClass=status==="Evidence added"?"status-complete":status==="Developing"?"status-in-progress":"status-not-started";
+    const reflectionChoices=reflectionOptions.length?reflectionOptions.map(entry=>`<label class="framework-evidence-choice"><input type="checkbox" class="framework-reflection-link" value="${safeText(String(entry.id))}" ${linked.reflectionIds.includes(String(entry.id))?"checked":""}><span><strong>${safeText(entry.date||"Reflection")}</strong><small>${safeText((entry.situation||entry.text||entry.description||"Saved reflection").slice(0,120))}</small></span></label>`).join(""):`<p class="muted framework-evidence-empty">No reflections saved yet.</p>`;
+    const supervisionChoices=supervisionOptions.length?supervisionOptions.map(entry=>`<label class="framework-evidence-choice"><input type="checkbox" class="framework-supervision-link" value="${safeText(String(entry.id))}" ${linked.supervisionIds.includes(String(entry.id))?"checked":""}><span><strong>${safeText(entry.type||"Supervision note")} · ${safeText(entry.date||"")}</strong><small>${safeText((entry.text||"Saved supervision note").slice(0,120))}</small></span></label>`).join(""):`<p class="muted framework-evidence-empty">No supervision notes saved yet.</p>`;
+    const linkedEvidenceHtml=evidenceCount?`<div class="framework-linked-evidence">
+      ${linkedReflections.map(entry=>`<div class="framework-linked-row"><span>💭</span><div><strong>Reflection · ${safeText(entry.date||"")}</strong><small>${safeText((entry.situation||entry.text||entry.description||"Saved reflection").slice(0,130))}</small></div></div>`).join("")}
+      ${linkedSupervision.map(entry=>`<div class="framework-linked-row"><span>🤝</span><div><strong>${safeText(entry.type||"Supervision")} · ${safeText(entry.date||"")}</strong><small>${safeText((entry.text||"Saved supervision note").slice(0,130))}</small></div></div>`).join("")}
+      ${linked.manualExamples.map(item=>`<div class="framework-linked-row" data-example-id="${safeText(String(item.id))}"><span>🌿</span><div><strong>Practice example · ${safeText(item.date||"")}</strong><small>${safeText(item.text)}</small></div><button type="button" class="framework-remove-example">Remove</button></div>`).join("")}
+    </div>`:`<p class="muted framework-evidence-empty">No evidence connected yet.</p>`;
+    return `<details class="framework-foundation-item framework-foundation-simple" data-framework-area="${area.id}">
+      <summary>
+        <span class="framework-foundation-icon">${area.icon}</span>
+        <span class="framework-foundation-copy"><strong>${index+1}. ${safeText(area.title)}</strong><small>${safeText(area.purpose)}</small><span class="framework-foundation-meta"><span class="status-inline ${statusClass}">${status}</span>${evidenceCount?`<span>${evidenceCount} evidence item${evidenceCount===1?"":"s"}</span>`:""}</span></span>
+        <span class="framework-foundation-arrow">›</span>
+      </summary>
+      <div class="framework-foundation-body">
+        <div class="framework-foundation-prompt">${safeText(area.prompt)}</div>
+        <details class="framework-thinking-help"><summary>Need help thinking?</summary><div class="framework-foundation-questions">${area.questions.map(question=>`<span>${safeText(question)}</span>`).join("")}</div></details>
+        <label><span>My current thinking</span><textarea class="textarea framework-development-answer" placeholder="Add a short thought or example. You can return to this throughout placement.">${safeText(answer)}</textarea></label>
+        <section class="framework-area-evidence framework-area-evidence-simple">
+          <div class="framework-area-evidence-heading"><div><strong>Evidence</strong><small>Linked items stay unchanged in their original location.</small></div><span>${evidenceCount}</span></div>
+          ${linkedEvidenceHtml}
+          <details class="framework-evidence-picker">
+            <summary><span>Add or manage evidence</span><span>›</span></summary>
+            <div class="framework-evidence-picker-body">
+              <details class="framework-source-picker"><summary>Reflections</summary><div class="framework-evidence-choice-list">${reflectionChoices}</div></details>
+              <details class="framework-source-picker"><summary>Supervision notes</summary><div class="framework-evidence-choice-list">${supervisionChoices}</div></details>
+              <div class="framework-evidence-source"><strong>Add a short practice example</strong><textarea class="textarea framework-manual-example" placeholder="For example: I supported a consumer to identify their own priorities."></textarea><button type="button" class="btn secondary framework-add-example">Add example</button></div>
+            </div>
+          </details>
+        </section>
+      </div>
+    </details>`;
+  }).join("");
+
+  const startedCount=practiceFrameworkDevelopmentAreas.filter(area=>{
+    const saved=development[area.id]||{};
+    const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
+    return Boolean(saved.answer||linked.reflectionIds.length||linked.supervisionIds.length||linked.manualExamples.length);
+  }).length;
+  const totalEvidence=practiceFrameworkDevelopmentAreas.reduce((sum,area)=>{
+    const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
+    return sum+linked.reflectionIds.length+linked.supervisionIds.length+linked.manualExamples.length;
+  },0);
+  const summary=frameworkSummaryData();
+  const developmentAnswer=id=>String((development[id]||{}).answer||"").trim();
+  const joinSuggestions=items=>items.filter(Boolean).join("\n\n");
+  const summarySuggestions={
+    vision:joinSuggestions([developmentAnswer("identity"),developmentAnswer("development"),data.professionalIdentity]),
+    purpose:joinSuggestions([developmentAnswer("identity"),developmentAnswer("framework")]),
+    values:joinSuggestions([developmentAnswer("dignity"),developmentAnswer("selfDetermination"),developmentAnswer("strengths"),developmentAnswer("culture"),developmentAnswer("justice"),(data.values||[]).length?`Values already selected: ${(data.values||[]).join(", ")}`:""]),
+    theories:joinSuggestions([developmentAnswer("theories"),(data.theories||[]).length?`Theories and approaches already selected: ${(data.theories||[]).join(", ")}`:""]),
+    tools:joinSuggestions([developmentAnswer("tools"),developmentAnswer("relationships"),(data.skills||[]).length?`Developing skills already selected: ${(data.skills||[]).join(", ")}`:""]),
+    reflection:joinSuggestions([developmentAnswer("reflection"),developmentAnswer("development"),data.useOfSelf])
+  };
+  const summaryFields=[
+    {id:"vision",title:"Vision",starter:"The social worker I aspire to become is…",prompt:"Describe the practitioner you are becoming and how you want people to experience you."},
+    {id:"purpose",title:"Purpose",starter:"I practise social work because…",prompt:"What draws you to social work and what difference do you hope to make?"},
+    {id:"values",title:"Values",starter:"The principles that guide me are…",prompt:"Name the values that shape how you engage, decide and advocate."},
+    {id:"theories",title:"Theories",starter:"The theories that shape my understanding are…",prompt:"Include only theories and frameworks you can connect to your actual practice."},
+    {id:"tools",title:"Practice tools",starter:"The approaches I use in practice are…",prompt:"Describe how your values and theories translate into practical social work activity."},
+    {id:"reflection",title:"Reflection and accountability",starter:"I remain accountable by…",prompt:"Explain how reflection, supervision, feedback and ongoing learning guide your practice."}
+  ];
+  const summaryEditor=summaryFields.map(field=>`<section class="framework-summary-editor-field"><div class="framework-summary-editor-heading"><div><strong>${field.title}</strong><small>${field.starter}</small></div>${summarySuggestions[field.id]?`<button type="button" class="framework-use-notes" data-summary-notes="${field.id}">Use my saved notes</button>`:""}</div><p>${field.prompt}</p><textarea class="textarea framework-summary-text" id="frameworkSummary-${field.id}" placeholder="Write this in your own words. You can keep changing it as placement develops.">${safeText(summary[field.id]||"")}</textarea>${summarySuggestions[field.id]?`<details class="framework-summary-notes"><summary>See the notes this draws from</summary><div>${safeText(summarySuggestions[field.id]).replace(/\n/g,"<br>")}</div></details>`:""}</section>`).join("");
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
-    <section class="card green framework-intelligence-hero"><div class="label">How am I developing as a social worker?</div><p>Your framework grows from the reflections and evidence you already save. Capture once, then use it across your placement journey.</p></section>
-
-    ${growth.length?`<section class="card framework-growth-summary"><div class="label">You’re demonstrating</div><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></section>`:`<section class="card framework-empty"><div class="label">Your framework will grow here</div><p>Save reflections and choose what they demonstrate. Practice Compass will organise the supporting evidence for you.</p></section>`}
-
-    ${opportunities.length?`<section class="card sage framework-opportunities"><div class="label">Opportunities to strengthen</div><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p class="muted">These are gentle prompts for future learning, not missing requirements.</p></section>`:""}
-
-    <section class="card framework-development"><div class="label">My developing framework</div>
-      ${groupSection("values",intelligence.groups.values)}
-      ${groupSection("theories",intelligence.groups.theories)}
-      ${groupSection("models",intelligence.groups.models)}
-      ${groupSection("skills",intelligence.groups.skills)}
-      ${groupSection("useOfSelf",intelligence.groups.useOfSelf)}
+    <section class="framework-calm-overview">
+      <p>Your framework grows from your real practice, reflections and supervision. You do not need to complete everything at once.</p>
+      <div class="framework-calm-stats"><span><strong>${startedCount}</strong> of 12 areas started</span><span><strong>${totalEvidence}</strong> evidence items linked</span></div>
     </section>
 
-    <details class="card framework-manual-additions">
-      <summary><span><strong>Personal additions</strong><small>Add anything important that has not yet appeared through reflection evidence.</small></span><span>›</span></summary>
-      <div class="framework-manual-body">
-        <div><div class="label">My values</div><div class="chip-grid">${chips("values",groups.values)}</div></div>
-        <div><div class="label">Theories and approaches</div><div class="chip-grid">${chips("theories",groups.theories)}</div></div>
-        <div><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips("cultural",groups.cultural)}</div></div>
-        <div><div class="label">My developing skills</div><div class="chip-grid">${chips("skills",groups.skills)}</div></div>
-        <div><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${safeText(data.useOfSelf||"")}</textarea></div>
-        <div><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${safeText(data.professionalIdentity||"")}</textarea></div>
-        <button class="btn" id="saveFramework">Save personal additions</button>
+    <div class="framework-calm-actions">
+      <button type="button" class="framework-calm-action" id="continueFramework"><span>🌱</span><span><strong>Continue building my framework</strong><small>Work through one development area at a time</small></span><b>›</b></button>
+      <button type="button" class="framework-calm-action" id="openFrameworkSummary"><span>🧭</span><span><strong>See my emerging framework</strong><small>View the values, theories and skills already appearing</small></span><b>›</b></button>
+      <button type="button" class="framework-calm-action" id="openFrameworkGaps"><span>🌿</span><span><strong>Areas to strengthen</strong><small>Gentle prompts for future learning</small></span><b>›</b></button>
+    </div>
+
+    <section class="framework-foundation-section" id="frameworkDevelopmentSection">
+      <div class="framework-foundation-heading"><div><span class="label">Developing my practice framework</span><h3>Choose one area that feels relevant today</h3></div></div>
+      <div class="framework-foundation-list">${developmentRows}</div>
+      <button class="btn framework-development-save" id="saveFrameworkDevelopment">Save framework progress</button>
+    </section>
+
+    <details class="framework-calm-details" id="frameworkSummarySection">
+      <summary><span><strong>My emerging framework</strong><small>A summary drawn from your saved reflections and personal additions</small></span><span>›</span></summary>
+      <div class="framework-calm-details-body">
+        <section class="framework-six-part-summary">
+          <div class="framework-six-part-intro"><strong>My six part framework</strong><p>This is an editable working summary, not a final assessment response. Use your saved notes as prompts, then shape the wording so it sounds like you.</p></div>
+          ${summaryEditor}
+          <button type="button" class="btn framework-summary-save" id="saveFrameworkSummary">Save emerging framework</button>
+        </section>
+        <details class="framework-existing-signals">
+          <summary>Values, theories and skills already appearing</summary>
+          <div>${evidencedItems.length?`${groupSection("values",intelligence.groups.values)}${groupSection("theories",intelligence.groups.theories)}${groupSection("models",intelligence.groups.models)}${groupSection("skills",intelligence.groups.skills)}${groupSection("useOfSelf",intelligence.groups.useOfSelf)}`:`<p class="muted">These will appear as you save reflections and link evidence.</p>`}</div>
+        </details>
+        <details class="framework-personal-additions-simple">
+          <summary>Personal additions</summary>
+          <div class="framework-manual-body">
+            <div><div class="label">My values</div><div class="chip-grid">${chips("values",groups.values)}</div></div>
+            <div><div class="label">Theories and approaches</div><div class="chip-grid">${chips("theories",groups.theories)}</div></div>
+            <div><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips("cultural",groups.cultural)}</div></div>
+            <div><div class="label">My developing skills</div><div class="chip-grid">${chips("skills",groups.skills)}</div></div>
+            <div><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${safeText(data.useOfSelf||"")}</textarea></div>
+            <div><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${safeText(data.professionalIdentity||"")}</textarea></div>
+            <button class="btn" id="saveFramework">Save personal additions</button>
+          </div>
+        </details>
       </div>
+    </details>
+
+    <details class="framework-calm-details" id="frameworkGapsSection">
+      <summary><span><strong>Areas to strengthen</strong><small>These are prompts, not missing requirements</small></span><span>›</span></summary>
+      <div class="framework-calm-details-body">${opportunities.length?`<div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div>`:`<p class="muted">No specific gaps are being suggested right now. Keep adding real practice evidence as it occurs.</p>`}</div>
     </details>`;
+
   document.getElementById("backMore").onclick=()=>{route="more";render()};
+  document.getElementById("continueFramework").onclick=()=>document.getElementById("frameworkDevelopmentSection").scrollIntoView({behavior:"smooth",block:"start"});
+  document.getElementById("openFrameworkSummary").onclick=()=>{const el=document.getElementById("frameworkSummarySection");el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};
+  document.getElementById("openFrameworkGaps").onclick=()=>{const el=document.getElementById("frameworkGapsSection");el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};
+  document.querySelectorAll(".framework-use-notes").forEach(button=>button.addEventListener("click",()=>{
+    const id=button.dataset.summaryNotes;
+    const textarea=document.getElementById(`frameworkSummary-${id}`);
+    const notes=summarySuggestions[id]||"";
+    if(!textarea||!notes)return;
+    if(textarea.value.trim()&&!confirm("Replace the current wording with your saved notes?"))return;
+    textarea.value=notes;
+    textarea.focus();
+  }));
+  document.getElementById("saveFrameworkSummary")?.addEventListener("click",()=>{
+    const next={};
+    summaryFields.forEach(field=>next[field.id]=document.getElementById(`frameworkSummary-${field.id}`).value.trim());
+    saveFrameworkSummaryData(next);
+    alert("Your emerging framework has been saved 🧭");
+    frameworkPage();
+  });
   document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));
-  document.getElementById("saveFramework").onclick=()=>{
+  const workingEvidence={};
+  practiceFrameworkDevelopmentAreas.forEach(area=>workingEvidence[area.id]=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]));
+  document.querySelectorAll("[data-framework-area]").forEach(item=>{
+    const id=item.dataset.frameworkArea;
+    item.querySelectorAll(".framework-reflection-link").forEach(input=>input.addEventListener("change",()=>{workingEvidence[id].reflectionIds=[...item.querySelectorAll(".framework-reflection-link:checked")].map(input=>String(input.value))}));
+    item.querySelectorAll(".framework-supervision-link").forEach(input=>input.addEventListener("change",()=>{workingEvidence[id].supervisionIds=[...item.querySelectorAll(".framework-supervision-link:checked")].map(input=>String(input.value))}));
+    item.querySelector(".framework-add-example")?.addEventListener("click",()=>{
+      const textarea=item.querySelector(".framework-manual-example");
+      const text=textarea.value.trim();
+      if(!text){alert("Add a short practice example first.");return;}
+      workingEvidence[id].manualExamples.push({id:Date.now(),text,date:new Date().toLocaleDateString("en-AU")});
+      saveFrameworkEvidenceLinksData({...evidenceLinks,...workingEvidence});
+      frameworkPage();
+    });
+    item.querySelectorAll(".framework-remove-example").forEach(button=>button.addEventListener("click",()=>{
+      const exampleId=String(button.closest("[data-example-id]")?.dataset.exampleId||"");
+      workingEvidence[id].manualExamples=workingEvidence[id].manualExamples.filter(example=>String(example.id)!==exampleId);
+      saveFrameworkEvidenceLinksData({...evidenceLinks,...workingEvidence});
+      frameworkPage();
+    }));
+  });
+  document.getElementById("saveFrameworkDevelopment").onclick=()=>{
+    const current={};
+    document.querySelectorAll("[data-framework-area]").forEach(item=>{
+      const id=item.dataset.frameworkArea;
+      const answer=item.querySelector(".framework-development-answer").value.trim();
+      const selectedReflections=[...item.querySelectorAll(".framework-reflection-link:checked")].map(input=>String(input.value));
+      const selectedSupervision=[...item.querySelectorAll(".framework-supervision-link:checked")].map(input=>String(input.value));
+      workingEvidence[id].reflectionIds=selectedReflections;
+      workingEvidence[id].supervisionIds=selectedSupervision;
+      const evidenceCount=selectedReflections.length+selectedSupervision.length+workingEvidence[id].manualExamples.length;
+      current[id]={answer,status:evidenceCount?"Evidence added":answer?"Developing":"Not started",updatedAt:new Date().toISOString()};
+    });
+    saveFrameworkDevelopmentData(current);
+    saveFrameworkEvidenceLinksData(workingEvidence);
+    alert("Your framework progress has been saved 🌿");
+    frameworkPage();
+  };
+  document.getElementById("saveFramework")?.addEventListener("click",()=>{
     const current={values:[],theories:[],cultural:[],skills:[],useOfSelf:document.getElementById("frameworkSelf").value.trim(),professionalIdentity:document.getElementById("frameworkIdentity").value.trim()};
     document.querySelectorAll(".framework-chip.selected").forEach(btn=>current[btn.dataset.group].push(btn.dataset.value));
-    saveFrameworkData(current); alert("My Practice Framework has been updated 🧭"); frameworkPage();
-  };
+    saveFrameworkData(current);
+    alert("My Practice Framework has been updated 🧭");
+    frameworkPage();
+  });
 }
+
 
 function timesheetPage(){
   const entries=timesheetEntries();
@@ -1565,6 +2034,10 @@ function bind(){
   document.querySelectorAll(".ethics-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".ethics-context",reflectionEthicsContextMap,"ethicsSuggestions","ethics"));
   document.querySelectorAll(".standard-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".standard-context",reflectionStandardContextMap,"standardSuggestions","standard"));
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
+  document.getElementById("saveQuickHours")?.addEventListener("click",saveQuickHours);
+  document.getElementById("quickHoursDate")?.addEventListener("change",event=>{quickHoursEditingDate=event.target.value;render()});
+  document.getElementById("quickPlacementDay")?.addEventListener("change",event=>{const input=document.getElementById("quickHoursValue");if(input && !event.target.checked && input.value==="") input.value="0";});
+  document.querySelectorAll(".home-hours-edit-link").forEach(button=>button.addEventListener("click",()=>{quickHoursEditingDate=button.dataset.hoursDate;render()}));
   document.getElementById("openCurrentAssessment")?.addEventListener("click",e=>assessmentDetail(e.currentTarget.dataset.id));
   document.getElementById("openEvidenceMap")?.addEventListener("click",()=>evidenceMapPage());
   document.getElementById("openFramework")?.addEventListener("click",()=>frameworkPage());
