@@ -1105,7 +1105,8 @@ function reflectionInsights(entries){
 }
 function reflectionLibrary(entries){
   if(!entries.length)return `<section class="reflection-empty-state">🌱 Your reflection library will grow as you save learning moments.</section>`;
-  return `<section class="reflection-library"><div class="reflection-section-heading"><span>📚</span><div><small>Your evidence library</small><h2>Previous reflections</h2></div></div><input id="reflectionSearch" class="input" placeholder="Search theory, standards, ethics, skills or tags"><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText((e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}</small></span><span>›</span></summary><p>${safeText((e.moment||e.answer||"").slice(0,300))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></details>`}).join("")}</div></section>`;
+  const libraryOpen=state.get("reflectionLibraryOpen",false);
+  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||(e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
 }
 function journalPage(){
   const entries=savedEntries(), prompt=reflectionQuestionForToday();
@@ -1114,7 +1115,7 @@ function journalPage(){
   <form class="reflection-simple" id="reflectionForm" onsubmit="return false">
     <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What stayed with you today?</strong><span>One moment is enough.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Write in your own words..."></textarea></section>
 
-    <details class="conversation-card reflection-companion"><summary><span><strong>🌱 Reflection Companion</strong><small>Need help connecting today’s experience with social work?</small></span><span>›</span></summary><div class="reflection-companion-body">
+    <details class="conversation-card reflection-companion" id="reflectionCompanion" ${state.get("reflectionCompanionOpen",false)?"open":""}><summary><span><strong>🌱 Reflection Companion</strong><small>Need help connecting today’s experience with social work?</small></span><span>›</span></summary><div class="reflection-companion-body">
       <p class="companion-intro">Write first. Think second. Explore only what feels useful.</p>
 
       <details class="companion-help-card" data-companion-card="theory"><summary><span><strong>📚 Help me identify theory</strong><small>What theory or approach might fit?</small></span><span>›</span></summary><div class="companion-help-body">
@@ -1145,7 +1146,7 @@ function journalPage(){
     </div></details>
     <button class="btn reflection-save-button" id="saveEntry">🌿 Save reflection</button>
   </form>
-  <section class="reflection-growth-note"><div class="reflection-section-heading"><span>🌿</span><div><small>Your practice is growing</small><h2>Reflection insight</h2></div></div><p>${safeText(reflectionInsights(entries))}</p></section>
+  <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span><span>🌿</span><span><strong>Reflection insight</strong><small>A gentle pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
   ${reflectionLibrary(entries)}`;
 }
 function assessmentPage(){
@@ -2039,6 +2040,10 @@ function bind(){
   document.querySelectorAll(".ethics-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".ethics-context",reflectionEthicsContextMap,"ethicsSuggestions","ethics"));
   document.querySelectorAll(".standard-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".standard-context",reflectionStandardContextMap,"standardSuggestions","standard"));
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
+  document.getElementById("reflectionCompanion")?.addEventListener("toggle",event=>state.set("reflectionCompanionOpen",event.currentTarget.open));
+  document.getElementById("reflectionInsight")?.addEventListener("toggle",event=>state.set("reflectionInsightOpen",event.currentTarget.open));
+  document.getElementById("reflectionLibrary")?.addEventListener("toggle",event=>state.set("reflectionLibraryOpen",event.currentTarget.open));
+  document.getElementById("collapseAllReflections")?.addEventListener("click",()=>document.querySelectorAll(".reflection-library-item[open]").forEach(item=>item.open=false));
   document.getElementById("saveQuickHours")?.addEventListener("click",saveQuickHours);
   document.getElementById("quickHoursDate")?.addEventListener("change",event=>{quickHoursEditingDate=event.target.value;render()});
   document.getElementById("quickPlacementDay")?.addEventListener("change",event=>{const input=document.getElementById("quickHoursValue");if(input && !event.target.checked && input.value==="") input.value="0";});
