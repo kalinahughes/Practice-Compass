@@ -1491,56 +1491,61 @@ function morePage(){
   const intelligence=practiceFrameworkIntelligence();
   const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
   const evidencedItems=allItems.filter(item=>item.evidence.length);
-  const growth=evidencedItems.slice(0,4);
-  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
-  const opportunityRules=[
-    {label:"Ethical decision making",tags:["Ethics or values"]},
-    {label:"Cultural capability",tags:["Cultural capability"]},
-    {label:"Interprofessional collaboration",tags:["Teamwork"]},
-    {label:"Use of self",tags:["Use of self"]},
-    {label:"Theory informed practice",tags:["Theory in action"]}
-  ];
-  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
-  const groupLabels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
-  const groupSummary=Object.entries(intelligence.groups).map(([key,map])=>{
-    const supported=[...map.values()].filter(item=>item.evidence.length).length;
-    return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
-  }).join("");
+  const entriesCount=intelligence.entries.length;
+  const developmentData=frameworkDevelopmentData();
+  const evidenceLinks=frameworkEvidenceLinksData();
+  const startedAreas=practiceFrameworkDevelopmentAreas.filter(area=>{
+    const saved=developmentData[area.id]||{};
+    const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
+    return Boolean(String(saved.thinking||"").trim()||linked.reflections.length||linked.supervision.length||linked.examples.length);
+  }).length;
+  const evidenceCount=practiceFrameworkDevelopmentAreas.reduce((total,area)=>{
+    const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
+    return total+linked.reflections.length+linked.supervision.length+linked.examples.length;
+  },0);
 
-  return `<div class="journey-page">
-    <section class="welcome-block journey-welcome">
-      <div class="eyebrow">My Journey</div>
-      <h1>💚 Professional Growth</h1>
-      <p class="welcome-text">See how your professional identity is developing through the evidence you already capture.</p>
+  return `<div class="journey-page me-landing-page">
+    <section class="me-welcome">
+      <div class="eyebrow">Me</div>
+      <h1>How I am growing</h1>
+      <p>Your placement learning, professional identity and university evidence in one calm place.</p>
     </section>
 
-    <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
-      <h2 id="growthSummaryHeading">Growth summary</h2>
-      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">✨ Your professional identity will grow here as you add reflections.</div>`}
-    </section>
-
-    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
-
-    <section class="journey-section-block" aria-labelledby="frameworkHeading">
-      <h2 id="frameworkHeading">My practice framework</h2>
-      <div class="journey-framework-panel">
-        <div class="journey-framework-summary">${groupSummary}</div>
-        <button class="journey-text-action" id="frameworkMenu">View my developing framework <span>›</span></button>
+    <section class="me-growth-hero" aria-label="Professional growth summary">
+      <div class="me-growth-hero-copy">
+        <span class="me-growth-kicker">Your journey so far</span>
+        <strong>${evidencedItems.length||0} strengths emerging</strong>
+        <p>${entriesCount?`${entriesCount} reflection${entriesCount===1?"":"s"} are helping build your professional story.`:"Your growth summary will build gently as you add reflections."}</p>
+      </div>
+      <div class="me-growth-leaf" aria-hidden="true">🌿</div>
+      <div class="me-growth-stats">
+        <span><b>${startedAreas}</b><small>framework areas started</small></span>
+        <span><b>${evidenceCount}</b><small>evidence links</small></span>
       </div>
     </section>
 
-    <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
-      <h2 id="professionalDevelopmentHeading">Professional development</h2>
-      <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
+    <section class="me-destinations" aria-label="Me sections">
+      <button class="me-destination me-development-destination" id="developmentHub">
+        <span class="me-destination-icon">🌱</span>
+        <span class="me-destination-copy"><strong>My development</strong><small>See the social worker you are becoming, build your practice framework and complete a weekly check in.</small></span>
+        <b class="me-destination-arrow">›</b>
+      </button>
+      <button class="me-destination me-evidence-destination" id="evidenceHub">
+        <span class="me-destination-icon">📚</span>
+        <span class="me-destination-copy"><strong>My evidence</strong><small>See what your reflections demonstrate and what may strengthen your university assessments.</small></span>
+        <b class="me-destination-arrow">›</b>
+      </button>
     </section>
 
-    <section class="journey-app-section" aria-labelledby="journeyAppHeading">
-      <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
-      <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
-      <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
-      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
-      <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
-    </section>
+    <details class="me-quiet-tools">
+      <summary><span><strong>More</strong><small>Weekly check in, export and app tools</small></span><b>⌄</b></summary>
+      <div class="me-quiet-tools-body">
+        <button class="journey-utility-row" id="weeklyReview"><span><strong>Weekly check in</strong><small>Pause and notice what changed this week</small></span><span>›</span></button>
+        <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
+        <button class="journey-utility-row" id="backupJson"><span><strong>Backup</strong><small>Download a private copy of your app data</small></span><span>›</span></button>
+        <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass supports university placement learning, reflection and assessment evidence. It does not replace JCU requirements, workplace systems or professional advice.</div></details>
+      </div>
+    </details>
   </div>`;
 }
 
@@ -2093,6 +2098,8 @@ function bind(){
     });
   });
   
+    document.getElementById("developmentHub")?.addEventListener("click",()=>frameworkPage());
+    document.getElementById("evidenceHub")?.addEventListener("click",()=>evidenceMapPage());
     document.getElementById("frameworkMenu")?.addEventListener("click",()=>frameworkPage());
     document.getElementById("professionalDevelopmentMenu")?.addEventListener("click",()=>frameworkPage());
     document.getElementById("evidenceBank")?.addEventListener("click",()=>evidenceBankPage());
