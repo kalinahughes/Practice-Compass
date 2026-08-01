@@ -1579,55 +1579,46 @@ function morePage(){
   const intelligence=practiceFrameworkIntelligence();
   const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
   const evidencedItems=allItems.filter(item=>item.evidence.length);
-  const growth=evidencedItems.slice(0,4);
-  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
-  const opportunityRules=[
-    {label:"Ethical decision making",tags:["Ethics or values"]},
-    {label:"Cultural capability",tags:["Cultural capability"]},
-    {label:"Interprofessional collaboration",tags:["Teamwork"]},
-    {label:"Use of self",tags:["Use of self"]},
-    {label:"Theory informed practice",tags:["Theory in action"]}
-  ];
-  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
-  const groupLabels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
+  const growth=evidencedItems.slice(0,5);
+  const groupLabels={values:"Values",theories:"Theories",models:"Practice approaches",skills:"Skills",useOfSelf:"Use of self"};
   const groupSummary=Object.entries(intelligence.groups).map(([key,map])=>{
     const supported=[...map.values()].filter(item=>item.evidence.length).length;
     return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
   }).join("");
+  const latestEntries=[...intelligence.entries].slice(0,3);
 
-  return `<div class="journey-page">
+  return `<div class="journey-page journey-purpose-reset">
     <section class="journey-approved-hero">
-      <div><div class="eyebrow">My Journey</div><h1>My Journey</h1><p>Your growth, your framework, your progress.</p></div>
+      <div><div class="eyebrow">Me</div><h1>My Journey</h1><p>How my social work practice is taking shape.</p></div>
       <span class="journey-approved-botanical">🌿</span>
     </section>
 
     <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
-      <h2 id="growthSummaryHeading">Growth summary</h2>
-      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">✨ Your professional identity will grow here as you add reflections.</div>`}
-    </section>
-
-    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
-
-    <section class="journey-section-block" aria-labelledby="frameworkHeading">
-      <h2 id="frameworkHeading">My practice framework</h2>
-      <div class="journey-framework-panel">
-        <div class="journey-framework-summary">${groupSummary}</div>
-        <button class="journey-text-action journey-approved-row" id="frameworkMenu"><span class="journey-approved-icon">🧭</span><span><strong>My Practice Framework</strong><small>Values, theories, skills and use of self</small></span><b>›</b></button>
+      <div class="journey-section-heading-simple">
+        <div><span class="eyebrow">Professional growth</span><h2 id="growthSummaryHeading">How I am developing</h2></div>
+      </div>
+      <div class="journey-growth-panel journey-growth-single">
+        ${growth.length?`<p class="journey-growth-intro">Themes appearing across your saved reflections:</p><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div>`:`<div class="journey-empty-message">✨ Your growth summary will build naturally from the reflections you save.</div>`}
+        ${latestEntries.length?`<div class="journey-recent-growth"><strong>Recently noticed</strong>${latestEntries.map(entry=>`<span>${safeText((entry.evidenceTypes||[])[0]||"Reflective practice")}</span>`).join("")}</div>`:""}
       </div>
     </section>
 
-    <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
-      <h2 id="professionalDevelopmentHeading">Professional development</h2>
-      <button class="journey-utility-row journey-evidence-map-link journey-approved-row" id="openEvidenceMap"><span class="journey-approved-icon">🧠</span><span><strong>Assessment evidence</strong><small>See the evidence you have collected</small></span><b>›</b></button>
-      <button class="journey-utility-row journey-approved-row" id="professionalDevelopmentMenu"><span class="journey-approved-icon">🌱</span><span><strong>Personal additions</strong><small>Add development areas you want to track</small></span><b>›</b></button>
+    <section class="journey-section-block" aria-labelledby="frameworkHeading">
+      <div class="journey-section-heading-simple">
+        <div><span class="eyebrow">Professional identity</span><h2 id="frameworkHeading">My practice framework</h2></div>
+      </div>
+      <div class="journey-framework-panel">
+        <p class="journey-framework-intro">Your values, theories, approaches, skills and use of self are gathered here once. Assessment planning stays in Assessments.</p>
+        <div class="journey-framework-summary">${groupSummary}</div>
+        <button class="journey-text-action journey-approved-row" id="frameworkMenu"><span class="journey-approved-icon">🧭</span><span><strong>Open My Practice Framework</strong><small>Review or continue developing your framework</small></span><b>›</b></button>
+      </div>
     </section>
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
-      <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
+      <div class="journey-app-heading"><h2 id="journeyAppHeading">App tools</h2><p>Practical controls kept separate from your professional journey.</p></div>
       <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
-      <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
-      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
-      <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
+      <button class="journey-utility-row" id="backupJson"><span><strong>Backup</strong><small>Download a private copy of your saved app data</small></span><span>›</span></button>
+      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass supports placement learning, reflection and professional growth. University assessment requirements and progress remain in My Placement and Assessments.</div></details>
     </section>
   </div>`;
 }

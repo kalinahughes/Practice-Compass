@@ -4016,3 +4016,78 @@ p{color:var(--pc-body)}
   .home-snapshot-stats strong{font-size:16px}
   .home-snapshot-stats span{font-size:10px}
 }
+
+/* Me purpose reset and deduplication */
+.journey-purpose-reset .journey-approved-hero{
+  margin-bottom:28px;
+}
+.journey-purpose-reset .journey-section-block{
+  margin-bottom:32px;
+}
+.journey-section-heading-simple{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin:0 2px 12px;
+}
+.journey-section-heading-simple .eyebrow{
+  color:var(--pc-slate-teal, #416f73);
+  font-size:11px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.journey-section-heading-simple h2{
+  margin:4px 0 0;
+  color:var(--pc-charcoal, #2f3836);
+  font-size:20px;
+}
+.journey-growth-single{
+  padding:20px;
+  border:1px solid var(--pc-line, #dce5e2);
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(46,71,67,.06);
+}
+.journey-growth-intro,
+.journey-framework-intro{
+  margin:0 0 14px;
+  color:var(--pc-muted, #697672);
+  font-size:14px;
+  line-height:1.55;
+}
+.journey-recent-growth{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin-top:18px;
+  padding-top:15px;
+  border-top:1px solid var(--pc-line, #dce5e2);
+}
+.journey-recent-growth strong{
+  width:100%;
+  color:var(--pc-charcoal, #2f3836);
+  font-size:13px;
+}
+.journey-recent-growth span{
+  padding:7px 10px;
+  border-radius:999px;
+  background:var(--pc-soft-sage, #e5efea);
+  color:var(--pc-slate-teal, #416f73);
+  font-size:12px;
+}
+.journey-purpose-reset .journey-framework-panel{
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 8px 24px rgba(46,71,67,.06);
+}
+.journey-purpose-reset .journey-framework-summary{
+  margin-bottom:14px;
+}
+.journey-purpose-reset .journey-approved-row{
+  margin:6px -6px -6px;
+  border-top:1px solid var(--pc-line, #dce5e2);
+}
+.journey-purpose-reset .journey-app-section{
+  margin-top:36px;
+}
