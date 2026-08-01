@@ -708,26 +708,26 @@ function quickHoursReminder(){
 function quickHoursCard(){
   const today=localDateValue();
   const todayEntry=quickHoursEntryForDate(today);
-  if(todayEntry && quickHoursEditingDate===null){
-    return `<section class="home-card home-hours-card home-hours-logged">
-      <div class="home-hours-logged-copy"><span class="home-hours-check">✔️</span><div><span class="home-kicker">Hours logged today</span><h2>${formatQuickHoursDate(today)} · ${Number(todayEntry.hours||0).toFixed(1)} hours</h2></div></div>
-      <button type="button" class="home-hours-edit-link" data-hours-date="${today}">Edit</button>
-    </section>`;
-  }
   const selectedDate=quickHoursEditingDate||today;
   const selectedEntry=quickHoursEntryForDate(selectedDate);
-  const reminder=quickHoursReminder();
-  return `<section class="home-card home-hours-card">
-    <div class="home-card-heading compact"><span class="home-hours-icon">⏱️</span><div><span class="home-kicker">Placement hours</span><h2>Quick daily entry</h2></div></div>
-    ${reminder?`<p class="home-hours-reminder">${reminder}</p>`:""}
-    <div class="home-hours-form">
-      <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
-      <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
-      <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
-      <button type="button" class="btn home-hours-save" id="saveQuickHours">Save Hours</button>
+  const summary=todayEntry?`${Number(todayEntry.hours||0).toFixed(1)} hours logged today`:`Add or update placement hours`;
+  return `<details class="home-card home-hours-card home-hours-collapsed" ${quickHoursEditingDate!==null?'open':''}>
+    <summary>
+      <span class="home-hours-summary-icon">⏱️</span>
+      <span><span class="home-kicker">Quick hours</span><strong>${summary}</strong></span>
+      <span class="home-hours-chevron" aria-hidden="true">⌄</span>
+    </summary>
+    <div class="home-hours-panel">
+      ${quickHoursReminder()?`<p class="home-hours-reminder">${quickHoursReminder()}</p>`:""}
+      <div class="home-hours-form">
+        <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
+        <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
+        <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
+        <button type="button" class="btn home-hours-save" id="saveQuickHours">Save hours</button>
+      </div>
+      <div class="home-hours-recent"><span class="home-hours-recent-title">Recent entries</span>${recentQuickHoursRows().map(({date,entry})=>`<div class="home-hours-row"><span>${formatQuickHoursDate(date)} · ${entry?`${Number(entry.hours||0).toFixed(1)} hrs`:`Missing`}</span>${entry?`<button type="button" class="home-hours-edit-link" data-hours-date="${date}" aria-label="Edit hours for ${formatQuickHoursDate(date)}">Edit</button>`:""}</div>`).join("")}</div>
     </div>
-    <div class="home-hours-recent"><span class="home-hours-recent-title">Recent entries</span>${recentQuickHoursRows().map(({date,entry})=>`<div class="home-hours-row"><span>${formatQuickHoursDate(date)} · ${entry?`${Number(entry.hours||0).toFixed(1)} hrs`:`Missing`}</span>${entry?`<button type="button" class="home-hours-edit-link" data-hours-date="${date}" aria-label="Edit hours for ${formatQuickHoursDate(date)}">✏️</button>`:""}</div>`).join("")}</div>
-  </section>`;
+  </details>`;
 }
 function saveQuickHours(){
   const date=document.getElementById("quickHoursDate")?.value;
@@ -1031,67 +1031,55 @@ function homeIcon(name){
 
 function todayPage(){
   const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
-  const upcoming=upcomingAssessments(info,h,current.id,2);
   const remaining=Math.max(0,TOTAL_HOURS-h);
   const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
   return `
-    <section class="home-greeting">
-      <div>
-        <div class="eyebrow">${dayLabel}</div>
+    <section class="home-welcome">
+      <div class="home-welcome-copy">
+        <span class="home-date">${dayLabel}</span>
         <h1>${g.title}</h1>
-        <p class="home-companion-line">${g.subtitle}</p>
-        <p>${placementLabel} · ${h.toFixed(1)} of ${TOTAL_HOURS} hours</p>
+        <p>${g.subtitle}</p>
+        <span class="home-placement-label">${placementLabel}</span>
       </div>
       <div class="home-compass-mark">${homeIcon('compass')}</div>
     </section>
 
-    <section class="home-card home-due-card">
-      <div class="home-card-heading">
-        ${homeIcon('compass')}
-        <div><span class="home-kicker">What’s next</span><h2>${current.title}</h2></div>
-      </div>
-      <p class="home-card-copy">${current.when}</p>
-      <div class="home-next-actions">
-        <span class="home-next-label">Next actions</span>
-        <div><span class="home-task-dot"></span>${stage.focus[0]}</div>
-        <div><span class="home-task-dot"></span>${stage.focus[1] || 'Save one useful learning moment.'}</div>
-      </div>
-      <div class="home-due-footer">
+    <section class="home-focus-card">
+      <div class="home-focus-topline">
+        <span class="home-focus-label">What’s next</span>
         <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
-        <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
+      </div>
+      <h2>${current.title}</h2>
+      <p>${current.when}</p>
+      <div class="home-focus-action">
+        <div><span>Start here</span><strong>${stage.focus[0]}</strong></div>
+        <button class="home-primary-action" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
+      </div>
+    </section>
+
+    <section class="home-snapshot-card">
+      <div class="home-snapshot-heading">
+        <div><span class="home-kicker">Placement snapshot</span><h2>Your progress at a glance</h2></div>
+        <strong>${progress}%</strong>
+      </div>
+      <div class="home-progress-track"><span style="width:${progress}%"></span></div>
+      <div class="home-snapshot-stats">
+        <div><strong>${h.toFixed(1)}</strong><span>hours completed</span></div>
+        <div><strong>${remaining.toFixed(1)}</strong><span>hours remaining</span></div>
+        <div><strong>${info.started?info.week:'—'}</strong><span>placement week</span></div>
       </div>
     </section>
 
     ${quickHoursCard()}
 
-    <section class="home-card home-progress-card">
-      <div class="home-card-heading compact">
-        ${homeIcon('progress')}
-        <div><span class="home-kicker">Placement progress</span><h2>${progress ? `${progress}% complete` : "🌱 Your placement journey begins soon"}</h2></div>
-      </div>
-      <div class="home-progress-track"><span style="width:${progress}%"></span></div>
-      <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
-    </section>
-
-    ${upcoming.length?`<section class="home-card home-upcoming-card">
-      <div class="home-card-heading compact">
-        ${homeIcon('calendar')}
-        <div><span class="home-kicker">📅 What’s coming</span><h2>Next milestones</h2></div>
-      </div>
-      <div class="home-upcoming-list">
-        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
-      </div>
-    </section>`:''}
-
-    <section class="home-reminder">
-      ${homeIcon('heart')}
-      <div><strong>🌿 Take care</strong><p>${selfcare[new Date().getDay()]}</p></div>
+    <section class="home-care-card">
+      <div class="home-care-icon">${homeIcon('heart')}</div>
+      <div><span class="home-kicker">Take care</span><p>${selfcare[new Date().getDay()]}</p></div>
     </section>`;
 }
-
 let lastSavedReflection=null;
 const reflectionTheoryOptions=["Recovery Oriented Practice","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Systems Theory","Ecological Systems Theory","CHIME","Motivational Interviewing","Solution Focused Practice","Narrative Practice","Anti Oppressive Practice","Rights Based Practice","Crisis Intervention"];
 const reflectionCodeValues=["Respect for Persons","Social Justice","AASW Code of Ethics"];

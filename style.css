@@ -3758,3 +3758,261 @@ p{color:var(--pc-body)}
   .assessment-clear-title h1{font-size:23px}
   .assessment-clear-summary-grid{grid-template-columns:1fr}
 }
+
+/* Home Experience Rebuild */
+.home-welcome{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:22px;
+  padding:24px 4px 30px;
+}
+.home-welcome-copy{min-width:0}
+.home-date{
+  display:block;
+  margin-bottom:9px;
+  color:#6f7f7b;
+  font-size:12px;
+  font-weight:750;
+  letter-spacing:.085em;
+  text-transform:uppercase;
+}
+.home-welcome h1{
+  margin:0;
+  color:#315f67;
+  font-size:32px;
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+.home-welcome p{
+  max-width:430px;
+  margin:10px 0 13px;
+  color:#66736f;
+  font-size:15px;
+  line-height:1.55;
+}
+.home-placement-label{
+  display:inline-flex;
+  padding:7px 11px;
+  border-radius:999px;
+  background:#eef4f1;
+  color:#55766a;
+  font-size:12px;
+  font-weight:750;
+}
+.home-welcome .home-compass-mark{
+  width:58px;
+  height:58px;
+  border-radius:20px;
+  background:#e9f0ee;
+  color:#315f67;
+  box-shadow:inset 0 0 0 1px rgba(49,95,103,.06);
+}
+.home-focus-card{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:20px;
+  padding:27px;
+  border-radius:28px;
+  background:linear-gradient(145deg,#315f67 0%,#3d7479 100%);
+  color:#fff;
+  box-shadow:0 18px 38px rgba(49,95,103,.2);
+}
+.home-focus-card:after{
+  content:"";
+  position:absolute;
+  right:-42px;
+  bottom:-68px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  border:28px solid rgba(255,255,255,.045);
+}
+.home-focus-topline{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.home-focus-label{
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.78);
+}
+.home-focus-card .status-inline{
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.11);
+  color:#fff;
+}
+.home-focus-card h2{
+  position:relative;
+  z-index:1;
+  max-width:560px;
+  margin:19px 0 8px;
+  color:#fff;
+  font-size:27px;
+  line-height:1.18;
+  letter-spacing:-.025em;
+}
+.home-focus-card>p{
+  position:relative;
+  z-index:1;
+  margin:0;
+  color:rgba(255,255,255,.75);
+  font-size:14px;
+  line-height:1.5;
+}
+.home-focus-action{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:24px;
+  padding-top:19px;
+  border-top:1px solid rgba(255,255,255,.14);
+}
+.home-focus-action div{display:grid;gap:4px}
+.home-focus-action span{font-size:12px;color:rgba(255,255,255,.67)}
+.home-focus-action strong{font-size:15px;line-height:1.4;color:#fff}
+.home-primary-action{
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  flex:0 0 auto;
+  border:0;
+  border-radius:16px;
+  background:#35a3ad;
+  color:#fff;
+  box-shadow:0 9px 20px rgba(18,66,71,.25);
+}
+.home-primary-action .home-icon{width:21px;height:21px;color:#fff}
+.home-snapshot-card,
+.home-hours-collapsed{
+  margin:0 0 18px;
+  border:1px solid #e4ece9;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 8px 25px rgba(43,64,58,.055);
+}
+.home-snapshot-card{padding:23px}
+.home-snapshot-heading{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+}
+.home-snapshot-heading h2{
+  margin:5px 0 0;
+  color:#344541;
+  font-size:19px;
+  letter-spacing:-.015em;
+}
+.home-snapshot-heading>strong{
+  color:#2f8792;
+  font-size:24px;
+  line-height:1;
+}
+.home-snapshot-card .home-progress-track{
+  height:8px;
+  margin:21px 0 18px;
+  background:#edf2f0;
+}
+.home-snapshot-card .home-progress-track span{background:#2f8792}
+.home-snapshot-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.home-snapshot-stats div{
+  min-width:0;
+  padding:13px 12px;
+  border-radius:16px;
+  background:#f6f8f7;
+}
+.home-snapshot-stats strong,
+.home-snapshot-stats span{display:block}
+.home-snapshot-stats strong{color:#416f62;font-size:18px}
+.home-snapshot-stats span{margin-top:3px;color:#7a8783;font-size:11px;line-height:1.3}
+.home-hours-collapsed{padding:0;overflow:hidden}
+.home-hours-collapsed>summary{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) 24px;
+  align-items:center;
+  gap:13px;
+  padding:18px 20px;
+  list-style:none;
+  cursor:pointer;
+}
+.home-hours-collapsed>summary::-webkit-details-marker{display:none}
+.home-hours-summary-icon{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#eef5f2;
+  font-size:20px;
+}
+.home-hours-collapsed summary span:nth-child(2){min-width:0}
+.home-hours-collapsed summary strong{
+  display:block;
+  margin-top:4px;
+  overflow:hidden;
+  color:#3e4d49;
+  font-size:15px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.home-hours-chevron{
+  color:#73817d;
+  font-size:20px;
+  transition:transform .2s ease;
+}
+.home-hours-collapsed[open] .home-hours-chevron{transform:rotate(180deg)}
+.home-hours-panel{
+  padding:4px 20px 21px;
+  border-top:1px solid #edf1ef;
+}
+.home-hours-panel .home-hours-reminder{margin:15px 0}
+.home-care-card{
+  display:flex;
+  align-items:flex-start;
+  gap:15px;
+  margin:4px 0 28px;
+  padding:20px;
+  border-radius:22px;
+  background:#e8f1ec;
+  color:#40534c;
+}
+.home-care-icon{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  border-radius:14px;
+  background:rgba(255,255,255,.65);
+  color:#5d8474;
+}
+.home-care-icon .home-icon{color:inherit}
+.home-care-card p{margin:6px 0 0;font-size:14px;line-height:1.55;color:#5f706a}
+@media(max-width:560px){
+  .home-welcome{padding:20px 2px 25px}
+  .home-welcome h1{font-size:28px}
+  .home-welcome .home-compass-mark{width:52px;height:52px;border-radius:18px}
+  .home-focus-card{padding:23px 21px;border-radius:24px}
+  .home-focus-card h2{font-size:24px}
+  .home-focus-action{align-items:flex-end}
+  .home-snapshot-card{padding:20px}
+  .home-snapshot-stats{gap:8px}
+  .home-snapshot-stats div{padding:12px 9px}
+  .home-snapshot-stats strong{font-size:16px}
+  .home-snapshot-stats span{font-size:10px}
+}
