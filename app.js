@@ -1616,8 +1616,12 @@ function morePage(){
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
       <div class="journey-app-heading"><h2 id="journeyAppHeading">App tools</h2><p>Practical controls kept separate from your professional journey.</p></div>
-      <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
-      <button class="journey-utility-row" id="backupJson"><span><strong>Backup</strong><small>Download a private copy of your saved app data</small></span><span>›</span></button>
+      <button class="journey-utility-row" id="exportHtml"><span><strong>Export readable record</strong><small>Create a readable copy of reflections, hours and framework notes</small></span><span>›</span></button>
+      <button class="journey-utility-row" id="backupJson"><span><strong>Back up everything</strong><small>Save a private copy of all Practice Compass browser data</small></span><span>›</span></button>
+      <button class="journey-utility-row" id="restoreJson"><span><strong>Restore a backup</strong><small>Preview and import a Practice Compass backup file</small></span><span>›</span></button>
+      <input class="hidden" type="file" id="restoreJsonFile" accept="application/json,.json">
+      <div class="backup-status" id="backupStatus">${backupStatusText()}</div>
+      <div class="backup-restore-panel hidden" id="backupRestorePanel" aria-live="polite"></div>
       <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass supports placement learning, reflection and professional growth. University assessment requirements and progress remain in My Placement and Assessments.</div></details>
     </section>
   </div>`;
@@ -2124,11 +2128,116 @@ function exportPrintable(){
     shareOrDownload(new Blob([html],{type:"text/html"}),"Practice_Compass_Placement_Notes.html","Practice Compass placement notes");
   }catch(error){console.error(error);alert("The export could not be created. Please try the JSON backup instead.");}
 }
+const PRACTICE_COMPASS_BACKUP_VERSION=2;
+function backupStatusText(){
+  const value=state.get("lastBackupAt","");
+  if(!value)return "No full backup recorded on this device yet.";
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())?"A backup has been created on this device.":`Last full backup: ${date.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"})}`;
+}
+function localStorageSnapshot(){
+  const data={};
+  for(let index=0;index<localStorage.length;index++){
+    const key=localStorage.key(index);
+    if(key!==null)data[key]=localStorage.getItem(key);
+  }
+  return data;
+}
+function backupSummaryFromStorage(storage={}){
+  const read=(key,fallback)=>{
+    try{return storage[key]===undefined?fallback:JSON.parse(storage[key]);}catch{return fallback;}
+  };
+  const entries=read("entries",[]),timesheets=read("timesheets",[]),weekly=read("weeklyReviews",[]),supervision=read("supervisionItems",[]);
+  const hoursValue=read("hours",0);
+  return {
+    reflections:Array.isArray(entries)?entries.length:0,
+    timesheets:Array.isArray(timesheets)?timesheets.length:0,
+    weeklyReviews:Array.isArray(weekly)?weekly.length:0,
+    supervisionItems:Array.isArray(supervision)?supervision.length:0,
+    hours:Number(hoursValue)||0,
+    keys:Object.keys(storage).length
+  };
+}
+function createFullBackup(){
+  const exportedAt=new Date().toISOString();
+  state.set("lastBackupAt",exportedAt);
+  const storage=localStorageSnapshot();
+  return {
+    app:"Practice Compass",
+    backupVersion:PRACTICE_COMPASS_BACKUP_VERSION,
+    exportedAt,
+    summary:backupSummaryFromStorage(storage),
+    storage
+  };
+}
 function backup(){
   try{
-    const data={exportedAt:new Date().toISOString(),hours:hours(),entries:savedEntries(),weeklyReviews:state.get("weeklyReviews",[]),timesheets:timesheetEntries(),supervisionItems:supervisionItems(),taskStatuses:taskStatusData(),framework:frameworkData()};
-    shareOrDownload(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"Practice_Compass_Backup.json","Practice Compass backup");
+    const data=createFullBackup();
+    const stamp=data.exportedAt.slice(0,10);
+    shareOrDownload(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),`Practice_Compass_Backup_${stamp}.json`,"Practice Compass full backup");
+    const status=document.getElementById("backupStatus");if(status)status.textContent=backupStatusText();
   }catch(error){console.error(error);alert("The backup could not be created. Please try again.");}
+}
+function normaliseBackupFile(parsed){
+  if(parsed && parsed.app==="Practice Compass" && parsed.storage && typeof parsed.storage==="object")return parsed;
+  if(parsed && typeof parsed==="object" && (Array.isArray(parsed.entries)||Array.isArray(parsed.timesheets))){
+    const storage={};
+    Object.entries(parsed).forEach(([key,value])=>{if(key!=="exportedAt")storage[key]=JSON.stringify(value);});
+    return {app:"Practice Compass",backupVersion:1,exportedAt:parsed.exportedAt||"",summary:backupSummaryFromStorage(storage),storage};
+  }
+  throw new Error("This does not appear to be a Practice Compass backup file.");
+}
+function formatBackupDate(value){
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())?"Date not available":date.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});
+}
+function showBackupPreview(backup,fileName){
+  const panel=document.getElementById("backupRestorePanel");if(!panel)return;
+  const summary=backup.summary||backupSummaryFromStorage(backup.storage);
+  panel.classList.remove("hidden");
+  panel.innerHTML=`<div class="backup-preview-heading"><div><span class="eyebrow">Backup preview</span><h3>${safeText(fileName||"Practice Compass backup")}</h3></div><button type="button" class="backup-preview-close" id="cancelRestore" aria-label="Close backup preview">×</button></div>
+    <p class="backup-preview-date">Created ${safeText(formatBackupDate(backup.exportedAt))}</p>
+    <div class="backup-preview-grid">
+      <span><strong>${Number(summary.reflections||0)}</strong><small>Reflections</small></span>
+      <span><strong>${Number(summary.timesheets||0)}</strong><small>Timesheet entries</small></span>
+      <span><strong>${Number(summary.hours||0).toFixed(1)}</strong><small>Saved hours</small></span>
+      <span><strong>${Number(summary.supervisionItems||0)}</strong><small>Supervision items</small></span>
+    </div>
+    <div class="backup-warning"><strong>This will replace the data stored in this browser.</strong><p>Your current phone or laptop data will not be merged. Create a backup of this device first if there is anything you need to keep.</p></div>
+    <div class="backup-preview-actions"><button type="button" class="btn secondary" id="cancelRestoreButton">Cancel</button><button type="button" class="btn backup-restore-confirm" id="confirmRestore">Restore this backup</button></div>`;
+  const close=()=>{panel.classList.add("hidden");panel.innerHTML="";};
+  document.getElementById("cancelRestore")?.addEventListener("click",close);
+  document.getElementById("cancelRestoreButton")?.addEventListener("click",close);
+  document.getElementById("confirmRestore")?.addEventListener("click",()=>restoreBackup(backup));
+}
+function restoreBackup(backup){
+  const confirmed=window.confirm("Restore this backup and replace the Practice Compass data currently stored in this browser?");
+  if(!confirmed)return;
+  try{
+    const preservedBackupDate=backup.exportedAt||new Date().toISOString();
+    localStorage.clear();
+    Object.entries(backup.storage||{}).forEach(([key,value])=>{
+      if(typeof value==="string")localStorage.setItem(key,value);
+      else localStorage.setItem(key,JSON.stringify(value));
+    });
+    state.set("lastRestoredAt",new Date().toISOString());
+    state.set("restoredFromBackupAt",preservedBackupDate);
+    alert("Your Practice Compass backup has been restored. The app will now reload.");
+    window.location.reload();
+  }catch(error){
+    console.error(error);
+    alert("The backup could not be restored. No further changes have been made.");
+  }
+}
+function readBackupFile(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{showBackupPreview(normaliseBackupFile(JSON.parse(String(reader.result||""))),file.name);}
+    catch(error){console.error(error);alert(error.message||"That backup file could not be read.");}
+  };
+  reader.onerror=()=>alert("That backup file could not be read.");
+  reader.readAsText(file);
 }
 
 function updateReflectionPreview(){}
@@ -2234,6 +2343,8 @@ function bind(){
   document.getElementById("wellbeing")?.addEventListener("click",()=>wellbeingPage());
   document.getElementById("exportHtml")?.addEventListener("click",()=>exportPrintable());
   document.getElementById("backupJson")?.addEventListener("click",()=>backup());
+  document.getElementById("restoreJson")?.addEventListener("click",()=>document.getElementById("restoreJsonFile")?.click());
+  document.getElementById("restoreJsonFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];readBackupFile(file);event.target.value="";});
 }
 
 document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>{route=n.dataset.route;render()});
