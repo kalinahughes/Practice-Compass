@@ -3007,3 +3007,280 @@ p{color:var(--pc-body)}
 .smart-link-review-body{padding:0 18px 18px}.smart-reflection-card{border-bottom:1px solid var(--line)}.smart-reflection-card:last-child{border-bottom:0}.smart-reflection-card>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 2px;cursor:pointer;list-style:none}.smart-reflection-card>summary::-webkit-details-marker{display:none}.smart-reflection-card>summary>span:first-child{display:grid;min-width:0;gap:4px}.smart-reflection-card>summary strong{color:var(--charcoal);font-size:15px}.smart-reflection-card>summary small{overflow:hidden;color:var(--muted);font-weight:400;line-height:1.4;text-overflow:ellipsis}.smart-reflection-card>summary>span:last-child{flex:none;padding:5px 8px;border-radius:999px;background:#edf3eb;color:#43604e;font-size:11px;font-weight:700}
 .smart-reflection-body{display:grid;gap:18px;padding:0 0 19px}.smart-link-group{display:grid;gap:8px}.smart-link-group>strong{color:#4b554e;font-size:13px}.smart-link-suggestion{display:grid;gap:10px;padding:13px 14px;border:1px solid #e5e9e4;border-radius:15px;background:#fff}.smart-link-suggestion.approved{border-color:#c9dbc9;background:#f1f7ef}.smart-link-suggestion>div:first-child{display:grid;gap:4px}.smart-link-suggestion span{color:#303733;font-size:14px;font-weight:650}.smart-link-suggestion small{color:var(--muted);font-size:12px;line-height:1.45}.smart-link-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.smart-link-actions button{border:0;border-radius:999px;background:#f0eee9;color:#625b55;padding:7px 10px;font-size:12px;font-weight:700}.smart-link-actions .smart-approve{background:#315b45;color:#fff}.smart-linked-label{padding:6px 9px;border-radius:999px;background:#dce9dc!important;color:#315b45!important;font-size:12px!important}.smart-link-note{margin:0;padding:12px 13px;border-radius:13px;background:#f5f3ef;color:var(--muted);font-size:12px;line-height:1.5}
 @media(max-width:430px){.smart-link-review>summary{padding:17px 16px}.smart-link-review-body{padding:0 14px 14px}.smart-reflection-card>summary{align-items:flex-start;flex-direction:column}.smart-reflection-card>summary>span:last-child{align-self:flex-start}.smart-link-actions button{flex:1}}
+
+/* Final Colour Direction Sprint 1
+   Approved palette and core layout refresh for Home, My Placement assessments,
+   assessment detail pages and My Journey. Functional behaviour is unchanged. */
+:root{
+  --pc-slate:#2e5b61;
+  --pc-slate-deep:#21484d;
+  --pc-eucalyptus:#4e7d6b;
+  --pc-sage:#d8e6dd;
+  --pc-soft-sage:#eef4f1;
+  --pc-bright-teal:#2f8792;
+  --pc-bright-teal-deep:#25727c;
+  --pc-alert:#e56a6a;
+  --pc-charcoal:#2f3332;
+  --pc-muted:#687270;
+  --pc-line:#e2e8e6;
+  --pc-canvas:#f7f9f8;
+  --pc-white:#ffffff;
+}
+
+/* Shared shell */
+#app{background:var(--pc-canvas)}
+.topbar{
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--pc-line);
+  box-shadow:0 2px 14px rgba(39,71,70,.045)
+}
+.brand{color:var(--pc-slate-deep)}
+.compass{
+  color:var(--pc-slate);
+  border-color:rgba(46,91,97,.35);
+  background:linear-gradient(145deg,#f5f9f8,var(--pc-soft-sage))
+}
+.bottom-nav{background:rgba(255,255,255,.98);border-top:1px solid var(--pc-line);box-shadow:0 -7px 24px rgba(37,57,55,.08)}
+.nav{color:#5f6967}
+.nav.active{background:transparent;color:var(--pc-slate-deep)}
+.nav.active span{color:var(--pc-bright-teal)}
+.nav small{font-weight:600}
+
+/* Home */
+.home-greeting{
+  position:relative;
+  margin:0 0 18px;
+  padding:24px 22px;
+  overflow:hidden;
+  border-radius:23px;
+  background:linear-gradient(135deg,var(--pc-slate-deep),var(--pc-slate));
+  color:#fff;
+  box-shadow:0 12px 30px rgba(33,72,77,.17)
+}
+.home-greeting::after{
+  content:"🌿";
+  position:absolute;
+  right:20px;
+  bottom:13px;
+  font-size:48px;
+  opacity:.25;
+  transform:rotate(-12deg)
+}
+.home-greeting .eyebrow{color:rgba(255,255,255,.72);font-size:12px}
+.home-greeting h1{margin:6px 0 6px;color:#fff;font-size:27px}
+.home-greeting p,.home-greeting .home-companion-line{max-width:76%;color:rgba(255,255,255,.84)!important}
+.home-compass-mark{position:relative;z-index:1;background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.18)}
+.home-compass-mark .home-icon{color:#fff}
+.home-card{
+  border:1px solid var(--pc-line);
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 5px 17px rgba(42,68,65,.045)
+}
+.home-due-card{
+  padding:21px;
+  background:#fff;
+  color:var(--pc-charcoal);
+  border:1px solid #dbe4e1;
+  box-shadow:0 8px 22px rgba(42,68,65,.065)
+}
+.home-due-card .home-card-heading h2{color:var(--pc-charcoal);font-size:20px}
+.home-due-card .home-icon{color:var(--pc-slate)}
+.home-due-card .home-kicker{color:var(--pc-slate);font-weight:700}
+.home-due-card .home-card-copy{color:var(--pc-muted)}
+.home-next-actions{border-color:var(--pc-line)}
+.home-next-actions .home-next-label{color:var(--pc-muted)}
+.home-next-actions>div{color:var(--pc-charcoal)}
+.home-next-actions .home-task-dot{background:var(--pc-eucalyptus)}
+.home-due-card .status-inline{background:rgba(47,135,146,.12);color:var(--pc-bright-teal-deep);border:0}
+.home-arrow-button{background:var(--pc-bright-teal);color:#fff;box-shadow:0 6px 14px rgba(47,135,146,.22)}
+.home-arrow-button .home-icon{color:#fff}
+.home-card-heading h2{color:var(--pc-charcoal)}
+.home-kicker{color:var(--pc-slate)}
+.home-progress-track{background:#edf1f0}
+.home-progress-track span{background:linear-gradient(90deg,var(--pc-eucalyptus),var(--pc-bright-teal))}
+.home-text-button{color:var(--pc-bright-teal-deep)}
+.home-upcoming-row strong{color:var(--pc-charcoal)}
+.home-upcoming-row .home-icon{color:var(--pc-bright-teal)}
+.home-reminder{
+  border:1px solid #d5e2da;
+  background:linear-gradient(135deg,var(--pc-soft-sage),#f8faf9);
+  box-shadow:none
+}
+.home-reminder .home-icon,.home-reminder strong{color:var(--pc-eucalyptus)}
+
+/* My Placement and assessment list */
+.placement-native-calm{color:var(--pc-charcoal)}
+.placement-native-heading{
+  margin:0 0 20px;
+  padding:22px;
+  border-radius:22px;
+  background:linear-gradient(135deg,var(--pc-slate-deep),var(--pc-slate));
+  box-shadow:0 12px 28px rgba(33,72,77,.15)
+}
+.placement-native-heading .eyebrow{color:rgba(255,255,255,.72)}
+.placement-native-heading h1{color:#fff;font-size:29px}
+.placement-native-heading p{color:rgba(255,255,255,.82)}
+.placement-native-overview{
+  margin-bottom:28px;
+  border-color:var(--pc-line);
+  border-radius:20px;
+  box-shadow:0 5px 18px rgba(38,64,61,.045)
+}
+.placement-native-primary strong,.placement-native-facts strong,.placement-overview-line strong,.placement-hours-line strong{color:var(--pc-charcoal)}
+.placement-native-hours-track{background:#edf1f0}
+.placement-native-hours-track span{background:linear-gradient(90deg,var(--pc-eucalyptus),var(--pc-bright-teal))}
+.placement-native-section-heading h2,.placement-native-records>h2{color:var(--pc-charcoal)}
+.native-assessment-list{
+  border-color:var(--pc-line);
+  border-radius:18px;
+  box-shadow:0 5px 18px rgba(38,64,61,.04)
+}
+.native-assessment-row{border-color:var(--pc-line)}
+.native-assessment-open{padding:17px 16px}
+.native-assessment-open:active{background:#f4f8f7}
+.native-assessment-icon{background:var(--pc-soft-sage);color:var(--pc-slate)}
+.native-assessment-head strong{color:var(--pc-charcoal)}
+.native-assessment-progress>span{background:#e9efed}
+.native-assessment-progress i{background:linear-gradient(90deg,var(--pc-eucalyptus),var(--pc-bright-teal))}
+.native-assessment-action{color:var(--pc-bright-teal-deep)}
+.native-record-icon{background:var(--pc-soft-sage);color:var(--pc-slate)}
+.native-record-row strong{color:var(--pc-charcoal)}
+.native-record-row>b{color:var(--pc-bright-teal)}
+
+/* Assessment detail */
+.assessment-detail-readable{color:var(--pc-charcoal)}
+.assessment-back-link{color:var(--pc-slate)}
+.assessment-detail-readable .assessment-hero-readable{
+  position:relative;
+  margin-bottom:18px;
+  padding:19px 20px;
+  border-radius:20px;
+  background:linear-gradient(135deg,var(--pc-slate-deep),var(--pc-slate));
+  box-shadow:0 10px 26px rgba(33,72,77,.15)
+}
+.assessment-hero-icon{background:rgba(255,255,255,.14)}
+.assessment-hero-copy .status-inline{background:rgba(216,230,221,.95);color:#315a4a}
+.assessment-hero-readable .progress-track{background:rgba(255,255,255,.22)}
+.assessment-hero-readable .progress-track div{background:var(--pc-bright-teal)}
+.assessment-approved-overview{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  gap:13px;
+  align-items:start;
+  padding:19px 0;
+  border-bottom:1px solid var(--pc-line)
+}
+.assessment-approved-section-icon{
+  display:grid;
+  width:38px;
+  height:38px;
+  place-items:center;
+  border-radius:50%;
+  background:var(--pc-soft-sage);
+  font-size:18px
+}
+.assessment-approved-overview h3{margin:0 0 6px;color:var(--pc-charcoal);font-size:18px}
+.assessment-approved-overview p{margin:0;color:#47504d;line-height:1.55}
+.assessment-detail-readable .assessment-primary-section{border-color:var(--pc-line)}
+.assessment-primary-heading h3{color:var(--pc-charcoal)}
+.assessment-detail-readable .task-row{border-color:var(--pc-line)}
+.assessment-detail-readable .task-status-select{border-color:#d9e1de}
+.task-complete-check{accent-color:var(--pc-eucalyptus)}
+.assessment-approved-progress-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  overflow:hidden;
+  margin-top:12px;
+  border:1px solid var(--pc-line);
+  border-radius:16px;
+  background:#fff
+}
+.assessment-approved-progress-grid>div{display:grid;align-content:start;gap:9px;padding:16px}
+.assessment-approved-progress-grid>div+div{border-left:1px solid var(--pc-line)}
+.assessment-approved-progress-grid strong{margin-bottom:2px;color:var(--pc-charcoal);font-size:14px}
+.assessment-approved-progress-grid span{color:#505b57;font-size:13px;line-height:1.4}
+.assessment-approved-complete span{color:#315f4b}
+.assessment-approved-needed span{color:#665b56}
+.assessment-approved-linked{margin-top:12px;border-top:1px solid var(--pc-line)}
+.assessment-approved-linked summary{display:flex;justify-content:space-between;padding:13px 0;color:var(--pc-bright-teal-deep);font-weight:650;cursor:pointer;list-style:none}
+.assessment-approved-linked summary::-webkit-details-marker{display:none}
+.evidence-list-row{border-color:var(--pc-line)}
+.assessment-secondary-details{border-color:var(--pc-line)}
+.assessment-secondary-details>summary:after{color:var(--pc-bright-teal)}
+.assessment-planning-date[open]{margin:14px 0;padding:0 15px;border:1px solid #b9d4d1;border-radius:16px;background:#f1f8f7}
+.assessment-planning-actions .btn{background:var(--pc-bright-teal)}
+.assessment-planning-actions .btn.secondary{background:#fff;color:var(--pc-slate)}
+.linked-resource strong{color:var(--pc-charcoal)}
+.linked-resource>span:first-child{color:var(--pc-bright-teal)}
+
+/* My Journey */
+.journey-page{background:var(--pc-canvas)}
+.journey-approved-hero{
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  margin:0 0 22px;
+  padding:23px 22px;
+  overflow:hidden;
+  border-radius:22px;
+  background:linear-gradient(135deg,var(--pc-slate-deep),var(--pc-slate));
+  color:#fff;
+  box-shadow:0 12px 28px rgba(33,72,77,.15)
+}
+.journey-approved-hero .eyebrow{color:rgba(255,255,255,.72)}
+.journey-approved-hero h1{margin:4px 0 5px;color:#fff;font-size:28px}
+.journey-approved-hero p{margin:0;color:rgba(255,255,255,.82)}
+.journey-approved-botanical{font-size:50px;opacity:.28;transform:rotate(-10deg)}
+.journey-section-block>h2{color:var(--pc-charcoal);font-size:18px}
+.journey-section-block>h2::after{background:linear-gradient(90deg,var(--pc-bright-teal),transparent)}
+.journey-growth-panel{
+  padding:18px;
+  border:1px solid #d7e3dc;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--pc-soft-sage),#fff)
+}
+.framework-growth-chips span{background:rgba(255,255,255,.82);color:var(--pc-charcoal)}
+.journey-support-panel{border:1px solid #d7e3dc;background:var(--pc-soft-sage)}
+.journey-framework-panel{overflow:hidden;border:1px solid var(--pc-line);border-radius:18px;background:#fff}
+.journey-framework-summary{padding:0 15px}
+.journey-framework-row{border-color:var(--pc-line)}
+.journey-framework-row strong{color:var(--pc-eucalyptus)}
+.journey-approved-row{
+  display:grid!important;
+  width:100%;
+  grid-template-columns:38px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  padding:16px 14px!important;
+  border:0!important;
+  border-top:1px solid var(--pc-line)!important;
+  background:#fff!important;
+  color:var(--pc-charcoal)!important;
+  text-align:left
+}
+.journey-approved-row .journey-approved-icon{display:grid;width:36px;height:36px;place-items:center;border-radius:12px;background:var(--pc-soft-sage);font-size:18px}
+.journey-approved-row>span:nth-child(2){display:grid;gap:3px}
+.journey-approved-row strong{color:var(--pc-charcoal);font-size:15px}
+.journey-approved-row small{color:var(--pc-muted);font-size:12px;line-height:1.35}
+.journey-approved-row b{color:var(--pc-bright-teal);font-size:22px;font-weight:400}
+.journey-section-block[aria-labelledby="professionalDevelopmentHeading"]{overflow:hidden;border:1px solid var(--pc-line);border-radius:18px;background:#fff}
+.journey-section-block[aria-labelledby="professionalDevelopmentHeading"]>h2{padding:16px 14px 4px}
+.journey-app-section{border-color:var(--pc-line)}
+.journey-utility-row:not(.journey-approved-row),.journey-utility-details summary{color:var(--pc-charcoal);border-color:var(--pc-line)}
+
+/* Bright teal is reserved for primary focus */
+.btn:not(.secondary),.mini-btn.selected,.select-chip.selected,.mood-chip.selected{background:var(--pc-bright-teal);border-color:var(--pc-bright-teal)}
+.text-link,.assessment-open-link,.placement-open-link{color:var(--pc-bright-teal-deep)}
+
+@media(max-width:520px){
+  .home-greeting{padding:21px 18px}
+  .home-greeting h1{font-size:25px}
+  .home-greeting p,.home-greeting .home-companion-line{max-width:82%}
+  .placement-native-heading{padding:20px 18px}
+  .assessment-approved-progress-grid{grid-template-columns:1fr}
+  .assessment-approved-progress-grid>div+div{border-top:1px solid var(--pc-line);border-left:0}
+  .journey-approved-hero{padding:21px 18px}
+}

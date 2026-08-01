@@ -1320,6 +1320,7 @@ function assessmentDetail(id,openPlanning=false){
   const completeCount=taskItems.length-incomplete.length;
   const official=officialAssessmentInfo(a);
   const planning=assessmentPlanning(a.id);
+  const missingRequirements=reqs.filter(requirement=>!entries.some(entry=>(entry.evidenceTypes||[]).includes(requirement)));
 
   const taskRow=item=>{
     const meta=taskStatuses[item.status];
@@ -1348,19 +1349,33 @@ function assessmentDetail(id,openPlanning=false){
         <div class="progress-track"><div style="width:${progress}%"></div></div>
       </section>
 
-      <section class="assessment-primary-section" aria-labelledby="next-steps">
-        <div class="assessment-primary-heading"><h3 id="next-steps">Checklist</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
+      <section class="assessment-approved-overview" aria-labelledby="assessment-overview-heading">
+        <span class="assessment-approved-section-icon">💡</span>
+        <div><h3 id="assessment-overview-heading">What it is</h3><p>${a.purpose||a.plain}</p></div>
+      </section>
+
+      <section class="assessment-primary-section assessment-approved-tasks" aria-labelledby="next-steps">
+        <div class="assessment-primary-heading"><h3 id="next-steps">What you have to do</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
         <div class="assessment-priority-steps">
           ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">🌿 Checklist complete. Check the official submission or sign off step.</div>`}
         </div>
         ${taskItems.length>3?`<details class="assessment-all-steps"><summary>View full checklist <span>${taskItems.length}</span></summary><div>${taskItems.map(taskRow).join("")}</div></details>`:""}
       </section>
 
-      <section class="assessment-primary-section assessment-evidence-quiet" aria-labelledby="assessment-evidence">
-        <div class="assessment-primary-heading"><h3 id="assessment-evidence">Evidence linked</h3><span>${entries.length}</span></div>
-        ${entries.length
-          ? `<div class="assessment-linked-evidence">${entries.map(e=>`<div class="evidence-list-row"><span>📝</span><div><strong>Reflection · ${e.date}</strong><small>${e.answer.slice(0,110)}${e.answer.length>110?"...":""}</small></div></div>`).join("")}</div>`
-          : `<p class="muted personality-empty">💭 Evidence will appear here as you save relevant reflections.</p>`}
+      <section class="assessment-primary-section assessment-approved-progress" aria-labelledby="assessment-evidence">
+        <div class="assessment-primary-heading"><h3 id="assessment-evidence">Your progress</h3><span>${entries.length} linked</span></div>
+        <div class="assessment-approved-progress-grid">
+          <div class="assessment-approved-complete"><strong>Completed</strong>
+            <span>✓ ${completeCount} checklist item${completeCount===1?"":"s"}</span>
+            <span>✓ ${entries.length} reflection${entries.length===1?"":"s"} linked</span>
+            <span>✓ ${reqs.length-missingRequirements.length} evidence categor${reqs.length-missingRequirements.length===1?"y":"ies"} represented</span>
+          </div>
+          <div class="assessment-approved-needed"><strong>Still needed</strong>
+            ${incomplete.length?`<span>○ ${incomplete.length} checklist item${incomplete.length===1?"":"s"}</span>`:`<span>✓ Checklist complete</span>`}
+            ${missingRequirements.length?missingRequirements.slice(0,3).map(item=>`<span>○ ${safeText(item)}</span>`).join(""):`<span>✓ Evidence areas covered</span>`}
+          </div>
+        </div>
+        ${entries.length?`<details class="assessment-approved-linked"><summary>View linked reflections <span>${entries.length}</span></summary><div class="assessment-linked-evidence">${entries.map(e=>`<div class="evidence-list-row"><span>📝</span><div><strong>Reflection · ${e.date}</strong><small>${e.answer.slice(0,110)}${e.answer.length>110?"...":""}</small></div></div>`).join("")}</div></details>`:`<p class="muted personality-empty">💭 Evidence will appear here as you save relevant reflections.</p>`}
       </section>
 
       <details class="assessment-secondary-details assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
@@ -1571,10 +1586,9 @@ function morePage(){
   }).join("");
 
   return `<div class="journey-page">
-    <section class="welcome-block journey-welcome">
-      <div class="eyebrow">My Journey</div>
-      <h1>💚 Professional Growth</h1>
-      <p class="welcome-text">See how your professional identity is developing through the evidence you already capture.</p>
+    <section class="journey-approved-hero">
+      <div><div class="eyebrow">My Journey</div><h1>My Journey</h1><p>Your growth, your framework, your progress.</p></div>
+      <span class="journey-approved-botanical">🌿</span>
     </section>
 
     <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
@@ -1588,14 +1602,14 @@ function morePage(){
       <h2 id="frameworkHeading">My practice framework</h2>
       <div class="journey-framework-panel">
         <div class="journey-framework-summary">${groupSummary}</div>
-        <button class="journey-text-action" id="frameworkMenu">View my developing framework <span>›</span></button>
+        <button class="journey-text-action journey-approved-row" id="frameworkMenu"><span class="journey-approved-icon">🧭</span><span><strong>My Practice Framework</strong><small>Values, theories, skills and use of self</small></span><b>›</b></button>
       </div>
     </section>
 
     <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
       <h2 id="professionalDevelopmentHeading">Professional development</h2>
-      <button class="journey-utility-row journey-evidence-map-link" id="openEvidenceMap"><span><strong>Assessment evidence</strong><small>See what your reflections already support and what may still need evidence</small></span><span>›</span></button>
-      <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
+      <button class="journey-utility-row journey-evidence-map-link journey-approved-row" id="openEvidenceMap"><span class="journey-approved-icon">🧠</span><span><strong>Assessment evidence</strong><small>See the evidence you have collected</small></span><b>›</b></button>
+      <button class="journey-utility-row journey-approved-row" id="professionalDevelopmentMenu"><span class="journey-approved-icon">🌱</span><span><strong>Personal additions</strong><small>Add development areas you want to track</small></span><b>›</b></button>
     </section>
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
