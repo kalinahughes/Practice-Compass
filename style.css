@@ -3284,3 +3284,40 @@ p{color:var(--pc-body)}
   .assessment-approved-progress-grid>div+div{border-top:1px solid var(--pc-line);border-left:0}
   .journey-approved-hero{padding:21px 18px}
 }
+
+/* Assessment Clarity and Consistency Sprint */
+.assessment-clear-page{max-width:720px;margin:0 auto;padding:2px 0 30px;color:#263238}
+.assessment-clear-page .assessment-back-link{margin-bottom:16px;color:#315f63}
+.assessment-clear-header{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:14px;padding:22px;margin-bottom:24px;border-radius:22px;background:linear-gradient(145deg,#385f62,#2e5155);color:#fff;box-shadow:0 12px 28px rgba(39,73,76,.15)}
+.assessment-clear-icon{display:grid;width:52px;height:52px;place-items:center;border-radius:16px;background:rgba(255,255,255,.14);font-size:25px}
+.assessment-clear-title{min-width:0}.assessment-clear-title .status-inline{margin:0 0 7px;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.assessment-clear-title h1{margin:0;color:#fff;font-size:27px;font-weight:700;line-height:1.18;letter-spacing:-.025em}
+.assessment-clear-title p{margin:7px 0 0;color:rgba(255,255,255,.78);font-size:13px;line-height:1.4}
+.assessment-clear-percent{align-self:start;color:#fff;font-size:22px;font-weight:700}
+.assessment-clear-progress{grid-column:1/-1;height:8px;overflow:hidden;border-radius:99px;background:rgba(255,255,255,.19)}
+.assessment-clear-progress span{display:block;height:100%;border-radius:inherit;background:#35a6ad}
+.assessment-clear-section{margin:0 0 18px;padding:22px;border:1px solid #e1e8e6;border-radius:20px;background:#fff;box-shadow:0 5px 18px rgba(35,52,49,.04)}
+.assessment-clear-section-heading{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.assessment-clear-section-heading>span{display:grid;width:29px;height:29px;place-items:center;border-radius:10px;background:#e6f0ee;color:#315f63;font-size:11px;font-weight:800}
+.assessment-clear-section-heading h2{margin:0;color:#263238;font-size:20px;font-weight:680;letter-spacing:-.015em}
+.assessment-clear-lead{margin:0;color:#4f5d5a;font-size:15px;line-height:1.65}
+.assessment-clear-requirement{margin:0 0 17px;padding:15px 16px;border-left:4px solid #35a6ad;border-radius:12px;background:#f2f7f6}
+.assessment-clear-requirement strong{display:block;margin-bottom:5px;color:#294c50;font-size:13px}.assessment-clear-requirement p{margin:0;color:#4d5b58;font-size:14px;line-height:1.55}
+.assessment-clear-checklist{border-top:1px solid #e6ecea}
+.assessment-clear-task{display:grid;grid-template-columns:23px minmax(0,1fr) 112px;gap:11px;align-items:center;padding:14px 0;border-bottom:1px solid #e6ecea}
+.assessment-clear-task:last-child{border-bottom:0}.assessment-clear-task.is-complete .assessment-clear-task-copy{color:#78827e;text-decoration:line-through}
+.assessment-clear-task .task-complete-check{width:21px;height:21px;margin:0;accent-color:#43826c}
+.assessment-clear-task-copy{color:#313c39;font-size:15px;line-height:1.45}
+.assessment-clear-task .task-status-select{width:112px;max-width:none;padding:7px 8px;border-color:#dce5e2;background:#fff;font-size:11px;font-weight:600}
+.assessment-clear-empty{margin:15px 0 0;color:#6b7672}
+.assessment-clear-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.assessment-clear-summary-grid>div{padding:14px;border-radius:14px;background:#f5f8f7}.assessment-clear-summary-grid small,.assessment-clear-summary-grid strong{display:block}.assessment-clear-summary-grid small{margin-bottom:5px;color:#72807b;font-size:11px}.assessment-clear-summary-grid strong{color:#2c3935;font-size:15px}
+.assessment-clear-progress-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:17px;border-top:1px solid #e6ecea}
+.assessment-clear-progress-columns>div{min-width:0}.assessment-clear-progress-columns h3{margin:0 0 10px;color:#31413c;font-size:14px;font-weight:680}.assessment-clear-progress-columns p{margin:7px 0;color:#53615d;font-size:13px;line-height:1.45}
+.assessment-clear-linked{margin-top:17px;border-top:1px solid #e6ecea}.assessment-clear-linked summary{display:flex;justify-content:space-between;padding:14px 0 2px;color:#315f63;font-size:14px;font-weight:650;cursor:pointer;list-style:none}.assessment-clear-linked summary::-webkit-details-marker{display:none}.assessment-clear-linked summary span{display:grid;min-width:25px;height:25px;place-items:center;border-radius:99px;background:#e6f0ee;font-size:11px}.assessment-clear-linked article{padding:13px 0;border-bottom:1px solid #e8edeb}.assessment-clear-linked article strong{color:#34423e;font-size:13px}.assessment-clear-linked article p{margin:5px 0 0;color:#66726e;font-size:13px;line-height:1.5}
+.assessment-clear-plan{background:linear-gradient(145deg,#edf5ef,#f8fbf8);border-color:#d6e5d9}
+.assessment-clear-plan-row{display:grid;grid-template-columns:125px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid rgba(62,99,76,.11)}.assessment-clear-plan-row small{color:#718078;font-size:12px}.assessment-clear-plan-row strong{color:#2d3935;font-size:14px;line-height:1.4}
+.assessment-clear-edit{margin-top:15px;padding:10px 14px;border:0;border-radius:12px;background:#35a6ad;color:#fff;font-weight:700}
+.assessment-clear-extra-heading{margin:30px 2px 8px}.assessment-clear-extra-heading h2{margin:0;color:#303b38;font-size:18px}.assessment-clear-extra-heading p{margin:5px 0 0;color:#74807c;font-size:13px}
+.assessment-clear-page .assessment-secondary-details{border-color:#e1e7e5}.assessment-clear-page .assessment-secondary-details>summary{padding:16px 2px}.assessment-clear-page .assessment-secondary-details>summary span{font-size:15px}
+@media(max-width:520px){.assessment-clear-header{grid-template-columns:46px minmax(0,1fr) auto;padding:19px 17px}.assessment-clear-icon{width:46px;height:46px}.assessment-clear-title h1{font-size:23px}.assessment-clear-section{padding:19px 17px;border-radius:18px}.assessment-clear-task{grid-template-columns:22px minmax(0,1fr);align-items:start}.assessment-clear-task .task-status-select{grid-column:2;width:100%;margin-top:2px}.assessment-clear-summary-grid,.assessment-clear-progress-columns{grid-template-columns:1fr}.assessment-clear-plan-row{grid-template-columns:1fr;gap:4px}}

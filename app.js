@@ -1321,14 +1321,13 @@ function assessmentDetail(id,openPlanning=false){
   const official=officialAssessmentInfo(a);
   const planning=assessmentPlanning(a.id);
   const missingRequirements=reqs.filter(requirement=>!entries.some(entry=>(entry.evidenceTypes||[]).includes(requirement)));
+  const nextTask=incomplete.length?incomplete[0].task:"Check the official submission or sign off step";
 
   const taskRow=item=>{
     const meta=taskStatuses[item.status];
-    return `<div class="task-row ${item.status==="complete"?"task-row-complete":""}">
-      <div class="task-copy">
-        <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${item.index}" ${item.status==="complete"?"checked":""} aria-label="Mark ${item.task} complete">
-        <span>${item.task}</span>
-      </div>
+    return `<div class="assessment-clear-task ${item.status==="complete"?"is-complete":""}">
+      <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${item.index}" ${item.status==="complete"?"checked":""} aria-label="Mark ${item.task} complete">
+      <span class="assessment-clear-task-copy">${item.task}</span>
       <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${item.index}" aria-label="Status for ${item.task}">
         ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===item.status?"selected":""}>${m.label}</option>`).join("")}
       </select>
@@ -1336,52 +1335,70 @@ function assessmentDetail(id,openPlanning=false){
   };
 
   document.getElementById("main").innerHTML=`
-    <div class="assessment-detail-calm assessment-detail-readable">
+    <div class="assessment-clear-page">
       <button class="assessment-back-link" id="backAssess" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
 
-      <section class="assessment-hero-readable">
-        <div class="assessment-hero-icon">${a.icon}</div>
-        <div class="assessment-hero-copy">
+      <header class="assessment-clear-header">
+        <div class="assessment-clear-icon">${a.icon}</div>
+        <div class="assessment-clear-title">
           <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
-          <h2>${a.title}</h2>
+          <h1>${a.title}</h1>
+          <p>${a.when}</p>
         </div>
-        <strong class="assessment-hero-percent">${progress}%</strong>
-        <div class="progress-track"><div style="width:${progress}%"></div></div>
+        <strong class="assessment-clear-percent">${progress}%</strong>
+        <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
+      </header>
+
+      <section class="assessment-clear-section" aria-labelledby="assessment-what-heading">
+        <div class="assessment-clear-section-heading"><span>01</span><h2 id="assessment-what-heading">What it is</h2></div>
+        <p class="assessment-clear-lead">${a.purpose||a.plain}</p>
       </section>
 
-      <section class="assessment-approved-overview" aria-labelledby="assessment-overview-heading">
-        <span class="assessment-approved-section-icon">💡</span>
-        <div><h3 id="assessment-overview-heading">What it is</h3><p>${a.purpose||a.plain}</p></div>
-      </section>
-
-      <section class="assessment-primary-section assessment-approved-tasks" aria-labelledby="next-steps">
-        <div class="assessment-primary-heading"><h3 id="next-steps">What you have to do</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
-        <div class="assessment-priority-steps">
-          ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">🌿 Checklist complete. Check the official submission or sign off step.</div>`}
+      <section class="assessment-clear-section" aria-labelledby="assessment-do-heading">
+        <div class="assessment-clear-section-heading"><span>02</span><h2 id="assessment-do-heading">What you have to do</h2></div>
+        <div class="assessment-clear-requirement">
+          <strong>JCU requirement</strong>
+          <p>${official.requirement}</p>
         </div>
-        ${taskItems.length>3?`<details class="assessment-all-steps"><summary>View full checklist <span>${taskItems.length}</span></summary><div>${taskItems.map(taskRow).join("")}</div></details>`:""}
+        <div class="assessment-clear-checklist">
+          ${taskItems.length?taskItems.map(taskRow).join(""):`<p class="assessment-clear-empty">No checklist has been added for this assessment yet. Check the official JCU instructions.</p>`}
+        </div>
       </section>
 
-      <section class="assessment-primary-section assessment-approved-progress" aria-labelledby="assessment-evidence">
-        <div class="assessment-primary-heading"><h3 id="assessment-evidence">Your progress</h3><span>${entries.length} linked</span></div>
-        <div class="assessment-approved-progress-grid">
-          <div class="assessment-approved-complete"><strong>Completed</strong>
-            <span>✓ ${completeCount} checklist item${completeCount===1?"":"s"}</span>
-            <span>✓ ${entries.length} reflection${entries.length===1?"":"s"} linked</span>
-            <span>✓ ${reqs.length-missingRequirements.length} evidence categor${reqs.length-missingRequirements.length===1?"y":"ies"} represented</span>
+      <section class="assessment-clear-section" aria-labelledby="assessment-progress-heading">
+        <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-progress-heading">Your progress</h2></div>
+        <div class="assessment-clear-summary-grid">
+          <div><small>Checklist</small><strong>${completeCount} of ${taskItems.length} complete</strong></div>
+          <div><small>Linked evidence</small><strong>${entries.length} reflection${entries.length===1?"":"s"}</strong></div>
+          <div><small>Evidence areas</small><strong>${reqs.length-missingRequirements.length} of ${reqs.length||0} covered</strong></div>
+          <div><small>Still to do</small><strong>${incomplete.length} item${incomplete.length===1?"":"s"}</strong></div>
+        </div>
+        <div class="assessment-clear-progress-columns">
+          <div>
+            <h3>Already supported</h3>
+            ${completeCount?`<p>✓ ${completeCount} checklist item${completeCount===1?"":"s"} complete</p>`:`<p class="muted">No checklist items completed yet.</p>`}
+            ${entries.length?`<p>✓ ${entries.length} linked reflection${entries.length===1?"":"s"}</p>`:`<p class="muted">No reflections linked yet.</p>`}
           </div>
-          <div class="assessment-approved-needed"><strong>Still needed</strong>
-            ${incomplete.length?`<span>○ ${incomplete.length} checklist item${incomplete.length===1?"":"s"}</span>`:`<span>✓ Checklist complete</span>`}
-            ${missingRequirements.length?missingRequirements.slice(0,3).map(item=>`<span>○ ${safeText(item)}</span>`).join(""):`<span>✓ Evidence areas covered</span>`}
+          <div>
+            <h3>Still needed</h3>
+            ${incomplete.length?`<p>○ ${incomplete.length} checklist item${incomplete.length===1?"":"s"}</p>`:`<p>✓ Checklist complete</p>`}
+            ${missingRequirements.length?missingRequirements.slice(0,3).map(item=>`<p>○ ${safeText(item)}</p>`).join(""):`<p>✓ Evidence areas represented</p>`}
           </div>
         </div>
-        ${entries.length?`<details class="assessment-approved-linked"><summary>View linked reflections <span>${entries.length}</span></summary><div class="assessment-linked-evidence">${entries.map(e=>`<div class="evidence-list-row"><span>📝</span><div><strong>Reflection · ${e.date}</strong><small>${e.answer.slice(0,110)}${e.answer.length>110?"...":""}</small></div></div>`).join("")}</div></details>`:`<p class="muted personality-empty">💭 Evidence will appear here as you save relevant reflections.</p>`}
+        ${entries.length?`<details class="assessment-clear-linked"><summary>Linked reflections <span>${entries.length}</span></summary><div>${entries.map(e=>`<article><strong>${e.date}</strong><p>${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</p></article>`).join("")}</div></details>`:""}
+      </section>
+
+      <section class="assessment-clear-section assessment-clear-plan" aria-labelledby="assessment-plan-heading">
+        <div class="assessment-clear-section-heading"><span>04</span><h2 id="assessment-plan-heading">My plan</h2></div>
+        <div class="assessment-clear-plan-row"><small>Next useful step</small><strong>${nextTask}</strong></div>
+        <div class="assessment-clear-plan-row"><small>My target date</small><strong>${planning.date?formatPlanningDate(planning.date):"Not set"}</strong></div>
+        <div class="assessment-clear-plan-row"><small>Official timing</small><strong>${a.when}</strong></div>
+        <button class="assessment-clear-edit" id="openPlanningEdit">Edit planning date</button>
       </section>
 
       <details class="assessment-secondary-details assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
-        <summary><span>My planning date</span><small>${planning.date?formatPlanningDate(planning.date):"Not set"}</small></summary>
+        <summary><span>Edit planning date</span><small>${planning.date?formatPlanningDate(planning.date):"Not set"}</small></summary>
         <div class="assessment-planning-controls">
-          <p class="muted"><strong>Official timing:</strong> ${a.when}</p>
           <label class="label" for="planningDate">My target date</label>
           <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
           <label class="label" for="planningReason">Optional reason</label>
@@ -1391,11 +1408,11 @@ function assessmentDetail(id,openPlanning=false){
         </div>
       </details>
 
+      <div class="assessment-clear-extra-heading"><h2>Extra details</h2><p>Open these only when you need more information.</p></div>
+
       <details class="assessment-secondary-details">
-        <summary><span>Assessment information</span><small>Overview and JCU guidance</small></summary>
+        <summary><span>Official record and guidance</span><small>JCU information</small></summary>
         <div class="assessment-secondary-content">
-          <h3>Overview</h3><p>${a.purpose||a.plain}</p>
-          <h3>JCU requirement</h3><p>${official.requirement}</p>
           <h3>Official record</h3><p>${official.record}</p>
           <p class="assessment-scope-note">${official.notice}</p>
         </div>
@@ -1406,7 +1423,7 @@ function assessmentDetail(id,openPlanning=false){
         return `<div class="evidence-category-row"><span>${count?"✓":"○"}</span><span>${r}</span><strong>${count}</strong></div>`;
       }).join("")}</div></details>`:""}
 
-      ${toolkitLinks.length?`<section class="assessment-primary-section assessment-toolkit-suggestions" aria-labelledby="toolkit-suggestions"><div class="assessment-primary-heading"><h3 id="toolkit-suggestions">Toolkit suggestions</h3></div><div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></section>`:""}
+      ${toolkitLinks.length?`<details class="assessment-secondary-details"><summary><span>Toolkit suggestions</span><small>${toolkitLinks.length}</small></summary><div class="assessment-secondary-content linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></details>`:""}
 
       <details class="assessment-secondary-details official-sources-card">
         <summary><span>Official sources</span><small>${official.sources.length}</small></summary>
@@ -1418,6 +1435,11 @@ function assessmentDetail(id,openPlanning=false){
     </div>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+  document.getElementById("openPlanningEdit").onclick=()=>{
+    const details=document.getElementById("assessmentPlanning");
+    details.open=true;
+    details.scrollIntoView({behavior:"smooth",block:"start"});
+  };
   document.getElementById("savePlanningDate").onclick=()=>{
     const date=document.getElementById("planningDate").value;
     const reason=document.getElementById("planningReason").value.trim();
