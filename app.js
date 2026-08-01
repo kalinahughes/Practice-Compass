@@ -798,6 +798,69 @@ function frameworkEvidenceLinksData(){return state.get("frameworkEvidenceLinks",
 function saveFrameworkEvidenceLinksData(data){state.set("frameworkEvidenceLinks",data);}
 function frameworkSummaryData(){return state.get("frameworkSummary",{vision:"",purpose:"",values:"",theories:"",tools:"",reflection:""});}
 function saveFrameworkSummaryData(data){state.set("frameworkSummary",data);}
+
+
+function smartReflectionLinksData(){return state.get("smartReflectionLinks",{});}
+function saveSmartReflectionLinksData(data){state.set("smartReflectionLinks",data);}
+function normaliseSmartReflectionLink(value){
+  const row=value&&typeof value==="object"?value:{};
+  const section=name=>({
+    assessments:Array.isArray(row[name]?.assessments)?row[name].assessments.map(String):[],
+    standards:Array.isArray(row[name]?.standards)?row[name].standards.map(String):[],
+    framework:Array.isArray(row[name]?.framework)?row[name].framework.map(String):[]
+  });
+  return {approved:section("approved"),dismissed:section("dismissed")};
+}
+function smartApprovedFor(entryId,type){
+  return normaliseSmartReflectionLink(smartReflectionLinksData()[String(entryId)]).approved[type]||[];
+}
+function smartLinkDecision(entryId,type,value,decision){
+  const all=smartReflectionLinksData(),key=String(entryId),row=normaliseSmartReflectionLink(all[key]);
+  ["approved","dismissed"].forEach(bucket=>row[bucket][type]=row[bucket][type].filter(item=>item!==String(value)));
+  if(decision==="approved"||decision==="dismissed")row[decision][type].push(String(value));
+  all[key]=row;saveSmartReflectionLinksData(all);
+}
+const smartAssessmentOptions={
+  project:{label:"Small Project",icon:"📄"},
+  reflections:{label:"Three Project Reflections",icon:"⭐"},
+  midfinal:{label:"Mid and End Placement Assessments",icon:"📝"},
+  final:{label:"Final Presentation and Project Report",icon:"🎤"}
+};
+const smartStandardRules=[
+  {value:"Practice Standard 1: Values and ethics",terms:["ethic","value","dignity","choice","rights","confidential","consent","boundary","power"]},
+  {value:"Practice Standard 2: Professional conduct",terms:["professional","accountab","boundary","role","supervision","feedback","conduct"]},
+  {value:"Practice Standard 3: Culturally responsive and inclusive practice",terms:["culture","cultural","aboriginal","torres strait","identity","intersection","inclusive","diversity"]},
+  {value:"Practice Standard 4: Knowledge for practice",terms:["theory","research","evidence","policy","legislation","framework","literature"]},
+  {value:"Practice Standard 5: Applying knowledge to practice",terms:["assessment","planning","intervention","recovery","strength","trauma","risk","safety"]},
+  {value:"Practice Standard 6: Communication and interpersonal skills",terms:["communication","rapport","listen","silence","group","conversation","relationship","engagement"]},
+  {value:"Practice Standard 7: Information recording and sharing",terms:["documentation","case note","record","information sharing","privacy","report"]},
+  {value:"Practice Standard 8: Professional development and supervision",terms:["supervision","feedback","learning","reflect","development","training","question"]},
+  {value:"Practice Standard 9: Professional leadership",terms:["leadership","advocacy","initiative","team","multidisciplinary","system change","project"]}
+];
+const smartFrameworkRules={
+  identity:["identity","social worker","professional identity","becoming"],framework:["framework","worldview","understand people","practice decision"],
+  dignity:["dignity","respect","heard","valued","non judgement"],selfDetermination:["choice","autonomy","self determination","consent","decision"],
+  strengths:["strength","resilience","capacity","resource","hope"],culture:["culture","cultural","identity","bias","assumption","intersection"],
+  justice:["justice","advocacy","rights","barrier","poverty","housing","policy","system"],theories:["theory","framework","recovery","trauma","systems","ecological"],
+  tools:["assessment","goal","planning","group","safety plan","intervention","communication"],relationships:["rapport","trust","relationship","listen","boundary"],
+  reflection:["reflect","supervision","feedback","assumption","missed","different next time"],development:["learning","develop","confidence","skill","training","future practice"]
+};
+function reflectionSearchText(entry){return [entry.moment,entry.answer,entry.whyMatter,entry.futurePractice,entry.supervision,...(entry.theories||[]),...(entry.values||[]),...(entry.ethics||[]),...(entry.practiceStandards||[]),...(entry.evidenceTypes||[])].filter(Boolean).join(" ").toLowerCase();}
+function termMatches(text,terms){return terms.filter(term=>text.includes(term)).length;}
+function smartReflectionSuggestions(entry){
+  const text=reflectionSearchText(entry),existingEvidence=(entry.evidence||[]),existingStandards=(entry.practiceStandards||[]);
+  const assessments=[];
+  const addAssessment=(value,reason)=>{if(!assessments.some(item=>item.value===value))assessments.push({value,label:smartAssessmentOptions[value].label,reason});};
+  if(termMatches(text,["project","research","resource","service gap","policy","literature","evaluation","consultation","family","carer","warm handover","discharge"])>0)addAssessment("project","This reflection may help explain your project idea, rationale, consultation, evidence or development.");
+  if(termMatches(text,["project","research","feedback","challenge","changed","theory","ethical","learning","next step"])>0)addAssessment("reflections","This may show how the project or your thinking developed over time.");
+  if(text.length>80||termMatches(text,["communication","ethic","culture","theory","supervision","documentation","team","feedback","use of self","assessment"])>0)addAssessment("midfinal","This may provide a specific example of your learning, practice or development for placement assessment.");
+  if(termMatches(text,["growth","learning","identity","value","theory","skill","knowledge","project","development","future practice"])>0)addAssessment("final","This may support your final account of professional growth, project learning or continuing development.");
+  Object.entries(smartAssessmentOptions).forEach(([id,opt])=>{if(existingEvidence.includes(opt.label)&&!assessments.some(item=>item.value===id))assessments.push({value:id,label:opt.label,reason:"You previously linked this reflection to this assessment."});});
+  const standards=smartStandardRules.filter(rule=>termMatches(text,rule.terms)>0||existingStandards.includes(rule.value)).map(rule=>({value:rule.value,label:rule.value,reason:"Suggested from the themes and practice language in this reflection."})).slice(0,4);
+  const framework=practiceFrameworkDevelopmentAreas.filter(area=>termMatches(text,smartFrameworkRules[area.id]||[])>0).map(area=>({value:area.id,label:area.title,reason:"This reflection appears to contain an example relevant to this part of your developing framework."})).slice(0,4);
+  return {assessments:assessments.slice(0,4),standards,framework};
+}
+function smartAssessmentEntryMatch(entry,assessmentId){return smartApprovedFor(entry.id,"assessments").includes(String(assessmentId));}
 function normaliseFrameworkEvidenceArea(value){
   const area=value&&typeof value==="object"?value:{};
   return {
@@ -1246,7 +1309,7 @@ function officialAssessmentInfo(a){
 
 function assessmentDetail(id,openPlanning=false){
   const a=assessments.find(x=>x.id===id);
-  const entries=savedEntries().filter(e=>(e.evidence||[]).includes(a.title));
+  const entries=savedEntries().filter(e=>(e.evidence||[]).includes(a.title)||smartAssessmentEntryMatch(e,a.id));
   const reqs=assessmentRequirements[a.title]||[];
   const overall=assessmentOverallStatus(a);
   const overallMeta=taskStatuses[overall];
@@ -1554,61 +1617,59 @@ function evidenceMapPage(){
     return linked.reflectionIds.length||linked.supervisionIds.length||linked.manualExamples.length;
   }).length;
   const assessmentMap=[
-    {title:"Learning Plan",id:"learning",icon:"🌱",timing:"Weeks 1 to 3"},
     {title:"Project Reflections",id:"reflections",icon:"⭐",timing:"Three across placement"},
     {title:"Mid and End Placement Assessments",id:"midfinal",icon:"📝",timing:"Mid and final review"},
     {title:"Final Presentation",id:"final",icon:"🎤",timing:"Final liaison meeting"}
   ];
   const cards=assessmentMap.map(item=>{
     const requirements=assessmentRequirements[item.title]||[];
-    const coverage=requirements.map(requirement=>({
-      requirement,
-      entries:entries.filter(entry=>(entry.evidenceTypes||[]).includes(requirement))
-    }));
+    const coverage=requirements.map(requirement=>({requirement,entries:entries.filter(entry=>(entry.evidenceTypes||[]).includes(requirement))}));
     const covered=coverage.filter(row=>row.entries.length).length;
-    const matching=entries.filter(entry=>(entry.evidence||[]).includes(item.title)||requirements.some(requirement=>(entry.evidenceTypes||[]).includes(requirement)));
+    const matching=entries.filter(entry=>(entry.evidence||[]).includes(item.title)||requirements.some(requirement=>(entry.evidenceTypes||[]).includes(requirement))||smartAssessmentEntryMatch(entry,item.id));
     const missing=coverage.filter(row=>!row.entries.length).map(row=>row.requirement);
     const progress=requirements.length?Math.round((covered/requirements.length)*100):0;
     const next=missing.length?`Capture or link an example showing ${missing[0].toLowerCase()}.`:`Choose the strongest examples and explain what they demonstrate.`;
     return `<article class="assessment-evidence-card">
       <button type="button" class="assessment-evidence-summary" data-evidence-assessment="${item.id}">
-        <span class="assessment-evidence-icon">${item.icon}</span>
-        <span class="assessment-evidence-copy"><strong>${item.title}</strong><small>${item.timing}</small></span>
-        <span class="assessment-evidence-progress"><strong>${covered}/${requirements.length}</strong><small>areas</small></span>
+        <span class="assessment-evidence-icon">${item.icon}</span><span class="assessment-evidence-copy"><strong>${item.title}</strong><small>${item.timing}</small></span><span class="assessment-evidence-progress"><strong>${covered}/${requirements.length}</strong><small>areas</small></span>
       </button>
       <div class="assessment-evidence-track"><span style="width:${progress}%"></span></div>
       <div class="assessment-evidence-next"><span>Next useful step</span><strong>${safeText(next)}</strong></div>
-      <details class="assessment-evidence-details">
-        <summary>View evidence map <span>${matching.length} reflection${matching.length===1?"":"s"}</span></summary>
-        <div class="assessment-evidence-details-body">
-          <div class="assessment-evidence-category-list">${coverage.map(row=>`<div class="assessment-evidence-category ${row.entries.length?"covered":"missing"}"><span>${row.entries.length?"✓":"○"}</span><span>${safeText(row.requirement)}</span><strong>${row.entries.length}</strong></div>`).join("")}</div>
-          ${matching.length?`<div class="assessment-evidence-reflections"><strong>Possible reflection evidence</strong>${matching.slice(0,5).map(entry=>`<div><span>${safeText(entry.date||"Reflection")}</span><p>${safeText((entry.moment||entry.answer||"Saved reflection").replace(/\s+/g," ").slice(0,125))}${(entry.moment||entry.answer||"").length>125?"…":""}</p></div>`).join("")}</div>`:`<p class="assessment-evidence-empty">No matching reflections yet. This does not mean you have not developed in this area. It means the evidence has not been captured in Practice Compass.</p>`}
-          <button type="button" class="assessment-evidence-open" data-evidence-assessment="${item.id}">Open assessment workspace <span>›</span></button>
-        </div>
-      </details>
+      <details class="assessment-evidence-details"><summary>View evidence map <span>${matching.length} reflection${matching.length===1?"":"s"}</span></summary><div class="assessment-evidence-details-body">
+        <div class="assessment-evidence-category-list">${coverage.map(row=>`<div class="assessment-evidence-category ${row.entries.length?"covered":"missing"}"><span>${row.entries.length?"✓":"○"}</span><span>${safeText(row.requirement)}</span><strong>${row.entries.length}</strong></div>`).join("")}</div>
+        ${matching.length?`<div class="assessment-evidence-reflections"><strong>Possible reflection evidence</strong>${matching.slice(0,8).map(entry=>`<div><span>${safeText(entry.date||"Reflection")}</span><p>${safeText((entry.moment||entry.answer||"Saved reflection").replace(/\s+/g," ").slice(0,125))}${(entry.moment||entry.answer||"").length>125?"…":""}</p></div>`).join("")}</div>`:`<p class="assessment-evidence-empty">No matching reflections yet. This does not mean you have not developed in this area. It means the evidence has not been captured in Practice Compass.</p>`}
+        <button type="button" class="assessment-evidence-open" data-evidence-assessment="${item.id}">Open assessment workspace <span>›</span></button>
+      </div></details>
     </article>`;
   }).join("");
 
-  document.getElementById("main").innerHTML=`
-    <div class="assessment-evidence-page">
-      <button class="assessment-back-link" id="backMore">‹ Back to Me</button>
-      <section class="assessment-evidence-hero">
-        <span>📚</span>
-        <div><div class="eyebrow">University evidence</div><h1>Assessment evidence</h1><p>See what your saved learning already supports and where another clear example may help.</p></div>
-      </section>
-      <section class="assessment-evidence-snapshot" aria-label="Evidence snapshot">
-        <div><strong>${entries.length}</strong><span>reflections</span></div>
-        <div><strong>${supervision.length}</strong><span>supervision notes</span></div>
-        <div><strong>${frameworkAreasWithEvidence}</strong><span>framework areas</span></div>
-      </section>
-      <p class="assessment-evidence-note">Counts are planning prompts only. Quality, critical reflection and relevance matter more than collecting large numbers of examples.</p>
-      <section class="assessment-evidence-list">${cards}</section>
-    </div>`;
+  const suggestionCards=entries.map(entry=>{
+    const suggestions=smartReflectionSuggestions(entry),saved=normaliseSmartReflectionLink(smartReflectionLinksData()[String(entry.id)]);
+    const renderGroup=(type,title,icon)=>{
+      const items=suggestions[type].filter(item=>!saved.dismissed[type].includes(String(item.value))||saved.approved[type].includes(String(item.value)));
+      if(!items.length)return "";
+      return `<div class="smart-link-group"><strong>${icon} ${title}</strong>${items.map(item=>{
+        const approved=saved.approved[type].includes(String(item.value));
+        return `<div class="smart-link-suggestion ${approved?"approved":""}"><div><span>${safeText(item.label)}</span><small>${safeText(item.reason)}</small></div><div class="smart-link-actions">${approved?`<span class="smart-linked-label">Linked</span><button type="button" data-smart-decision="remove" data-entry-id="${entry.id}" data-smart-type="${type}" data-smart-value="${safeText(item.value)}">Remove</button>`:`<button type="button" class="smart-approve" data-smart-decision="approved" data-entry-id="${entry.id}" data-smart-type="${type}" data-smart-value="${safeText(item.value)}">Link</button><button type="button" data-smart-decision="dismissed" data-entry-id="${entry.id}" data-smart-type="${type}" data-smart-value="${safeText(item.value)}">Not relevant</button>`}</div></div>`;
+      }).join("")}</div>`;
+    };
+    const visibleCount=[...suggestions.assessments,...suggestions.standards,...suggestions.framework].filter(item=>!saved.dismissed.assessments.includes(String(item.value))&&!saved.dismissed.standards.includes(String(item.value))&&!saved.dismissed.framework.includes(String(item.value))).length;
+    const approvedCount=saved.approved.assessments.length+saved.approved.standards.length+saved.approved.framework.length;
+    return `<details class="smart-reflection-card"><summary><span><strong>${safeText(entry.date||"Reflection")}</strong><small>${safeText((entry.moment||entry.answer||"Saved reflection").replace(/\s+/g," ").slice(0,95))}${(entry.moment||entry.answer||"").length>95?"…":""}</small></span><span>${approvedCount?`${approvedCount} linked`:`${visibleCount} suggestions`}</span></summary><div class="smart-reflection-body">${renderGroup("assessments","Assessments","📚")}${renderGroup("standards","AASW Practice Standards","🌿")}${renderGroup("framework","Practice framework","🧭")}<p class="smart-link-note">Suggestions are based on words and themes in your reflection. You remain in control of what is relevant.</p></div></details>`;
+  }).join("");
+
+  document.getElementById("main").innerHTML=`<div class="assessment-evidence-page">
+    <button class="assessment-back-link" id="backMore">‹ Back to Me</button>
+    <section class="assessment-evidence-hero"><span>📚</span><div><div class="eyebrow">University evidence</div><h1>Assessment evidence</h1><p>See what your saved learning already supports and where another clear example may help.</p></div></section>
+    <section class="assessment-evidence-snapshot" aria-label="Evidence snapshot"><div><strong>${entries.length}</strong><span>reflections</span></div><div><strong>${supervision.length}</strong><span>supervision notes</span></div><div><strong>${frameworkAreasWithEvidence}</strong><span>framework areas</span></div></section>
+    <p class="assessment-evidence-note">Your Learning Plan is complete, so new suggestions focus on the assessments still ahead. Counts are planning prompts only.</p>
+    <details class="smart-link-review" ${state.get("smartLinkReviewOpen",false)?"open":""} id="smartLinkReview"><summary><span><strong>✨ Review suggested links</strong><small>Connect existing reflections without copying or rewriting them</small></span><span>›</span></summary><div class="smart-link-review-body">${suggestionCards||`<p class="assessment-evidence-empty">Save a reflection to begin receiving suggestions.</p>`}</div></details>
+    <section class="assessment-evidence-list">${cards}</section>
+  </div>`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
-  document.querySelectorAll("[data-evidence-assessment]").forEach(button=>button.addEventListener("click",event=>{
-    if(event.target.closest("details")) return;
-    assessmentDetail(button.dataset.evidenceAssessment);
-  }));
+  document.getElementById("smartLinkReview")?.addEventListener("toggle",event=>state.set("smartLinkReviewOpen",event.currentTarget.open));
+  document.querySelectorAll("[data-smart-decision]").forEach(button=>button.addEventListener("click",()=>{smartLinkDecision(button.dataset.entryId,button.dataset.smartType,button.dataset.smartValue,button.dataset.smartDecision);evidenceMapPage();}));
+  document.querySelectorAll("[data-evidence-assessment]").forEach(button=>button.addEventListener("click",event=>{if(event.target.closest("details"))return;assessmentDetail(button.dataset.evidenceAssessment);}));
 }
 
 function practiceFrameworkIntelligence(){

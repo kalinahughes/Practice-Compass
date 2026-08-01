@@ -1,3 +1,5 @@
-style 2.css is unused. It can be deleted later from GitHub, but it does not affect this update.
+Practice Compass
 
-Toolkit restored to the stable pre-reorganisation version. Unused duplicate app and style files removed.
+Smart Reflection Linking Sprint
+
+Adds suggested links from existing reflections to upcoming assessments, AASW Practice Standards and practice framework areas. The Learning Plan is treated as complete and excluded from new suggestions. Suggestions remain user controlled and do not duplicate reflection text.
