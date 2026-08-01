@@ -1531,6 +1531,7 @@ function morePage(){
 
     <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
       <h2 id="professionalDevelopmentHeading">Professional development</h2>
+      <button class="journey-utility-row journey-evidence-map-link" id="openEvidenceMap"><span><strong>Assessment evidence</strong><small>See what your reflections already support and what may still need evidence</small></span><span>›</span></button>
       <button class="journey-utility-row" id="professionalDevelopmentMenu"><span><strong>Personal additions</strong><small>Add development areas not yet captured through reflection evidence</small></span><span>›</span></button>
     </section>
 
@@ -1546,12 +1547,68 @@ function morePage(){
 
 function evidenceMapPage(){
   const entries=savedEntries();
-  const categories=["Skill","Knowledge","Communication","Ethics or values","Cultural capability","Theory in action","Recovery","Use of self","Feedback","Teamwork","Systems issue","Documentation","Professional development"];
+  const supervision=supervisionItems();
+  const frameworkLinks=frameworkEvidenceLinksData();
+  const frameworkAreasWithEvidence=practiceFrameworkDevelopmentAreas.filter(area=>{
+    const linked=normaliseFrameworkEvidenceArea(frameworkLinks[area.id]);
+    return linked.reflectionIds.length||linked.supervisionIds.length||linked.manualExamples.length;
+  }).length;
+  const assessmentMap=[
+    {title:"Learning Plan",id:"learning",icon:"🌱",timing:"Weeks 1 to 3"},
+    {title:"Project Reflections",id:"reflections",icon:"⭐",timing:"Three across placement"},
+    {title:"Mid and End Placement Assessments",id:"midfinal",icon:"📝",timing:"Mid and final review"},
+    {title:"Final Presentation",id:"final",icon:"🎤",timing:"Final liaison meeting"}
+  ];
+  const cards=assessmentMap.map(item=>{
+    const requirements=assessmentRequirements[item.title]||[];
+    const coverage=requirements.map(requirement=>({
+      requirement,
+      entries:entries.filter(entry=>(entry.evidenceTypes||[]).includes(requirement))
+    }));
+    const covered=coverage.filter(row=>row.entries.length).length;
+    const matching=entries.filter(entry=>(entry.evidence||[]).includes(item.title)||requirements.some(requirement=>(entry.evidenceTypes||[]).includes(requirement)));
+    const missing=coverage.filter(row=>!row.entries.length).map(row=>row.requirement);
+    const progress=requirements.length?Math.round((covered/requirements.length)*100):0;
+    const next=missing.length?`Capture or link an example showing ${missing[0].toLowerCase()}.`:`Choose the strongest examples and explain what they demonstrate.`;
+    return `<article class="assessment-evidence-card">
+      <button type="button" class="assessment-evidence-summary" data-evidence-assessment="${item.id}">
+        <span class="assessment-evidence-icon">${item.icon}</span>
+        <span class="assessment-evidence-copy"><strong>${item.title}</strong><small>${item.timing}</small></span>
+        <span class="assessment-evidence-progress"><strong>${covered}/${requirements.length}</strong><small>areas</small></span>
+      </button>
+      <div class="assessment-evidence-track"><span style="width:${progress}%"></span></div>
+      <div class="assessment-evidence-next"><span>Next useful step</span><strong>${safeText(next)}</strong></div>
+      <details class="assessment-evidence-details">
+        <summary>View evidence map <span>${matching.length} reflection${matching.length===1?"":"s"}</span></summary>
+        <div class="assessment-evidence-details-body">
+          <div class="assessment-evidence-category-list">${coverage.map(row=>`<div class="assessment-evidence-category ${row.entries.length?"covered":"missing"}"><span>${row.entries.length?"✓":"○"}</span><span>${safeText(row.requirement)}</span><strong>${row.entries.length}</strong></div>`).join("")}</div>
+          ${matching.length?`<div class="assessment-evidence-reflections"><strong>Possible reflection evidence</strong>${matching.slice(0,5).map(entry=>`<div><span>${safeText(entry.date||"Reflection")}</span><p>${safeText((entry.moment||entry.answer||"Saved reflection").replace(/\s+/g," ").slice(0,125))}${(entry.moment||entry.answer||"").length>125?"…":""}</p></div>`).join("")}</div>`:`<p class="assessment-evidence-empty">No matching reflections yet. This does not mean you have not developed in this area. It means the evidence has not been captured in Practice Compass.</p>`}
+          <button type="button" class="assessment-evidence-open" data-evidence-assessment="${item.id}">Open assessment workspace <span>›</span></button>
+        </div>
+      </details>
+    </article>`;
+  }).join("");
+
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🌱 My growth</h2></div>
-    <div class="card green"><div class="label">What is this?</div><p>Your saved reflections are grouped by what they demonstrate. You do not need equal numbers in every category.</p></div>
-    <div class="card">${categories.map(c=>{const n=entries.filter(e=>(e.evidenceTypes||[]).includes(c)).length;return `<div class="row"><span style="flex:1">${c}</span><strong>${n}</strong></div>`}).join("")}</div>`;
+    <div class="assessment-evidence-page">
+      <button class="assessment-back-link" id="backMore">‹ Back to Me</button>
+      <section class="assessment-evidence-hero">
+        <span>📚</span>
+        <div><div class="eyebrow">University evidence</div><h1>Assessment evidence</h1><p>See what your saved learning already supports and where another clear example may help.</p></div>
+      </section>
+      <section class="assessment-evidence-snapshot" aria-label="Evidence snapshot">
+        <div><strong>${entries.length}</strong><span>reflections</span></div>
+        <div><strong>${supervision.length}</strong><span>supervision notes</span></div>
+        <div><strong>${frameworkAreasWithEvidence}</strong><span>framework areas</span></div>
+      </section>
+      <p class="assessment-evidence-note">Counts are planning prompts only. Quality, critical reflection and relevance matter more than collecting large numbers of examples.</p>
+      <section class="assessment-evidence-list">${cards}</section>
+    </div>`;
   document.getElementById("backMore").onclick=()=>{route="more";render()};
+  document.querySelectorAll("[data-evidence-assessment]").forEach(button=>button.addEventListener("click",event=>{
+    if(event.target.closest("details")) return;
+    assessmentDetail(button.dataset.evidenceAssessment);
+  }));
 }
 
 function practiceFrameworkIntelligence(){

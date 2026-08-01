@@ -2950,3 +2950,51 @@ p{color:var(--pc-body)}
   .folder-header{padding:16px 14px}
   .folder-icon{width:41px;height:41px}
 }
+
+/* Assessment Evidence Map: university focused, calm and compact */
+.assessment-evidence-page{padding-bottom:28px;color:var(--charcoal)}
+.assessment-evidence-hero{display:flex;align-items:flex-start;gap:15px;margin:0 0 18px;padding:21px;border-radius:23px;background:linear-gradient(145deg,#edf3ea,#f8f5ef);border:1px solid rgba(55,84,67,.10)}
+.assessment-evidence-hero>span{display:grid;width:46px;height:46px;place-items:center;flex:none;border-radius:15px;background:#fff;font-size:23px;box-shadow:0 5px 15px rgba(55,65,58,.05)}
+.assessment-evidence-hero h1{margin:3px 0 6px;color:#343b36;font-size:29px}
+.assessment-evidence-hero p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.assessment-evidence-snapshot{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.assessment-evidence-snapshot div{padding:14px 9px;border-radius:16px;background:#fff;border:1px solid rgba(64,77,68,.09);text-align:center}
+.assessment-evidence-snapshot strong,.assessment-evidence-snapshot span{display:block}
+.assessment-evidence-snapshot strong{color:#355444;font-size:21px}
+.assessment-evidence-snapshot span{margin-top:3px;color:var(--muted);font-size:11px;line-height:1.25}
+.assessment-evidence-note{margin:0 2px 20px;color:var(--muted);font-size:12px;line-height:1.5}
+.assessment-evidence-list{display:grid;gap:14px}
+.assessment-evidence-card{overflow:hidden;border:1px solid rgba(59,77,65,.10);border-radius:20px;background:#fff;box-shadow:0 7px 20px rgba(45,57,49,.045)}
+.assessment-evidence-summary{width:100%;display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:12px;padding:17px 16px 13px;border:0;background:transparent;text-align:left;color:var(--charcoal)}
+.assessment-evidence-icon{display:grid;width:42px;height:42px;place-items:center;border-radius:14px;background:#edf3ec;font-size:20px}
+.assessment-evidence-copy{display:grid;gap:3px;min-width:0}
+.assessment-evidence-copy strong{font-size:16px;line-height:1.3;color:#303733}
+.assessment-evidence-copy small{color:var(--muted);font-size:12px}
+.assessment-evidence-progress{text-align:right}
+.assessment-evidence-progress strong,.assessment-evidence-progress small{display:block}
+.assessment-evidence-progress strong{color:#355444;font-size:17px}
+.assessment-evidence-progress small{color:var(--muted);font-size:10px}
+.assessment-evidence-track{height:5px;margin:0 16px;border-radius:99px;background:#e9ede8;overflow:hidden}
+.assessment-evidence-track span{display:block;height:100%;border-radius:inherit;background:#66836f}
+.assessment-evidence-next{display:grid;gap:3px;padding:13px 16px 15px}
+.assessment-evidence-next span{color:var(--muted);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.05em}
+.assessment-evidence-next strong{color:#4d5750;font-size:13px;line-height:1.4;font-weight:580}
+.assessment-evidence-details{border-top:1px solid #edf0ec}
+.assessment-evidence-details>summary{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;list-style:none;color:#355444;font-size:13px;font-weight:650}
+.assessment-evidence-details>summary::-webkit-details-marker{display:none}
+.assessment-evidence-details>summary span{padding:4px 8px;border-radius:99px;background:#eef3ed;color:#59665d;font-size:10px}
+.assessment-evidence-details-body{padding:0 16px 16px}
+.assessment-evidence-category-list{border-top:1px solid #edf0ec}
+.assessment-evidence-category{display:grid;grid-template-columns:20px 1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid #edf0ec;font-size:12px}
+.assessment-evidence-category.covered>span:first-child{color:#477158}
+.assessment-evidence-category.missing{color:#777f79}
+.assessment-evidence-category strong{font-weight:650}
+.assessment-evidence-reflections{display:grid;gap:0;margin-top:15px}
+.assessment-evidence-reflections>strong{margin-bottom:5px;color:#414a44;font-size:13px}
+.assessment-evidence-reflections>div{padding:10px 0;border-bottom:1px solid #edf0ec}
+.assessment-evidence-reflections span{color:#657069;font-size:11px;font-weight:650}
+.assessment-evidence-reflections p{margin:3px 0 0;color:#59635c;font-size:12px;line-height:1.45}
+.assessment-evidence-empty{padding:13px;border-radius:13px;background:#f4f6f2;color:var(--muted);font-size:12px;line-height:1.5}
+.assessment-evidence-open{width:100%;display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:12px 0;border:0;background:transparent;color:#355444;text-align:left;font-size:13px;font-weight:700}
+.journey-evidence-map-link{background:linear-gradient(90deg,rgba(232,240,231,.72),transparent)}
+@media(max-width:390px){.assessment-evidence-snapshot{grid-template-columns:1fr 1fr}.assessment-evidence-snapshot div:last-child{grid-column:1/-1}.assessment-evidence-hero{padding:18px}.assessment-evidence-hero h1{font-size:26px}.assessment-evidence-summary{grid-template-columns:38px minmax(0,1fr) auto;padding-left:13px;padding-right:13px}.assessment-evidence-icon{width:38px;height:38px}.assessment-evidence-track{margin-left:13px;margin-right:13px}.assessment-evidence-next,.assessment-evidence-details>summary,.assessment-evidence-details-body{padding-left:13px;padding-right:13px}}
