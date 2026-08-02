@@ -1,17 +1,17 @@
-# Practice Compass Backup and Restore Protection
+# Toolkit Five Category Simplification
 
-Replace only `app.js` and `style.css` in the current stable Practice Compass repository.
+Replace `app.js` and `style.css` in the current Practice Compass repository.
 
-## What changed
+This sprint changes the Toolkit landing page only.
 
-* Full backup now captures every Practice Compass value stored in the current browser, rather than a limited selection of fields.
-* Backups include a creation date and a summary of reflections, timesheet entries, saved hours and supervision items.
-* A Restore a backup control has been added under Me, then App tools.
-* A selected backup is previewed before restoring.
-* Restore requires a second confirmation and clearly explains that browser data will be replaced rather than merged.
-* The date of the last full backup is shown on the device.
-* Older Practice Compass JSON backups remain importable.
+It keeps five top level areas:
 
-## Protected areas
+1. Practice Areas
+2. Theories & Frameworks
+3. Practice Skills
+4. Culture, Identity & Inclusion
+5. Ethics, Law & Professional Practice
 
-No Home, Assessment, Reflect, Toolkit or Practice Framework layouts were changed. Existing local storage key names remain unchanged.
+The duplicated My Practice category has been removed. Personal values, use of self, professional identity and reflective development remain in Me. Useful research, community and policy lookup topics have been retained within the five Toolkit areas.
+
+No individual Toolkit content, saved data, storage keys, Home, Reflect, Assessments, My Placement, Me or backup functions were changed.

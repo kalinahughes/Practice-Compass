@@ -218,15 +218,91 @@ const methods = [
  {name:"Policy and systems advocacy",examples:["Identifying barriers","Escalating issues","Policy feedback","System reform"]}
 ];
 
-const toolkitCategories = [["🏥", "Practice Areas", "Evidence informed introductions to major areas of Australian social work practice.", [
-  ["Domestic and Family Violence", "Prevalence, coercive control, social work responses and verified Australian sources."],
-  ["Mental Health", "Recovery, rights, social determinants and multidisciplinary practice."],
-  ["Alcohol and Other Drugs", "Harm reduction, stigma, risk and person centred support."],
-  ["Homelessness and Housing", "Housing insecurity, structural barriers, safety and advocacy."],
-  ["Child and Family Practice", "Safety, development, participation and family systems."],
-  ["Family and Carer Inclusive Practice", "Consent, collaboration, chosen family, carer needs and recovery planning."],
-  ["Sexual Violence", "Trauma and violence informed, survivor centred responses."]
-]], ["🧠", "Theories & Frameworks", "Different lenses for understanding people, relationships, systems and change.", [["Recovery Oriented Practice", "Hope, choice, meaning and a life beyond symptoms."], ["CHIME", "Connectedness, Hope, Identity, Meaning and Empowerment."], ["Strengths Based Practice", "Start with capacity, resources and possibility."], ["Systems & Ecological Theory", "Understand the person within interacting environments."], ["Narrative Practice", "Separate the person from the problem."], ["Feminist Social Work", "Examine gender, power and structural inequality."], ["Anti Oppressive Practice", "Notice and challenge power, privilege and oppression."], ["Intersectionality", "Explore overlapping identities and structures."], ["Trauma Informed Practice", "Prioritise safety, trust, choice and collaboration."], ["Person Centred Practice", "Keep the person’s goals, preferences and lived experience central."], ["Motivational Interviewing", "Explore ambivalence and strengthen the person’s own reasons for change."], ["Attachment Theory", "Consider how safety and connection shape relationships."]]], ["🛠️", "Practice Skills", "Practical methods you may observe, practise or discuss in supervision.", [["Engagement & Rapport", "Build trust through warmth, clarity and respectful pacing."], ["Active Listening", "Use reflection, summarising, silence and clarification."], ["Assessment", "Explore needs, strengths, goals, risks and context."], ["Risk & Safety Planning", "Work collaboratively around risk and protective factors."], ["Suicide Risk Assessment", "Explore suicidal distress, immediate safety, supports and next steps within scope."], ["Safety Planning", "Develop practical, collaborative steps for periods of increased distress or risk."], ["Advocacy", "Address barriers, rights and access to services."], ["Case Management", "Coordinate planning, services, referrals and review."], ["Group Facilitation", "Support participation, purpose and group safety."], ["Documentation", "Record clearly, objectively and ethically."]]], ["🪞", "Use of Self", "Understand how your values, emotions, communication and identity shape practice.", [["Self Awareness", "Notice your emotions, assumptions and responses."], ["Boundaries", "Balance warmth, care and professional responsibility."], ["Values", "Reflect on what matters to you and how it affects decisions."], ["Bias & Assumptions", "Notice what you may be taking for granted."], ["Professional Identity", "Explore the social worker you are becoming."], ["Emotional Regulation", "Stay grounded in complex interactions."], ["Reflective Practice", "Consider what happened, why it mattered and what comes next."]]], ["🌏", "Cultural Capability & Inclusion", "Support culturally safe, inclusive, anti racist and responsive practice.", [["Aboriginal & Torres Strait Islander Practice", "Centre self determination, Country, kinship and community."], ["Cultural Humility", "Stay curious, reflective and accountable."], ["Cultural Safety", "Consider whether practice is experienced as safe by the person."], ["Decolonising Practice", "Question colonial assumptions and systems."], ["CALD Practice", "Respond to language, migration, culture and settlement experiences."], ["Working with Interpreters", "Use qualified interpreters respectfully and effectively."], ["Refugee & Asylum Seeker Practice", "Consider trauma, displacement, legal status and settlement."], ["LGBTQIA+ Affirmative Practice", "Support identity, dignity and self determination."], ["Disability Inclusive Practice", "Remove barriers and support participation."], ["Neurodiversity Affirming Practice", "Respect neurological difference and communication needs."], ["Intersectionality", "Understand how identities and structures overlap."], ["Anti Racist Practice", "Identify and challenge racism in systems and practice."]]], ["⚖️", "Ethics & Professional Practice", "Connect daily practice with social work values, ethics and standards.", [["AASW Code of Ethics", "Respect, social justice and professional integrity."], ["Professional Boundaries", "Maintain safe and purposeful relationships."], ["Confidentiality", "Protect privacy while understanding limits."], ["Informed Consent", "Support genuine understanding and choice."], ["Supported Decision Making", "Provide the support a person needs to understand, consider and communicate decisions."], ["Ethical Decision Making", "Work through competing values and responsibilities."], ["Supervision", "Use reflection, feedback and accountability to grow."], ["Professional Sustainability", "Recognise stress and the need for support."]]], ["📖", "Legislation & Policy", "Organise laws, policies and guidance relevant to placement.", [["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."], ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."], ["Privacy & Confidentiality", "Information handling, consent and disclosure."], ["Guardianship & Decision Making", "Capacity and supported decision making."], ["AASW Practice Standards", "Professional expectations across social work practice."], ["Organisation Policies", "Mind Australia procedures and local guidance."]]], ["👥", "Working with Different Populations", "Prompts for inclusive and responsive practice.", [["Adults experiencing mental ill health", "Recovery, dignity, autonomy and social context."], ["Children & Young People", "Development, safety, participation and family context."], ["Older People", "Ageing, autonomy, care, loss and connection."], ["People with Disability", "Access, rights, communication and inclusion."], ["People experiencing homelessness", "Housing, safety and structural barriers."], ["People who use alcohol and other drugs", "Harm reduction, stigma and choice."], ["Rural & Remote Communities", "Distance, access, privacy and relationships."], ["Justice Involved People", "Rights, stigma and reintegration."]]], ["💬", "Communication", "Communication that supports dignity, clarity, safety and participation.", [["Difficult Conversations", "Stay clear, respectful and grounded."], ["Trauma Informed Communication", "Support safety, choice and control."], ["De escalation", "Reduce intensity while maintaining dignity and safety."], ["Strengths Based Language", "Describe people with respect and possibility."], ["Working with Interpreters", "Speak to the person, not the interpreter."], ["Email & Phone Communication", "Be clear, professional and purposeful."], ["Documentation Language", "Use objective, respectful and relevant wording."]]], ["📝", "Documentation", "Support clear, ethical and useful information recording.", [["Case Notes", "Relevant, factual and timely records."], ["Assessment Writing", "Bring together needs, strengths, risk and context."], ["Reflective Notes", "Capture learning without identifying details."], ["Professional Emails", "Clear purpose, tone and concise information."], ["Reports", "Structured, evidence informed and audience aware writing."]]], ["🔬", "Research & Evidence", "Use evidence to strengthen practice and reflection.", [["Evidence Informed Practice", "Combine research, expertise and lived experience."], ["Finding Quality Sources", "Use peer reviewed and authoritative material."], ["Critical Appraisal", "Consider strengths, limits and relevance."], ["Reflective Inquiry", "Turn practice questions into learning."], ["Small Project Skills", "Plan, gather information, analyse and report."], ["APA 7 Referencing", "Credit sources accurately."]]], ["🤝", "Community Development", "Think beyond individual work toward participation and collective change.", [["Participation", "Support people to influence decisions."], ["Capacity Building", "Strengthen skills, resources and confidence."], ["Social Capital", "Build connection, trust and mutual support."], ["Community Led Practice", "Start with local knowledge and priorities."], ["Collective Advocacy", "Work together to challenge barriers."]]], ["🏛️", "Social Policy", "Understand how policy shapes services and people’s lives.", [["Policy Analysis", "Examine goals, assumptions, impacts and gaps."], ["Structural Inequality", "Connect experiences to wider systems."], ["Service Systems", "Understand funding, eligibility and responses."], ["Advocacy", "Use evidence and lived experience to influence change."], ["Implementation", "Explore how policy becomes everyday practice."]]]];
+const toolkitCategories = [
+  ["🏥", "Practice Areas", "Major fields and systems of Australian social work practice.", [
+    ["Mental Health", "Recovery, rights, relationships and social context."],
+    ["Domestic & Family Violence", "Safety, coercive control, trauma and access to support."],
+    ["Children, Young People & Families", "Development, safety, participation and family context."],
+    ["Housing & Homelessness", "Housing, safety and structural barriers."],
+    ["Alcohol & Other Drugs", "Harm reduction, stigma, choice and recovery."],
+    ["Disability", "Access, rights, communication and inclusion."],
+    ["Older People", "Ageing, autonomy, care, loss and connection."],
+    ["Justice", "Rights, stigma, reintegration and systems involvement."],
+    ["Rural & Remote Practice", "Distance, access, privacy and relationships."],
+    ["Community Practice", "Participation, capacity building and collective action."],
+    ["Social Policy & Systems", "How policy, funding and service systems shape people’s lives."]
+  ]],
+  ["🧠", "Theories & Frameworks", "Lenses for understanding people, relationships, systems and change.", [
+    ["Recovery Oriented Practice", "Hope, choice, meaning and a life beyond symptoms."],
+    ["CHIME", "Connectedness, Hope, Identity, Meaning and Empowerment."],
+    ["Strengths Based Practice", "Start with capacity, resources and possibility."],
+    ["Systems & Ecological Theory", "Understand the person within interacting environments."],
+    ["Narrative Practice", "Separate the person from the problem."],
+    ["Feminist Social Work", "Examine gender, power and structural inequality."],
+    ["Anti Oppressive Practice", "Notice and challenge power, privilege and oppression."],
+    ["Trauma Informed Practice", "Prioritise safety, trust, choice and collaboration."],
+    ["Person Centred Practice", "Keep the person’s goals, preferences and lived experience central."],
+    ["Motivational Interviewing", "Explore ambivalence and strengthen the person’s own reasons for change."],
+    ["Attachment Theory", "Consider how safety and connection shape relationships."]
+  ]],
+  ["🛠️", "Practice Skills", "Practical methods for direct work, collaboration, recording and evidence use.", [
+    ["Engagement & Rapport", "Build trust through warmth, clarity and respectful pacing."],
+    ["Active Listening", "Use reflection, summarising, silence and clarification."],
+    ["Assessment", "Explore needs, strengths, goals, risks and context."],
+    ["Risk & Safety Planning", "Work collaboratively around risk and protective factors."],
+    ["Suicide Risk Assessment", "Explore suicidal distress, immediate safety, supports and next steps within scope."],
+    ["Safety Planning", "Develop practical, collaborative steps for periods of increased distress or risk."],
+    ["Advocacy", "Address barriers, rights and access to services."],
+    ["Case Management", "Coordinate planning, services, referrals and review."],
+    ["Group Facilitation", "Support participation, purpose and group safety."],
+    ["Difficult Conversations", "Stay clear, respectful and grounded."],
+    ["Trauma Informed Communication", "Support safety, choice and control."],
+    ["De escalation", "Reduce intensity while maintaining dignity and safety."],
+    ["Strengths Based Language", "Describe people with respect and possibility."],
+    ["Working with Interpreters", "Speak to the person, not the interpreter."],
+    ["Email & Phone Communication", "Be clear, professional and purposeful."],
+    ["Documentation", "Record clearly, objectively and ethically."],
+    ["Case Notes", "Relevant, factual and timely records."],
+    ["Assessment Writing", "Bring together needs, strengths, risk and context."],
+    ["Reports", "Structured, evidence informed and audience aware writing."],
+    ["Evidence Informed Practice", "Combine research, professional knowledge and lived experience."],
+    ["Finding Quality Sources", "Use peer reviewed and authoritative material."],
+    ["Critical Appraisal", "Consider strengths, limitations and relevance."],
+    ["Small Project Skills", "Plan, gather information, analyse and report."],
+    ["APA 7 Referencing", "Credit sources accurately and consistently."]
+  ]],
+  ["🌏", "Culture, Identity & Inclusion", "Culturally safe, inclusive, anti racist and responsive practice.", [
+    ["Aboriginal & Torres Strait Islander Practice", "Centre self determination, Country, kinship and community."],
+    ["Cultural Humility", "Stay curious, reflective and accountable."],
+    ["Cultural Safety", "Consider whether practice is experienced as safe by the person."],
+    ["Decolonising Practice", "Question colonial assumptions and systems."],
+    ["CALD Practice", "Respond to language, migration, culture and settlement experiences."],
+    ["Refugee & Asylum Seeker Practice", "Consider trauma, displacement, legal status and settlement."],
+    ["LGBTQIA+ Affirmative Practice", "Support identity, dignity and self determination."],
+    ["Disability Inclusive Practice", "Remove barriers and support participation."],
+    ["Neurodiversity Affirming Practice", "Respect neurological difference and communication needs."],
+    ["Intersectionality", "Understand how identities and structures overlap."],
+    ["Anti Racist Practice", "Identify and challenge racism in systems and practice."]
+  ]],
+  ["⚖️", "Ethics, Law & Professional Practice", "Values, standards, rights, policy and professional responsibilities.", [
+    ["AASW Code of Ethics", "Respect, social justice and professional integrity."],
+    ["AASW Practice Standards", "Professional expectations across social work practice."],
+    ["Professional Boundaries", "Maintain safe and purposeful relationships."],
+    ["Confidentiality", "Protect privacy while understanding limits."],
+    ["Informed Consent", "Support genuine understanding and choice."],
+    ["Supported Decision Making", "Provide support to understand, consider and communicate decisions."],
+    ["Ethical Decision Making", "Work through competing values and responsibilities."],
+    ["Supervision", "Use reflection, feedback and accountability to grow."],
+    ["Professional Sustainability", "Recognise stress and the need for support."],
+    ["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."],
+    ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."],
+    ["Privacy & Confidentiality", "Information handling, consent and disclosure."],
+    ["Guardianship & Decision Making", "Capacity and supported decision making."],
+    ["Policy Analysis", "Examine policy goals, assumptions, impacts and gaps."],
+    ["Service Systems", "Understand funding, eligibility and service responses."],
+    ["Organisation Policies", "Local procedures and guidance relevant to placement."]
+  ]]
+];
 
 
 // Stage 1 Toolkit content: Mental Health and Professional Practice.
@@ -1471,7 +1547,7 @@ function learnPage(){
         <section class="toolkit-folder" data-search="${(category[1]+' '+category[2]+' '+category[3].map(x=>x.join(' ')).join(' ')).toLowerCase()}">
           <button class="folder-header" data-folder="${index}">
             <div class="folder-icon">${category[0]}</div>
-            <div class="folder-text"><div class="folder-title">${category[1]}</div><div class="folder-subtitle">${category[2]}</div></div>
+            <div class="folder-text"><div class="folder-title-row"><div class="folder-title">${category[1]}</div><span class="folder-count">${category[3].length} topics</span></div><div class="folder-subtitle">${category[2]}</div></div>
             <div class="folder-arrow">⌄</div>
           </button>
           <div class="folder-content hidden" id="folder-${index}">
