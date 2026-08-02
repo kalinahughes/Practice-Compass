@@ -1,17 +1,9 @@
-# Toolkit Five Category Simplification
+# Toolkit Topic Cleanup and Visual Hierarchy Sprint
 
 Replace `app.js` and `style.css` in the current Practice Compass repository.
 
-This sprint changes the Toolkit landing page only.
+This sprint changes Toolkit topic pages only.
 
-It keeps five top level areas:
+It removes the repeated generic placeholder sections and replaces them with an honest topic in development message where detailed content has not yet been written. Existing developed and verified topic content is preserved, but displayed with clearer hierarchy using a strong topic header, white definition areas, sage practice sections, compact key takeaways and quiet collapsed references.
 
-1. Practice Areas
-2. Theories & Frameworks
-3. Practice Skills
-4. Culture, Identity & Inclusion
-5. Ethics, Law & Professional Practice
-
-The duplicated My Practice category has been removed. Personal values, use of self, professional identity and reflective development remain in Me. Useful research, community and policy lookup topics have been retained within the five Toolkit areas.
-
-No individual Toolkit content, saved data, storage keys, Home, Reflect, Assessments, My Placement, Me or backup functions were changed.
+No Toolkit categories, search behaviour, saved data, storage keys, Home, Reflect, Assessments, Me, timesheets or backup functions were changed.

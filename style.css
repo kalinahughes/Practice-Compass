@@ -4152,3 +4152,230 @@ body:has(#toolkitList) .site-footer{padding-top:16px;padding-bottom:calc(86px + 
   .folder-title{font-size:16px}
   .folder-count{font-size:10px;padding:3px 7px}
 }
+
+/* Toolkit topic cleanup and visual hierarchy */
+.toolkit-topic-page{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding-bottom:24px;
+}
+.toolkit-topic-hero{
+  position:relative;
+  display:grid;
+  grid-template-columns:40px minmax(0,1fr);
+  gap:13px;
+  align-items:start;
+  padding:22px 20px 24px;
+  border-radius:24px;
+  background:linear-gradient(145deg,#365f65,#456f70);
+  color:#fff;
+  box-shadow:0 12px 30px rgba(42,72,72,.13);
+  overflow:hidden;
+}
+.toolkit-topic-hero::after{
+  content:"";
+  position:absolute;
+  width:120px;
+  height:120px;
+  right:-48px;
+  top:-50px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+}
+.toolkit-topic-back{
+  position:relative;
+  z-index:1;
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:12px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-size:25px;
+  line-height:1;
+}
+.toolkit-topic-hero .eyebrow{
+  margin:1px 0 5px;
+  color:rgba(255,255,255,.72);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.toolkit-topic-hero h1{
+  margin:0;
+  color:#fff;
+  font-size:clamp(26px,7vw,34px);
+  line-height:1.08;
+  letter-spacing:-.025em;
+}
+.toolkit-topic-hero p{
+  max-width:680px;
+  margin:10px 0 0;
+  color:rgba(255,255,255,.88);
+  font-size:14px;
+  line-height:1.58;
+}
+.toolkit-topic-page .source-review{
+  align-self:flex-start;
+  margin:-5px 4px 0;
+}
+.toolkit-topic-section{
+  margin:0;
+  padding:22px;
+  border:1px solid #dfe7e4;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(46,71,67,.045);
+}
+.toolkit-section-kicker{
+  margin-bottom:6px;
+  color:#3d777d;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.075em;
+  text-transform:uppercase;
+}
+.toolkit-topic-section h2{
+  margin:0 0 11px;
+  color:#2f4645;
+  font-size:20px;
+  line-height:1.25;
+  letter-spacing:-.012em;
+}
+.toolkit-topic-section>p{
+  margin:0;
+  color:#525b57;
+  font-size:14px;
+  line-height:1.68;
+}
+.toolkit-practice-section{
+  border-color:#d5e3dc;
+  background:#edf5ef;
+}
+.toolkit-practice-section .toolkit-section-kicker{color:#51715d}
+.toolkit-takeaway-section{
+  border-left:4px solid #2f8792;
+  background:#f7faf9;
+  box-shadow:none;
+}
+.toolkit-data-section{
+  background:#f8faf9;
+}
+.toolkit-practice-list{
+  display:grid;
+  gap:11px;
+}
+.toolkit-practice-item{
+  display:grid;
+  grid-template-columns:14px minmax(0,1fr);
+  gap:8px;
+  align-items:start;
+}
+.toolkit-practice-item>span{
+  color:#2f8792;
+  font-weight:900;
+  line-height:1.55;
+}
+.toolkit-practice-item p{
+  margin:0;
+  color:#4f5954;
+  font-size:14px;
+  line-height:1.6;
+}
+.toolkit-clean-list,
+.toolkit-reference-list{
+  margin:0;
+  padding-left:20px;
+  color:#4f5954;
+}
+.toolkit-clean-list li,
+.toolkit-reference-list li{
+  margin:0 0 10px;
+  padding-left:3px;
+  font-size:14px;
+  line-height:1.58;
+}
+.toolkit-clean-list li:last-child,
+.toolkit-reference-list li:last-child{margin-bottom:0}
+.toolkit-pill-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.toolkit-pill-list .pill{
+  margin:0;
+  background:#e3eeea;
+  color:#3d5f54;
+  border:0;
+}
+.toolkit-secondary-details{
+  overflow:hidden;
+  border:1px solid #dfe7e4;
+  border-radius:18px;
+  background:#fff;
+}
+.toolkit-secondary-details summary{
+  position:relative;
+  padding:16px 46px 16px 18px;
+  list-style:none;
+  cursor:pointer;
+  color:#3b514f;
+  font-size:14px;
+  font-weight:780;
+}
+.toolkit-secondary-details summary::-webkit-details-marker{display:none}
+.toolkit-secondary-details summary::after{
+  content:"+";
+  position:absolute;
+  right:17px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#2f8792;
+  font-size:21px;
+  font-weight:500;
+}
+.toolkit-secondary-details[open] summary::after{content:"−"}
+.toolkit-secondary-details[open] summary{border-bottom:1px solid #e5ebe8}
+.toolkit-details-body{padding:17px 18px 19px}
+.toolkit-details-body .linked-resource-list{margin:0}
+.toolkit-details-body .linked-resource:first-child{padding-top:0}
+.toolkit-details-body .linked-resource:last-child{padding-bottom:0}
+.toolkit-scope-note{
+  margin:2px 4px 0;
+  color:#777f7a;
+  font-size:12px;
+  line-height:1.5;
+}
+.toolkit-return{align-self:flex-start;margin:0}
+.toolkit-development-note{
+  border-style:dashed;
+  border-color:#cfdeda;
+  background:#f5f9f7;
+  box-shadow:none;
+}
+.toolkit-topic-placeholder .toolkit-topic-hero{background:linear-gradient(145deg,#476c6c,#5f7f78)}
+.toolkit-topic-page .stats-list{margin-top:15px}
+.toolkit-topic-page .stat-fact{
+  padding:15px 16px;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:none;
+}
+.toolkit-topic-page .stat-fact strong{color:#315d61}
+.toolkit-topic-page .data-note{display:block;margin:13px 2px 0;line-height:1.5}
+.toolkit-topic-page .source-list{margin-bottom:0}
+
+@media(max-width:520px){
+  .toolkit-topic-page{gap:13px}
+  .toolkit-topic-hero{grid-template-columns:36px minmax(0,1fr);padding:19px 17px 21px;border-radius:21px}
+  .toolkit-topic-back{width:33px;height:33px;border-radius:11px}
+  .toolkit-topic-hero h1{font-size:27px}
+  .toolkit-topic-hero p{font-size:13.5px}
+  .toolkit-topic-section{padding:18px;border-radius:19px}
+  .toolkit-topic-section h2{font-size:18px}
+  .toolkit-secondary-details{border-radius:16px}
+  .toolkit-return{width:100%}
+}

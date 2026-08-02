@@ -538,64 +538,71 @@ function verifiedKnowledgePage(topic,category){
   if(!data) return false;
 
   document.getElementById("main").innerHTML=`
-    <div class="screen-title">
-      <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
-      <h2>${category[0]} ${topic[0]}</h2>
-    </div>
+    <article class="toolkit-topic-page toolkit-topic-verified">
+      <header class="toolkit-topic-hero">
+        <button class="back toolkit-topic-back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+        <div>
+          <div class="eyebrow">${category[1]}</div>
+          <h1>${topic[0]}</h1>
+          <p>${data.overview}</p>
+        </div>
+      </header>
 
-    <div class="source-review">Verified sources · Reviewed ${data.reviewed}</div>
+      <div class="source-review">Verified sources · Reviewed ${data.reviewed}</div>
 
-    <div class="card green">
-      <div class="label">Overview</div>
-      <div class="big">${data.overview}</div>
-    </div>
+      <section class="toolkit-topic-section toolkit-definition-section">
+        <div class="toolkit-section-kicker">What it is</div>
+        <h2>Understanding the practice context</h2>
+        <p>${data.why}</p>
+      </section>
 
-    <details class="card toolkit-info" open>
-      <summary><strong>🌿 Why does it matter in social work?</strong></summary>
-      <p>${data.why}</p>
-    </details>
+      <section class="toolkit-topic-section toolkit-data-section">
+        <div class="toolkit-section-kicker">Australian and Queensland context</div>
+        <h2>What the available data shows</h2>
+        <div class="stats-list">
+          ${data.statistics.map(stat=>`
+            <div class="stat-fact">
+              <strong>${stat[0]}</strong>
+              <p>${stat[1]}</p>
+              <span>${stat[2]}</span>
+            </div>`).join("")}
+        </div>
+        <p class="data-note">Statistics describe recorded survey or administrative data and do not capture every experience. Definitions and populations differ between sources.</p>
+      </section>
 
-    <details class="card toolkit-info" open>
-      <summary><strong>📊 Australian and Queensland data</strong></summary>
-      <div class="stats-list">
-        ${data.statistics.map(stat=>`
-          <div class="stat-fact">
-            <strong>${stat[0]}</strong>
-            <p>${stat[1]}</p>
-            <span>${stat[2]}</span>
-          </div>`).join("")}
-      </div>
-      <p class="data-note">Statistics describe recorded survey or administrative data and do not capture every experience. Definitions and populations differ between sources.</p>
-    </details>
+      <section class="toolkit-topic-section toolkit-practice-section">
+        <div class="toolkit-section-kicker">In practice</div>
+        <h2>Practice considerations</h2>
+        <div class="toolkit-practice-list">${data.practice.map(item=>`<div class="toolkit-practice-item"><span aria-hidden="true">•</span><p>${item}</p></div>`).join("")}</div>
+      </section>
 
-    <details class="card toolkit-info">
-      <summary><strong>💬 Practice considerations</strong></summary>
-      ${data.practice.map(item=>`<div class="row"><span>•</span><span>${item}</span></div>`).join("")}
-    </details>
+      <section class="toolkit-topic-section toolkit-takeaway-section">
+        <div class="toolkit-section-kicker">Key things to remember</div>
+        <div class="toolkit-pill-list">${data.lenses.map(item=>`<span class="pill">${item}</span>`).join("")}</div>
+      </section>
 
-    <details class="card toolkit-info">
-      <summary><strong>🧠 Relevant practice lenses</strong></summary>
-      ${data.lenses.map(item=>`<span class="pill">${item}</span>`).join("")}
-    </details>
+      <details class="toolkit-secondary-details">
+        <summary>Reflective prompts</summary>
+        <div class="toolkit-details-body">${data.prompts.map(item=>`<div class="toolkit-practice-item"><span aria-hidden="true">•</span><p>${item}</p></div>`).join("")}</div>
+      </details>
 
-    <details class="card toolkit-info">
-      <summary><strong>🪞 Reflective prompts</strong></summary>
-      ${data.prompts.map(item=>`<div class="row"><span>○</span><span>${item}</span></div>`).join("")}
-    </details>
+      <details class="toolkit-secondary-details">
+        <summary>References and original sources</summary>
+        <div class="toolkit-details-body">
+          <p class="muted">Open the original publication before using a statistic in university work.</p>
+          <div class="source-list">
+            ${data.sources.map(source=>`
+              <a class="source-link" href="${source.url}" target="_blank" rel="noopener noreferrer external">
+                <span class="source-type">${source.type}</span>
+                <strong>${source.title}</strong>
+                <small>${source.organisation}</small><span class="open-source-label">Open original source ↗</span>
+              </a>`).join("")}
+          </div>
+        </div>
+      </details>
 
-    <div class="card">
-      <div class="label">📚 Original sources</div>
-      <p class="muted">Open the original publication before using a statistic in university work.</p>
-      <div class="source-list">
-        ${data.sources.map(source=>`
-          <a class="source-link" href="${source.url}" target="_blank" rel="noopener noreferrer external">
-            <span class="source-type">${source.type}</span>
-            <strong>${source.title}</strong>
-            <small>${source.organisation}</small><span class="open-source-label">Open original source ↗</span>
-          </a>`).join("")}
-      </div>
-      <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
-    </div>`;
+      <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
+    </article>`;
 
   const goBack=()=>{route="learn";render()};
   document.getElementById("backToolkit").onclick=goBack;
@@ -1564,40 +1571,40 @@ function toolkitDetail(categoryIndex,topicIndex){
 
   if(guide){
     document.getElementById("main").innerHTML=`
-      <div class="screen-title">
-        <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
-        <h2>${category[0]} ${topic[0]}</h2>
-      </div>
+      <article class="toolkit-topic-page">
+        <header class="toolkit-topic-hero">
+          <button class="back toolkit-topic-back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+          <div>
+            <div class="eyebrow">${category[1]}</div>
+            <h1>${topic[0]}</h1>
+            <p>${guide.what}</p>
+          </div>
+        </header>
 
-      <div class="card green">
-        <div class="label">🌿 What is this?</div>
-        <p>${guide.what}</p>
-      </div>
+        <section class="toolkit-topic-section toolkit-practice-section">
+          <div class="toolkit-section-kicker">In practice</div>
+          <h2>What it can look like</h2>
+          <ul class="toolkit-clean-list">${guide.practice.map(item=>`<li>${item}</li>`).join("")}</ul>
+        </section>
 
-      <details class="card toolkit-info" open>
-        <summary><strong>💼 What does this look like in practice?</strong></summary>
-        <ul>${guide.practice.map(item=>`<li>${item}</li>`).join("")}</ul>
-      </details>
+        <section class="toolkit-topic-section toolkit-takeaway-section">
+          <div class="toolkit-section-kicker">Key things to remember</div>
+          <ul class="toolkit-clean-list">${guide.remember.map(item=>`<li>${item}</li>`).join("")}</ul>
+        </section>
 
-      <details class="card toolkit-info" open>
-        <summary><strong>✅ Remember</strong></summary>
-        <ul>${guide.remember.map(item=>`<li>${item}</li>`).join("")}</ul>
-      </details>
+        ${guide.related&&guide.related.length?`<details class="toolkit-secondary-details">
+          <summary>Related Toolkit topics</summary>
+          <div class="toolkit-details-body"><div class="linked-resource-list">${guide.related.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></div>
+        </details>`:""}
 
-      <details class="card toolkit-info">
-        <summary><strong>🔗 Related Toolkit cards</strong></summary>
-        <div class="linked-resource-list">${guide.related.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div>
-      </details>
+        ${guide.refs&&guide.refs.length?`<details class="toolkit-secondary-details">
+          <summary>References</summary>
+          <div class="toolkit-details-body"><ul class="toolkit-reference-list">${guide.refs.map(ref=>ref[1]?`<li><a href="${ref[1]}" target="_blank" rel="noopener noreferrer">${ref[0]}</a></li>`:`<li>${ref[0]}</li>`).join("")}</ul></div>
+        </details>`:""}
 
-      <details class="card toolkit-info">
-        <summary><strong>📚 References</strong></summary>
-        <ul>${guide.refs.map(ref=>ref[1]?`<li><a href="${ref[1]}" target="_blank" rel="noopener noreferrer">${ref[0]}</a></li>`:`<li>${ref[0]}</li>`).join("")}</ul>
-      </details>
-
-      <div class="card">
-        <p class="muted">Practice Compass is a quick practice guide for placement learning. Follow current legislation, organisational policy, supervision and official guidance.</p>
-        <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
-      </div>`;
+        <p class="toolkit-scope-note">Practice Compass is a quick practice guide for placement learning. Follow current legislation, organisational policy, supervision and official guidance.</p>
+        <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
+      </article>`;
 
     const goBack=()=>{route="learn";render()};
     document.getElementById("backToolkit").onclick=goBack;
@@ -1609,42 +1616,24 @@ function toolkitDetail(categoryIndex,topicIndex){
   }
 
   document.getElementById("main").innerHTML=`
-    <div class="screen-title">
-      <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
-      <h2>${category[0]} ${topic[0]}</h2>
-    </div>
+    <article class="toolkit-topic-page toolkit-topic-placeholder">
+      <header class="toolkit-topic-hero">
+        <button class="back toolkit-topic-back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+        <div>
+          <div class="eyebrow">${category[1]}</div>
+          <h1>${topic[0]}</h1>
+          <p>${topic[1]}</p>
+        </div>
+      </header>
 
-    <div class="card green">
-      <div class="label">What is it?</div>
-      <div class="big">${topic[1]}</div>
-    </div>
+      <section class="toolkit-topic-section toolkit-development-note">
+        <div class="toolkit-section-kicker">Topic guide in development</div>
+        <h2>Detailed guidance has not been added yet</h2>
+        <p>This card is kept in the Toolkit so the topic remains easy to find. Practice examples, key points and verified references will only appear once meaningful content has been added.</p>
+      </section>
 
-    <details class="card toolkit-info" open>
-      <summary><strong>🌿 Why does it matter?</strong></summary>
-      <p>This topic can help you understand practice more clearly, notice context, power and relationships, and make more intentional decisions.</p>
-    </details>
-
-    <details class="card toolkit-info">
-      <summary><strong>👀 What might it look like in practice?</strong></summary>
-      <p>Think about one conversation, decision, interaction, policy or service process where this idea may have been visible.</p>
-    </details>
-
-    <details class="card toolkit-info">
-      <summary><strong>💭 Practice prompt</strong></summary>
-      <p>Where did you notice ${topic[0].toLowerCase()} in practice today?</p>
-      <div class="why"><strong>Why am I being asked this?</strong><br>Recognising a concept in practice makes it easier to remember and gives you material for reflection, supervision and assessment.</div>
-    </details>
-
-    <details class="card toolkit-info">
-      <summary><strong>🎓 How could this support placement?</strong></summary>
-      <p>This may help you identify learning goals, prepare supervision questions, strengthen reflective evidence and connect daily experiences with your JCU requirements.</p>
-    </details>
-
-    <div class="card">
-      <div class="label">📚 Sources and further reading</div>
-      <p class="muted">Only verified references and official links will be added here. Practice Compass will not present unverified information as fact.</p>
-      <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
-    </div>`;
+      <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
+    </article>`;
 
   const goBack=()=>{route="learn";render()};
   document.getElementById("backToolkit").onclick=goBack;
