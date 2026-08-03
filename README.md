@@ -1,22 +1,21 @@
-# Toolkit Content Expansion: Practice Areas
+# Practice Compass: Theory and Framework Mapping Sprint
 
-Replace `app.js` in the current Practice Compass repository.
+Replace only `app.js` in the current Practice Compass project.
 
-This sprint expands the Practice Areas section of the Toolkit with meaningful Australian and Queensland relevant guidance for:
+## What changed
 
-• Domestic and family violence
-• Children, young people and families
-• Housing and homelessness
-• Alcohol and other drugs
-• Disability
-• Older people
-• Justice
-• Rural and remote practice
-• Community practice
-• Social policy and systems
+The full theory and approach list has been mapped into the Toolkit categories before content expansion.
 
-Mental Health remains unchanged as the established benchmark.
+### Theories and Frameworks
+Now includes the broader conceptual lenses, including critical social work, empowerment theory, psychosocial development, social learning theory, cognitive behavioural theory, social determinants of health, rights based practice and ethics of care.
 
-Each topic now follows the approved hierarchy: a clear definition, practical examples, key things to remember, related topics and collapsed references. Generic filler and repeated placement prompts have not been added.
+### Practice Skills
+Practice methods have been moved here, including motivational interviewing, solution focused practice, task centred practice, crisis intervention, harm reduction, psychosocial rehabilitation and group work theory.
 
-No Toolkit categories, visual hierarchy, search behaviour, Home, Reflect, Assessments, Me, saved data or storage keys were changed.
+### Culture, Identity and Inclusion
+Cultural humility, culturally responsive practice, cultural safety, decolonising practice and intersectionality remain together.
+
+### Ethics, Law and Professional Practice
+Reflective practice sits with supervision, ethics and professional accountability.
+
+No topic content was deleted. Existing developed Practice Areas content, search, categories, saved data and all non Toolkit pages remain unchanged.
