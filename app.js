@@ -218,107 +218,15 @@ const methods = [
  {name:"Policy and systems advocacy",examples:["Identifying barriers","Escalating issues","Policy feedback","System reform"]}
 ];
 
-const toolkitCategories = [
-  ["🏥", "Practice Areas", "Major fields and systems of Australian social work practice.", [
-    ["Mental Health", "Recovery, rights, relationships and social context."],
-    ["Domestic & Family Violence", "Safety, coercive control, trauma and access to support."],
-    ["Children, Young People & Families", "Development, safety, participation and family context."],
-    ["Housing & Homelessness", "Housing, safety and structural barriers."],
-    ["Alcohol & Other Drugs", "Harm reduction, stigma, choice and recovery."],
-    ["Disability", "Access, rights, communication and inclusion."],
-    ["Older People", "Ageing, autonomy, care, loss and connection."],
-    ["Justice", "Rights, stigma, reintegration and systems involvement."],
-    ["Rural & Remote Practice", "Distance, access, privacy and relationships."],
-    ["Community Practice", "Participation, capacity building and collective action."],
-    ["Social Policy & Systems", "How policy, funding and service systems shape people’s lives."]
-  ]],
-  ["🧠", "Theories & Frameworks", "Lenses for understanding people, relationships, systems and change.", [
-    ["Recovery Oriented Practice", "Hope, choice, meaning and a life beyond symptoms."],
-    ["CHIME", "Connectedness, Hope, Identity, Meaning and Empowerment."],
-    ["Strengths Based Practice", "Start with capacity, resources and possibility."],
-    ["Systems & Ecological Theory", "Understand the person within interacting environments."],
-    ["Narrative Practice", "Separate the person from the problem and make space for preferred stories."],
-    ["Feminist Social Work", "Examine gender, power and structural inequality."],
-    ["Anti Oppressive Practice", "Notice and challenge power, privilege and oppression."],
-    ["Critical Social Work", "Connect personal experiences with structural power and social conditions."],
-    ["Empowerment Theory", "Support participation, access to resources and greater control over decisions."],
-    ["Trauma Informed Practice", "Prioritise safety, trust, choice and collaboration."],
-    ["Person Centred Practice", "Keep the person’s goals, preferences and lived experience central."],
-    ["Attachment Theory", "Consider how safety and connection shape relationships."],
-    ["Psychosocial Development", "Consider development across life stages and social contexts."],
-    ["Social Learning Theory", "Explore how behaviour can be learned through observation, reinforcement and relationships."],
-    ["Cognitive Behavioural Theory", "Consider connections between thoughts, emotions and behaviour."],
-    ["Social Determinants of Health", "Understand how social and economic conditions shape health and wellbeing."],
-    ["Rights Based Practice", "Use human rights, participation and accountability to guide practice."],
-    ["Ethics of Care", "Recognise relationships, interdependence and responsibility in ethical practice."]
-  ]],
-  ["🛠️", "Practice Skills", "Practical methods for direct work, collaboration, recording and evidence use.", [
-    ["Engagement & Rapport", "Build trust through warmth, clarity and respectful pacing."],
-    ["Active Listening", "Use reflection, summarising, silence and clarification."],
-    ["Motivational Interviewing", "Explore ambivalence and strengthen the person’s own reasons for change."],
-    ["Solution Focused Practice", "Identify exceptions, preferred futures and achievable next steps."],
-    ["Task Centred Practice", "Work collaboratively on specific priorities within an agreed timeframe."],
-    ["Assessment", "Explore needs, strengths, goals, risks and context."],
-    ["Risk & Safety Planning", "Work collaboratively around risk and protective factors."],
-    ["Suicide Risk Assessment", "Explore suicidal distress, immediate safety, supports and next steps within scope."],
-    ["Safety Planning", "Develop practical, collaborative steps for periods of increased distress or risk."],
-    ["Advocacy", "Address barriers, rights and access to services."],
-    ["Case Management", "Coordinate planning, services, referrals and review."],
-    ["Group Facilitation", "Support participation, purpose and group safety."],
-    ["Group Work Theory", "Understand group stages, roles, dynamics, cohesion and mutual aid."],
-    ["Difficult Conversations", "Stay clear, respectful and grounded."],
-    ["Trauma Informed Communication", "Support safety, choice and control."],
-    ["De escalation", "Reduce intensity while maintaining dignity and safety."],
-    ["Crisis Intervention", "Support immediate safety, stabilisation and short term planning."],
-    ["Harm Reduction", "Reduce harm through practical, non judgemental and person led strategies."],
-    ["Psychosocial Rehabilitation", "Support skills, participation, connection and valued life roles."],
-    ["Strengths Based Language", "Describe people with respect and possibility."],
-    ["Working with Interpreters", "Speak to the person, not the interpreter."],
-    ["Email & Phone Communication", "Be clear, professional and purposeful."],
-    ["Documentation", "Record clearly, objectively and ethically."],
-    ["Case Notes", "Relevant, factual and timely records."],
-    ["Assessment Writing", "Bring together needs, strengths, risk and context."],
-    ["Reports", "Structured, evidence informed and audience aware writing."],
-    ["Evidence Informed Practice", "Combine research, professional knowledge and lived experience."],
-    ["Finding Quality Sources", "Use peer reviewed and authoritative material."],
-    ["Critical Appraisal", "Consider strengths, limitations and relevance."],
-    ["Small Project Skills", "Plan, gather information, analyse and report."],
-    ["APA 7 Referencing", "Credit sources accurately and consistently."]
-  ]],
-  ["🌏", "Culture, Identity & Inclusion", "Culturally safe, inclusive, anti racist and responsive practice.", [
-    ["Aboriginal & Torres Strait Islander Practice", "Centre self determination, Country, kinship and community."],
-    ["Cultural Humility", "Stay curious, reflective and accountable."],
-    ["Culturally Responsive Practice", "Adapt practice to culture, identity, language and context without stereotyping."],
-    ["Cultural Safety", "Consider whether practice is experienced as safe by the person."],
-    ["Decolonising Practice", "Question colonial assumptions and systems."],
-    ["CALD Practice", "Respond to language, migration, culture and settlement experiences."],
-    ["Refugee & Asylum Seeker Practice", "Consider trauma, displacement, legal status and settlement."],
-    ["LGBTQIA+ Affirmative Practice", "Support identity, dignity and self determination."],
-    ["Disability Inclusive Practice", "Remove barriers and support participation."],
-    ["Neurodiversity Affirming Practice", "Respect neurological difference and communication needs."],
-    ["Intersectionality", "Understand how identities and structures overlap."],
-    ["Anti Racist Practice", "Identify and challenge racism in systems and practice."]
-  ]],
-  ["⚖️", "Ethics, Law & Professional Practice", "Values, standards, rights, policy and professional responsibilities.", [
-    ["AASW Code of Ethics", "Respect, social justice and professional integrity."],
-    ["AASW Practice Standards", "Professional expectations across social work practice."],
-    ["Professional Boundaries", "Maintain safe and purposeful relationships."],
-    ["Confidentiality", "Protect privacy while understanding limits."],
-    ["Informed Consent", "Support genuine understanding and choice."],
-    ["Supported Decision Making", "Provide support to understand, consider and communicate decisions."],
-    ["Ethical Decision Making", "Work through competing values and responsibilities."],
-    ["Reflective Practice", "Examine assumptions, power, emotions and the impact of practice decisions."],
-    ["Supervision", "Use reflection, feedback and accountability to grow."],
-    ["Professional Sustainability", "Recognise stress and the need for support."],
-    ["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."],
-    ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."],
-    ["Privacy & Confidentiality", "Information handling, consent and disclosure."],
-    ["Guardianship & Decision Making", "Capacity and supported decision making."],
-    ["Policy Analysis", "Examine policy goals, assumptions, impacts and gaps."],
-    ["Service Systems", "Understand funding, eligibility and service responses."],
-    ["Organisation Policies", "Local procedures and guidance relevant to placement."]
-  ]]
-];
+const toolkitCategories = [["🏥", "Practice Areas", "Evidence informed introductions to major areas of Australian social work practice.", [
+  ["Domestic and Family Violence", "Prevalence, coercive control, social work responses and verified Australian sources."],
+  ["Mental Health", "Recovery, rights, social determinants and multidisciplinary practice."],
+  ["Alcohol and Other Drugs", "Harm reduction, stigma, risk and person centred support."],
+  ["Homelessness and Housing", "Housing insecurity, structural barriers, safety and advocacy."],
+  ["Child and Family Practice", "Safety, development, participation and family systems."],
+  ["Family and Carer Inclusive Practice", "Consent, collaboration, chosen family, carer needs and recovery planning."],
+  ["Sexual Violence", "Trauma and violence informed, survivor centred responses."]
+]], ["🧠", "Theories & Frameworks", "Different lenses for understanding people, relationships, systems and change.", [["Recovery Oriented Practice", "Hope, choice, meaning and a life beyond symptoms."], ["CHIME", "Connectedness, Hope, Identity, Meaning and Empowerment."], ["Strengths Based Practice", "Start with capacity, resources and possibility."], ["Systems & Ecological Theory", "Understand the person within interacting environments."], ["Narrative Practice", "Separate the person from the problem."], ["Feminist Social Work", "Examine gender, power and structural inequality."], ["Anti Oppressive Practice", "Notice and challenge power, privilege and oppression."], ["Intersectionality", "Explore overlapping identities and structures."], ["Trauma Informed Practice", "Prioritise safety, trust, choice and collaboration."], ["Person Centred Practice", "Keep the person’s goals, preferences and lived experience central."], ["Motivational Interviewing", "Explore ambivalence and strengthen the person’s own reasons for change."], ["Attachment Theory", "Consider how safety and connection shape relationships."]]], ["🛠️", "Practice Skills", "Practical methods you may observe, practise or discuss in supervision.", [["Engagement & Rapport", "Build trust through warmth, clarity and respectful pacing."], ["Active Listening", "Use reflection, summarising, silence and clarification."], ["Assessment", "Explore needs, strengths, goals, risks and context."], ["Risk & Safety Planning", "Work collaboratively around risk and protective factors."], ["Suicide Risk Assessment", "Explore suicidal distress, immediate safety, supports and next steps within scope."], ["Safety Planning", "Develop practical, collaborative steps for periods of increased distress or risk."], ["Advocacy", "Address barriers, rights and access to services."], ["Case Management", "Coordinate planning, services, referrals and review."], ["Group Facilitation", "Support participation, purpose and group safety."], ["Documentation", "Record clearly, objectively and ethically."]]], ["🪞", "Use of Self", "Understand how your values, emotions, communication and identity shape practice.", [["Self Awareness", "Notice your emotions, assumptions and responses."], ["Boundaries", "Balance warmth, care and professional responsibility."], ["Values", "Reflect on what matters to you and how it affects decisions."], ["Bias & Assumptions", "Notice what you may be taking for granted."], ["Professional Identity", "Explore the social worker you are becoming."], ["Emotional Regulation", "Stay grounded in complex interactions."], ["Reflective Practice", "Consider what happened, why it mattered and what comes next."]]], ["🌏", "Cultural Capability & Inclusion", "Support culturally safe, inclusive, anti racist and responsive practice.", [["Aboriginal & Torres Strait Islander Practice", "Centre self determination, Country, kinship and community."], ["Cultural Humility", "Stay curious, reflective and accountable."], ["Cultural Safety", "Consider whether practice is experienced as safe by the person."], ["Decolonising Practice", "Question colonial assumptions and systems."], ["CALD Practice", "Respond to language, migration, culture and settlement experiences."], ["Working with Interpreters", "Use qualified interpreters respectfully and effectively."], ["Refugee & Asylum Seeker Practice", "Consider trauma, displacement, legal status and settlement."], ["LGBTQIA+ Affirmative Practice", "Support identity, dignity and self determination."], ["Disability Inclusive Practice", "Remove barriers and support participation."], ["Neurodiversity Affirming Practice", "Respect neurological difference and communication needs."], ["Intersectionality", "Understand how identities and structures overlap."], ["Anti Racist Practice", "Identify and challenge racism in systems and practice."]]], ["⚖️", "Ethics & Professional Practice", "Connect daily practice with social work values, ethics and standards.", [["AASW Code of Ethics", "Respect, social justice and professional integrity."], ["Professional Boundaries", "Maintain safe and purposeful relationships."], ["Confidentiality", "Protect privacy while understanding limits."], ["Informed Consent", "Support genuine understanding and choice."], ["Supported Decision Making", "Provide the support a person needs to understand, consider and communicate decisions."], ["Ethical Decision Making", "Work through competing values and responsibilities."], ["Supervision", "Use reflection, feedback and accountability to grow."], ["Professional Sustainability", "Recognise stress and the need for support."]]], ["📖", "Legislation & Policy", "Organise laws, policies and guidance relevant to placement.", [["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."], ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."], ["Privacy & Confidentiality", "Information handling, consent and disclosure."], ["Guardianship & Decision Making", "Capacity and supported decision making."], ["AASW Practice Standards", "Professional expectations across social work practice."], ["Organisation Policies", "Mind Australia procedures and local guidance."]]], ["👥", "Working with Different Populations", "Prompts for inclusive and responsive practice.", [["Adults experiencing mental ill health", "Recovery, dignity, autonomy and social context."], ["Children & Young People", "Development, safety, participation and family context."], ["Older People", "Ageing, autonomy, care, loss and connection."], ["People with Disability", "Access, rights, communication and inclusion."], ["People experiencing homelessness", "Housing, safety and structural barriers."], ["People who use alcohol and other drugs", "Harm reduction, stigma and choice."], ["Rural & Remote Communities", "Distance, access, privacy and relationships."], ["Justice Involved People", "Rights, stigma and reintegration."]]], ["💬", "Communication", "Communication that supports dignity, clarity, safety and participation.", [["Difficult Conversations", "Stay clear, respectful and grounded."], ["Trauma Informed Communication", "Support safety, choice and control."], ["De escalation", "Reduce intensity while maintaining dignity and safety."], ["Strengths Based Language", "Describe people with respect and possibility."], ["Working with Interpreters", "Speak to the person, not the interpreter."], ["Email & Phone Communication", "Be clear, professional and purposeful."], ["Documentation Language", "Use objective, respectful and relevant wording."]]], ["📝", "Documentation", "Support clear, ethical and useful information recording.", [["Case Notes", "Relevant, factual and timely records."], ["Assessment Writing", "Bring together needs, strengths, risk and context."], ["Reflective Notes", "Capture learning without identifying details."], ["Professional Emails", "Clear purpose, tone and concise information."], ["Reports", "Structured, evidence informed and audience aware writing."]]], ["🔬", "Research & Evidence", "Use evidence to strengthen practice and reflection.", [["Evidence Informed Practice", "Combine research, expertise and lived experience."], ["Finding Quality Sources", "Use peer reviewed and authoritative material."], ["Critical Appraisal", "Consider strengths, limits and relevance."], ["Reflective Inquiry", "Turn practice questions into learning."], ["Small Project Skills", "Plan, gather information, analyse and report."], ["APA 7 Referencing", "Credit sources accurately."]]], ["🤝", "Community Development", "Think beyond individual work toward participation and collective change.", [["Participation", "Support people to influence decisions."], ["Capacity Building", "Strengthen skills, resources and confidence."], ["Social Capital", "Build connection, trust and mutual support."], ["Community Led Practice", "Start with local knowledge and priorities."], ["Collective Advocacy", "Work together to challenge barriers."]]], ["🏛️", "Social Policy", "Understand how policy shapes services and people’s lives.", [["Policy Analysis", "Examine goals, assumptions, impacts and gaps."], ["Structural Inequality", "Connect experiences to wider systems."], ["Service Systems", "Understand funding, eligibility and responses."], ["Advocacy", "Use evidence and lived experience to influence change."], ["Implementation", "Explore how policy becomes everyday practice."]]]];
 
 
 // Stage 1 Toolkit content: Mental Health and Professional Practice.
@@ -469,167 +377,6 @@ const stage1ToolkitContent = {
       ["Carer Gateway, support for carers","https://www.carergateway.gov.au/"]
     ]
   },
-  "Domestic & Family Violence": {
-    what:"Domestic and family violence is a pattern of behaviour used to control, frighten, isolate or harm a person within an intimate or family relationship. It can include physical, sexual, psychological, emotional, social, technological and economic abuse, as well as coercive control. Social work responses need to prioritise safety, dignity, choice and the victim survivor’s own knowledge of their circumstances.",
-    practice:["Respond calmly, believe the person and avoid judgement or pressure.","Ask about immediate safety, children, housing, finances, technology and support networks without assuming that leaving is the safest or most realistic option.","Use specialist referral pathways and warm handovers where consent and safety allow.","Document the person’s words, relevant risks, actions and referrals clearly, while considering information security and perpetrator access."],
-    remember:["Violence is the responsibility of the person using it.","Separation can increase risk, so do not treat leaving as a simple solution.","Consider how disability, culture, migration status, sexuality, rural location and poverty may shape safety and service access."],
-    related:["Risk & Safety Planning","Trauma Informed Practice","Housing & Homelessness","Children, Young People & Families"],
-    refs:[["Australian Institute of Health and Welfare, family, domestic and sexual violence responses and services","https://www.aihw.gov.au/family-domestic-and-sexual-violence/responses-and-outcomes/services-responding-to-fdsv"],["Queensland Government, coercive control information","https://www.qld.gov.au/community/getting-support-health-social-issue/support-victims-abuse/need-to-know/coercive-control"],["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"]]
-  },
-  "Children, Young People & Families": {
-    what:"Children, young people and family social work considers safety, development, identity, relationships, participation and the wider conditions affecting family life. Practice may involve early support, statutory systems, health, education, disability, housing or family services. A child centred approach listens to children while also understanding family, cultural and community context.",
-    practice:["Explain your role and the limits of confidentiality in language suited to the child or young person.","Seek the child’s views directly and use communication methods that match their age, development and needs.","Assess strengths, relationships, safety, caregiving, culture, housing, finances and service involvement together rather than in isolation.","Work transparently with parents and carers while keeping the child’s safety, rights and participation central."],
-    remember:["Children are participants in decisions affecting them, not only sources of information.","Avoid equating poverty, disability or cultural difference with neglect.","Know your reporting obligations, organisational procedures and the boundaries of your role."],
-    related:["Domestic & Family Violence","Assessment","Cultural Safety","Trauma Informed Practice"],
-    refs:[["Australian Institute of Health and Welfare, Australia’s children","https://www.aihw.gov.au/reports/children-youth/australias-children"],["Australian Institute of Family Studies, child protection and family support resources","https://aifs.gov.au/resources/policy-and-practice-papers"],["Queensland Government, child protection information","https://www.qld.gov.au/community/caring-child/foster-kinship-care/information-for-carers/child-protection-system"]]
-  },
-  "Housing & Homelessness": {
-    what:"Housing and homelessness practice recognises safe, stable and affordable housing as a foundation for wellbeing, participation and recovery. Homelessness includes rough sleeping, temporary accommodation, couch surfing and living in unsafe or severely insecure housing. Social workers address immediate needs while also recognising structural causes such as housing supply, poverty, discrimination and domestic violence.",
-    practice:["Ask about where the person will sleep, whether the place is safe, and how stable the arrangement is.","Support access to housing, income, identification, health care and specialist services through practical advocacy and warm referrals.","Consider tenancy risks, family violence, disability access, pets, transport, children and cultural connection in planning.","Document systemic barriers and escalate recurring service gaps through supervision or organisational channels."],
-    remember:["Homelessness is not an individual failure.","A referral is not complete until the person understands the next step and barriers have been considered.","Housing options that are technically available may still be unsafe, unaffordable or inaccessible."],
-    related:["Domestic & Family Violence","Advocacy","Service Systems","Rural & Remote Practice"],
-    refs:[["Australian Institute of Health and Welfare, homelessness services overview","https://www.aihw.gov.au/reports-data/health-welfare-services/homelessness-services/overview"],["Australian Institute of Health and Welfare, housing and family, domestic and sexual violence","https://www.aihw.gov.au/family-domestic-and-sexual-violence/responses-and-outcomes/housing"],["Queensland Government, housing help","https://www.qld.gov.au/housing/help"]]
-  },
-  "Alcohol & Other Drugs": {
-    what:"Alcohol and other drug practice supports people experiencing substance related harm without reducing them to their substance use. Australian policy is grounded in harm minimisation, which combines demand reduction, supply reduction and harm reduction. Social work brings attention to trauma, mental health, relationships, housing, stigma, culture and the person’s own goals.",
-    practice:["Ask what the person uses, what they value about it, what concerns them and what change, if any, they want.","Use non judgemental language and explore safer options even when abstinence is not the person’s goal.","Screen for withdrawal risk, overdose risk, mental distress, family violence, housing and child safety within your scope and service procedures.","Coordinate with health, peer, housing and community services while avoiding fragmented or punitive responses."],
-    remember:["Harm reduction is compatible with recovery and self determination.","Do not assume substance use explains every difficulty or removes decision making capacity.","Withdrawal from some substances can require medical assessment, so seek appropriate clinical advice."],
-    related:["Motivational Interviewing","Harm Reduction","Mental Health","Trauma Informed Practice"],
-    refs:[["Australian Government Department of Health, Disability and Ageing, National Framework for Alcohol, Tobacco and Other Drug Treatment 2019–29","https://www.health.gov.au/resources/publications/national-framework-for-alcohol-tobacco-and-other-drug-treatment-2019-29"],["Australian Government Department of Health, Disability and Ageing, National Drug Strategy","https://www.health.gov.au/resources/collections/national-drug-strategy"],["Queensland Health, mental health alcohol and other drugs clinical resources","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/clinical-guidelines-policies-and-resources"]]
-  },
-  "Disability": {
-    what:"Disability social work uses a rights based and social model lens, recognising that people are often disabled by inaccessible environments, systems and attitudes rather than impairment alone. Practice supports autonomy, communication, participation, relationships and access to ordinary community life, while responding to risks of violence, neglect and exclusion.",
-    practice:["Ask the person how they communicate, make decisions and want information presented.","Identify environmental, service and attitudinal barriers rather than locating every difficulty within the person.","Use supported decision making so the person’s will, preferences and rights remain central.","Advocate across health, housing, education, justice and disability systems when responsibilities or eligibility rules create gaps."],
-    remember:["Do not assume incapacity because a person communicates differently or needs support.","Speak to the person, not only family members, carers or support workers.","Choice and control require accessible information, genuine options and freedom from coercion."],
-    related:["Supported Decision Making","Disability Inclusive Practice","Advocacy","Intersectionality"],
-    refs:[["NDIS, Supported decision making policy","https://www.ndis.gov.au/policies-rules-and-legal/policy/supported-decision-making-policy"],["Australian Institute of Health and Welfare, people with disability","https://www.aihw.gov.au/reports-data/health-welfare-overview/australias-welfare/people-with-disability"],["Australian Human Rights Commission, disability rights","https://humanrights.gov.au/our-work/disability-rights"]]
-  },
-  "Older People": {
-    what:"Social work with older people may involve health changes, grief, caring relationships, housing, financial stress, isolation, elder abuse, decision making and transitions in care. Good practice avoids ageist assumptions and supports autonomy, identity, relationships, cultural connection and participation throughout later life.",
-    practice:["Ask what matters to the person and how they want family or supporters involved.","Consider health, cognition, mood, grief, housing, finances, transport, caring responsibilities and social connection together.","Support decision making and advance care discussions without assuming that age or diagnosis removes capacity.","Notice possible abuse, neglect or coercion and follow appropriate safeguarding, legal and organisational pathways."],
-    remember:["Ageing is diverse and should not be treated as inevitable decline.","Balance safety concerns with dignity of risk and the person’s preferences.","Carers may need support, but their needs should not replace the older person’s voice."],
-    related:["Supported Decision Making","Professional Boundaries","Family and Carer Inclusive Practice","Housing & Homelessness"],
-    refs:[["Queensland Health, Healthy Ageing: A strategy for older Queenslanders","https://www.health.qld.gov.au/system-governance/strategic-direction/plans/healthy-ageing"],["Australian Institute of Health and Welfare, older Australians","https://www.aihw.gov.au/reports/older-people/older-australians"],["Australian Human Rights Commission, age discrimination","https://humanrights.gov.au/our-work/age-discrimination"]]
-  },
-  "Justice": {
-    what:"Justice social work supports people affected by criminal, civil, family or youth justice systems, including victims, accused people, prisoners, families and people returning to community. Practice considers rights, safety, accountability, trauma, stigma and the social conditions that shape contact with justice systems.",
-    practice:["Explain your role, confidentiality and any statutory limits clearly.","Use respectful language and separate a person’s identity from alleged or proven offending behaviour.","Assess housing, income, health, disability, substance use, family relationships, culture and community supports that affect safety and reintegration.","Advocate for accessible processes, legal support and coordinated transitions between custody, hospital and community services."],
-    remember:["Do not provide legal advice outside your role. Link the person with qualified legal assistance.","Accountability and dignity can be held together.","Aboriginal and Torres Strait Islander peoples are disproportionately affected by justice systems, requiring culturally safe and anti racist practice."],
-    related:["Advocacy","Anti Oppressive Practice","Documentation","Aboriginal & Torres Strait Islander Practice"],
-    refs:[["Australian Institute of Health and Welfare, justice and safety","https://www.aihw.gov.au/reports-data/behaviours-risk-factors/justice-safety"],["Queensland Government, courts and justice services","https://www.qld.gov.au/law"],["Australian Law Reform Commission, Pathways to Justice","https://www.alrc.gov.au/publication/pathways-to-justice-inquiry-into-the-incarceration-rate-of-aboriginal-and-torres-strait-islander-peoples-alrc-report-133/"]]
-  },
-  "Rural & Remote Practice": {
-    what:"Rural and remote social work is shaped by distance, workforce availability, transport, digital access, privacy and close community relationships. Practice also draws on strong local knowledge, community connection, cultural authority and informal support networks. Effective responses must be locally informed rather than simply transferring metropolitan models.",
-    practice:["Ask how distance, transport, cost, weather, internet access and service schedules affect realistic options.","Plan confidentiality carefully when workers, families and community members may know one another.","Build respectful relationships with local organisations and community leaders while maintaining professional boundaries.","Use outreach, telepractice and warm handovers thoughtfully, checking whether they are accessible, private and culturally appropriate."],
-    remember:["Limited service availability does not make an unsafe or unsuitable option acceptable.","Avoid deficit descriptions of rural and remote communities.","In First Nations communities, follow local cultural guidance and prioritise community controlled services wherever possible."],
-    related:["Cultural Safety","Aboriginal & Torres Strait Islander Practice","Service Systems","Housing & Homelessness"],
-    refs:[["Queensland Health, Rural and Remote Health and Wellbeing Strategy 2022–2027","https://www.health.qld.gov.au/system-governance/strategic-direction/plans/rural-and-remote-health-and-wellbeing-strategy"],["Queensland Health, Office of Rural and Remote Health","https://www.health.qld.gov.au/clinical-practice/health-workforce/rural-and-remote-health-workforce/office-of-rural-and-remote-health"],["Australian Institute of Health and Welfare, rural and remote health","https://www.aihw.gov.au/reports/rural-remote-australians/rural-and-remote-health"]]
-  },
-  "Community Practice": {
-    what:"Community practice works with groups, organisations and communities to address shared concerns, strengthen participation and build collective capacity. It shifts attention from individual problems alone to relationships, resources, power and the systems shaping local conditions.",
-    practice:["Begin with listening and mapping existing strengths, leaders, networks and priorities.","Support people affected by an issue to influence decisions rather than designing solutions for them.","Use accessible meetings, shared decision making and transparent communication about resources and limits.","Evaluate both outcomes and process, including who participated, whose voice was missing and whether power was genuinely shared."],
-    remember:["Community engagement is not consultation after decisions have already been made.","Move at the pace of trust and avoid overpromising.","Sustainable work builds local ownership rather than dependence on one worker or service."],
-    related:["Community Engagement","Advocacy","Anti Oppressive Practice","Social Policy & Systems"],
-    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Australian Institute of Family Studies, community engagement resources","https://aifs.gov.au/resources/practice-guides"],["Queensland Government, community engagement resources","https://www.forgov.qld.gov.au/service-delivery-and-community-support/community-engagement"]]
-  },
-  "Social Policy & Systems": {
-    what:"Social policy and systems practice examines how laws, funding, eligibility rules, organisational procedures and public narratives shape people’s lives and access to support. Social workers use practice evidence, research and lived experience to identify patterns and advocate for fairer systems.",
-    practice:["Notice when the same barrier affects several people and record the pattern rather than treating each case as unrelated.","Map who makes decisions, who funds services, what eligibility rules apply and where accountability sits.","Use de identified practice examples, research and lived experience evidence to support policy feedback or advocacy.","Consider intended and unintended impacts across culture, gender, disability, class, age and location."],
-    remember:["Policy is present in everyday practice, including waiting lists, forms, thresholds and service exclusions.","Avoid presenting individual resilience as a substitute for structural change.","Policy advocacy should protect confidentiality and be guided by people affected by the issue."],
-    related:["Policy Analysis","Service Systems","Advocacy","Evidence Informed Practice"],
-    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Australian Government, Australian Policy Handbook resources","https://www.anao.gov.au/work/insights"]]
-  },
-  "Systems and Ecological Theory": {
-    what:"Systems and ecological theory helps social workers understand people within connected environments rather than in isolation. Attention is given to relationships between the person, family, community, organisations, culture, economy and policy, and to how change in one part of a system can affect others.",
-    practice:["Map the important people, services, institutions and social conditions influencing the situation.","Look for both supports and barriers across home, community and service systems.","Explore how communication, roles, expectations and power operate between systems.","Plan interventions at more than one level, such as individual support alongside advocacy or service coordination."],
-    remember:["Avoid treating every difficulty as an individual deficit.","Systems can protect people, but they can also reproduce exclusion and inequality.","Keep the person’s own meaning and priorities central while considering the wider context."],
-    related:["Social Determinants of Health","Critical Social Work","Community Practice","Service Systems"],
-    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Bronfenbrenner, The ecology of human development","https://www.hup.harvard.edu/books/9780674224575"]]
-  },
-  "Narrative Practice": {
-    what:"Narrative practice understands that people make meaning through stories about themselves, their relationships and their experiences. It separates the person from the problem, explores how dominant social stories shape identity, and supports people to identify preferred stories that reflect their values, skills and hopes.",
-    practice:["Use language that separates the person from the problem rather than defining them by it.","Ask about times when the problem had less influence and what made that possible.","Explore the person’s values, commitments, relationships and knowledge.","Notice how social expectations, stigma and power shape the stories available to the person."],
-    remember:["The worker does not replace one story with a more positive story.","Stay curious and avoid claiming expert knowledge about the person’s life.","Narrative questions should remain purposeful and culturally respectful."],
-    related:["Strengths Based Practice","Empowerment Theory","Anti Oppressive Practice","Person Centred Practice"],
-    refs:[["White and Epston, Narrative means to therapeutic ends","https://wwnorton.com/books/9780393700985"],["Dulwich Centre, narrative practice resources","https://dulwichcentre.com.au/what-is-narrative-therapy/"]]
-  },
-  "Feminist Social Work": {
-    what:"Feminist social work examines how gender, power and social structures shape personal experiences and access to resources. It connects private experiences with wider patterns such as violence, unpaid care, poverty, discrimination and unequal decision making, while recognising that gender intersects with culture, race, class, disability, sexuality and other identities.",
-    practice:["Ask how gendered expectations, caring roles and economic inequality affect the person’s choices.","Recognise expertise gained through lived experience and support participation in decisions.","Challenge language or systems that blame people for violence, poverty or oppression.","Link individual support with advocacy where structural conditions are contributing to harm."],
-    remember:["Feminist practice is not one universal perspective and must remain intersectional.","Avoid assuming that all women or gender diverse people have the same experiences.","Power within the worker relationship also requires reflection and accountability."],
-    related:["Anti Oppressive Practice","Critical Social Work","Intersectionality","Domestic & Family Violence"],
-    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["Dominelli, Feminist social work theory and practice","https://link.springer.com/book/10.1007/978-0-230-62820-5"]]
-  },
-  "Anti Oppressive Practice": {
-    what:"Anti oppressive practice examines how power, privilege and structural inequality influence people’s experiences and their interactions with services. It asks social workers to identify oppression at interpersonal, organisational and societal levels and to work in ways that increase voice, access, participation and accountability.",
-    practice:["Reflect on the authority attached to your role and how it may affect communication or consent.","Identify service rules, language or assumptions that disadvantage particular groups.","Support people to participate meaningfully in decisions that affect them.","Use advocacy and organisational feedback when barriers are systemic rather than individual."],
-    remember:["Good intentions do not remove power differences.","Do not speak for people when you can create space for their own voice.","Anti oppressive practice requires ongoing self reflection, not a claim of being free from bias."],
-    related:["Critical Social Work","Feminist Social Work","Rights Based Practice","Intersectionality"],
-    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Dominelli, Anti oppressive social work theory and practice","https://link.springer.com/book/10.1007/978-1-4039-1400-2"]]
-  },
-  "Critical Social Work": {
-    what:"Critical social work connects personal difficulties with the political, economic and institutional conditions shaping them. It questions explanations that locate problems only within individuals and examines how power, policy, inequality and dominant ideas influence both people’s lives and social work responses.",
-    practice:["Ask what structural conditions are limiting the person’s choices or wellbeing.","Notice recurring patterns across cases, such as housing shortages or exclusionary eligibility rules.","Question whose knowledge is treated as authoritative and whose voice is overlooked.","Combine direct support with advocacy, community action or policy feedback where appropriate."],
-    remember:["Critical analysis should still lead to practical and respectful action.","Avoid reducing people to examples of structural disadvantage.","Reflect on how organisations and the profession can reproduce the inequalities they seek to address."],
-    related:["Anti Oppressive Practice","Social Determinants of Health","Social Policy & Systems","Advocacy"],
-    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW, Social policy and advocacy","https://www.aasw.asn.au/about-aasw/social-policy-and-advocacy/"]]
-  },
-  "Empowerment Theory": {
-    what:"Empowerment theory focuses on increasing people’s influence over decisions, resources and conditions affecting their lives. Empowerment is relational and structural as well as personal. It can involve confidence and skills, meaningful participation, access to information and resources, collective action and changes to unequal systems.",
-    practice:["Share information in a way that supports informed choice and participation.","Ask what control the person wants and what support would make that possible.","Recognise and build on existing knowledge, relationships and community resources.","Support collective or advocacy responses when individual action cannot address the barrier."],
-    remember:["A worker cannot give empowerment to another person.","Choice is not meaningful when options are inaccessible or unsafe.","Do not confuse compliance with participation or empowerment."],
-    related:["Strengths Based Practice","Rights Based Practice","Community Practice","Advocacy"],
-    refs:[["Rappaport, Terms of empowerment and exemplars of prevention","https://doi.org/10.1007/BF00919275"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
-  },
-  "Attachment Theory": {
-    what:"Attachment theory describes how early experiences of care and protection can influence expectations of safety, trust, closeness and support. In social work it can offer one lens for understanding relational patterns and emotional regulation across the lifespan, but it should be considered alongside trauma, culture, development and current social conditions.",
-    practice:["Create predictability by explaining your role, boundaries and what will happen next.","Notice how separation, rejection, trust or dependence may affect engagement without making assumptions.","Support safe and consistent relationships where possible.","Consider current environments and relationships rather than attributing all behaviour to childhood."],
-    remember:["Attachment patterns are not fixed diagnoses or personality labels.","Avoid blaming parents, carers or individuals without considering context and resources.","Western attachment concepts should not be imposed without cultural reflection."],
-    related:["Trauma Informed Practice","Relationship Based Practice","Children, Young People & Families","Family and Carer Inclusive Practice"],
-    refs:[["Bowlby, Attachment and loss","https://www.basicbooks.com/titles/john-bowlby/attachment/9780465005437/"],["Ainsworth et al., Patterns of attachment","https://www.routledge.com/Patterns-of-Attachment/Ainsworth-Blehar-Waters-Wall/p/book/9780898594614"]]
-  },
-  "Psychosocial Development": {
-    what:"Psychosocial development theories consider how identity, relationships, autonomy, purpose and belonging can change across the lifespan. Erikson’s stage model is one influential framework, but contemporary social work also recognises that development is shaped by culture, disability, trauma, opportunity and social conditions rather than following one fixed pathway.",
-    practice:["Consider the person’s current life stage, transitions, roles and social expectations.","Ask how identity, connection, autonomy or purpose are being affected.","Recognise that development may be non linear and shaped by interrupted opportunities.","Support age appropriate participation without making assumptions based only on age."],
-    remember:["Stage theories are guides, not universal rules.","Do not treat difference from a typical pathway as failure.","Culture and social context influence how developmental tasks are understood."],
-    related:["Attachment Theory","Social Learning Theory","Children, Young People & Families","Older People"],
-    refs:[["Erikson, Childhood and society","https://wwnorton.com/books/9780393310689"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
-  },
-  "Social Learning Theory": {
-    what:"Social learning theory explains that people can learn behaviours, expectations and coping strategies through observation, modelling, reinforcement and beliefs about their own capability. It can help social workers consider how relationships, peers, family, media and environments shape learning and behaviour.",
-    practice:["Model calm, respectful and transparent communication.","Break new skills into achievable steps and provide opportunities for practice.","Identify who or what is reinforcing a behaviour and what alternatives are available.","Build self efficacy by recognising effort, progress and successful experiences."],
-    remember:["Behaviour is not explained by modelling alone.","Consider trauma, culture, disability and structural conditions alongside learning processes.","Avoid using reinforcement in ways that are controlling or disrespectful."],
-    related:["Cognitive Behavioural Theory","Strengths Based Practice","Group Work Theory","Psychosocial Development"],
-    refs:[["Bandura, Social learning theory","https://archive.org/details/sociallearningth0000band"],["Bandura, Self efficacy: Toward a unifying theory of behavioral change","https://doi.org/10.1037/0033-295X.84.2.191"]]
-  },
-  "Cognitive Behavioural Theory": {
-    what:"Cognitive behavioural theory explores relationships between thoughts, emotions, physical responses and behaviour. In social work it can support collaborative understanding of patterns and coping strategies, while remaining attentive to trauma, relationships and social conditions that cannot be changed through individual thinking alone.",
-    practice:["Help the person notice links between situations, interpretations, feelings and actions.","Explore whether a thought is helpful, accurate or shaped by past experiences.","Identify practical coping strategies and small behavioural experiments chosen by the person.","Review what changed and what the person learned rather than presenting the worker’s interpretation as fact."],
-    remember:["Do not imply that distress is simply caused by incorrect thinking.","Use cognitive behavioural strategies only within your competence and role.","Structural barriers such as poverty, violence and discrimination require structural responses."],
-    related:["Social Learning Theory","Trauma Informed Practice","Strengths Based Practice","Motivational Interviewing"],
-    refs:[["Beck, Cognitive therapy and the emotional disorders","https://www.penguinrandomhouse.com/books/12639/cognitive-therapy-and-the-emotional-disorders-by-aaron-t-beck-md/"],["National Institute for Health and Care Excellence, mental health guidance","https://www.nice.org.uk/guidance/conditions-and-diseases/mental-health-behavioural-and-neurodevelopmental-conditions"]]
-  },
-  "Social Determinants of Health": {
-    what:"The social determinants of health are the conditions in which people are born, grow, live, work and age, together with the distribution of power, money and resources. Housing, income, education, employment, discrimination, transport, culture and access to services can strongly shape mental and physical health and produce avoidable inequities.",
-    practice:["Include housing, income, safety, food, transport, discrimination and social connection in assessment.","Identify which conditions can be addressed through practical support, referral or advocacy.","Document patterns showing how service or policy barriers affect wellbeing.","Avoid framing structural disadvantage as poor motivation or individual failure."],
-    remember:["Health inequities are not explained only by personal choices.","Social determinants interact and can accumulate over time.","Direct support and structural advocacy are both legitimate social work responses."],
-    related:["Systems and Ecological Theory","Critical Social Work","Housing & Homelessness","Social Policy & Systems"],
-    refs:[["World Health Organization, Social determinants of health","https://www.who.int/health-topics/social-determinants-of-health"],["Australian Institute of Health and Welfare, determinants of health","https://www.aihw.gov.au/reports/australias-health/social-determinants-of-health"]]
-  },
-  "Rights Based Practice": {
-    what:"Rights based practice understands people as rights holders and services and governments as having responsibilities to respect, protect and fulfil those rights. It centres dignity, equality, participation, privacy, access, accountability and freedom from discrimination in everyday assessment and decision making.",
-    practice:["Explain options, limits and decisions in accessible language.","Support genuine participation and supported decision making.","Identify which rights are engaged when services restrict choice or access.","Document the rationale, proportionality and least restrictive options for decisions affecting rights."],
-    remember:["Rights can involve competing considerations and require transparent reasoning.","Legal compliance is a minimum, not the whole of ethical practice.","People should have accessible ways to question decisions and make complaints."],
-    related:["Human Rights Act 2019 (Qld)","Supported Decision Making","Anti Oppressive Practice","Advocacy"],
-    refs:[["Queensland Human Rights Commission, Human Rights Act 2019","https://www.qhrc.qld.gov.au/your-rights/human-rights-law"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
-  },
-  "Ethics of Care": {
-    what:"Ethics of care emphasises relationships, interdependence, context and responsibility when considering ethical action. It challenges approaches that rely only on abstract rules by asking how decisions affect particular people, relationships and care responsibilities, while still recognising rights, justice and professional accountability.",
-    practice:["Consider who depends on whom and how a decision may affect important relationships.","Listen for responsibilities, vulnerability and care work that may be overlooked.","Balance responsiveness and compassion with boundaries, consent and fairness.","Use supervision to examine whether care is becoming paternalistic, unequal or unsustainable."],
-    remember:["Caring intentions do not justify overriding autonomy.","Care work is often gendered and unequally distributed.","Ethics of care should complement, not replace, rights and justice."],
-    related:["AASW Code of Ethics","Professional Boundaries","Feminist Social Work","Family and Carer Inclusive Practice"],
-    refs:[["Gilligan, In a different voice","https://www.hup.harvard.edu/books/9780674970960"],["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"]]
-  },
   "Documentation": {
     what:"Social work documentation creates an accountable record of contact, assessment, decisions, actions and follow up. Good records support continuity, communication, safety and the person’s rights. They should be relevant, timely, respectful, accurate and clear about the source of information and the worker’s professional judgement.",
     practice:["Record the purpose of contact, relevant facts, the person’s views, strengths, risks, actions and next steps.","Separate direct observations, reported information and professional interpretation.","Use objective, person respecting language and avoid unnecessary detail.","Complete records promptly and follow correction, access and security procedures."],
@@ -715,71 +462,64 @@ function verifiedKnowledgePage(topic,category){
   if(!data) return false;
 
   document.getElementById("main").innerHTML=`
-    <article class="toolkit-topic-page toolkit-topic-verified">
-      <header class="toolkit-topic-hero">
-        <button class="back toolkit-topic-back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
-        <div>
-          <div class="eyebrow">${category[1]}</div>
-          <h1>${topic[0]}</h1>
-          <p>${data.overview}</p>
-        </div>
-      </header>
+    <div class="screen-title">
+      <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+      <h2>${category[0]} ${topic[0]}</h2>
+    </div>
 
-      <div class="source-review">Verified sources · Reviewed ${data.reviewed}</div>
+    <div class="source-review">Verified sources · Reviewed ${data.reviewed}</div>
 
-      <section class="toolkit-topic-section toolkit-definition-section">
-        <div class="toolkit-section-kicker">What it is</div>
-        <h2>Understanding the practice context</h2>
-        <p>${data.why}</p>
-      </section>
+    <div class="card green">
+      <div class="label">Overview</div>
+      <div class="big">${data.overview}</div>
+    </div>
 
-      <section class="toolkit-topic-section toolkit-data-section">
-        <div class="toolkit-section-kicker">Australian and Queensland context</div>
-        <h2>What the available data shows</h2>
-        <div class="stats-list">
-          ${data.statistics.map(stat=>`
-            <div class="stat-fact">
-              <strong>${stat[0]}</strong>
-              <p>${stat[1]}</p>
-              <span>${stat[2]}</span>
-            </div>`).join("")}
-        </div>
-        <p class="data-note">Statistics describe recorded survey or administrative data and do not capture every experience. Definitions and populations differ between sources.</p>
-      </section>
+    <details class="card toolkit-info" open>
+      <summary><strong>🌿 Why does it matter in social work?</strong></summary>
+      <p>${data.why}</p>
+    </details>
 
-      <section class="toolkit-topic-section toolkit-practice-section">
-        <div class="toolkit-section-kicker">In practice</div>
-        <h2>Practice considerations</h2>
-        <div class="toolkit-practice-list">${data.practice.map(item=>`<div class="toolkit-practice-item"><span aria-hidden="true">•</span><p>${item}</p></div>`).join("")}</div>
-      </section>
+    <details class="card toolkit-info" open>
+      <summary><strong>📊 Australian and Queensland data</strong></summary>
+      <div class="stats-list">
+        ${data.statistics.map(stat=>`
+          <div class="stat-fact">
+            <strong>${stat[0]}</strong>
+            <p>${stat[1]}</p>
+            <span>${stat[2]}</span>
+          </div>`).join("")}
+      </div>
+      <p class="data-note">Statistics describe recorded survey or administrative data and do not capture every experience. Definitions and populations differ between sources.</p>
+    </details>
 
-      <section class="toolkit-topic-section toolkit-takeaway-section">
-        <div class="toolkit-section-kicker">Key things to remember</div>
-        <div class="toolkit-pill-list">${data.lenses.map(item=>`<span class="pill">${item}</span>`).join("")}</div>
-      </section>
+    <details class="card toolkit-info">
+      <summary><strong>💬 Practice considerations</strong></summary>
+      ${data.practice.map(item=>`<div class="row"><span>•</span><span>${item}</span></div>`).join("")}
+    </details>
 
-      <details class="toolkit-secondary-details">
-        <summary>Reflective prompts</summary>
-        <div class="toolkit-details-body">${data.prompts.map(item=>`<div class="toolkit-practice-item"><span aria-hidden="true">•</span><p>${item}</p></div>`).join("")}</div>
-      </details>
+    <details class="card toolkit-info">
+      <summary><strong>🧠 Relevant practice lenses</strong></summary>
+      ${data.lenses.map(item=>`<span class="pill">${item}</span>`).join("")}
+    </details>
 
-      <details class="toolkit-secondary-details">
-        <summary>References and original sources</summary>
-        <div class="toolkit-details-body">
-          <p class="muted">Open the original publication before using a statistic in university work.</p>
-          <div class="source-list">
-            ${data.sources.map(source=>`
-              <a class="source-link" href="${source.url}" target="_blank" rel="noopener noreferrer external">
-                <span class="source-type">${source.type}</span>
-                <strong>${source.title}</strong>
-                <small>${source.organisation}</small><span class="open-source-label">Open original source ↗</span>
-              </a>`).join("")}
-          </div>
-        </div>
-      </details>
+    <details class="card toolkit-info">
+      <summary><strong>🪞 Reflective prompts</strong></summary>
+      ${data.prompts.map(item=>`<div class="row"><span>○</span><span>${item}</span></div>`).join("")}
+    </details>
 
-      <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
-    </article>`;
+    <div class="card">
+      <div class="label">📚 Original sources</div>
+      <p class="muted">Open the original publication before using a statistic in university work.</p>
+      <div class="source-list">
+        ${data.sources.map(source=>`
+          <a class="source-link" href="${source.url}" target="_blank" rel="noopener noreferrer external">
+            <span class="source-type">${source.type}</span>
+            <strong>${source.title}</strong>
+            <small>${source.organisation}</small><span class="open-source-label">Open original source ↗</span>
+          </a>`).join("")}
+      </div>
+      <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
+    </div>`;
 
   const goBack=()=>{route="learn";render()};
   document.getElementById("backToolkit").onclick=goBack;
@@ -968,26 +708,26 @@ function quickHoursReminder(){
 function quickHoursCard(){
   const today=localDateValue();
   const todayEntry=quickHoursEntryForDate(today);
+  if(todayEntry && quickHoursEditingDate===null){
+    return `<section class="home-card home-hours-card home-hours-logged">
+      <div class="home-hours-logged-copy"><span class="home-hours-check">✔️</span><div><span class="home-kicker">Hours logged today</span><h2>${formatQuickHoursDate(today)} · ${Number(todayEntry.hours||0).toFixed(1)} hours</h2></div></div>
+      <button type="button" class="home-hours-edit-link" data-hours-date="${today}">Edit</button>
+    </section>`;
+  }
   const selectedDate=quickHoursEditingDate||today;
   const selectedEntry=quickHoursEntryForDate(selectedDate);
-  const summary=todayEntry?`${Number(todayEntry.hours||0).toFixed(1)} hours logged today`:`Add or update placement hours`;
-  return `<details class="home-card home-hours-card home-hours-collapsed" ${quickHoursEditingDate!==null?'open':''}>
-    <summary>
-      <span class="home-hours-summary-icon">⏱️</span>
-      <span><span class="home-kicker">Quick hours</span><strong>${summary}</strong></span>
-      <span class="home-hours-chevron" aria-hidden="true">⌄</span>
-    </summary>
-    <div class="home-hours-panel">
-      ${quickHoursReminder()?`<p class="home-hours-reminder">${quickHoursReminder()}</p>`:""}
-      <div class="home-hours-form">
-        <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
-        <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
-        <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
-        <button type="button" class="btn home-hours-save" id="saveQuickHours">Save hours</button>
-      </div>
-      <div class="home-hours-recent"><span class="home-hours-recent-title">Recent entries</span>${recentQuickHoursRows().map(({date,entry})=>`<div class="home-hours-row"><span>${formatQuickHoursDate(date)} · ${entry?`${Number(entry.hours||0).toFixed(1)} hrs`:`Missing`}</span>${entry?`<button type="button" class="home-hours-edit-link" data-hours-date="${date}" aria-label="Edit hours for ${formatQuickHoursDate(date)}">Edit</button>`:""}</div>`).join("")}</div>
+  const reminder=quickHoursReminder();
+  return `<section class="home-card home-hours-card">
+    <div class="home-card-heading compact"><span class="home-hours-icon">⏱️</span><div><span class="home-kicker">Placement hours</span><h2>Quick daily entry</h2></div></div>
+    ${reminder?`<p class="home-hours-reminder">${reminder}</p>`:""}
+    <div class="home-hours-form">
+      <label><span>Date</span><input id="quickHoursDate" type="date" class="input" value="${selectedDate}" max="${today}"></label>
+      <label><span>Hours worked</span><input id="quickHoursValue" type="number" class="input" min="0" max="24" step="0.25" inputmode="decimal" value="${selectedEntry?Number(selectedEntry.hours||0):""}" placeholder="8.5"></label>
+      <label class="home-hours-checkbox"><input id="quickPlacementDay" type="checkbox" ${selectedEntry?.placementDay===false?"":"checked"}><span>Placement day</span></label>
+      <button type="button" class="btn home-hours-save" id="saveQuickHours">Save Hours</button>
     </div>
-  </details>`;
+    <div class="home-hours-recent"><span class="home-hours-recent-title">Recent entries</span>${recentQuickHoursRows().map(({date,entry})=>`<div class="home-hours-row"><span>${formatQuickHoursDate(date)} · ${entry?`${Number(entry.hours||0).toFixed(1)} hrs`:`Missing`}</span>${entry?`<button type="button" class="home-hours-edit-link" data-hours-date="${date}" aria-label="Edit hours for ${formatQuickHoursDate(date)}">✏️</button>`:""}</div>`).join("")}</div>
+  </section>`;
 }
 function saveQuickHours(){
   const date=document.getElementById("quickHoursDate")?.value;
@@ -1291,55 +1031,67 @@ function homeIcon(name){
 
 function todayPage(){
   const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
+  const upcoming=upcomingAssessments(info,h,current.id,2);
   const remaining=Math.max(0,TOTAL_HOURS-h);
   const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
   return `
-    <section class="home-welcome">
-      <div class="home-welcome-copy">
-        <span class="home-date">${dayLabel}</span>
+    <section class="home-greeting">
+      <div>
+        <div class="eyebrow">${dayLabel}</div>
         <h1>${g.title}</h1>
-        <p>${g.subtitle}</p>
-        <span class="home-placement-label">${placementLabel}</span>
+        <p class="home-companion-line">${g.subtitle}</p>
+        <p>${placementLabel} · ${h.toFixed(1)} of ${TOTAL_HOURS} hours</p>
       </div>
       <div class="home-compass-mark">${homeIcon('compass')}</div>
     </section>
 
-    <section class="home-focus-card">
-      <div class="home-focus-topline">
-        <span class="home-focus-label">What’s next</span>
+    <section class="home-card home-due-card">
+      <div class="home-card-heading">
+        ${homeIcon('compass')}
+        <div><span class="home-kicker">What’s next</span><h2>${current.title}</h2></div>
+      </div>
+      <p class="home-card-copy">${current.when}</p>
+      <div class="home-next-actions">
+        <span class="home-next-label">Next actions</span>
+        <div><span class="home-task-dot"></span>${stage.focus[0]}</div>
+        <div><span class="home-task-dot"></span>${stage.focus[1] || 'Save one useful learning moment.'}</div>
+      </div>
+      <div class="home-due-footer">
         <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
-      </div>
-      <h2>${current.title}</h2>
-      <p>${current.when}</p>
-      <div class="home-focus-action">
-        <div><span>Start here</span><strong>${stage.focus[0]}</strong></div>
-        <button class="home-primary-action" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
-      </div>
-    </section>
-
-    <section class="home-snapshot-card">
-      <div class="home-snapshot-heading">
-        <div><span class="home-kicker">Placement snapshot</span><h2>Your progress at a glance</h2></div>
-        <strong>${progress}%</strong>
-      </div>
-      <div class="home-progress-track"><span style="width:${progress}%"></span></div>
-      <div class="home-snapshot-stats">
-        <div><strong>${h.toFixed(1)}</strong><span>hours completed</span></div>
-        <div><strong>${remaining.toFixed(1)}</strong><span>hours remaining</span></div>
-        <div><strong>${info.started?info.week:'—'}</strong><span>placement week</span></div>
+        <button class="home-arrow-button" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
       </div>
     </section>
 
     ${quickHoursCard()}
 
-    <section class="home-care-card">
-      <div class="home-care-icon">${homeIcon('heart')}</div>
-      <div><span class="home-kicker">Take care</span><p>${selfcare[new Date().getDay()]}</p></div>
+    <section class="home-card home-progress-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('progress')}
+        <div><span class="home-kicker">Placement progress</span><h2>${progress ? `${progress}% complete` : "🌱 Your placement journey begins soon"}</h2></div>
+      </div>
+      <div class="home-progress-track"><span style="width:${progress}%"></span></div>
+      <div class="home-progress-meta"><span>${h.toFixed(1)} hours completed</span><span>${remaining.toFixed(1)} remaining</span></div>
+    </section>
+
+    ${upcoming.length?`<section class="home-card home-upcoming-card">
+      <div class="home-card-heading compact">
+        ${homeIcon('calendar')}
+        <div><span class="home-kicker">📅 What’s coming</span><h2>Next milestones</h2></div>
+      </div>
+      <div class="home-upcoming-list">
+        ${upcoming.map(item=>`<button class="home-upcoming-row assessment" data-id="${item.id}"><span><strong>${item.title}</strong><small>${item.when}</small></span>${homeIcon('arrow')}</button>`).join('')}
+      </div>
+    </section>`:''}
+
+    <section class="home-reminder">
+      ${homeIcon('heart')}
+      <div><strong>🌿 Take care</strong><p>${selfcare[new Date().getDay()]}</p></div>
     </section>`;
 }
+
 let lastSavedReflection=null;
 const reflectionTheoryOptions=["Recovery Oriented Practice","Trauma Informed Practice","Strengths Based Practice","Person Centred Practice","Systems Theory","Ecological Systems Theory","CHIME","Motivational Interviewing","Solution Focused Practice","Narrative Practice","Anti Oppressive Practice","Rights Based Practice","Crisis Intervention"];
 const reflectionCodeValues=["Respect for Persons","Social Justice","AASW Code of Ethics"];
@@ -1569,13 +1321,14 @@ function assessmentDetail(id,openPlanning=false){
   const official=officialAssessmentInfo(a);
   const planning=assessmentPlanning(a.id);
   const missingRequirements=reqs.filter(requirement=>!entries.some(entry=>(entry.evidenceTypes||[]).includes(requirement)));
-  const nextTask=incomplete.length?incomplete[0].task:"Check the official submission or sign off step";
 
   const taskRow=item=>{
     const meta=taskStatuses[item.status];
-    return `<div class="assessment-clear-task ${item.status==="complete"?"is-complete":""}">
-      <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${item.index}" ${item.status==="complete"?"checked":""} aria-label="Mark ${item.task} complete">
-      <span class="assessment-clear-task-copy">${item.task}</span>
+    return `<div class="task-row ${item.status==="complete"?"task-row-complete":""}">
+      <div class="task-copy">
+        <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${item.index}" ${item.status==="complete"?"checked":""} aria-label="Mark ${item.task} complete">
+        <span>${item.task}</span>
+      </div>
       <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${item.index}" aria-label="Status for ${item.task}">
         ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===item.status?"selected":""}>${m.label}</option>`).join("")}
       </select>
@@ -1583,70 +1336,52 @@ function assessmentDetail(id,openPlanning=false){
   };
 
   document.getElementById("main").innerHTML=`
-    <div class="assessment-clear-page">
+    <div class="assessment-detail-calm assessment-detail-readable">
       <button class="assessment-back-link" id="backAssess" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
 
-      <header class="assessment-clear-header">
-        <div class="assessment-clear-icon">${a.icon}</div>
-        <div class="assessment-clear-title">
+      <section class="assessment-hero-readable">
+        <div class="assessment-hero-icon">${a.icon}</div>
+        <div class="assessment-hero-copy">
           <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
-          <h1>${a.title}</h1>
-          <p>${a.when}</p>
+          <h2>${a.title}</h2>
         </div>
-        <strong class="assessment-clear-percent">${progress}%</strong>
-        <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
-      </header>
-
-      <section class="assessment-clear-section" aria-labelledby="assessment-what-heading">
-        <div class="assessment-clear-section-heading"><span>01</span><h2 id="assessment-what-heading">What it is</h2></div>
-        <p class="assessment-clear-lead">${a.purpose||a.plain}</p>
+        <strong class="assessment-hero-percent">${progress}%</strong>
+        <div class="progress-track"><div style="width:${progress}%"></div></div>
       </section>
 
-      <section class="assessment-clear-section" aria-labelledby="assessment-do-heading">
-        <div class="assessment-clear-section-heading"><span>02</span><h2 id="assessment-do-heading">What you have to do</h2></div>
-        <div class="assessment-clear-requirement">
-          <strong>JCU requirement</strong>
-          <p>${official.requirement}</p>
-        </div>
-        <div class="assessment-clear-checklist">
-          ${taskItems.length?taskItems.map(taskRow).join(""):`<p class="assessment-clear-empty">No checklist has been added for this assessment yet. Check the official JCU instructions.</p>`}
-        </div>
+      <section class="assessment-approved-overview" aria-labelledby="assessment-overview-heading">
+        <span class="assessment-approved-section-icon">💡</span>
+        <div><h3 id="assessment-overview-heading">What it is</h3><p>${a.purpose||a.plain}</p></div>
       </section>
 
-      <section class="assessment-clear-section" aria-labelledby="assessment-progress-heading">
-        <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-progress-heading">Your progress</h2></div>
-        <div class="assessment-clear-summary-grid">
-          <div><small>Checklist</small><strong>${completeCount} of ${taskItems.length} complete</strong></div>
-          <div><small>Linked evidence</small><strong>${entries.length} reflection${entries.length===1?"":"s"}</strong></div>
-          <div><small>Evidence areas</small><strong>${reqs.length-missingRequirements.length} of ${reqs.length||0} covered</strong></div>
-          <div><small>Still to do</small><strong>${incomplete.length} item${incomplete.length===1?"":"s"}</strong></div>
+      <section class="assessment-primary-section assessment-approved-tasks" aria-labelledby="next-steps">
+        <div class="assessment-primary-heading"><h3 id="next-steps">What you have to do</h3>${incomplete.length?`<span>${incomplete.length} remaining</span>`:""}</div>
+        <div class="assessment-priority-steps">
+          ${incomplete.length?incomplete.slice(0,3).map(taskRow).join(""):`<div class="assessment-complete-message">🌿 Checklist complete. Check the official submission or sign off step.</div>`}
         </div>
-        <div class="assessment-clear-progress-columns">
-          <div>
-            <h3>Already supported</h3>
-            ${completeCount?`<p>✓ ${completeCount} checklist item${completeCount===1?"":"s"} complete</p>`:`<p class="muted">No checklist items completed yet.</p>`}
-            ${entries.length?`<p>✓ ${entries.length} linked reflection${entries.length===1?"":"s"}</p>`:`<p class="muted">No reflections linked yet.</p>`}
+        ${taskItems.length>3?`<details class="assessment-all-steps"><summary>View full checklist <span>${taskItems.length}</span></summary><div>${taskItems.map(taskRow).join("")}</div></details>`:""}
+      </section>
+
+      <section class="assessment-primary-section assessment-approved-progress" aria-labelledby="assessment-evidence">
+        <div class="assessment-primary-heading"><h3 id="assessment-evidence">Your progress</h3><span>${entries.length} linked</span></div>
+        <div class="assessment-approved-progress-grid">
+          <div class="assessment-approved-complete"><strong>Completed</strong>
+            <span>✓ ${completeCount} checklist item${completeCount===1?"":"s"}</span>
+            <span>✓ ${entries.length} reflection${entries.length===1?"":"s"} linked</span>
+            <span>✓ ${reqs.length-missingRequirements.length} evidence categor${reqs.length-missingRequirements.length===1?"y":"ies"} represented</span>
           </div>
-          <div>
-            <h3>Still needed</h3>
-            ${incomplete.length?`<p>○ ${incomplete.length} checklist item${incomplete.length===1?"":"s"}</p>`:`<p>✓ Checklist complete</p>`}
-            ${missingRequirements.length?missingRequirements.slice(0,3).map(item=>`<p>○ ${safeText(item)}</p>`).join(""):`<p>✓ Evidence areas represented</p>`}
+          <div class="assessment-approved-needed"><strong>Still needed</strong>
+            ${incomplete.length?`<span>○ ${incomplete.length} checklist item${incomplete.length===1?"":"s"}</span>`:`<span>✓ Checklist complete</span>`}
+            ${missingRequirements.length?missingRequirements.slice(0,3).map(item=>`<span>○ ${safeText(item)}</span>`).join(""):`<span>✓ Evidence areas covered</span>`}
           </div>
         </div>
-        ${entries.length?`<details class="assessment-clear-linked"><summary>Linked reflections <span>${entries.length}</span></summary><div>${entries.map(e=>`<article><strong>${e.date}</strong><p>${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</p></article>`).join("")}</div></details>`:""}
-      </section>
-
-      <section class="assessment-clear-section assessment-clear-plan" aria-labelledby="assessment-plan-heading">
-        <div class="assessment-clear-section-heading"><span>04</span><h2 id="assessment-plan-heading">My plan</h2></div>
-        <div class="assessment-clear-plan-row"><small>Next useful step</small><strong>${nextTask}</strong></div>
-        <div class="assessment-clear-plan-row"><small>My target date</small><strong>${planning.date?formatPlanningDate(planning.date):"Not set"}</strong></div>
-        <div class="assessment-clear-plan-row"><small>Official timing</small><strong>${a.when}</strong></div>
-        <button class="assessment-clear-edit" id="openPlanningEdit">Edit planning date</button>
+        ${entries.length?`<details class="assessment-approved-linked"><summary>View linked reflections <span>${entries.length}</span></summary><div class="assessment-linked-evidence">${entries.map(e=>`<div class="evidence-list-row"><span>📝</span><div><strong>Reflection · ${e.date}</strong><small>${e.answer.slice(0,110)}${e.answer.length>110?"...":""}</small></div></div>`).join("")}</div></details>`:`<p class="muted personality-empty">💭 Evidence will appear here as you save relevant reflections.</p>`}
       </section>
 
       <details class="assessment-secondary-details assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
-        <summary><span>Edit planning date</span><small>${planning.date?formatPlanningDate(planning.date):"Not set"}</small></summary>
+        <summary><span>My planning date</span><small>${planning.date?formatPlanningDate(planning.date):"Not set"}</small></summary>
         <div class="assessment-planning-controls">
+          <p class="muted"><strong>Official timing:</strong> ${a.when}</p>
           <label class="label" for="planningDate">My target date</label>
           <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
           <label class="label" for="planningReason">Optional reason</label>
@@ -1656,11 +1391,11 @@ function assessmentDetail(id,openPlanning=false){
         </div>
       </details>
 
-      <div class="assessment-clear-extra-heading"><h2>Extra details</h2><p>Open these only when you need more information.</p></div>
-
       <details class="assessment-secondary-details">
-        <summary><span>Official record and guidance</span><small>JCU information</small></summary>
+        <summary><span>Assessment information</span><small>Overview and JCU guidance</small></summary>
         <div class="assessment-secondary-content">
+          <h3>Overview</h3><p>${a.purpose||a.plain}</p>
+          <h3>JCU requirement</h3><p>${official.requirement}</p>
           <h3>Official record</h3><p>${official.record}</p>
           <p class="assessment-scope-note">${official.notice}</p>
         </div>
@@ -1671,7 +1406,7 @@ function assessmentDetail(id,openPlanning=false){
         return `<div class="evidence-category-row"><span>${count?"✓":"○"}</span><span>${r}</span><strong>${count}</strong></div>`;
       }).join("")}</div></details>`:""}
 
-      ${toolkitLinks.length?`<details class="assessment-secondary-details"><summary><span>Toolkit suggestions</span><small>${toolkitLinks.length}</small></summary><div class="assessment-secondary-content linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></details>`:""}
+      ${toolkitLinks.length?`<section class="assessment-primary-section assessment-toolkit-suggestions" aria-labelledby="toolkit-suggestions"><div class="assessment-primary-heading"><h3 id="toolkit-suggestions">Toolkit suggestions</h3></div><div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></section>`:""}
 
       <details class="assessment-secondary-details official-sources-card">
         <summary><span>Official sources</span><small>${official.sources.length}</small></summary>
@@ -1683,11 +1418,6 @@ function assessmentDetail(id,openPlanning=false){
     </div>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
-  document.getElementById("openPlanningEdit").onclick=()=>{
-    const details=document.getElementById("assessmentPlanning");
-    details.open=true;
-    details.scrollIntoView({behavior:"smooth",block:"start"});
-  };
   document.getElementById("savePlanningDate").onclick=()=>{
     const date=document.getElementById("planningDate").value;
     const reason=document.getElementById("planningReason").value.trim();
@@ -1731,7 +1461,7 @@ function learnPage(){
         <section class="toolkit-folder" data-search="${(category[1]+' '+category[2]+' '+category[3].map(x=>x.join(' ')).join(' ')).toLowerCase()}">
           <button class="folder-header" data-folder="${index}">
             <div class="folder-icon">${category[0]}</div>
-            <div class="folder-text"><div class="folder-title-row"><div class="folder-title">${category[1]}</div><span class="folder-count">${category[3].length} topics</span></div><div class="folder-subtitle">${category[2]}</div></div>
+            <div class="folder-text"><div class="folder-title">${category[1]}</div><div class="folder-subtitle">${category[2]}</div></div>
             <div class="folder-arrow">⌄</div>
           </button>
           <div class="folder-content hidden" id="folder-${index}">
@@ -1748,40 +1478,40 @@ function toolkitDetail(categoryIndex,topicIndex){
 
   if(guide){
     document.getElementById("main").innerHTML=`
-      <article class="toolkit-topic-page">
-        <header class="toolkit-topic-hero">
-          <button class="back toolkit-topic-back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
-          <div>
-            <div class="eyebrow">${category[1]}</div>
-            <h1>${topic[0]}</h1>
-            <p>${guide.what}</p>
-          </div>
-        </header>
+      <div class="screen-title">
+        <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+        <h2>${category[0]} ${topic[0]}</h2>
+      </div>
 
-        <section class="toolkit-topic-section toolkit-practice-section">
-          <div class="toolkit-section-kicker">In practice</div>
-          <h2>What it can look like</h2>
-          <ul class="toolkit-clean-list">${guide.practice.map(item=>`<li>${item}</li>`).join("")}</ul>
-        </section>
+      <div class="card green">
+        <div class="label">🌿 What is this?</div>
+        <p>${guide.what}</p>
+      </div>
 
-        <section class="toolkit-topic-section toolkit-takeaway-section">
-          <div class="toolkit-section-kicker">Key things to remember</div>
-          <ul class="toolkit-clean-list">${guide.remember.map(item=>`<li>${item}</li>`).join("")}</ul>
-        </section>
+      <details class="card toolkit-info" open>
+        <summary><strong>💼 What does this look like in practice?</strong></summary>
+        <ul>${guide.practice.map(item=>`<li>${item}</li>`).join("")}</ul>
+      </details>
 
-        ${guide.related&&guide.related.length?`<details class="toolkit-secondary-details">
-          <summary>Related Toolkit topics</summary>
-          <div class="toolkit-details-body"><div class="linked-resource-list">${guide.related.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></div>
-        </details>`:""}
+      <details class="card toolkit-info" open>
+        <summary><strong>✅ Remember</strong></summary>
+        <ul>${guide.remember.map(item=>`<li>${item}</li>`).join("")}</ul>
+      </details>
 
-        ${guide.refs&&guide.refs.length?`<details class="toolkit-secondary-details">
-          <summary>References</summary>
-          <div class="toolkit-details-body"><ul class="toolkit-reference-list">${guide.refs.map(ref=>ref[1]?`<li><a href="${ref[1]}" target="_blank" rel="noopener noreferrer">${ref[0]}</a></li>`:`<li>${ref[0]}</li>`).join("")}</ul></div>
-        </details>`:""}
+      <details class="card toolkit-info">
+        <summary><strong>🔗 Related Toolkit cards</strong></summary>
+        <div class="linked-resource-list">${guide.related.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div>
+      </details>
 
-        <p class="toolkit-scope-note">Practice Compass is a quick practice guide for placement learning. Follow current legislation, organisational policy, supervision and official guidance.</p>
-        <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
-      </article>`;
+      <details class="card toolkit-info">
+        <summary><strong>📚 References</strong></summary>
+        <ul>${guide.refs.map(ref=>ref[1]?`<li><a href="${ref[1]}" target="_blank" rel="noopener noreferrer">${ref[0]}</a></li>`:`<li>${ref[0]}</li>`).join("")}</ul>
+      </details>
+
+      <div class="card">
+        <p class="muted">Practice Compass is a quick practice guide for placement learning. Follow current legislation, organisational policy, supervision and official guidance.</p>
+        <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
+      </div>`;
 
     const goBack=()=>{route="learn";render()};
     document.getElementById("backToolkit").onclick=goBack;
@@ -1793,24 +1523,42 @@ function toolkitDetail(categoryIndex,topicIndex){
   }
 
   document.getElementById("main").innerHTML=`
-    <article class="toolkit-topic-page toolkit-topic-placeholder">
-      <header class="toolkit-topic-hero">
-        <button class="back toolkit-topic-back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
-        <div>
-          <div class="eyebrow">${category[1]}</div>
-          <h1>${topic[0]}</h1>
-          <p>${topic[1]}</p>
-        </div>
-      </header>
+    <div class="screen-title">
+      <button class="back" id="backToolkit" aria-label="Back to Practice Toolkit">‹</button>
+      <h2>${category[0]} ${topic[0]}</h2>
+    </div>
 
-      <section class="toolkit-topic-section toolkit-development-note">
-        <div class="toolkit-section-kicker">Topic guide in development</div>
-        <h2>Detailed guidance has not been added yet</h2>
-        <p>This card is kept in the Toolkit so the topic remains easy to find. Practice examples, key points and verified references will only appear once meaningful content has been added.</p>
-      </section>
+    <div class="card green">
+      <div class="label">What is it?</div>
+      <div class="big">${topic[1]}</div>
+    </div>
 
-      <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
-    </article>`;
+    <details class="card toolkit-info" open>
+      <summary><strong>🌿 Why does it matter?</strong></summary>
+      <p>This topic can help you understand practice more clearly, notice context, power and relationships, and make more intentional decisions.</p>
+    </details>
+
+    <details class="card toolkit-info">
+      <summary><strong>👀 What might it look like in practice?</strong></summary>
+      <p>Think about one conversation, decision, interaction, policy or service process where this idea may have been visible.</p>
+    </details>
+
+    <details class="card toolkit-info">
+      <summary><strong>💭 Practice prompt</strong></summary>
+      <p>Where did you notice ${topic[0].toLowerCase()} in practice today?</p>
+      <div class="why"><strong>Why am I being asked this?</strong><br>Recognising a concept in practice makes it easier to remember and gives you material for reflection, supervision and assessment.</div>
+    </details>
+
+    <details class="card toolkit-info">
+      <summary><strong>🎓 How could this support placement?</strong></summary>
+      <p>This may help you identify learning goals, prepare supervision questions, strengthen reflective evidence and connect daily experiences with your JCU requirements.</p>
+    </details>
+
+    <div class="card">
+      <div class="label">📚 Sources and further reading</div>
+      <p class="muted">Only verified references and official links will be added here. Practice Compass will not present unverified information as fact.</p>
+      <button class="btn secondary" id="returnToolkit">Return to Practice Toolkit</button>
+    </div>`;
 
   const goBack=()=>{route="learn";render()};
   document.getElementById("backToolkit").onclick=goBack;
@@ -1821,50 +1569,55 @@ function morePage(){
   const intelligence=practiceFrameworkIntelligence();
   const allItems=Object.values(intelligence.groups).flatMap(map=>[...map.values()]);
   const evidencedItems=allItems.filter(item=>item.evidence.length);
-  const growth=evidencedItems.slice(0,5);
-  const groupLabels={values:"Values",theories:"Theories",models:"Practice approaches",skills:"Skills",useOfSelf:"Use of self"};
+  const growth=evidencedItems.slice(0,4);
+  const usedTags=new Set(intelligence.entries.flatMap(entry=>entry.evidenceTypes||[]));
+  const opportunityRules=[
+    {label:"Ethical decision making",tags:["Ethics or values"]},
+    {label:"Cultural capability",tags:["Cultural capability"]},
+    {label:"Interprofessional collaboration",tags:["Teamwork"]},
+    {label:"Use of self",tags:["Use of self"]},
+    {label:"Theory informed practice",tags:["Theory in action"]}
+  ];
+  const opportunities=opportunityRules.filter(item=>!item.tags.some(tag=>usedTags.has(tag))).slice(0,3);
+  const groupLabels={values:"Values demonstrated",theories:"Practice theories",models:"Practice models",skills:"Skills",useOfSelf:"Use of self"};
   const groupSummary=Object.entries(intelligence.groups).map(([key,map])=>{
     const supported=[...map.values()].filter(item=>item.evidence.length).length;
     return `<div class="journey-framework-row"><span>${groupLabels[key]}</span><strong>${supported}</strong></div>`;
   }).join("");
-  const latestEntries=[...intelligence.entries].slice(0,3);
 
-  return `<div class="journey-page journey-purpose-reset">
+  return `<div class="journey-page">
     <section class="journey-approved-hero">
-      <div><div class="eyebrow">Me</div><h1>My Journey</h1><p>How my social work practice is taking shape.</p></div>
+      <div><div class="eyebrow">My Journey</div><h1>My Journey</h1><p>Your growth, your framework, your progress.</p></div>
       <span class="journey-approved-botanical">🌿</span>
     </section>
 
     <section class="journey-section-block" aria-labelledby="growthSummaryHeading">
-      <div class="journey-section-heading-simple">
-        <div><span class="eyebrow">Professional growth</span><h2 id="growthSummaryHeading">How I am developing</h2></div>
-      </div>
-      <div class="journey-growth-panel journey-growth-single">
-        ${growth.length?`<p class="journey-growth-intro">Themes appearing across your saved reflections:</p><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div>`:`<div class="journey-empty-message">✨ Your growth summary will build naturally from the reflections you save.</div>`}
-        ${latestEntries.length?`<div class="journey-recent-growth"><strong>Recently noticed</strong>${latestEntries.map(entry=>`<span>${safeText((entry.evidenceTypes||[])[0]||"Reflective practice")}</span>`).join("")}</div>`:""}
+      <h2 id="growthSummaryHeading">Growth summary</h2>
+      ${growth.length?`<div class="journey-growth-panel"><div class="framework-growth-chips">${growth.map(item=>`<span>🌿 ${safeText(item.name)}</span>`).join("")}</div></div>`:`<div class="journey-empty-message">✨ Your professional identity will grow here as you add reflections.</div>`}
+    </section>
+
+    ${opportunities.length?`<section class="journey-section-block" aria-labelledby="opportunitiesHeading"><h2 id="opportunitiesHeading">Opportunities to strengthen</h2><div class="journey-support-panel"><div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div><p>Gentle prompts for future learning, not missing requirements.</p></div></section>`:""}
+
+    <section class="journey-section-block" aria-labelledby="frameworkHeading">
+      <h2 id="frameworkHeading">My practice framework</h2>
+      <div class="journey-framework-panel">
+        <div class="journey-framework-summary">${groupSummary}</div>
+        <button class="journey-text-action journey-approved-row" id="frameworkMenu"><span class="journey-approved-icon">🧭</span><span><strong>My Practice Framework</strong><small>Values, theories, skills and use of self</small></span><b>›</b></button>
       </div>
     </section>
 
-    <section class="journey-section-block" aria-labelledby="frameworkHeading">
-      <div class="journey-section-heading-simple">
-        <div><span class="eyebrow">Professional identity</span><h2 id="frameworkHeading">My practice framework</h2></div>
-      </div>
-      <div class="journey-framework-panel">
-        <p class="journey-framework-intro">Your values, theories, approaches, skills and use of self are gathered here once. Assessment planning stays in Assessments.</p>
-        <div class="journey-framework-summary">${groupSummary}</div>
-        <button class="journey-text-action journey-approved-row" id="frameworkMenu"><span class="journey-approved-icon">🧭</span><span><strong>Open My Practice Framework</strong><small>Review or continue developing your framework</small></span><b>›</b></button>
-      </div>
+    <section class="journey-section-block" aria-labelledby="professionalDevelopmentHeading">
+      <h2 id="professionalDevelopmentHeading">Professional development</h2>
+      <button class="journey-utility-row journey-evidence-map-link journey-approved-row" id="openEvidenceMap"><span class="journey-approved-icon">🧠</span><span><strong>Assessment evidence</strong><small>See the evidence you have collected</small></span><b>›</b></button>
+      <button class="journey-utility-row journey-approved-row" id="professionalDevelopmentMenu"><span class="journey-approved-icon">🌱</span><span><strong>Personal additions</strong><small>Add development areas you want to track</small></span><b>›</b></button>
     </section>
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
-      <div class="journey-app-heading"><h2 id="journeyAppHeading">App tools</h2><p>Practical controls kept separate from your professional journey.</p></div>
-      <button class="journey-utility-row" id="exportHtml"><span><strong>Export readable record</strong><small>Create a readable copy of reflections, hours and framework notes</small></span><span>›</span></button>
-      <button class="journey-utility-row" id="backupJson"><span><strong>Back up everything</strong><small>Save a private copy of all Practice Compass browser data</small></span><span>›</span></button>
-      <button class="journey-utility-row" id="restoreJson"><span><strong>Restore a backup</strong><small>Preview and import a Practice Compass backup file</small></span><span>›</span></button>
-      <input class="hidden" type="file" id="restoreJsonFile" accept="application/json,.json">
-      <div class="backup-status" id="backupStatus">${backupStatusText()}</div>
-      <div class="backup-restore-panel hidden" id="backupRestorePanel" aria-live="polite"></div>
-      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass supports placement learning, reflection and professional growth. University assessment requirements and progress remain in My Placement and Assessments.</div></details>
+      <div class="journey-app-heading"><h2 id="journeyAppHeading">App</h2><p>Utilities kept separate from your professional journey.</p></div>
+      <button class="journey-utility-row" id="exportHtml"><span><strong>Export data</strong><small>Create a readable placement record</small></span><span>›</span></button>
+      <details class="journey-utility-details"><summary><span><strong>Settings</strong><small>App and data preferences</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass currently keeps your data privately on this device. Additional settings can be added here in a future sprint.</div></details>
+      <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass helps you capture learning once and reuse it across reflection, evidence and professional growth. It supports placement organisation and does not replace official JCU requirements or professional advice.</div></details>
+      <button class="journey-utility-row" id="backupJson"><span><strong>Backup &amp; Restore</strong><small>Download a private backup now. Restore is planned for a future sprint.</small></span><span>›</span></button>
     </section>
   </div>`;
 }
@@ -2370,116 +2123,11 @@ function exportPrintable(){
     shareOrDownload(new Blob([html],{type:"text/html"}),"Practice_Compass_Placement_Notes.html","Practice Compass placement notes");
   }catch(error){console.error(error);alert("The export could not be created. Please try the JSON backup instead.");}
 }
-const PRACTICE_COMPASS_BACKUP_VERSION=2;
-function backupStatusText(){
-  const value=state.get("lastBackupAt","");
-  if(!value)return "No full backup recorded on this device yet.";
-  const date=new Date(value);
-  return Number.isNaN(date.getTime())?"A backup has been created on this device.":`Last full backup: ${date.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"})}`;
-}
-function localStorageSnapshot(){
-  const data={};
-  for(let index=0;index<localStorage.length;index++){
-    const key=localStorage.key(index);
-    if(key!==null)data[key]=localStorage.getItem(key);
-  }
-  return data;
-}
-function backupSummaryFromStorage(storage={}){
-  const read=(key,fallback)=>{
-    try{return storage[key]===undefined?fallback:JSON.parse(storage[key]);}catch{return fallback;}
-  };
-  const entries=read("entries",[]),timesheets=read("timesheets",[]),weekly=read("weeklyReviews",[]),supervision=read("supervisionItems",[]);
-  const hoursValue=read("hours",0);
-  return {
-    reflections:Array.isArray(entries)?entries.length:0,
-    timesheets:Array.isArray(timesheets)?timesheets.length:0,
-    weeklyReviews:Array.isArray(weekly)?weekly.length:0,
-    supervisionItems:Array.isArray(supervision)?supervision.length:0,
-    hours:Number(hoursValue)||0,
-    keys:Object.keys(storage).length
-  };
-}
-function createFullBackup(){
-  const exportedAt=new Date().toISOString();
-  state.set("lastBackupAt",exportedAt);
-  const storage=localStorageSnapshot();
-  return {
-    app:"Practice Compass",
-    backupVersion:PRACTICE_COMPASS_BACKUP_VERSION,
-    exportedAt,
-    summary:backupSummaryFromStorage(storage),
-    storage
-  };
-}
 function backup(){
   try{
-    const data=createFullBackup();
-    const stamp=data.exportedAt.slice(0,10);
-    shareOrDownload(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),`Practice_Compass_Backup_${stamp}.json`,"Practice Compass full backup");
-    const status=document.getElementById("backupStatus");if(status)status.textContent=backupStatusText();
+    const data={exportedAt:new Date().toISOString(),hours:hours(),entries:savedEntries(),weeklyReviews:state.get("weeklyReviews",[]),timesheets:timesheetEntries(),supervisionItems:supervisionItems(),taskStatuses:taskStatusData(),framework:frameworkData()};
+    shareOrDownload(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"Practice_Compass_Backup.json","Practice Compass backup");
   }catch(error){console.error(error);alert("The backup could not be created. Please try again.");}
-}
-function normaliseBackupFile(parsed){
-  if(parsed && parsed.app==="Practice Compass" && parsed.storage && typeof parsed.storage==="object")return parsed;
-  if(parsed && typeof parsed==="object" && (Array.isArray(parsed.entries)||Array.isArray(parsed.timesheets))){
-    const storage={};
-    Object.entries(parsed).forEach(([key,value])=>{if(key!=="exportedAt")storage[key]=JSON.stringify(value);});
-    return {app:"Practice Compass",backupVersion:1,exportedAt:parsed.exportedAt||"",summary:backupSummaryFromStorage(storage),storage};
-  }
-  throw new Error("This does not appear to be a Practice Compass backup file.");
-}
-function formatBackupDate(value){
-  const date=new Date(value);
-  return Number.isNaN(date.getTime())?"Date not available":date.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});
-}
-function showBackupPreview(backup,fileName){
-  const panel=document.getElementById("backupRestorePanel");if(!panel)return;
-  const summary=backup.summary||backupSummaryFromStorage(backup.storage);
-  panel.classList.remove("hidden");
-  panel.innerHTML=`<div class="backup-preview-heading"><div><span class="eyebrow">Backup preview</span><h3>${safeText(fileName||"Practice Compass backup")}</h3></div><button type="button" class="backup-preview-close" id="cancelRestore" aria-label="Close backup preview">×</button></div>
-    <p class="backup-preview-date">Created ${safeText(formatBackupDate(backup.exportedAt))}</p>
-    <div class="backup-preview-grid">
-      <span><strong>${Number(summary.reflections||0)}</strong><small>Reflections</small></span>
-      <span><strong>${Number(summary.timesheets||0)}</strong><small>Timesheet entries</small></span>
-      <span><strong>${Number(summary.hours||0).toFixed(1)}</strong><small>Saved hours</small></span>
-      <span><strong>${Number(summary.supervisionItems||0)}</strong><small>Supervision items</small></span>
-    </div>
-    <div class="backup-warning"><strong>This will replace the data stored in this browser.</strong><p>Your current phone or laptop data will not be merged. Create a backup of this device first if there is anything you need to keep.</p></div>
-    <div class="backup-preview-actions"><button type="button" class="btn secondary" id="cancelRestoreButton">Cancel</button><button type="button" class="btn backup-restore-confirm" id="confirmRestore">Restore this backup</button></div>`;
-  const close=()=>{panel.classList.add("hidden");panel.innerHTML="";};
-  document.getElementById("cancelRestore")?.addEventListener("click",close);
-  document.getElementById("cancelRestoreButton")?.addEventListener("click",close);
-  document.getElementById("confirmRestore")?.addEventListener("click",()=>restoreBackup(backup));
-}
-function restoreBackup(backup){
-  const confirmed=window.confirm("Restore this backup and replace the Practice Compass data currently stored in this browser?");
-  if(!confirmed)return;
-  try{
-    const preservedBackupDate=backup.exportedAt||new Date().toISOString();
-    localStorage.clear();
-    Object.entries(backup.storage||{}).forEach(([key,value])=>{
-      if(typeof value==="string")localStorage.setItem(key,value);
-      else localStorage.setItem(key,JSON.stringify(value));
-    });
-    state.set("lastRestoredAt",new Date().toISOString());
-    state.set("restoredFromBackupAt",preservedBackupDate);
-    alert("Your Practice Compass backup has been restored. The app will now reload.");
-    window.location.reload();
-  }catch(error){
-    console.error(error);
-    alert("The backup could not be restored. No further changes have been made.");
-  }
-}
-function readBackupFile(file){
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    try{showBackupPreview(normaliseBackupFile(JSON.parse(String(reader.result||""))),file.name);}
-    catch(error){console.error(error);alert(error.message||"That backup file could not be read.");}
-  };
-  reader.onerror=()=>alert("That backup file could not be read.");
-  reader.readAsText(file);
 }
 
 function updateReflectionPreview(){}
@@ -2585,8 +2233,6 @@ function bind(){
   document.getElementById("wellbeing")?.addEventListener("click",()=>wellbeingPage());
   document.getElementById("exportHtml")?.addEventListener("click",()=>exportPrintable());
   document.getElementById("backupJson")?.addEventListener("click",()=>backup());
-  document.getElementById("restoreJson")?.addEventListener("click",()=>document.getElementById("restoreJsonFile")?.click());
-  document.getElementById("restoreJsonFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];readBackupFile(file);event.target.value="";});
 }
 
 document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>{route=n.dataset.route;render()});
