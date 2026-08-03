@@ -1,21 +1,33 @@
-# Practice Compass: Theory and Framework Mapping Sprint
+# Practice Compass: Theories and Frameworks Content Expansion
 
 Replace only `app.js` in the current Practice Compass project.
 
-## What changed
+## Expanded topics
 
-The full theory and approach list has been mapped into the Toolkit categories before content expansion.
+This sprint adds developed Toolkit content for:
 
-### Theories and Frameworks
-Now includes the broader conceptual lenses, including critical social work, empowerment theory, psychosocial development, social learning theory, cognitive behavioural theory, social determinants of health, rights based practice and ethics of care.
+1. Systems and Ecological Theory
+2. Narrative Practice
+3. Feminist Social Work
+4. Anti Oppressive Practice
+5. Critical Social Work
+6. Empowerment Theory
+7. Attachment Theory
+8. Psychosocial Development
+9. Social Learning Theory
+10. Cognitive Behavioural Theory
+11. Social Determinants of Health
+12. Rights Based Practice
+13. Ethics of Care
 
-### Practice Skills
-Practice methods have been moved here, including motivational interviewing, solution focused practice, task centred practice, crisis intervention, harm reduction, psychosocial rehabilitation and group work theory.
+Each topic uses the existing Toolkit structure:
 
-### Culture, Identity and Inclusion
-Cultural humility, culturally responsive practice, cultural safety, decolonising practice and intersectionality remain together.
+1. What it is
+2. What it looks like in practice
+3. Key things to remember
+4. Related topics
+5. Collapsed references
 
-### Ethics, Law and Professional Practice
-Reflective practice sits with supervision, ethics and professional accountability.
+Recovery Oriented Practice, CHIME, Strengths Based Practice and Trauma Informed Practice remain intact.
 
-No topic content was deleted. Existing developed Practice Areas content, search, categories, saved data and all non Toolkit pages remain unchanged.
+No layouts, storage keys, saved data, Home, Reflect, Assessments, Me, backup tools or Toolkit categories were changed.

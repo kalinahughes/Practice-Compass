@@ -539,6 +539,97 @@ const stage1ToolkitContent = {
     related:["Policy Analysis","Service Systems","Advocacy","Evidence Informed Practice"],
     refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Australian Government, Australian Policy Handbook resources","https://www.anao.gov.au/work/insights"]]
   },
+  "Systems and Ecological Theory": {
+    what:"Systems and ecological theory helps social workers understand people within connected environments rather than in isolation. Attention is given to relationships between the person, family, community, organisations, culture, economy and policy, and to how change in one part of a system can affect others.",
+    practice:["Map the important people, services, institutions and social conditions influencing the situation.","Look for both supports and barriers across home, community and service systems.","Explore how communication, roles, expectations and power operate between systems.","Plan interventions at more than one level, such as individual support alongside advocacy or service coordination."],
+    remember:["Avoid treating every difficulty as an individual deficit.","Systems can protect people, but they can also reproduce exclusion and inequality.","Keep the person’s own meaning and priorities central while considering the wider context."],
+    related:["Social Determinants of Health","Critical Social Work","Community Practice","Service Systems"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Bronfenbrenner, The ecology of human development","https://www.hup.harvard.edu/books/9780674224575"]]
+  },
+  "Narrative Practice": {
+    what:"Narrative practice understands that people make meaning through stories about themselves, their relationships and their experiences. It separates the person from the problem, explores how dominant social stories shape identity, and supports people to identify preferred stories that reflect their values, skills and hopes.",
+    practice:["Use language that separates the person from the problem rather than defining them by it.","Ask about times when the problem had less influence and what made that possible.","Explore the person’s values, commitments, relationships and knowledge.","Notice how social expectations, stigma and power shape the stories available to the person."],
+    remember:["The worker does not replace one story with a more positive story.","Stay curious and avoid claiming expert knowledge about the person’s life.","Narrative questions should remain purposeful and culturally respectful."],
+    related:["Strengths Based Practice","Empowerment Theory","Anti Oppressive Practice","Person Centred Practice"],
+    refs:[["White and Epston, Narrative means to therapeutic ends","https://wwnorton.com/books/9780393700985"],["Dulwich Centre, narrative practice resources","https://dulwichcentre.com.au/what-is-narrative-therapy/"]]
+  },
+  "Feminist Social Work": {
+    what:"Feminist social work examines how gender, power and social structures shape personal experiences and access to resources. It connects private experiences with wider patterns such as violence, unpaid care, poverty, discrimination and unequal decision making, while recognising that gender intersects with culture, race, class, disability, sexuality and other identities.",
+    practice:["Ask how gendered expectations, caring roles and economic inequality affect the person’s choices.","Recognise expertise gained through lived experience and support participation in decisions.","Challenge language or systems that blame people for violence, poverty or oppression.","Link individual support with advocacy where structural conditions are contributing to harm."],
+    remember:["Feminist practice is not one universal perspective and must remain intersectional.","Avoid assuming that all women or gender diverse people have the same experiences.","Power within the worker relationship also requires reflection and accountability."],
+    related:["Anti Oppressive Practice","Critical Social Work","Intersectionality","Domestic & Family Violence"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["Dominelli, Feminist social work theory and practice","https://link.springer.com/book/10.1007/978-0-230-62820-5"]]
+  },
+  "Anti Oppressive Practice": {
+    what:"Anti oppressive practice examines how power, privilege and structural inequality influence people’s experiences and their interactions with services. It asks social workers to identify oppression at interpersonal, organisational and societal levels and to work in ways that increase voice, access, participation and accountability.",
+    practice:["Reflect on the authority attached to your role and how it may affect communication or consent.","Identify service rules, language or assumptions that disadvantage particular groups.","Support people to participate meaningfully in decisions that affect them.","Use advocacy and organisational feedback when barriers are systemic rather than individual."],
+    remember:["Good intentions do not remove power differences.","Do not speak for people when you can create space for their own voice.","Anti oppressive practice requires ongoing self reflection, not a claim of being free from bias."],
+    related:["Critical Social Work","Feminist Social Work","Rights Based Practice","Intersectionality"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Dominelli, Anti oppressive social work theory and practice","https://link.springer.com/book/10.1007/978-1-4039-1400-2"]]
+  },
+  "Critical Social Work": {
+    what:"Critical social work connects personal difficulties with the political, economic and institutional conditions shaping them. It questions explanations that locate problems only within individuals and examines how power, policy, inequality and dominant ideas influence both people’s lives and social work responses.",
+    practice:["Ask what structural conditions are limiting the person’s choices or wellbeing.","Notice recurring patterns across cases, such as housing shortages or exclusionary eligibility rules.","Question whose knowledge is treated as authoritative and whose voice is overlooked.","Combine direct support with advocacy, community action or policy feedback where appropriate."],
+    remember:["Critical analysis should still lead to practical and respectful action.","Avoid reducing people to examples of structural disadvantage.","Reflect on how organisations and the profession can reproduce the inequalities they seek to address."],
+    related:["Anti Oppressive Practice","Social Determinants of Health","Social Policy & Systems","Advocacy"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW, Social policy and advocacy","https://www.aasw.asn.au/about-aasw/social-policy-and-advocacy/"]]
+  },
+  "Empowerment Theory": {
+    what:"Empowerment theory focuses on increasing people’s influence over decisions, resources and conditions affecting their lives. Empowerment is relational and structural as well as personal. It can involve confidence and skills, meaningful participation, access to information and resources, collective action and changes to unequal systems.",
+    practice:["Share information in a way that supports informed choice and participation.","Ask what control the person wants and what support would make that possible.","Recognise and build on existing knowledge, relationships and community resources.","Support collective or advocacy responses when individual action cannot address the barrier."],
+    remember:["A worker cannot give empowerment to another person.","Choice is not meaningful when options are inaccessible or unsafe.","Do not confuse compliance with participation or empowerment."],
+    related:["Strengths Based Practice","Rights Based Practice","Community Practice","Advocacy"],
+    refs:[["Rappaport, Terms of empowerment and exemplars of prevention","https://doi.org/10.1007/BF00919275"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  },
+  "Attachment Theory": {
+    what:"Attachment theory describes how early experiences of care and protection can influence expectations of safety, trust, closeness and support. In social work it can offer one lens for understanding relational patterns and emotional regulation across the lifespan, but it should be considered alongside trauma, culture, development and current social conditions.",
+    practice:["Create predictability by explaining your role, boundaries and what will happen next.","Notice how separation, rejection, trust or dependence may affect engagement without making assumptions.","Support safe and consistent relationships where possible.","Consider current environments and relationships rather than attributing all behaviour to childhood."],
+    remember:["Attachment patterns are not fixed diagnoses or personality labels.","Avoid blaming parents, carers or individuals without considering context and resources.","Western attachment concepts should not be imposed without cultural reflection."],
+    related:["Trauma Informed Practice","Relationship Based Practice","Children, Young People & Families","Family and Carer Inclusive Practice"],
+    refs:[["Bowlby, Attachment and loss","https://www.basicbooks.com/titles/john-bowlby/attachment/9780465005437/"],["Ainsworth et al., Patterns of attachment","https://www.routledge.com/Patterns-of-Attachment/Ainsworth-Blehar-Waters-Wall/p/book/9780898594614"]]
+  },
+  "Psychosocial Development": {
+    what:"Psychosocial development theories consider how identity, relationships, autonomy, purpose and belonging can change across the lifespan. Erikson’s stage model is one influential framework, but contemporary social work also recognises that development is shaped by culture, disability, trauma, opportunity and social conditions rather than following one fixed pathway.",
+    practice:["Consider the person’s current life stage, transitions, roles and social expectations.","Ask how identity, connection, autonomy or purpose are being affected.","Recognise that development may be non linear and shaped by interrupted opportunities.","Support age appropriate participation without making assumptions based only on age."],
+    remember:["Stage theories are guides, not universal rules.","Do not treat difference from a typical pathway as failure.","Culture and social context influence how developmental tasks are understood."],
+    related:["Attachment Theory","Social Learning Theory","Children, Young People & Families","Older People"],
+    refs:[["Erikson, Childhood and society","https://wwnorton.com/books/9780393310689"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  },
+  "Social Learning Theory": {
+    what:"Social learning theory explains that people can learn behaviours, expectations and coping strategies through observation, modelling, reinforcement and beliefs about their own capability. It can help social workers consider how relationships, peers, family, media and environments shape learning and behaviour.",
+    practice:["Model calm, respectful and transparent communication.","Break new skills into achievable steps and provide opportunities for practice.","Identify who or what is reinforcing a behaviour and what alternatives are available.","Build self efficacy by recognising effort, progress and successful experiences."],
+    remember:["Behaviour is not explained by modelling alone.","Consider trauma, culture, disability and structural conditions alongside learning processes.","Avoid using reinforcement in ways that are controlling or disrespectful."],
+    related:["Cognitive Behavioural Theory","Strengths Based Practice","Group Work Theory","Psychosocial Development"],
+    refs:[["Bandura, Social learning theory","https://archive.org/details/sociallearningth0000band"],["Bandura, Self efficacy: Toward a unifying theory of behavioral change","https://doi.org/10.1037/0033-295X.84.2.191"]]
+  },
+  "Cognitive Behavioural Theory": {
+    what:"Cognitive behavioural theory explores relationships between thoughts, emotions, physical responses and behaviour. In social work it can support collaborative understanding of patterns and coping strategies, while remaining attentive to trauma, relationships and social conditions that cannot be changed through individual thinking alone.",
+    practice:["Help the person notice links between situations, interpretations, feelings and actions.","Explore whether a thought is helpful, accurate or shaped by past experiences.","Identify practical coping strategies and small behavioural experiments chosen by the person.","Review what changed and what the person learned rather than presenting the worker’s interpretation as fact."],
+    remember:["Do not imply that distress is simply caused by incorrect thinking.","Use cognitive behavioural strategies only within your competence and role.","Structural barriers such as poverty, violence and discrimination require structural responses."],
+    related:["Social Learning Theory","Trauma Informed Practice","Strengths Based Practice","Motivational Interviewing"],
+    refs:[["Beck, Cognitive therapy and the emotional disorders","https://www.penguinrandomhouse.com/books/12639/cognitive-therapy-and-the-emotional-disorders-by-aaron-t-beck-md/"],["National Institute for Health and Care Excellence, mental health guidance","https://www.nice.org.uk/guidance/conditions-and-diseases/mental-health-behavioural-and-neurodevelopmental-conditions"]]
+  },
+  "Social Determinants of Health": {
+    what:"The social determinants of health are the conditions in which people are born, grow, live, work and age, together with the distribution of power, money and resources. Housing, income, education, employment, discrimination, transport, culture and access to services can strongly shape mental and physical health and produce avoidable inequities.",
+    practice:["Include housing, income, safety, food, transport, discrimination and social connection in assessment.","Identify which conditions can be addressed through practical support, referral or advocacy.","Document patterns showing how service or policy barriers affect wellbeing.","Avoid framing structural disadvantage as poor motivation or individual failure."],
+    remember:["Health inequities are not explained only by personal choices.","Social determinants interact and can accumulate over time.","Direct support and structural advocacy are both legitimate social work responses."],
+    related:["Systems and Ecological Theory","Critical Social Work","Housing & Homelessness","Social Policy & Systems"],
+    refs:[["World Health Organization, Social determinants of health","https://www.who.int/health-topics/social-determinants-of-health"],["Australian Institute of Health and Welfare, determinants of health","https://www.aihw.gov.au/reports/australias-health/social-determinants-of-health"]]
+  },
+  "Rights Based Practice": {
+    what:"Rights based practice understands people as rights holders and services and governments as having responsibilities to respect, protect and fulfil those rights. It centres dignity, equality, participation, privacy, access, accountability and freedom from discrimination in everyday assessment and decision making.",
+    practice:["Explain options, limits and decisions in accessible language.","Support genuine participation and supported decision making.","Identify which rights are engaged when services restrict choice or access.","Document the rationale, proportionality and least restrictive options for decisions affecting rights."],
+    remember:["Rights can involve competing considerations and require transparent reasoning.","Legal compliance is a minimum, not the whole of ethical practice.","People should have accessible ways to question decisions and make complaints."],
+    related:["Human Rights Act 2019 (Qld)","Supported Decision Making","Anti Oppressive Practice","Advocacy"],
+    refs:[["Queensland Human Rights Commission, Human Rights Act 2019","https://www.qhrc.qld.gov.au/your-rights/human-rights-law"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  },
+  "Ethics of Care": {
+    what:"Ethics of care emphasises relationships, interdependence, context and responsibility when considering ethical action. It challenges approaches that rely only on abstract rules by asking how decisions affect particular people, relationships and care responsibilities, while still recognising rights, justice and professional accountability.",
+    practice:["Consider who depends on whom and how a decision may affect important relationships.","Listen for responsibilities, vulnerability and care work that may be overlooked.","Balance responsiveness and compassion with boundaries, consent and fairness.","Use supervision to examine whether care is becoming paternalistic, unequal or unsustainable."],
+    remember:["Caring intentions do not justify overriding autonomy.","Care work is often gendered and unequally distributed.","Ethics of care should complement, not replace, rights and justice."],
+    related:["AASW Code of Ethics","Professional Boundaries","Feminist Social Work","Family and Carer Inclusive Practice"],
+    refs:[["Gilligan, In a different voice","https://www.hup.harvard.edu/books/9780674970960"],["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"]]
+  },
   "Documentation": {
     what:"Social work documentation creates an accountable record of contact, assessment, decisions, actions and follow up. Good records support continuity, communication, safety and the person’s rights. They should be relevant, timely, respectful, accurate and clear about the source of information and the worker’s professional judgement.",
     practice:["Record the purpose of contact, relevant facts, the person’s views, strengths, risks, actions and next steps.","Separate direct observations, reported information and professional interpretation.","Use objective, person respecting language and avoid unnecessary detail.","Complete records promptly and follow correction, access and security procedures."],
