@@ -1,19 +1,19 @@
-# Practice Compass: Practice Skills Content Expansion
+# Practice Compass: Visual Structure Restoration
 
-Replace only `app.js` in the current Practice Compass project.
+Replace both `app.js` and `style.css` in the current project.
 
-## Expanded topics
+## What this repairs
 
-This sprint adds developed content for 26 Practice Skills topics, including engagement, active listening, assessment, advocacy, case management, group work, difficult conversations, trauma informed communication, de escalation, crisis intervention, harm reduction, psychosocial rehabilitation, professional communication, documentation and evidence informed practice.
+This sprint keeps all recently added Practice Skills, Theories and Practice Areas content while restoring the last working shared visual system.
 
-Each topic follows the existing Toolkit structure:
+It restores:
 
-1. What it is
-2. What it looks like in practice
-3. Key things to remember
-4. Related topics
-5. Collapsed references
+1. Home focus card, snapshot columns, progress layout and Quick Hours card
+2. Assessment header, numbered content sections, checklist panels and progress cards
+3. Toolkit topic cards for definition, practice examples and key takeaways
+4. Proper spacing between labels, numbers, buttons and text
+5. White, sage and highlighted panels that create clear visual hierarchy
 
-Existing developed content for Motivational Interviewing, Risk and Safety Planning, Suicide Risk Assessment, Safety Planning and Documentation remains intact.
+## Protected
 
-No layouts, storage keys, saved data, Home, Reflect, Assessments, Me, backup tools or Toolkit categories were changed.
+No storage keys, reflections, assessment progress, timesheet data, backup data or Toolkit content have been removed or renamed.
