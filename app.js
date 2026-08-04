@@ -312,7 +312,7 @@ const toolkitCategories = [
     ["Professional Sustainability", "Recognise stress and the need for support."],
     ["Mental Health Act 2016 (Qld)", "Rights, treatment, decision making and safeguards."],
     ["Human Rights Act 2019 (Qld)", "Human rights in public decision making."],
-    ["Privacy & Confidentiality", "Information handling, consent and disclosure."],
+    ["Privacy & Confidentiality", "Privacy law, information handling and disclosure."],
     ["Guardianship & Decision Making", "Capacity and supported decision making."],
     ["Policy Analysis", "Examine policy goals, assumptions, impacts and gaps."],
     ["Service Systems", "Understand funding, eligibility and service responses."],
@@ -908,6 +908,79 @@ Object.assign(stage1ToolkitContent, {
     refs:[["Australian Human Rights Commission, National Anti Racism Framework","https://humanrights.gov.au/resource-hub/by-resource-type/publications/race/anti-racism-framework-perspectives-multicultural"],["Australian Human Rights Commission, race discrimination rights","https://humanrights.gov.au/know-your-rights/rights-of-individuals/race-discrimination"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
   }
 });
+Object.assign(stage1ToolkitContent, {
+  "Ethical Decision Making": {
+    what:"Ethical decision making is a structured process for responding when values, duties, rights, risks or organisational expectations conflict. It involves identifying the ethical issue, considering the person’s views and rights, checking professional standards and law, examining power and possible consequences, consulting appropriately, and documenting a defensible decision.",
+    practice:["Describe the ethical tension clearly rather than jumping straight to a solution.","Identify who is affected, whose voice is missing and what rights, values or duties are engaged.","Check the AASW Code of Ethics, relevant law, policy and available evidence.","Use supervision or consultation, consider realistic alternatives, and explain the final rationale transparently."],
+    remember:["Ethical practice is more than following policy.","A legally permitted action may still require ethical reflection.","Document the reasoning, consultation, alternatives considered and how the person was involved."],
+    related:["AASW Code of Ethics","Human Rights Act 2019 (Qld)","Supervision","Professional Boundaries"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Ethics and Practice Guidelines","https://www.aasw.asn.au/about-aasw/ethics-standards/ethics-and-practice-guidelines/"]]
+  },
+  "Reflective Practice": {
+    what:"Reflective practice involves examining what happened, how the worker understood it, what emotions and assumptions were present, how power and context shaped the interaction, and what should change next. Critical reflection goes beyond describing events by connecting practice with theory, ethics, culture and structural conditions.",
+    practice:["Separate description from analysis: what happened, what it meant and why it matters.","Notice emotional reactions, assumptions, uncertainty and the influence of your role or authority.","Consider how culture, policy, inequality and organisational systems shaped the situation.","Use supervision to test interpretations and identify a specific change for future practice."],
+    remember:["Reflection is not self criticism or a polished account of success.","Protect privacy and remove identifying details from personal learning records.","The value of reflection is shown through changed understanding or practice."],
+    related:["Supervision","Use of Self","Ethical Decision Making","AASW Practice Standards"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["AASW Supervision resources","https://www.aasw.asn.au/support-and-resources/supervision/"]]
+  },
+  "Professional Sustainability": {
+    what:"Professional sustainability is the capacity to practise ethically and effectively over time through realistic workload boundaries, supervision, reflective support, ongoing learning and attention to the effects of emotionally demanding work. It is not solely an individual self care responsibility; organisations also influence safety, workload and support.",
+    practice:["Notice changes in concentration, empathy, sleep, irritability, avoidance or over involvement.","Use supervision early when work is affecting judgement, boundaries or wellbeing.","Maintain routines for debriefing, leave, learning and connection outside work.","Raise unsafe workload, role confusion or repeated exposure concerns through appropriate organisational channels."],
+    remember:["Seeking support is part of accountable practice.","Personal coping strategies cannot fix unsafe systems or chronic understaffing.","Urgent risk, impairment or ethical concerns require prompt action rather than waiting for routine supervision."],
+    related:["Supervision","Professional Boundaries","Reflective Practice","Organisation Policies"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["AASW Supervision resources","https://www.aasw.asn.au/support-and-resources/supervision/"]]
+  },
+  "Mental Health Act 2016 (Qld)": {
+    what:"The Mental Health Act 2016 (Qld) provides the legal framework for involuntary assessment and treatment of people with mental illness in Queensland. It promotes voluntary treatment where possible and requires consideration of less restrictive ways of providing treatment and care. Strict legal criteria and safeguards apply before involuntary treatment can be authorised.",
+    practice:["Clarify whether the person is receiving voluntary or involuntary treatment and what legal authority applies.","Explain rights, review options and processes in accessible language within your role.","Keep the person’s views, preferences, advance health directive and nominated support people visible in planning.","Seek qualified clinical, legal or supervisory advice rather than making assumptions about powers under the Act."],
+    remember:["Mental illness alone does not justify involuntary treatment.","Capacity and treatment criteria are decision specific legal questions.","Use the current Act, Queensland Health guidance and local authorised procedures for any live decision."],
+    related:["Supported Decision Making","Human Rights Act 2019 (Qld)","Guardianship & Decision Making","Rights Based Practice"],
+    refs:[["Mental Health Act 2016 (Qld), current version","https://www.legislation.qld.gov.au/view/html/inforce/current/act-2016-005"],["Queensland Health, treating patients under the Mental Health Act 2016","https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/treating-patients-under-the-mental-health-act"],["Queensland Health, consent to treatment and less restrictive way","https://www.health.qld.gov.au/public-health/topics/mental-health-alcohol-and-other-drugs/for-healthcare-providers/treating-patients-under-the-mental-health-act/consent-to-treatment-treatment-authorities"]]
+  },
+  "Human Rights Act 2019 (Qld)": {
+    what:"The Human Rights Act 2019 (Qld) protects specified civil, political, cultural and economic rights. Queensland public entities must act and make decisions compatibly with human rights and give proper consideration to relevant rights. Some non government services may also have obligations when performing public functions.",
+    practice:["Identify which rights may be affected by a proposed decision or restriction.","Record how the person’s circumstances and views were considered.","Consider whether the action is lawful, necessary, proportionate and whether a less restrictive option is available.","Use organisational human rights procedures and seek advice where obligations are unclear."],
+    remember:["Human rights consideration should occur before a decision, not be added afterwards.","Rights can sometimes be limited, but limitations require lawful and proportionate justification.","Human rights practice complements social work ethics and advocacy."],
+    related:["Rights Based Practice","Ethical Decision Making","Mental Health Act 2016 (Qld)","Advocacy"],
+    refs:[["Human Rights Act 2019 (Qld), current version","https://www.legislation.qld.gov.au/view/html/inforce/current/act-2019-005"],["Queensland Human Rights Commission, Human Rights Act","https://www.qhrc.qld.gov.au/your-rights/human-rights-law"]]
+  },
+  "Privacy & Confidentiality": {
+    what:"Privacy law regulates how personal information is collected, stored, used, disclosed, accessed and corrected. Confidentiality is the professional duty to protect information within the helping relationship. The applicable legal rules depend on the organisation, jurisdiction and type of information, so workers must also follow current organisational policy.",
+    practice:["Collect only information needed for a clear professional purpose.","Explain how information may be used, stored and shared, including relevant limits.","Use secure systems, verify recipients and share the minimum necessary information.","Respond to access, correction, data breach or disclosure questions through authorised privacy processes."],
+    remember:["Consent is important but is not the only possible legal basis for information handling.","Do not assume every service is governed by exactly the same privacy legislation.","When unsure, pause and consult a supervisor or privacy officer before disclosing, unless urgent lawful action is required."],
+    related:["Confidentiality","Informed Consent","Documentation","Family and Carer Inclusive Practice"],
+    refs:[["OAIC, Australian Privacy Principles","https://www.oaic.gov.au/privacy/australian-privacy-principles"],["OAIC, Guide to Health Privacy","https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/health-service-providers/guide-to-health-privacy"],["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"]]
+  },
+  "Guardianship & Decision Making": {
+    what:"Queensland guardianship law applies when an adult has impaired capacity for a particular matter and a decision must be made. The system includes informal decision makers, enduring documents, statutory health attorneys and appointments by QCAT. Queensland law emphasises an adult’s dignity, participation, rights, will and preferences.",
+    practice:["Begin with the presumption of capacity and identify the specific decision involved.","Provide accessible information, time and communication support before concluding that substitute decision making may be required.","Check whether an advance health directive, enduring power of attorney, statutory health attorney or QCAT appointment exists.","Seek legal, clinical or supervisory guidance before relying on substitute decision making authority."],
+    remember:["Diagnosis or disability does not automatically establish impaired capacity.","Capacity is specific to the matter and time.","Support the adult’s participation, will and preferences even when another person has lawful authority."],
+    related:["Supported Decision Making","Informed Consent","Mental Health Act 2016 (Qld)","Disability Inclusive Practice"],
+    refs:[["Guardianship and Administration Act 2000 (Qld), current version","https://www.legislation.qld.gov.au/view/html/inforce/current/act-2000-008"],["Powers of Attorney Act 1998 (Qld), current version","https://www.legislation.qld.gov.au/view/whole/html/current/act-1998-022"],["Queensland Government, capacity guidelines","https://www.qld.gov.au/law/legal-mediation-and-justice-of-the-peace/power-of-attorney-and-making-decisions-for-others/capacity-guidelines"]]
+  },
+  "Policy Analysis": {
+    what:"Policy analysis examines what a policy is trying to achieve, how the issue is framed, whose knowledge and interests shaped it, how it is implemented, and what intended or unintended effects it creates. Social work analysis also considers power, equity, human rights and lived experience.",
+    practice:["Identify the stated problem, goals, target population and policy instruments.","Compare the written policy with how it operates in everyday service access and decision making.","Examine evidence, funding, eligibility, accountability and whose voices are absent.","Consider differential effects across culture, gender, disability, class, location and other intersecting factors."],
+    remember:["Policy is visible in forms, thresholds, waiting lists and service exclusions, not only legislation.","Implementation gaps can undermine a well stated policy goal.","Use credible evidence and de identified lived experience when recommending change."],
+    related:["Social Policy & Systems","Service Systems","Human Rights Act 2019 (Qld)","Advocacy"],
+    refs:[["AASW, Social policy and advocacy","https://www.aasw.asn.au/about-aasw/social-policy-and-advocacy/"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  },
+  "Service Systems": {
+    what:"Service systems are the connected organisations, funding arrangements, laws, referral pathways, eligibility rules and professional roles that shape how people access support. Systems can provide continuity and choice, but can also create duplication, exclusion and gaps between services.",
+    practice:["Map the services involved, their roles, thresholds and information sharing arrangements.","Identify where the person is being asked to repeat their story or coordinate the system alone.","Use warm referrals, clear handovers and agreed responsibility for follow up.","Document service barriers and raise recurring patterns through supervision, project work or advocacy."],
+    remember:["A referral is not a successful connection until access is confirmed.","Eligibility does not guarantee practical accessibility.","Keep the person’s goals and consent central when coordinating multiple services."],
+    related:["Case Management","Community Practice","Social Policy & Systems","Policy Analysis"],
+    refs:[["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"],["Australian Commission on Safety and Quality in Health Care, transitions of care","https://www.safetyandquality.gov.au/standards/nsqhs-standards/comprehensive-care-standard/minimising-patient-harm/action-604"]]
+  },
+  "Organisation Policies": {
+    what:"Organisation policies translate law, professional standards, funding requirements and local risk controls into expected workplace processes. They help workers act consistently, but they do not replace professional judgement, ethical reasoning, supervision or current legislation.",
+    practice:["Locate the current approved policy and check its review date and scope.","Distinguish mandatory requirements from guidance and local custom.","Ask how the policy applies to the person’s circumstances, rights and cultural context.","Use supervision when policy appears unclear, outdated, conflicting or likely to create harm."],
+    remember:["Do not rely on memory, informal summaries or an old downloaded copy for high stakes decisions.","Follow escalation pathways rather than quietly working around unsafe or conflicting requirements.","Practice Compass should support learning, not store confidential workplace procedures or client information."],
+    related:["Ethical Decision Making","Professional Boundaries","Privacy & Confidentiality","Service Systems"],
+    refs:[["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],["AASW Practice Standards 2023","https://www.aasw.asn.au/about-aasw/ethics-standards/practice-standards/"]]
+  }
+});
+
 
 
 const verifiedKnowledgeTopics = {
