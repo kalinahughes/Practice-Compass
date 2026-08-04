@@ -1,19 +1,32 @@
-# Practice Compass: Visual Structure Restoration
+# Practice Compass: Culture, Identity and Inclusion Content Expansion
 
-Replace both `app.js` and `style.css` in the current project.
+Replace only `app.js` in the current Practice Compass project.
 
-## What this repairs
+## Expanded topics
 
-This sprint keeps all recently added Practice Skills, Theories and Practice Areas content while restoring the last working shared visual system.
+This sprint adds developed Toolkit content for:
 
-It restores:
+1. Aboriginal and Torres Strait Islander Practice
+2. Cultural Humility
+3. Culturally Responsive Practice
+4. Cultural Safety
+5. Decolonising Practice
+6. CALD Practice
+7. Refugee and Asylum Seeker Practice
+8. LGBTQIA+ Affirmative Practice
+9. Disability Inclusive Practice
+10. Neurodiversity Affirming Practice
+11. Intersectionality
+12. Anti Racist Practice
 
-1. Home focus card, snapshot columns, progress layout and Quick Hours card
-2. Assessment header, numbered content sections, checklist panels and progress cards
-3. Toolkit topic cards for definition, practice examples and key takeaways
-4. Proper spacing between labels, numbers, buttons and text
-5. White, sage and highlighted panels that create clear visual hierarchy
+Each topic uses the existing Toolkit structure:
 
-## Protected
+1. What it is
+2. What it looks like in practice
+3. Key things to remember
+4. Related topics
+5. Collapsed references
 
-No storage keys, reflections, assessment progress, timesheet data, backup data or Toolkit content have been removed or renamed.
+The restored visual hierarchy and stylesheet are unchanged.
+
+No storage keys, saved data, Home, Reflect, Assessments, Me, backup tools, Toolkit categories or other content areas were changed.
