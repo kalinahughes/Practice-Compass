@@ -2103,8 +2103,7 @@ function assessmentDetail(id,openPlanning=false){
           <h1>${a.title}</h1>
           <p>${a.when}</p>
         </div>
-        <strong class="assessment-clear-percent">${progress}%</strong>
-        <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
+
       </header>
 
       <section class="assessment-clear-section" aria-labelledby="assessment-what-heading">
@@ -2113,48 +2112,35 @@ function assessmentDetail(id,openPlanning=false){
       </section>
 
       <section class="assessment-clear-section" aria-labelledby="assessment-do-heading">
-        <div class="assessment-clear-section-heading"><span>02</span><h2 id="assessment-do-heading">What you have to do</h2></div>
+        <div class="assessment-clear-section-heading"><span>02</span><h2 id="assessment-do-heading">What to look for and do</h2></div>
         <div class="assessment-clear-requirement">
-          <strong>JCU requirement</strong>
+          <strong>What JCU expects</strong>
           <p>${official.requirement}</p>
         </div>
-        <div class="assessment-clear-checklist">
-          ${taskItems.length?taskItems.map(taskRow).join(""):`<p class="assessment-clear-empty">No checklist has been added for this assessment yet. Check the official JCU instructions.</p>`}
+        <div class="assessment-focus-list">
+          ${(a.tasks||[]).slice(0,4).map(task=>`<p><span>✓</span>${task}</p>`).join("")}
+          ${reqs.slice(0,3).map(item=>`<p><span>○</span>Notice evidence of ${safeText(item).toLowerCase()}</p>`).join("")}
         </div>
+        ${taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
       </section>
 
-      ${a.id==="integration"?integrationSessionManager():""}
-
-      <section class="assessment-clear-section" aria-labelledby="assessment-progress-heading">
-        <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-progress-heading">Your progress</h2></div>
-        <div class="assessment-clear-summary-grid">
-          <div><small>Checklist</small><strong>${completeCount} of ${taskItems.length} complete</strong></div>
+      <section class="assessment-clear-section assessment-priority-panel" aria-labelledby="assessment-plan-heading">
+        <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-plan-heading">My plan and progress</h2></div>
+        <div class="assessment-priority-main">
+          <div><small>Next useful step</small><strong>${nextTask}</strong></div>
+          <div class="assessment-priority-percent"><strong>${progress}%</strong><small>complete</small></div>
+        </div>
+        <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
+        <div class="assessment-priority-grid">
           <div><small>Linked evidence</small><strong>${entries.length} reflection${entries.length===1?"":"s"}</strong></div>
-          <div><small>Evidence areas</small><strong>${reqs.length-missingRequirements.length} of ${reqs.length||0} covered</strong></div>
-          <div><small>Still to do</small><strong>${incomplete.length} item${incomplete.length===1?"":"s"}</strong></div>
+          <div><small>My target date</small><strong>${planning.date?formatPlanningDate(planning.date):"Not set"}</strong></div>
+          <div><small>Official timing</small><strong>${a.when}</strong></div>
         </div>
-        <div class="assessment-clear-progress-columns">
-          <div>
-            <h3>Already supported</h3>
-            ${completeCount?`<p>✓ ${completeCount} checklist item${completeCount===1?"":"s"} complete</p>`:`<p class="muted">No checklist items completed yet.</p>`}
-            ${entries.length?`<p>✓ ${entries.length} linked reflection${entries.length===1?"":"s"}</p>`:`<p class="muted">No reflections linked yet.</p>`}
-          </div>
-          <div>
-            <h3>Still needed</h3>
-            ${incomplete.length?`<p>○ ${incomplete.length} checklist item${incomplete.length===1?"":"s"}</p>`:`<p>✓ Checklist complete</p>`}
-            ${missingRequirements.length?missingRequirements.slice(0,3).map(item=>`<p>○ ${safeText(item)}</p>`).join(""):`<p>✓ Evidence areas represented</p>`}
-          </div>
-        </div>
+        <button class="assessment-clear-edit" id="openPlanningEdit">Edit my plan</button>
         ${entries.length?`<details class="assessment-clear-linked"><summary>Linked reflections <span>${entries.length}</span></summary><div>${entries.map(e=>`<article><strong>${e.date}</strong><p>${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</p></article>`).join("")}</div></details>`:""}
       </section>
 
-      <section class="assessment-clear-section assessment-clear-plan" aria-labelledby="assessment-plan-heading">
-        <div class="assessment-clear-section-heading"><span>04</span><h2 id="assessment-plan-heading">My plan</h2></div>
-        <div class="assessment-clear-plan-row"><small>Next useful step</small><strong>${nextTask}</strong></div>
-        <div class="assessment-clear-plan-row"><small>My target date</small><strong>${planning.date?formatPlanningDate(planning.date):"Not set"}</strong></div>
-        <div class="assessment-clear-plan-row"><small>Official timing</small><strong>${a.when}</strong></div>
-        <button class="assessment-clear-edit" id="openPlanningEdit">Edit planning date</button>
-      </section>
+      ${a.id==="integration"?integrationSessionManager():""}
 
       <details class="assessment-secondary-details assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
         <summary><span>Edit planning date</span><small>${planning.date?formatPlanningDate(planning.date):"Not set"}</small></summary>
@@ -2742,6 +2728,39 @@ function frameworkPage(){
 
 
 
+
+function timeSelectOptions(selected){
+  const options=[];
+  for(let minutes=6*60;minutes<=20*60;minutes+=15){
+    const h=Math.floor(minutes/60),m=minutes%60;
+    const value=`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+    const label=new Date(2000,0,1,h,m).toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"});
+    options.push(`<option value="${value}" ${value===selected?"selected":""}>${label}</option>`);
+  }
+  return options.join("");
+}
+function isWeekendDate(value){
+  const date=parseLocalDate(value);
+  return date && (date.getDay()===0||date.getDay()===6);
+}
+function timesheetDueForEntryDate(value){
+  const anchor=parseLocalDate(TIMESHEET_FIRST_DUE),date=parseLocalDate(value);
+  if(!date||!anchor)return TIMESHEET_FIRST_DUE;
+  const diff=Math.floor((date-anchor)/86400000);
+  const periods=Math.ceil(diff/14);
+  const due=new Date(anchor);due.setDate(anchor.getDate()+periods*14);
+  return localDateValue(due);
+}
+function groupedTimesheetEntries(entries){
+  const groups={};
+  entries.forEach(entry=>{
+    const due=timesheetDueForEntryDate(entry.date);
+    if(!groups[due])groups[due]=[];
+    groups[due].push(entry);
+  });
+  return Object.entries(groups).sort((a,b)=>b[0].localeCompare(a[0])).map(([due,items])=>({due,cycle:timesheetCycleForDue(due),items:items.sort((a,b)=>b.date.localeCompare(a.date)),hours:items.reduce((sum,item)=>sum+Number(item.hours||0),0)}));
+}
+
 function timesheetSubmissionCard(){
   const status=timesheetSubmissionStatus();
   const submissions=timesheetSubmissions();
@@ -2749,8 +2768,21 @@ function timesheetSubmissionCard(){
   const heading=status.overdue?"Submission overdue":status.days<=3?"Submission due soon":"Next submission";
   return `<section class="timesheet-submission-card ${status.overdue?"is-overdue":""}">
     <div><span class="home-kicker">${heading}</span><h2>Fortnight ending ${formatPlanningDate(status.dueDate)}</h2><p>${formatPlanningDate(status.cycle.start)} to ${formatPlanningDate(status.cycle.end)}</p></div>
-    ${submitted?`<span class="timesheet-submitted-badge">✓ Submitted</span>`:`<button class="btn" id="markTimesheetSubmitted" data-due-date="${status.dueDate}">Mark as submitted</button>`}
+    ${submitted?`<span class="timesheet-submitted-badge">✓ Submitted ${formatPlanningDate(submitted.submittedAt.slice(0,10))}</span>`:`<button class="btn" id="markTimesheetSubmitted" data-due-date="${status.dueDate}">Mark as submitted</button>`}
   </section>`;
+}
+
+function timesheetEntryGroups(entries){
+  const submissions=timesheetSubmissions();
+  const groups=groupedTimesheetEntries(entries);
+  if(!groups.length)return `<p class="muted personality-empty">📅 Your first timesheet entry will appear here.</p>`;
+  return groups.map((group,index)=>{
+    const submitted=submissions[group.due];
+    return `<details class="timesheet-entry-group" ${index===0?"open":""}>
+      <summary><span><strong>${formatPlanningDate(group.cycle.start)} to ${formatPlanningDate(group.cycle.end)}</strong><small>${group.items.length} entr${group.items.length===1?"y":"ies"} · ${group.hours.toFixed(2)} hours</small></span><span class="timesheet-group-status">${submitted?"✓ Submitted":"Current record"}</span></summary>
+      <div class="timesheet-entry-list">${group.items.map(e=>`<article class="timesheet-entry-row"><div><strong>${formatPlanningDate(e.date)}</strong><small>${e.start} to ${e.finish} · ${Number(e.hours).toFixed(2)} hrs · ${e.lunch} min lunch</small>${e.activities?`<p>${safeText(e.activities)}</p>`:""}</div></article>`).join("")}</div>
+    </details>`;
+  }).join("");
 }
 
 function timesheetPage(){
@@ -2759,25 +2791,71 @@ function timesheetPage(){
     <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>⏱️ Timesheets</h2></div>
     ${timesheetSubmissionCard()}
     <div class="card green"><div class="label">Timesheet record</div><p>Keep your daily hours current here. The official JCU workbook remains the formal record submitted every two weeks.</p></div>
-    <div class="card"><label class="label">Date</label><input id="tsDate" type="date" class="input"><div class="grid2" style="margin-top:10px"><input id="tsStart" type="time" class="input" value="09:00"><input id="tsFinish" type="time" class="input" value="17:00"></div><label class="label" style="display:block;margin-top:12px">Unpaid lunch minutes</label><input id="tsLunch" type="number" class="input" value="45"><label class="label" style="display:block;margin-top:12px">Activities</label><textarea id="tsActivities" class="textarea" placeholder="Orientation, team meeting, shadowing, documentation, group, supervision, research..."></textarea><button class="btn" id="saveTimesheet">Save timesheet entry</button></div>
-    <div class="card"><div class="label">Saved entries</div>${entries.length?entries.map(e=>`<div class="row"><div style="flex:1"><strong>${e.date}</strong><div class="small">${e.start} to ${e.finish} · ${Number(e.hours).toFixed(2)} hrs</div><div class="small">${e.activities||""}</div></div></div>`).join(""):`<p class="muted personality-empty">📅 Your first timesheet entry will appear here.</p>`}</div>`;
+    <div class="card timesheet-entry-form">
+      <label class="label" for="tsDate">Placement date</label><input id="tsDate" type="date" class="input">
+      <div class="grid2 timesheet-time-grid" style="margin-top:10px">
+        <label><span>Start</span><select id="tsStart" class="select">${timeSelectOptions("08:00")}</select></label>
+        <label><span>Finish</span><select id="tsFinish" class="select">${timeSelectOptions("16:30")}</select></label>
+      </div>
+      <label class="label" for="tsLunch" style="display:block;margin-top:12px">Unpaid lunch</label>
+      <select id="tsLunch" class="select"><option value="30">30 minutes</option><option value="45">45 minutes</option></select>
+      <p class="timesheet-weekday-note">Monday to Friday only. Weekend dates are blocked unless your placement arrangements change.</p>
+      <label class="label" for="tsActivities" style="display:block;margin-top:12px">Activities</label><textarea id="tsActivities" class="textarea" placeholder="Orientation, team meeting, shadowing, documentation, group, supervision, research..."></textarea>
+      <button class="btn" id="saveTimesheet">Save timesheet entry</button>
+    </div>
+    <section class="card timesheet-saved-card"><div class="label">Saved entries</div>${timesheetEntryGroups(entries)}</section>`;
   document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
+  document.getElementById("markTimesheetSubmitted")?.addEventListener("click",event=>{
+    markTimesheetSubmitted(event.currentTarget.dataset.dueDate);
+    timesheetPage();
+  });
   document.getElementById("saveTimesheet").onclick=()=>{
     const date=document.getElementById("tsDate").value,start=document.getElementById("tsStart").value,finish=document.getElementById("tsFinish").value,lunch=Number(document.getElementById("tsLunch").value||0),activities=document.getElementById("tsActivities").value.trim();
     if(!date||!start||!finish){alert("Add the date, start and finish time first.");return}
+    if(isWeekendDate(date)){alert("Placement is set to Monday to Friday. Choose a weekday date.");return}
     const [sh,sm]=start.split(":").map(Number),[fh,fm]=finish.split(":").map(Number); const total=Math.max(((fh*60+fm)-(sh*60+sm)-lunch)/60,0);
+    if(total<=0){alert("Finish time needs to be later than the start time after lunch.");return}
     const arr=timesheetEntries(); arr.unshift({id:Date.now(),date,start,finish,lunch,hours:total,activities}); state.set("timesheets",arr); state.set("hours",arr.reduce((sum,e)=>sum+Number(e.hours||0),0)); alert("✨ Timesheet entry saved"); timesheetPage();
   };
 }
 
 function supervisionPage(){
   const items=supervisionItems();
+  const categories=[
+    ["Practice situation","A situation or interaction I want help making sense of"],
+    ["Theory or framework","A theory I am unsure about or want to apply more confidently"],
+    ["Ethics, values or boundaries","Choice, consent, confidentiality, risk, power or professional boundaries"],
+    ["Skill feedback","A skill I used, observed or want feedback on"],
+    ["Assessment or judgement","How I gathered information, assessed risk or formed a professional view"],
+    ["Placement opportunity","An activity, higher duty or learning opportunity I want to request"],
+    ["Use of self or wellbeing","My reactions, confidence, communication style or emotional impact"]
+  ];
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>☕ Supervision</h2></div>
-    <div class="card green"><div class="label">Why am I doing this?</div><p>Supervision connects theory, ethics, feedback, use of self and professional development with your placement experiences.</p></div>
-    <div class="card"><select id="supType" class="select"><option>Question</option><option>Feedback</option><option>Action item</option><option>Ethical issue</option><option>Use of self</option><option>Learning goal</option></select><textarea id="supText" class="textarea" placeholder="What would you like to discuss or remember?"></textarea><button class="btn" id="saveSupervision">Save for supervision</button></div>
-    <div class="card"><div class="label">My supervision list</div>${items.length?items.map(i=>`<div class="row"><div><strong>${i.type}</strong><div class="small">${i.date}</div><div>${i.text}</div></div></div>`).join(""):`<p class="muted personality-empty">🤝 Save a question, feedback point or action when you are ready.</p>`}</div>`;
+    <div class="card green supervision-intro"><div class="label">Bring one useful thing</div><p>Use this space to hold questions, situations and feedback points so supervision stays connected to your real placement learning.</p></div>
+    <section class="card supervision-capture-card">
+      <div class="label">What do I want to bring?</div>
+      <div class="supervision-category-grid">${categories.map(([name,cue])=>`<button type="button" class="supervision-category" data-supervision-category="${name}" data-supervision-cue="${cue}"><strong>${name}</strong><small>${cue}</small></button>`).join("")}</div>
+      <label class="label" for="supType">Category</label><select id="supType" class="select">${categories.map(([name])=>`<option>${name}</option>`).join("")}</select>
+      <label class="label" for="supText">Short note</label><textarea id="supText" class="textarea" placeholder="What happened, what are you unsure about, or what feedback would help?"></textarea>
+      <button class="btn" id="saveSupervision">Save for supervision</button>
+    </section>
+    <details class="card supervision-ideas"><summary><strong>Ideas for supervision</strong><span>Open only when needed</span></summary><div class="supervision-idea-list">
+      <p>Which theory best explains a recent interaction, and what alternatives should I consider?</p>
+      <p>How would a social worker approach this differently from a general support role?</p>
+      <p>Can I receive feedback on my assessment, documentation, group facilitation or professional judgement?</p>
+      <p>What opportunities can I take on to practise higher duties, policy, leadership or multidisciplinary work?</p>
+      <p>Was there an ethical tension involving autonomy, risk, family involvement, confidentiality or boundaries?</p>
+    </div></details>
+    <section class="card supervision-saved"><div class="label">My supervision list</div>${items.length?`<details open><summary>${items.length} saved item${items.length===1?"":"s"}</summary><div class="supervision-saved-list">${items.map(i=>`<article class="supervision-saved-row"><strong>${safeText(i.type)}</strong><small>${safeText(i.date)}</small><p>${safeText(i.text)}</p></article>`).join("")}</div></details>`:`<p class="muted personality-empty">🤝 Save a question, feedback point or action when you are ready.</p>`}</section>`;
   document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
+  document.querySelectorAll(".supervision-category").forEach(button=>button.onclick=()=>{
+    document.getElementById("supType").value=button.dataset.supervisionCategory;
+    const text=document.getElementById("supText");
+    if(!text.value)text.placeholder=button.dataset.supervisionCue;
+    document.querySelectorAll(".supervision-category").forEach(item=>item.classList.remove("selected"));
+    button.classList.add("selected");
+  });
   document.getElementById("saveSupervision").onclick=()=>{const text=document.getElementById("supText").value.trim();if(!text){alert("Add a supervision note first.");return}const arr=supervisionItems();arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text});state.set("supervisionItems",arr);alert("🤝 Saved for supervision");supervisionPage();};
 }
 

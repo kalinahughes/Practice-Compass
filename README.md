@@ -1,40 +1,42 @@
-# Practice Compass: Placement Dates and Reminders
+# Practice Compass: Placement Workflow Refinement, Corrected
 
-Replace `app.js` and `style.css` in the current live project.
+Replace both `app.js` and `style.css`.
 
-## Integration Sessions
+This combined sprint is built for the current live version because the earlier workflow refinement was not uploaded.
 
-The Integration Sessions assessment now includes three editable session records.
+## Timesheets
 
-Each session has:
+1. Fixes Mark as submitted
+2. Uses 15 minute increments for start and finish times
+3. Limits lunch to 30 or 45 minutes
+4. Blocks ordinary Saturday and Sunday entries
+5. Groups saved entries into collapsible fortnights
+6. Keeps submitted periods available for review
 
-1. Date
-2. Status: Not booked, Booked or Completed
-3. Optional note
+## Assessment pages
 
-The dates already listed in Practice Compass are used as the starting dates:
+The assessment order is now:
 
-1. 21 August 2026
-2. 18 September 2026
-3. 16 October 2026
+1. What it is
+2. What to look for and do
+3. My plan and progress
 
-A session appears briefly on Home when it is within seven days or has just passed and still needs to be marked completed.
+My plan and progress remains the strongest visual panel, while the full checklist stays collapsed.
 
-## Timesheet submissions
+Integration Session booking and completion controls remain available.
 
-Timesheets now include a fortnightly submission card based on the placement cycle ending Friday 31 July 2026 and continuing every 14 days.
+## Supervision
 
-The card shows:
+Adds clear supervision preparation categories and collapsible saved items, including:
 
-1. The current fortnight
-2. The submission due date
-3. Whether it is due soon or overdue
-4. A Mark as submitted button
-
-Home only shows a timesheet reminder within three days of the due date or while a submission remains overdue. There is no permanent What’s Coming Up section.
+1. Practice situations
+2. Theory or framework questions
+3. Ethics, values and boundaries
+4. Skills feedback
+5. Assessment and professional judgement
+6. Placement opportunities
+7. Use of self and wellbeing
 
 ## Protected
 
-Daily hours entry is unchanged. Home, Reflect, Reflection Compass, Assessments, Toolkit, Me, My Practice Framework, backup tools and all existing storage keys remain intact.
-
-New information is stored separately under `integrationSessions` and `timesheetSubmissions`.
+No changes were made to Reflect, the Reflection Compass, Toolkit content, Me, My Practice Framework, backup tools or existing storage keys.
