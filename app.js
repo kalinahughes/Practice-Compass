@@ -8,6 +8,14 @@ const state = {
   set(k,v){ localStorage.setItem(k,JSON.stringify(v)) }
 };
 
+const pcIcons = {
+  toolkit:`<span class="pc-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z"></path><path d="M8 4v16M8 16h11"></path></svg></span>`,
+  framework:`<span class="pc-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="m14.8 9.2-2 5.6-3.6-3.6 5.6-2Z"></path></svg></span>`,
+  placement:`<span class="pc-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20V10"></path><path d="M12 13c-4 0-6-2-6-6 4 0 6 2 6 6ZM12 10c0-4 2-6 6-6 0 4-2 6-6 6Z"></path></svg></span>`,
+  sparkle:`<span class="pc-mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.4 4.1L17.5 8.5l-4.1 1.4L12 14l-1.4-4.1-4.1-1.4 4.1-1.4L12 3Z"></path><path d="m18 14 .8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8L18 14Z"></path></svg></span>`,
+  leaf:`<span class="pc-mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5C11 5 6 9 6 15c0 2 1 4 3 4 6 0 10-6 10-14Z"></path><path d="M6 19c2-4 5-7 9-9"></path></svg></span>`
+};
+
 const assessments = [
  {id:"modules",title:"Pre Placement Modules",when:"Before placement",icon:"✅",color:"stone",
   purpose:"Complete six preparation modules and their quizzes before placement begins.",
@@ -1869,7 +1877,7 @@ function reflectionLibrary(entries){
 function journalPage(){
   const entries=savedEntries();
   return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Capture the moment, then use the compass to recognise the social work within it.</p></section>
-  ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved. The practice areas you identified now contribute to My Practice Framework.</section>`:""}
+  ${lastSavedReflection?`<section class="reflection-saved-note">${pcIcons.sparkle} Reflection saved. The practice areas you identified now contribute to My Practice Framework.</section>`:""}
   <form class="reflection-simple" id="reflectionForm" onsubmit="return false">
     <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What happened?</strong><span>A quick note is enough. Keep client information de identified.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Capture the interaction in your own words..."></textarea><small class="reflection-draft-status" id="reflectionDraftStatus">Draft saves automatically on this device</small></section>
 
@@ -1881,7 +1889,7 @@ function journalPage(){
     <section class="conversation-card reflection-note-card"><label for="supervision"><strong>Question or note for supervision</strong><span>Optional</span></label><textarea id="supervision" class="textarea" placeholder="Something to check, clarify or explore..."></textarea></section>
     <button class="btn reflection-save-button" id="saveEntry">Save reflection</button>
   </form>
-  <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span><span>🌿</span><span><strong>Reflection insight</strong><small>A pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
+  <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span>${pcIcons.leaf}<span><strong>Reflection insight</strong><small>A pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
   ${reflectionLibrary(entries)}`;
 }
 function assessmentPage(){
@@ -1928,7 +1936,7 @@ function assessmentPage(){
   return `
     <div class="placement-native-calm">
       <section class="placement-native-heading placement-native-heading-compact">
-        <div class="eyebrow">🌱 Placement</div>
+        <div class="eyebrow">Placement</div>
         <h1>My Placement</h1>
         <p>Assessment progress, evidence and placement records.</p>
       </section>
@@ -2146,7 +2154,7 @@ function learnPage(){
   return `
     <section class="toolkit-welcome">
       <div class="eyebrow">Social work in your pocket</div>
-      <h1>📚 Practice Toolkit</h1>
+      <h1 class="page-heading-with-icon">${pcIcons.toolkit}<span>Practice Toolkit</span></h1>
       <p class="welcome-text">You do not need to know everything. Open one area when you need it.</p>
       <input id="toolkitSearch" class="input" placeholder="Search domestic violence, theory, skills, culture or policy">
     </section>
@@ -2546,7 +2554,7 @@ function frameworkPage(){
   const summaryEditor=summaryFields.map(field=>`<section class="framework-summary-editor-field"><div class="framework-summary-editor-heading"><div><strong>${field.title}</strong><small>${field.starter}</small></div>${summarySuggestions[field.id]?`<button type="button" class="framework-use-notes" data-summary-notes="${field.id}">Use my saved notes</button>`:""}</div><p>${field.prompt}</p><textarea class="textarea framework-summary-text" id="frameworkSummary-${field.id}" placeholder="Write this in your own words. You can keep changing it as placement develops.">${safeText(summary[field.id]||"")}</textarea>${summarySuggestions[field.id]?`<details class="framework-summary-notes"><summary>See the notes this draws from</summary><div>${safeText(summarySuggestions[field.id]).replace(/\n/g,"<br>")}</div></details>`:""}</section>`).join("");
 
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
+    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>${pcIcons.framework}<span>My Practice Framework</span></h2></div>
     <p class="framework-three-intro">One place to understand, develop and strengthen the framework guiding your social work practice.</p>
 
     <div class="framework-three-options">
