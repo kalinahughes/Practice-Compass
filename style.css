@@ -4415,3 +4415,26 @@ body:has(#toolkitList) .site-footer{padding-top:16px;padding-bottom:calc(86px + 
 .reflection-note-card label span{display:block;color:#76817e;font-size:.84rem;margin-top:3px}
 @media(min-width:760px){.reflection-lens-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.reflection-lens-card{height:max-content}}
 @media(max-width:480px){.reflection-compass-map-heading{padding:18px 16px}.reflection-lens-grid{padding:12px}.reflection-lens-heading{display:block}.reflection-lens-status{margin-top:11px}.reflection-status-button{flex:1}.reflection-lens-status{width:100%}.reflection-compass-mark{display:none}}
+
+/* Reflection Compass interaction refinement */
+.reflection-status-button.selected[data-status="no"]{background:#eef2f1;border-color:#c7d2cf;color:#52615e}
+.reflection-status-no{color:#66736f}
+.reflection-lens-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;color:#6a7773;font-size:.78rem}
+.reflection-clear-lens{padding:2px 0;font-size:.78rem}
+.reflection-option-chip{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.reflection-option-chip span{font-weight:700}
+.reflection-option-chip small{display:block;color:#73817d;font-size:.7rem;line-height:1.25;font-weight:500}
+.reflection-option-chip.selected small{color:rgba(255,255,255,.86)}
+.reflection-concept-inline{margin-top:12px;padding:13px 14px;border:1px solid #cfe0dc;border-radius:14px;background:#eef6f3;color:#334b46}
+.reflection-concept-inline strong{display:block;color:#315f58;margin-bottom:4px}
+.reflection-concept-inline p{margin:0 0 5px;line-height:1.45}
+.reflection-concept-inline small{display:block;color:#667873;line-height:1.4}
+.reflection-concept-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:11px}
+.reflection-concept-actions .btn{width:auto;min-height:38px;padding:8px 12px;font-size:.78rem}
+.reflection-draft-status{display:block;margin-top:8px;color:#72817d;font-size:.75rem}
+@media(max-width:480px){
+  .reflection-lens-status{display:grid;grid-template-columns:repeat(3,1fr)}
+  .reflection-status-button{width:100%;padding:8px 5px}
+  .reflection-concept-actions{align-items:stretch;flex-direction:column-reverse}
+  .reflection-concept-actions .btn,.reflection-concept-actions .text-link{width:100%;text-align:center}
+}

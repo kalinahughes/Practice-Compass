@@ -1124,7 +1124,7 @@ function verifiedKnowledgePage(topic,category){
       <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
     </article>`;
 
-  const goBack=()=>{route="learn";render()};
+  const goBack=()=>{const returnToReflection=state.get("reflectionReturnPending",false);state.set("reflectionReturnPending",false);route=returnToReflection?"journal":"learn";render()};
   document.getElementById("backToolkit").onclick=goBack;
   document.getElementById("returnToolkit").onclick=goBack;
   return true;
@@ -1743,21 +1743,80 @@ const reflectionCompassLenses=[
   {id:"supervision",title:"Supervision and learning",prompt:"Does anything need checking, feedback or further learning?",quick:["Discuss in supervision","Seek feedback","Observe again","Read a Toolkit topic","Clarify policy","Practise a skill"],all:["Discuss in supervision","Seek feedback","Observe again","Read a Toolkit topic","Clarify policy","Practise a skill","Ask another discipline","Review documentation","Find research evidence","No follow up needed"]},
   {id:"research",title:"Research and evidence",prompt:"Was evidence, policy or evaluation part of the interaction?",quick:["Evidence informed practice","Policy or legislation","Critical appraisal","Outcome evaluation","Practice standards","Research question"],all:["Evidence informed practice","Policy or legislation","Critical appraisal","Outcome evaluation","Practice standards","Research question","Service evaluation","Data collection","Lived experience evidence","Organisational procedure"]}
 ];
+
+const REFLECTION_DRAFT_KEY="reflectionCompassDraft";
+function captureReflectionDraft(){
+  const answer=document.getElementById("answer")?.value||"";
+  const supervision=document.getElementById("supervision")?.value||"";
+  const statuses={};
+  document.querySelectorAll(".reflection-status-button.selected").forEach(button=>statuses[button.dataset.lensStatus]=button.dataset.status);
+  const selections={};
+  reflectionCompassLenses.forEach(lens=>selections[lens.id]=reflectionLensSelection(lens.id));
+  const draft={answer,supervision,statuses,selections,updatedAt:new Date().toISOString()};
+  state.set(REFLECTION_DRAFT_KEY,draft);
+  return draft;
+}
+function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",supervision:"",statuses:{},selections:{},updatedAt:""});}
+function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",supervision:"",statuses:{},selections:{},updatedAt:""});}
+function restoreReflectionDraft(){
+  const draft=reflectionDraft();
+  const answer=document.getElementById("answer"),supervision=document.getElementById("supervision");
+  if(answer)answer.value=draft.answer||"";
+  if(supervision)supervision.value=draft.supervision||"";
+  Object.entries(draft.statuses||{}).forEach(([lens,status])=>{
+    const selected=document.querySelector(`.reflection-status-button[data-lens-status="${lens}"][data-status="${status}"]`);
+    if(selected)selected.classList.add("selected");
+    if(status!=="no")document.querySelector(`[data-lens-options="${lens}"]`)?.classList.remove("hidden");
+    const guidance=document.querySelector(`[data-guidance="${lens}"]`);
+    if(guidance){guidance.innerHTML=reflectionGuidanceText(lens,status);guidance.classList.toggle("hidden",status!=="unsure");}
+  });
+  Object.entries(draft.selections||{}).forEach(([lens,values])=>{
+    (values||[]).forEach(value=>document.querySelectorAll(`.reflection-option-chip[data-lens="${lens}"]`).forEach(button=>{if(button.dataset.value===value)button.classList.add("selected");}));
+  });
+  const note=document.getElementById("reflectionDraftStatus");
+  if(note && draft.updatedAt && (draft.answer||Object.values(draft.selections||{}).some(items=>(items||[]).length))) note.textContent="Draft restored automatically";
+}
+function reflectionOptionCue(value){
+  const info=reflectionConceptInfo[value];
+  if(info)return info[0];
+  const cues={
+    "Critical Social Work":"Power, inequality and how systems shape people’s experiences.",
+    "Social Determinants of Health":"How housing, income, education, discrimination and access shape wellbeing.",
+    "Systems and Ecological Theory":"How relationships, services and wider environments interact.",
+    "Feminist Social Work":"How gender, power and intersecting inequalities shape experience.",
+    "Empowerment Theory":"Building participation, control, confidence and access to resources.",
+    "Ethics of Care":"Relationships, responsiveness and the responsibilities created through care.",
+    "Attachment Theory":"How patterns of safety and relationships may influence connection and coping."
+  };
+  return cues[value]||"";
+}
+function openReflectionLearnMore(value,lens){
+  captureReflectionDraft();
+  const info=reflectionConceptInfo[value]||[reflectionOptionCue(value)||`${value} is a practice concept available in the Toolkit.`,`Compare the concept with what actually happened before deciding whether it fits.`,value];
+  const panel=document.querySelector(`[data-concept-lens="${lens}"]`);if(!panel)return;
+  panel.classList.remove("hidden");
+  panel.innerHTML=`<div><strong>${safeText(value)}</strong><p>${safeText(info[0])}</p><small>${safeText(info[1])}</small></div><div class="reflection-concept-actions"><button type="button" class="text-link reflection-concept-close">Close</button><button type="button" class="btn secondary reflection-open-toolkit">Open Toolkit topic</button></div>`;
+  panel.querySelector(".reflection-concept-close").onclick=()=>panel.classList.add("hidden");
+  panel.querySelector(".reflection-open-toolkit").onclick=()=>{captureReflectionDraft();state.set("reflectionReturnPending",true);openToolkitTopicByName(info[2]||value);};
+}
 function reflectionLensSelection(lensId){return [...document.querySelectorAll(`.reflection-option-chip.selected[data-lens="${lensId}"]`)].map(button=>button.dataset.value);}
 function reflectionLensCard(lens){
-  const quick=new Set(lens.quick);
-  const quickHtml=lens.quick.map(value=>`<button type="button" class="reflection-option-chip" data-lens="${lens.id}" data-value="${safeText(value)}">${safeText(value)}</button>`).join("");
-  const more=lens.all.filter(value=>!quick.has(value));
-  const moreHtml=more.map(value=>`<button type="button" class="reflection-option-chip" data-lens="${lens.id}" data-value="${safeText(value)}">${safeText(value)}</button>`).join("");
+  const optionHtml=value=>{const cue=reflectionOptionCue(value);return `<button type="button" class="reflection-option-chip" data-lens="${lens.id}" data-value="${safeText(value)}"><span>${safeText(value)}</span>${cue?`<small>${safeText(cue)}</small>`:""}</button>`};
+  const quickHtml=lens.quick.map(optionHtml).join("");
+  const more=lens.all.filter(value=>!lens.quick.includes(value));
+  const moreHtml=more.map(optionHtml).join("");
   return `<article class="reflection-lens-card" data-lens-card="${lens.id}">
-    <div class="reflection-lens-heading"><div><strong>${safeText(lens.title)}</strong><small>${safeText(lens.prompt)}</small></div><div class="reflection-lens-status"><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="relevant">Relevant</button><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="unsure">Not sure</button></div></div>
+    <div class="reflection-lens-heading"><div><strong>${safeText(lens.title)}</strong><small>${safeText(lens.prompt)}</small></div><div class="reflection-lens-status"><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="relevant">Relevant</button><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="unsure">Not sure</button><button type="button" class="reflection-status-button reflection-status-no" data-lens-status="${lens.id}" data-status="no">No</button></div></div>
     <div class="reflection-lens-options hidden" data-lens-options="${lens.id}">
+      <div class="reflection-lens-tools"><span>Select anything that fits</span><button type="button" class="text-link reflection-clear-lens" data-clear-lens="${lens.id}">Clear</button></div>
       <div class="reflection-quick-options">${quickHtml}</div>
       <details class="reflection-all-options"><summary>See all options</summary><div class="reflection-option-search-wrap"><input type="search" class="input reflection-option-search" data-search-lens="${lens.id}" placeholder="Search ${safeText(lens.title.toLowerCase())}"></div><div class="reflection-all-option-grid" data-all-options="${lens.id}">${moreHtml}</div></details>
       <div class="reflection-guidance hidden" data-guidance="${lens.id}"></div>
+      <div class="reflection-concept-inline hidden" data-concept-lens="${lens.id}"></div>
     </div>
   </article>`;
 }
+
 function reflectionGuidanceText(lensId,status){
   const prompts={
     theory:"Look for the idea that best explains the person, interaction, change process or wider context. More than one theory can fit.",
@@ -1812,7 +1871,7 @@ function journalPage(){
   return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Capture the moment, then use the compass to recognise the social work within it.</p></section>
   ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved. The practice areas you identified now contribute to My Practice Framework.</section>`:""}
   <form class="reflection-simple" id="reflectionForm" onsubmit="return false">
-    <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What happened?</strong><span>A quick note is enough. Keep client information de identified.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Capture the interaction in your own words..."></textarea></section>
+    <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What happened?</strong><span>A quick note is enough. Keep client information de identified.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Capture the interaction in your own words..."></textarea><small class="reflection-draft-status" id="reflectionDraftStatus">Draft saves automatically on this device</small></section>
 
     <section class="conversation-card reflection-compass-map">
       <div class="reflection-compass-map-heading"><div><span class="eyebrow">Quick identify</span><h2>What was happening here?</h2><p>Tap Relevant or Not sure. Choose only what fits. Unselected areas stay out of the way.</p></div><span class="reflection-compass-mark">🧭</span></div>
@@ -2148,7 +2207,7 @@ function toolkitDetail(categoryIndex,topicIndex){
         <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
       </article>`;
 
-    const goBack=()=>{route="learn";render()};
+    const goBack=()=>{const returnToReflection=state.get("reflectionReturnPending",false);state.set("reflectionReturnPending",false);route=returnToReflection?"journal":"learn";render()};
     document.getElementById("backToolkit").onclick=goBack;
     document.getElementById("returnToolkit").onclick=goBack;
     document.querySelectorAll("[data-toolkit-name]").forEach(button=>{
@@ -2177,7 +2236,7 @@ function toolkitDetail(categoryIndex,topicIndex){
       <button class="btn secondary toolkit-return" id="returnToolkit">Return to Practice Toolkit</button>
     </article>`;
 
-  const goBack=()=>{route="learn";render()};
+  const goBack=()=>{const returnToReflection=state.get("reflectionReturnPending",false);state.set("reflectionReturnPending",false);route=returnToReflection?"journal":"learn";render()};
   document.getElementById("backToolkit").onclick=goBack;
   document.getElementById("returnToolkit").onclick=goBack;
 }
@@ -2763,6 +2822,7 @@ function saveEntry(){
   framework.cultural=[...new Set([...(framework.cultural||[]),...cultural,...systems])];
   if(useOfSelfTags.length) framework.useOfSelf=[framework.useOfSelf,useOfSelfTags.join(", ")].filter(Boolean).join("\n");
   saveFrameworkData(framework);
+  clearReflectionDraft();
   if(supervision){const items=supervisionItems();items.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:supervision});state.set("supervisionItems",items);}
   lastSavedReflection=entry;render();window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -2939,10 +2999,35 @@ function bind(){
   document.querySelectorAll(".reflection-status-button").forEach(button=>button.addEventListener("click",()=>{
     const lens=button.dataset.lensStatus,status=button.dataset.status;
     document.querySelectorAll(`.reflection-status-button[data-lens-status="${lens}"]`).forEach(item=>item.classList.toggle("selected",item===button));
-    const options=document.querySelector(`[data-lens-options="${lens}"]`);if(options) options.classList.remove("hidden");
-    const guidance=document.querySelector(`[data-guidance="${lens}"]`);if(guidance){guidance.innerHTML=reflectionGuidanceText(lens,status);guidance.classList.toggle("hidden",status!=="unsure");}
+    const options=document.querySelector(`[data-lens-options="${lens}"]`);
+    const guidance=document.querySelector(`[data-guidance="${lens}"]`);
+    if(status==="no"){
+      document.querySelectorAll(`.reflection-option-chip[data-lens="${lens}"]`).forEach(item=>item.classList.remove("selected"));
+      options?.classList.add("hidden");
+      guidance?.classList.add("hidden");
+      document.querySelector(`[data-concept-lens="${lens}"]`)?.classList.add("hidden");
+    }else{
+      options?.classList.remove("hidden");
+      if(guidance){guidance.innerHTML=reflectionGuidanceText(lens,status);guidance.classList.toggle("hidden",status!=="unsure");}
+    }
+    captureReflectionDraft();
   }));
-  document.querySelectorAll(".reflection-option-chip").forEach(button=>button.addEventListener("click",()=>button.classList.toggle("selected")));
+  document.querySelectorAll(".reflection-option-chip").forEach(button=>button.addEventListener("click",()=>{
+    button.classList.toggle("selected");
+    const lens=button.dataset.lens,value=button.dataset.value;
+    if(button.classList.contains("selected"))openReflectionLearnMore(value,lens);
+    else document.querySelector(`[data-concept-lens="${lens}"]`)?.classList.add("hidden");
+    captureReflectionDraft();
+  }));
+  document.querySelectorAll(".reflection-clear-lens").forEach(button=>button.addEventListener("click",()=>{
+    const lens=button.dataset.clearLens;
+    document.querySelectorAll(`.reflection-option-chip[data-lens="${lens}"]`).forEach(item=>item.classList.remove("selected"));
+    document.querySelectorAll(`.reflection-status-button[data-lens-status="${lens}"]`).forEach(item=>item.classList.remove("selected"));
+    document.querySelector(`[data-lens-options="${lens}"]`)?.classList.add("hidden");
+    captureReflectionDraft();
+  }));
+  ["answer","supervision"].forEach(id=>document.getElementById(id)?.addEventListener("input",captureReflectionDraft));
+  restoreReflectionDraft();
   document.querySelectorAll(".reflection-option-search").forEach(input=>input.addEventListener("input",()=>{
     const lens=input.dataset.searchLens,query=input.value.toLowerCase().trim();
     document.querySelectorAll(`[data-all-options="${lens}"] .reflection-option-chip`).forEach(button=>button.classList.toggle("hidden",query&&!button.dataset.value.toLowerCase().includes(query)));
