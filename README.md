@@ -1,9 +1,18 @@
-# Practice Compass: Font and Custom Icon Identity
+# Practice Compass: Restore Original Character
 
-Replace `index.html`, `app.js` and `style.css`.
+Replace these three files:
 
-This sprint changes visual identity only. It introduces DM Sans for body text, Nunito Sans for headings and a consistent rounded line icon system for the brand, menu, bottom navigation, Toolkit heading, Practice Framework heading and selected high level notices.
+1. index.html
+2. app.js
+3. style.css
 
-Native phone emojis remain only where they provide useful personality inside content. They are no longer used as the primary navigation and brand system.
+This correction removes the custom line icon system and the new DM Sans / Nunito Sans font combination.
 
-No routes, storage keys, saved data, assessment logic, reflection logic, Toolkit content, framework data or backup functions were changed.
+It restores:
+
+1. The previous familiar font system
+2. The warmer emoji and botanical identity
+3. The original navigation symbols and page personality
+4. The useful spacing, card, colour and hierarchy improvements from the Final Consistency Audit
+
+No saved data, storage keys, reflection functions, Toolkit content, assessment content, framework content or backup functions are changed.
