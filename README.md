@@ -1,23 +1,22 @@
-# Practice Compass: Framework Three Options
+# Practice Compass: Final Consistency Audit
 
-Replace both `app.js` and `style.css` in the current project.
+Replace only `style.css` in the current live project.
 
-## My Practice Framework now has three choices only
+## What this sprint changes
 
-1. My Practice Framework
-2. Develop My Framework
-3. Areas to Strengthen
+This is a visual-only consistency pass across the current working app. It standardises:
 
-The separate overview and emerging framework sections have been removed.
-
-My Practice Framework is now the single place where the overall framework is written and saved.
-
-Develop My Framework keeps the six distinct practice areas and the original detailed learning areas inside them.
-
-Areas to Strengthen remains a small optional section and is clearly framed as guidance rather than another task list.
+1. Slate teal, bright teal, eucalyptus, sage and white hierarchy
+2. Card borders, corner radii and shadows
+3. Heading spacing and section rhythm
+4. Primary and secondary button styling
+5. Home statistics and progress spacing
+6. Assessment headings, checklists and secondary details
+7. Reflection Compass lens spacing and scanability
+8. Toolkit cards and highlighted sections
+9. The three Practice Framework options
+10. Bottom navigation selected states
 
 ## Protected
 
-All saved framework responses, evidence links, reflection links, supervision links and storage keys remain unchanged.
-
-No changes were made to Home, Reflect, Reflection Compass, Assessments, Toolkit, timesheets or backup tools.
+No JavaScript, content, routes, saved data, storage keys or functionality were changed.

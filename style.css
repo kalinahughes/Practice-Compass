@@ -4522,3 +4522,227 @@ body:has(#toolkitList) .site-footer{padding-top:16px;padding-bottom:calc(86px + 
   .framework-option-context{grid-template-columns:1fr 1fr;}
   .framework-primary-option > summary{padding:16px;}
 }
+
+/* =========================================================
+   Final consistency audit
+   Visual-only normalization for the approved Practice Compass
+   slate teal, eucalyptus, sage and white design system.
+   ========================================================= */
+:root{
+  --pc-slate:#3f6f78;
+  --pc-slate-deep:#315e66;
+  --pc-teal:#2f8792;
+  --pc-eucalyptus:#6f8f7a;
+  --pc-sage:#dce8df;
+  --pc-mist:#f5f8f7;
+  --pc-ink:#2f3835;
+  --pc-muted:#6d7975;
+  --pc-border:#dce6e2;
+  --pc-radius-lg:22px;
+  --pc-radius-md:16px;
+  --pc-shadow:0 8px 24px rgba(40,68,63,.06);
+}
+
+/* Keep all pages visually related without changing their structure. */
+main{padding-inline:18px}
+.screen-title,
+.placement-native-heading,
+.framework-foundation-heading{
+  margin-bottom:16px;
+}
+.screen-title h2,
+.placement-native-heading h1,
+.framework-foundation-heading h2,
+.framework-foundation-heading h3{
+  color:var(--pc-slate-deep);
+  letter-spacing:-.02em;
+}
+.eyebrow,
+.label,
+.section-title,
+.home-kicker{
+  color:var(--pc-slate);
+  letter-spacing:.08em;
+}
+
+/* Shared content surfaces. */
+.home-card,
+.placement-overview-card,
+.placement-section,
+.assessment-list-row,
+.assessment-secondary-details,
+.assessment-primary-section,
+.assessment-clear-section,
+.reflection-library,
+.reflection-compass-map,
+.journey-growth-panel,
+.journey-support-panel,
+.journey-framework-panel,
+.journey-app-section,
+.framework-primary-option,
+.framework-group-card,
+.toolkit-folder,
+.toolkit-topic-section,
+.toolkit-secondary-details{
+  border-color:var(--pc-border);
+  box-shadow:var(--pc-shadow);
+}
+
+/* One consistent action language. */
+.btn,
+.quick-action,
+.home-text-button,
+.journey-text-action,
+.linked-resource,
+.mini-btn{
+  border-radius:14px;
+}
+.btn{
+  min-height:46px;
+  font-weight:760;
+}
+.btn:not(.secondary){
+  background:var(--pc-teal);
+  border-color:var(--pc-teal);
+}
+.btn:not(.secondary):hover{filter:brightness(.97)}
+.btn.secondary{
+  background:#fff;
+  color:var(--pc-slate-deep);
+  border-color:var(--pc-border);
+}
+.text-link{
+  color:var(--pc-teal);
+  font-weight:760;
+}
+
+/* Home: maintain the inviting hierarchy and prevent cramped statistics. */
+.home-greeting h1{color:var(--pc-slate-deep)}
+.home-greeting p{color:var(--pc-muted)}
+.home-card-heading{
+  align-items:flex-start;
+  gap:12px;
+}
+.home-card-heading h2{line-height:1.2}
+.home-progress-meta,
+.home-snapshot-grid,
+.assessment-clear-summary-grid{
+  column-gap:14px;
+  row-gap:12px;
+}
+.home-progress-meta > *,
+.home-snapshot-grid > *,
+.assessment-clear-summary-grid > *{
+  min-width:0;
+}
+.home-progress-meta strong,
+.home-snapshot-grid strong,
+.assessment-clear-summary-grid strong{
+  display:block;
+  line-height:1.1;
+  margin-bottom:3px;
+}
+.home-reminder{
+  border-color:rgba(47,135,146,.2);
+}
+
+/* Assessments: align titles, numbered sections, lists and secondary details. */
+.assessment-clear-title h1,
+.assessment-hero-readable h1{color:var(--pc-slate-deep)}
+.assessment-primary-heading,
+.assessment-clear-heading{
+  gap:12px;
+  align-items:flex-start;
+}
+.assessment-primary-heading h3,
+.assessment-clear-heading h2{
+  line-height:1.25;
+}
+.assessment-detail-calm .task-row,
+.evidence-list-row,
+.assessment-clear-plan-row{
+  gap:12px;
+}
+.assessment-secondary-details summary,
+.journey-utility-details summary,
+.toolkit-secondary-details summary{
+  min-height:52px;
+  align-items:center;
+}
+
+/* Reflect: keep the full compass visible while making each lens easier to scan. */
+.reflection-lens-grid{gap:11px}
+.reflection-lens-card{border-color:var(--pc-border)}
+.reflection-lens-heading strong{color:var(--pc-ink)}
+.reflection-lens-heading small{color:var(--pc-muted)}
+.reflection-status-button{
+  min-height:34px;
+  border-color:#cfdcda;
+}
+.reflection-option-chip{
+  min-height:39px;
+  justify-content:center;
+}
+.reflection-guidance,
+.reflection-concept-inline{
+  border-color:#cfe0dc;
+  background:#eef6f3;
+}
+
+/* Toolkit: preserve the hierarchy restored in the repair sprint. */
+.toolkit-topic-section h2,
+.toolkit-folder strong,
+.folder-title{color:var(--pc-slate-deep)}
+.toolkit-development-note{background:var(--pc-mist)}
+.toolkit-pill-list .pill{
+  background:#e4efeb;
+  color:#355b52;
+}
+
+/* Me and framework: three clear options with one consistent rhythm. */
+.framework-three-options{gap:13px}
+.framework-primary-option > summary{
+  gap:12px;
+  align-items:center;
+}
+.framework-primary-option > summary strong{color:var(--pc-slate-deep)}
+.framework-option-context span{background:rgba(63,111,120,.08)}
+.framework-group-card[open] > summary{background:rgba(220,232,223,.46)}
+.journey-empty-message,
+.personality-empty-card{
+  border-color:var(--pc-border);
+  background:var(--pc-mist);
+}
+
+/* Bottom navigation: consistent labels and selected state. */
+.bottom-nav{
+  border-top-color:rgba(63,111,120,.14);
+}
+.bottom-nav .nav{
+  min-width:0;
+}
+.bottom-nav .nav.active{
+  color:var(--pc-slate-deep);
+}
+
+@media(max-width:520px){
+  main{padding-inline:16px}
+  .home-card,
+  .placement-overview-card,
+  .placement-section,
+  .assessment-primary-section,
+  .assessment-clear-section,
+  .journey-growth-panel,
+  .journey-support-panel,
+  .journey-framework-panel,
+  .journey-app-section{
+    border-radius:19px;
+  }
+  .home-progress-meta,
+  .home-snapshot-grid,
+  .assessment-clear-summary-grid{
+    gap:10px;
+  }
+  .reflection-lens-heading{padding:14px 13px}
+  .framework-primary-option > summary{min-height:68px}
+}
