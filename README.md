@@ -1,32 +1,36 @@
-# Practice Compass: Ethics, Law and Professional Practice Content Expansion
+# Practice Compass: Reflection Compass and Framework Link Sprint
 
-Replace only `app.js` in the current Practice Compass project.
+Replace both `app.js` and `style.css` in the current project.
 
-## Expanded topics
+## What changed
 
-This sprint adds developed Toolkit content for:
+The Reflection Companion is now a visual Practice Compass rather than a long series of dropdowns.
 
-1. Ethical Decision Making
-2. Reflective Practice
-3. Professional Sustainability
-4. Mental Health Act 2016 (Qld)
-5. Human Rights Act 2019 (Qld)
-6. Privacy and Confidentiality
-7. Guardianship and Decision Making
-8. Policy Analysis
-9. Service Systems
-10. Organisation Policies
+1. Capture a short de identified note about what happened.
+2. See all practice lenses together.
+3. Tap Relevant or Not sure for the areas that matter.
+4. Select quick recognition options immediately.
+5. Open See all options only when a wider list is needed.
+6. Add an optional supervision question.
 
-The existing developed content for the AASW Code of Ethics, AASW Practice Standards, Professional Boundaries, Confidentiality, Informed Consent, Supported Decision Making and Supervision remains intact.
+The lenses remain distinct:
 
-Each topic uses the established Toolkit structure:
+1. Theory and frameworks
+2. Methods and approaches
+3. Practice skills
+4. Values
+5. Ethics
+6. Assessment and judgement
+7. Use of self
+8. Culture, identity and inclusion
+9. Systems and context
+10. Supervision and learning
+11. Research and evidence
 
-1. What it is
-2. What it looks like in practice
-3. Key things to remember
-4. Related topics
-5. Collapsed references
+## Framework connection
 
-The restored visual hierarchy and stylesheet are unchanged.
+Saved selections contribute to My Journey and My Practice Framework. Existing reflections remain unchanged. New reflections store the selected concepts in their own fields while retaining the existing reflection and evidence structure.
 
-No storage keys, saved data, Home, Reflect, Assessments, Me, backup tools, Toolkit categories or other app areas were changed.
+## Protected
+
+No Toolkit content, assessment layouts, Home layout, timesheet data, backup data, storage keys or existing saved reflections were removed or renamed.

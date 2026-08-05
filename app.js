@@ -1730,6 +1730,51 @@ const reflectionStandardContextMap={
   "Asked questions":["Practice Standard 2: Professional conduct","Practice Standard 8: Professional development and supervision"]
 };
 const deeperReflectionQuestions=["What surprised you?","What assumptions did you bring?","How did power influence this situation?","What strengths did the consumer demonstrate?","What ethical tension existed?","How did organisational systems influence practice?","What role did culture play?","What question will you take to supervision?","What might another professional have noticed?","What would you do differently next time?"];
+const reflectionCompassLenses=[
+  {id:"theory",title:"Theory and frameworks",prompt:"What helps explain what was happening?",quick:["Recovery Oriented Practice","Strengths Based Practice","Trauma Informed Practice","Systems and Ecological Theory","Person Centred Practice","Anti Oppressive Practice"],all:["Recovery Oriented Practice","CHIME","Strengths Based Practice","Trauma Informed Practice","Person Centred Practice","Systems and Ecological Theory","Narrative Practice","Feminist Social Work","Anti Oppressive Practice","Critical Social Work","Empowerment Theory","Rights Based Practice","Social Determinants of Health","Attachment Theory","Psychosocial Development","Social Learning Theory","Cognitive Behavioural Theory","Ethics of Care"]},
+  {id:"method",title:"Methods and approaches",prompt:"What practice approach did you use or observe?",quick:["Motivational Interviewing","Solution Focused Practice","Crisis Intervention","Harm Reduction","Task Centred Practice","Psychosocial Rehabilitation"],all:["Motivational Interviewing","Solution Focused Practice","Crisis Intervention","Harm Reduction","Task Centred Practice","Psychosocial Rehabilitation","Group Work","Case Management","Family Inclusive Practice","Recovery Planning","Goal Oriented Practice","Advocacy"]},
+  {id:"skills",title:"Practice skills",prompt:"What did you actually do, observe or need?",quick:["Active listening","Engagement and rapport","Assessment","De escalation","Safety planning","Documentation"],all:["Active listening","Engagement and rapport","Open questions","Summarising","Assessment","Risk assessment","Safety planning","De escalation","Goal setting","Group facilitation","Advocacy","Case management","Interprofessional collaboration","Documentation","Report writing","Referral and warm handover","Difficult conversations","Professional communication"]},
+  {id:"values",title:"Values",prompt:"What mattered in the way the person was treated?",quick:["Respect","Human dignity","Self determination","Social justice","Integrity","Hope"],all:["Respect","Human dignity","Self determination","Social justice","Integrity","Hope","Compassion","Equity","Participation","Accountability","Professionalism","Cultural safety"]},
+  {id:"ethics",title:"Ethics",prompt:"Was there a tension involving rights, responsibility or professional conduct?",quick:["Informed consent","Confidentiality","Professional boundaries","Duty of care","Dignity of risk","Supported decision making"],all:["Informed consent","Confidentiality","Privacy","Professional boundaries","Duty of care","Dignity of risk","Supported decision making","Least restrictive practice","Mandatory reporting","Information sharing","Conflicts of interest","Ethical decision making","Human rights"]},
+  {id:"assessment",title:"Assessment and judgement",prompt:"What information shaped understanding or decisions?",quick:["Holistic assessment","Risk assessment","Strengths and needs","Professional judgement","Formulation","Collaborative planning"],all:["Holistic assessment","Psychosocial assessment","Risk assessment","Strengths and needs","Professional judgement","Formulation","Collaborative planning","Goal assessment","Mental state observations","Family and carer perspectives","Cultural considerations","Reviewing change over time"]},
+  {id:"useOfSelf",title:"Use of self",prompt:"How did your presence, communication or reactions shape the interaction?",quick:["Rapport","Self awareness","Emotional regulation","Use of humour","Boundaries","Sitting with silence"],all:["Rapport","Self awareness","Emotional regulation","Use of humour","Boundaries","Sitting with silence","Tone and body language","Curiosity","Authenticity","Managing assumptions","Power and authority","Professional identity"]},
+  {id:"culture",title:"Culture, identity and inclusion",prompt:"What identities, culture, power or access needs were relevant?",quick:["Cultural humility","Cultural safety","Intersectionality","Aboriginal and Torres Strait Islander practice","Disability inclusion","LGBTQIA+ affirmative practice"],all:["Cultural humility","Cultural safety","Intersectionality","Aboriginal and Torres Strait Islander practice","Culturally responsive practice","Decolonising practice","CALD practice","Working with interpreters","Refugee and asylum seeker practice","Disability inclusion","Neurodiversity affirming practice","LGBTQIA+ affirmative practice","Anti racist practice"]},
+  {id:"systems",title:"Systems and context",prompt:"What wider relationships, services or structures influenced the situation?",quick:["Family and relationships","Service systems","Organisational policy","Housing and poverty","Power and inequality","Interagency coordination"],all:["Family and relationships","Service systems","Organisational policy","Housing and poverty","Power and inequality","Interagency coordination","Mental health system","Child protection","Domestic and family violence","Justice system","NDIS interface","Rural and remote access","Social determinants of health","Legislation and policy"]},
+  {id:"supervision",title:"Supervision and learning",prompt:"Does anything need checking, feedback or further learning?",quick:["Discuss in supervision","Seek feedback","Observe again","Read a Toolkit topic","Clarify policy","Practise a skill"],all:["Discuss in supervision","Seek feedback","Observe again","Read a Toolkit topic","Clarify policy","Practise a skill","Ask another discipline","Review documentation","Find research evidence","No follow up needed"]},
+  {id:"research",title:"Research and evidence",prompt:"Was evidence, policy or evaluation part of the interaction?",quick:["Evidence informed practice","Policy or legislation","Critical appraisal","Outcome evaluation","Practice standards","Research question"],all:["Evidence informed practice","Policy or legislation","Critical appraisal","Outcome evaluation","Practice standards","Research question","Service evaluation","Data collection","Lived experience evidence","Organisational procedure"]}
+];
+function reflectionLensSelection(lensId){return [...document.querySelectorAll(`.reflection-option-chip.selected[data-lens="${lensId}"]`)].map(button=>button.dataset.value);}
+function reflectionLensCard(lens){
+  const quick=new Set(lens.quick);
+  const quickHtml=lens.quick.map(value=>`<button type="button" class="reflection-option-chip" data-lens="${lens.id}" data-value="${safeText(value)}">${safeText(value)}</button>`).join("");
+  const more=lens.all.filter(value=>!quick.has(value));
+  const moreHtml=more.map(value=>`<button type="button" class="reflection-option-chip" data-lens="${lens.id}" data-value="${safeText(value)}">${safeText(value)}</button>`).join("");
+  return `<article class="reflection-lens-card" data-lens-card="${lens.id}">
+    <div class="reflection-lens-heading"><div><strong>${safeText(lens.title)}</strong><small>${safeText(lens.prompt)}</small></div><div class="reflection-lens-status"><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="relevant">Relevant</button><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="unsure">Not sure</button></div></div>
+    <div class="reflection-lens-options hidden" data-lens-options="${lens.id}">
+      <div class="reflection-quick-options">${quickHtml}</div>
+      <details class="reflection-all-options"><summary>See all options</summary><div class="reflection-option-search-wrap"><input type="search" class="input reflection-option-search" data-search-lens="${lens.id}" placeholder="Search ${safeText(lens.title.toLowerCase())}"></div><div class="reflection-all-option-grid" data-all-options="${lens.id}">${moreHtml}</div></details>
+      <div class="reflection-guidance hidden" data-guidance="${lens.id}"></div>
+    </div>
+  </article>`;
+}
+function reflectionGuidanceText(lensId,status){
+  const prompts={
+    theory:"Look for the idea that best explains the person, interaction, change process or wider context. More than one theory can fit.",
+    method:"Choose the approaches that describe how practice was carried out, not only what topic was discussed.",
+    skills:"Choose observable actions. Think about what you said, noticed, documented, coordinated or helped the person do.",
+    values:"Choose the principles that guided how the person was treated and involved.",
+    ethics:"Look for a tension between competing responsibilities, rights, risks or professional obligations.",
+    assessment:"Think about the information gathered, how it was interpreted and how judgement was formed.",
+    useOfSelf:"Notice how your personality, communication, authority, feelings and professional presence affected the interaction.",
+    culture:"Consider identity, culture, accessibility, power, discrimination and whether practice felt culturally safe.",
+    systems:"Look beyond the individual to relationships, organisations, policy, resources and structural barriers.",
+    supervision:"Select what would help you make sense of the experience or develop your practice.",
+    research:"Consider whether evidence, policy, standards or evaluation informed the work or needs further checking."
+  };
+  return status==="unsure"?`<strong>Quick guide</strong><p>${safeText(prompts[lensId]||"Use the examples to compare what may fit. You can select more than one.")}</p>`:"";
+}
+
 const reflectionConceptInfo={
   "Recovery Oriented Practice":["Supports hope, choice, identity and a meaningful life beyond symptoms.","Your reflection may involve collaboration, personal goals, autonomy or recognising strengths.","Recovery Oriented Practice"],
   "Trauma Informed Practice":["Recognises how trauma can shape safety, trust, relationships and responses.","Your reflection may involve choice, predictability, emotional safety or avoiding re traumatisation.","Trauma Informed Practice"],
@@ -1763,44 +1808,21 @@ function reflectionLibrary(entries){
   return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||(e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
 }
 function journalPage(){
-  const entries=savedEntries(), prompt=reflectionQuestionForToday();
-  return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Write freely first. Your Reflection Companion stays quiet until you want a little help.</p></section>
-  ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved. Your learning has been added to your evidence library.</section>`:""}
+  const entries=savedEntries();
+  return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Capture the moment, then use the compass to recognise the social work within it.</p></section>
+  ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved. The practice areas you identified now contribute to My Practice Framework.</section>`:""}
   <form class="reflection-simple" id="reflectionForm" onsubmit="return false">
-    <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What stayed with you today?</strong><span>One moment is enough.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Write in your own words..."></textarea></section>
+    <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What happened?</strong><span>A quick note is enough. Keep client information de identified.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Capture the interaction in your own words..."></textarea></section>
 
-    <details class="conversation-card reflection-companion" id="reflectionCompanion" ${state.get("reflectionCompanionOpen",false)?"open":""}><summary><span><strong>🌱 Reflection Companion</strong><small>Need help connecting today’s experience with social work?</small></span><span>›</span></summary><div class="reflection-companion-body">
-      <p class="companion-intro">Write first. Think second. Explore only what feels useful.</p>
+    <section class="conversation-card reflection-compass-map">
+      <div class="reflection-compass-map-heading"><div><span class="eyebrow">Quick identify</span><h2>What was happening here?</h2><p>Tap Relevant or Not sure. Choose only what fits. Unselected areas stay out of the way.</p></div><span class="reflection-compass-mark">🧭</span></div>
+      <div class="reflection-lens-grid">${reflectionCompassLenses.map(reflectionLensCard).join("")}</div>
+    </section>
 
-      <details class="companion-help-card" data-companion-card="theory"><summary><span><strong>📚 Help me identify theory</strong><small>What theory or approach might fit?</small></span><span>›</span></summary><div class="companion-help-body">
-        <p class="companion-question">What best describes today’s experience?</p>
-        <div class="choice-chip-grid">${["Recovery group","One to one conversation","Documentation","Risk assessment","Safety planning","Group facilitation","Home visit","MDT","Assessment","Advocacy","Community engagement","Crisis","Other"].map(x=>`<button type="button" class="context-chip theory-context" data-context="${safeText(x)}">${safeText(x)}</button>`).join("")}</div>
-        <div id="theorySuggestions" class="progressive-suggestions hidden"></div>
-      </div></details>
-
-      <details class="companion-help-card" data-companion-card="ethics"><summary><span><strong>🤝 Help me identify values and ethics</strong><small>What values or ethical ideas were present?</small></span><span>›</span></summary><div class="companion-help-body">
-        <p class="companion-question">What stood out most?</p>
-        <div class="choice-chip-grid">${["Choice","Respect","Safety","Trust","Confidentiality","Boundaries","Advocacy","Culture","Rights","Relationships"].map(x=>`<button type="button" class="context-chip ethics-context" data-context="${safeText(x)}">${safeText(x)}</button>`).join("")}</div>
-        <div id="ethicsSuggestions" class="progressive-suggestions hidden"></div>
-      </div></details>
-
-      <details class="companion-help-card" data-companion-card="standards"><summary><span><strong>🌿 Help me identify Practice Standards</strong><small>What professional capability might this show?</small></span><span>›</span></summary><div class="companion-help-body">
-        <p class="companion-question">What did you do today?</p>
-        <div class="choice-chip-grid">${["Observed practice","Engaged with a consumer","Completed documentation","Participated in a group","Attended supervision","Observed assessment","Discussed risk","Worked with another professional","Completed training","Asked questions"].map(x=>`<button type="button" class="context-chip standard-context" data-context="${safeText(x)}">${safeText(x)}</button>`).join("")}</div>
-        <div id="standardSuggestions" class="progressive-suggestions hidden"></div>
-      </div></details>
-
-      <details class="companion-help-card companion-deeper-card"><summary><span><strong>💭 Help me think more deeply</strong><small>One optional question</small></span><span>›</span></summary><div class="companion-help-body">
-        <label for="deeperAnswer"><strong>${safeText(prompt)}</strong><span>A sentence or two is enough.</span></label><input type="hidden" id="deeperQuestion" value="${safeText(prompt)}"><textarea id="deeperAnswer" class="textarea" placeholder="Write only if it helps..."></textarea>
-      </div></details>
-
-      <section id="conceptExplanation" class="concept-explanation hidden"></section>
-      <section class="companion-future"><label for="futurePractice"><strong>🌱 What will you take into tomorrow?</strong><span>Optional</span></label><textarea id="futurePractice" class="textarea" placeholder="Something I learned, will try differently or want to ask..."></textarea></section>
-      <section class="companion-supervision"><label for="supervision"><strong>🤝 Question for supervision</strong><span>Optional</span></label><textarea id="supervision" class="textarea" placeholder="Something you want to discuss..."></textarea></section>
-    </div></details>
-    <button class="btn reflection-save-button" id="saveEntry">🌿 Save reflection</button>
+    <section class="conversation-card reflection-note-card"><label for="supervision"><strong>Question or note for supervision</strong><span>Optional</span></label><textarea id="supervision" class="textarea" placeholder="Something to check, clarify or explore..."></textarea></section>
+    <button class="btn reflection-save-button" id="saveEntry">Save reflection</button>
   </form>
-  <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span><span>🌿</span><span><strong>Reflection insight</strong><small>A gentle pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
+  <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span><span>🌿</span><span><strong>Reflection insight</strong><small>A pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
   ${reflectionLibrary(entries)}`;
 }
 function assessmentPage(){
@@ -2322,7 +2344,18 @@ function practiceFrameworkIntelligence(){
       (entry.evidence||[]).forEach(a=>item.assessments.add(a));
     }
   };
-  entries.forEach(entry=>(entry.evidenceTypes||[]).forEach(type=>(rules[type]||[]).forEach(rule=>add(rule.group,rule.name,entry))));
+  entries.forEach(entry=>{
+    (entry.evidenceTypes||[]).forEach(type=>(rules[type]||[]).forEach(rule=>add(rule.group,rule.name,entry)));
+    (entry.theories||[]).forEach(name=>add("theories",name,entry));
+    (entry.methods||[]).forEach(name=>add("models",name,entry));
+    (entry.skills||[]).forEach(name=>add("skills",name,entry));
+    (entry.assessmentJudgement||[]).forEach(name=>add("skills",name,entry));
+    (entry.values||[]).forEach(name=>add("values",name,entry));
+    (entry.ethics||[]).forEach(name=>add("values",name,entry));
+    (entry.cultural||[]).forEach(name=>add("models",name,entry));
+    (entry.systems||[]).forEach(name=>add("theories",name,entry));
+    (entry.useOfSelfTags||[]).forEach(name=>add("useOfSelf",name,entry));
+  });
   (manual.values||[]).forEach(name=>add("values",name,null,true));
   (manual.theories||[]).forEach(name=>add("theories",name,null,true));
   (manual.cultural||[]).forEach(name=>add("models",name,null,true));
@@ -2684,17 +2717,54 @@ function wellbeingPage(){
 }
 
 function saveEntry(){
-  const moment=document.getElementById("answer")?.value.trim()||""; if(!moment){alert("Add one moment from today first.");return}
-  const theories=[...document.querySelectorAll(".theory-chip.selected")].map(x=>x.dataset.value);
-  const values=[...document.querySelectorAll(".value-chip.selected")].map(x=>x.dataset.value);
-  const ethics=[...document.querySelectorAll(".ethics-chip.selected")].map(x=>x.dataset.value);
-  const practiceStandards=[...document.querySelectorAll(".standard-chip.selected")].map(x=>x.dataset.value);
-  const deeperQuestion=document.getElementById("deeperQuestion")?.value||"", deeperAnswer=document.getElementById("deeperAnswer")?.value.trim()||"", futurePractice=document.getElementById("futurePractice")?.value.trim()||"", supervision=document.getElementById("supervision")?.value.trim()||"";
-  const evidenceTypes=[]; if(theories.length)evidenceTypes.push("Theory in action","Knowledge"); if(values.length||ethics.length)evidenceTypes.push("Ethics or values"); if(practiceStandards.length)evidenceTypes.push("Professional development"); if(values.includes("Respect for Persons")||ethics.includes("Cultural Safety"))evidenceTypes.push("Cultural capability"); if(futurePractice)evidenceTypes.push("Critical Reflection");
+  const moment=document.getElementById("answer")?.value.trim()||""; if(!moment){alert("Add a quick note about what happened first.");return}
+  const lensStatus={};document.querySelectorAll(".reflection-status-button.selected").forEach(button=>lensStatus[button.dataset.lensStatus]=button.dataset.status);
+  const theories=reflectionLensSelection("theory");
+  const methods=reflectionLensSelection("method");
+  const skills=reflectionLensSelection("skills");
+  const values=reflectionLensSelection("values");
+  const ethics=reflectionLensSelection("ethics");
+  const assessmentJudgement=reflectionLensSelection("assessment");
+  const useOfSelfTags=reflectionLensSelection("useOfSelf");
+  const cultural=reflectionLensSelection("culture");
+  const systems=reflectionLensSelection("systems");
+  const supervisionLearning=reflectionLensSelection("supervision");
+  const researchEvidence=reflectionLensSelection("research");
+  const supervision=document.getElementById("supervision")?.value.trim()||"";
+  const practiceStandards=[];
+  if(values.length||ethics.length) practiceStandards.push("Practice Standard 1: Values and ethics");
+  if(cultural.length) practiceStandards.push("Practice Standard 3: Culturally responsive and inclusive practice");
+  if(theories.length||researchEvidence.length) practiceStandards.push("Practice Standard 4: Knowledge for practice");
+  if(methods.length||assessmentJudgement.length) practiceStandards.push("Practice Standard 5: Applying knowledge to practice");
+  if(skills.length||useOfSelfTags.length) practiceStandards.push("Practice Standard 6: Communication and interpersonal skills");
+  if(supervisionLearning.length||supervision) practiceStandards.push("Practice Standard 8: Professional development and supervision");
+  const evidenceTypes=[];
+  if(theories.length)evidenceTypes.push("Theory in action");
+  if(methods.length)evidenceTypes.push("Practice approach");
+  if(skills.length)evidenceTypes.push("Skill");
+  if(values.length||ethics.length)evidenceTypes.push("Ethics or values");
+  if(assessmentJudgement.length)evidenceTypes.push("Assessment and judgement");
+  if(useOfSelfTags.length)evidenceTypes.push("Use of self");
+  if(cultural.length)evidenceTypes.push("Cultural capability");
+  if(systems.length)evidenceTypes.push("Systems issue");
+  if(supervisionLearning.length||supervision)evidenceTypes.push("Professional development");
+  if(researchEvidence.length)evidenceTypes.push("Knowledge");
   const autoMapped=mappedAssessments([...new Set(evidenceTypes)]), info=placementInfo(),p=dailyPrompt(info,hours());
-  const sections=[moment,theories.length&&`Social work lens: ${theories.join(", ")}`,(values.length||ethics.length)&&`Values and ethics: ${[...values,...ethics].join(", ")}`,practiceStandards.length&&`Practice Standards: ${practiceStandards.join("; ")}`,deeperAnswer&&`${deeperQuestion} ${deeperAnswer}`,futurePractice&&`Future practice: ${futurePractice}`].filter(Boolean);
-  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:sections.join("\n\n"),moment,whyMatter:deeperAnswer,theories,values,ethics,practiceStandards,useOfSelf:"",deeperQuestion,deeperAnswer,futurePractice,professionalIdentity:"",evidenceTypes:[...new Set(evidenceTypes)],theory:theories[0]||"",method:"",supervision,evidence:autoMapped};
-  const arr=savedEntries();arr.unshift(entry);state.set("entries",arr);if(supervision){const items=supervisionItems();items.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:supervision});state.set("supervisionItems",items);}lastSavedReflection=entry;render();window.scrollTo({top:0,behavior:"smooth"});
+  const labelled=[
+    ["Theory and frameworks",theories],["Methods and approaches",methods],["Practice skills",skills],["Values",values],["Ethics",ethics],["Assessment and judgement",assessmentJudgement],["Use of self",useOfSelfTags],["Culture, identity and inclusion",cultural],["Systems and context",systems],["Supervision and learning",supervisionLearning],["Research and evidence",researchEvidence]
+  ];
+  const sections=[moment,...labelled.filter(([,items])=>items.length).map(([label,items])=>`${label}: ${items.join(", ")}`),supervision&&`Supervision note: ${supervision}`].filter(Boolean);
+  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:sections.join("\n\n"),moment,theories,methods,skills,values,ethics,assessmentJudgement,useOfSelfTags,cultural,systems,supervisionLearning,researchEvidence,lensStatus,practiceStandards,useOfSelf:useOfSelfTags.join(", "),deeperQuestion:"",deeperAnswer:"",futurePractice:"",professionalIdentity:"",evidenceTypes:[...new Set(evidenceTypes)],theory:theories[0]||"",method:methods[0]||"",supervision,evidence:autoMapped};
+  const arr=savedEntries();arr.unshift(entry);state.set("entries",arr);
+  const framework=frameworkData();
+  framework.theories=[...new Set([...(framework.theories||[]),...theories,...methods])];
+  framework.values=[...new Set([...(framework.values||[]),...values,...ethics])];
+  framework.skills=[...new Set([...(framework.skills||[]),...skills,...assessmentJudgement])];
+  framework.cultural=[...new Set([...(framework.cultural||[]),...cultural,...systems])];
+  if(useOfSelfTags.length) framework.useOfSelf=[framework.useOfSelf,useOfSelfTags.join(", ")].filter(Boolean).join("\n");
+  saveFrameworkData(framework);
+  if(supervision){const items=supervisionItems();items.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:supervision});state.set("supervisionItems",items);}
+  lastSavedReflection=entry;render();window.scrollTo({top:0,behavior:"smooth"});
 }
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 function triggerFileDownload(blob,filename){
@@ -2866,11 +2936,18 @@ function bind(){
   document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(TOTAL_HOURS,hours()+HOURS_PER_DAY));render()});
   document.getElementById("adjustHours")?.addEventListener("click",()=>{const v=prompt("Enter total completed placement hours:",hours()); if(v!==null&&!isNaN(Number(v))){state.set("hours",Number(v));render()}});
   document.getElementById("saveEntry")?.addEventListener("click",saveEntry);
-  document.querySelectorAll(".theory-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".theory-context",reflectionTheoryContextMap,"theorySuggestions","theory"));
-  document.querySelectorAll(".ethics-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".ethics-context",reflectionEthicsContextMap,"ethicsSuggestions","ethics"));
-  document.querySelectorAll(".standard-context").forEach(btn=>btn.onclick=()=>selectReflectionContext(btn,".standard-context",reflectionStandardContextMap,"standardSuggestions","standard"));
+  document.querySelectorAll(".reflection-status-button").forEach(button=>button.addEventListener("click",()=>{
+    const lens=button.dataset.lensStatus,status=button.dataset.status;
+    document.querySelectorAll(`.reflection-status-button[data-lens-status="${lens}"]`).forEach(item=>item.classList.toggle("selected",item===button));
+    const options=document.querySelector(`[data-lens-options="${lens}"]`);if(options) options.classList.remove("hidden");
+    const guidance=document.querySelector(`[data-guidance="${lens}"]`);if(guidance){guidance.innerHTML=reflectionGuidanceText(lens,status);guidance.classList.toggle("hidden",status!=="unsure");}
+  }));
+  document.querySelectorAll(".reflection-option-chip").forEach(button=>button.addEventListener("click",()=>button.classList.toggle("selected")));
+  document.querySelectorAll(".reflection-option-search").forEach(input=>input.addEventListener("input",()=>{
+    const lens=input.dataset.searchLens,query=input.value.toLowerCase().trim();
+    document.querySelectorAll(`[data-all-options="${lens}"] .reflection-option-chip`).forEach(button=>button.classList.toggle("hidden",query&&!button.dataset.value.toLowerCase().includes(query)));
+  }));
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
-  document.getElementById("reflectionCompanion")?.addEventListener("toggle",event=>state.set("reflectionCompanionOpen",event.currentTarget.open));
   document.getElementById("reflectionInsight")?.addEventListener("toggle",event=>state.set("reflectionInsightOpen",event.currentTarget.open));
   document.getElementById("reflectionLibrary")?.addEventListener("toggle",event=>state.set("reflectionLibraryOpen",event.currentTarget.open));
   document.getElementById("collapseAllReflections")?.addEventListener("click",()=>document.querySelectorAll(".reflection-library-item[open]").forEach(item=>item.open=false));
