@@ -2452,7 +2452,8 @@ function frameworkPage(){
   const groupSection=(key,map)=>map.size?`<section class="framework-summary-group"><h4>${labels[key]}</h4>${[...map.values()].map(frameworkItem).join("")}</section>`:"";
   const chips=(group,items)=>items.map(v=>`<button class="select-chip framework-chip ${(data[group]||[]).includes(v)?"selected":""}" data-group="${group}" data-value="${safeText(v)}">${safeText(v)}</button>`).join("");
 
-  const developmentRows=practiceFrameworkDevelopmentAreas.map((area,index)=>{
+  const developmentRowsByArea={};
+  practiceFrameworkDevelopmentAreas.forEach((area,index)=>{
     const saved=development[area.id]||{};
     const linked=normaliseFrameworkEvidenceArea(evidenceLinks[area.id]);
     const linkedReflections=reflectionOptions.filter(entry=>linked.reflectionIds.includes(String(entry.id)));
@@ -2468,7 +2469,7 @@ function frameworkPage(){
       ${linkedSupervision.map(entry=>`<div class="framework-linked-row"><span>🤝</span><div><strong>${safeText(entry.type||"Supervision")} · ${safeText(entry.date||"")}</strong><small>${safeText((entry.text||"Saved supervision note").slice(0,130))}</small></div></div>`).join("")}
       ${linked.manualExamples.map(item=>`<div class="framework-linked-row" data-example-id="${safeText(String(item.id))}"><span>🌿</span><div><strong>Practice example · ${safeText(item.date||"")}</strong><small>${safeText(item.text)}</small></div><button type="button" class="framework-remove-example">Remove</button></div>`).join("")}
     </div>`:`<p class="muted framework-evidence-empty">No evidence connected yet.</p>`;
-    return `<details class="framework-foundation-item framework-foundation-simple" data-framework-area="${area.id}">
+    developmentRowsByArea[area.id]=`<details class="framework-foundation-item framework-foundation-simple" data-framework-area="${area.id}">
       <summary>
         <span class="framework-foundation-icon">${area.icon}</span>
         <span class="framework-foundation-copy"><strong>${index+1}. ${safeText(area.title)}</strong><small>${safeText(area.purpose)}</small><span class="framework-foundation-meta"><span class="status-inline ${statusClass}">${status}</span>${evidenceCount?`<span>${evidenceCount} evidence item${evidenceCount===1?"":"s"}</span>`:""}</span></span>
@@ -2491,6 +2492,26 @@ function frameworkPage(){
           </details>
         </section>
       </div>
+    </details>`;
+  });
+
+  const frameworkGroups=[
+    {id:"identity",title:"Purpose and professional identity",subtitle:"Why I practise and the social worker I am becoming",icon:"🧭",areas:["identity","development"]},
+    {id:"values",title:"Values and ethics",subtitle:"Dignity, choice, strengths and social justice in practice",icon:"⚖️",areas:["dignity","selfDetermination","strengths","justice"]},
+    {id:"theory",title:"Theories and frameworks",subtitle:"How I understand people, situations and practice decisions",icon:"🧠",areas:["framework","theories"]},
+    {id:"skills",title:"Practice skills and methods",subtitle:"How theory and values become purposeful social work activity",icon:"🛠️",areas:["tools","relationships"]},
+    {id:"self",title:"Use of self and reflective practice",subtitle:"How I use supervision, feedback and self awareness",icon:"🪞",areas:["reflection"]},
+    {id:"context",title:"Systems, culture and context",subtitle:"How culture, power and wider systems shape practice",icon:"🌏",areas:["culture"]}
+  ];
+  const groupedDevelopmentRows=frameworkGroups.map(group=>{
+    const count=group.areas.filter(id=>{
+      const saved=development[id]||{};
+      const linked=normaliseFrameworkEvidenceArea(evidenceLinks[id]);
+      return Boolean(saved.answer||linked.reflectionIds.length||linked.supervisionIds.length||linked.manualExamples.length);
+    }).length;
+    return `<details class="framework-group-card">
+      <summary><span class="framework-group-icon">${group.icon}</span><span><strong>${group.title}</strong><small>${group.subtitle}</small></span><span class="framework-group-progress">${count}/${group.areas.length}</span><b>›</b></summary>
+      <div class="framework-group-body">${group.areas.map(id=>developmentRowsByArea[id]||"").join("")}</div>
     </details>`;
   }).join("");
 
@@ -2526,59 +2547,35 @@ function frameworkPage(){
 
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
-    <section class="framework-calm-overview">
-      <p>Your framework grows from your real practice, reflections and supervision. You do not need to complete everything at once.</p>
-      <div class="framework-calm-stats"><span><strong>${startedCount}</strong> of 12 areas started</span><span><strong>${totalEvidence}</strong> evidence items linked</span></div>
-    </section>
+    <p class="framework-three-intro">One place to understand, develop and strengthen the framework guiding your social work practice.</p>
 
-    <div class="framework-calm-actions">
-      <button type="button" class="framework-calm-action" id="continueFramework"><span>🌱</span><span><strong>Continue building my framework</strong><small>Work through one development area at a time</small></span><b>›</b></button>
-      <button type="button" class="framework-calm-action" id="openFrameworkSummary"><span>🧭</span><span><strong>See my emerging framework</strong><small>View the values, theories and skills already appearing</small></span><b>›</b></button>
-      <button type="button" class="framework-calm-action" id="openFrameworkGaps"><span>🌿</span><span><strong>Areas to strengthen</strong><small>Gentle prompts for future learning</small></span><b>›</b></button>
-    </div>
+    <div class="framework-three-options">
+      <details class="framework-calm-details framework-primary-option" id="frameworkSummarySection">
+        <summary><span><strong>My Practice Framework</strong><small>Bring your purpose, values, theories, skills and accountability together</small></span><span>›</span></summary>
+        <div class="framework-calm-details-body">
+          <div class="framework-option-context"><span><strong>${startedCount}</strong> areas developing</span><span><strong>${totalEvidence}</strong> evidence items linked</span></div>
+          <section class="framework-six-part-summary framework-summary-refined">
+            ${summaryEditor}
+            <button type="button" class="btn framework-summary-save" id="saveFrameworkSummary">Save my practice framework</button>
+          </section>
+        </div>
+      </details>
 
-    <section class="framework-foundation-section" id="frameworkDevelopmentSection">
-      <div class="framework-foundation-heading"><div><span class="label">Developing my practice framework</span><h3>Choose one area that feels relevant today</h3></div></div>
-      <div class="framework-foundation-list">${developmentRows}</div>
-      <button class="btn framework-development-save" id="saveFrameworkDevelopment">Save framework progress</button>
-    </section>
+      <details class="framework-calm-details framework-primary-option" id="frameworkDevelopmentSection">
+        <summary><span><strong>Develop My Framework</strong><small>Review one of the six practice areas when it is useful</small></span><span>›</span></summary>
+        <div class="framework-calm-details-body">
+          <div class="framework-group-list">${groupedDevelopmentRows}</div>
+          <button class="btn framework-development-save" id="saveFrameworkDevelopment">Save framework changes</button>
+        </div>
+      </details>
 
-    <details class="framework-calm-details" id="frameworkSummarySection">
-      <summary><span><strong>My emerging framework</strong><small>A summary drawn from your saved reflections and personal additions</small></span><span>›</span></summary>
-      <div class="framework-calm-details-body">
-        <section class="framework-six-part-summary">
-          <div class="framework-six-part-intro"><strong>My six part framework</strong><p>This is an editable working summary, not a final assessment response. Use your saved notes as prompts, then shape the wording so it sounds like you.</p></div>
-          ${summaryEditor}
-          <button type="button" class="btn framework-summary-save" id="saveFrameworkSummary">Save emerging framework</button>
-        </section>
-        <details class="framework-existing-signals">
-          <summary>Values, theories and skills already appearing</summary>
-          <div>${evidencedItems.length?`${groupSection("values",intelligence.groups.values)}${groupSection("theories",intelligence.groups.theories)}${groupSection("models",intelligence.groups.models)}${groupSection("skills",intelligence.groups.skills)}${groupSection("useOfSelf",intelligence.groups.useOfSelf)}`:`<p class="muted">These will appear as you save reflections and link evidence.</p>`}</div>
-        </details>
-        <details class="framework-personal-additions-simple">
-          <summary>Personal additions</summary>
-          <div class="framework-manual-body">
-            <div><div class="label">My values</div><div class="chip-grid">${chips("values",groups.values)}</div></div>
-            <div><div class="label">Theories and approaches</div><div class="chip-grid">${chips("theories",groups.theories)}</div></div>
-            <div><div class="label">Cultural capability and inclusion</div><div class="chip-grid">${chips("cultural",groups.cultural)}</div></div>
-            <div><div class="label">My developing skills</div><div class="chip-grid">${chips("skills",groups.skills)}</div></div>
-            <div><div class="label">My use of self</div><textarea id="frameworkSelf" class="textarea" placeholder="What strengths, assumptions, emotions, boundaries or feedback are shaping your practice?">${safeText(data.useOfSelf||"")}</textarea></div>
-            <div><div class="label">The social worker I am becoming</div><textarea id="frameworkIdentity" class="textarea" placeholder="Describe the kind of practitioner you want to become.">${safeText(data.professionalIdentity||"")}</textarea></div>
-            <button class="btn" id="saveFramework">Save personal additions</button>
-          </div>
-        </details>
-      </div>
-    </details>
-
-    <details class="framework-calm-details" id="frameworkGapsSection">
-      <summary><span><strong>Areas to strengthen</strong><small>These are prompts, not missing requirements</small></span><span>›</span></summary>
-      <div class="framework-calm-details-body">${opportunities.length?`<div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div>`:`<p class="muted">No specific gaps are being suggested right now. Keep adding real practice evidence as it occurs.</p>`}</div>
-    </details>`;
+      <details class="framework-calm-details framework-primary-option" id="frameworkGapsSection">
+        <summary><span><strong>Areas to Strengthen</strong><small>A few gentle prompts for future learning, not another task list</small></span><span>›</span></summary>
+        <div class="framework-calm-details-body">${opportunities.length?`<div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div>`:`<p class="muted">No specific areas are being suggested right now. Keep adding real practice evidence as it occurs.</p>`}</div>
+      </details>
+    </div>`;
 
   document.getElementById("backMore").onclick=()=>{route="more";render()};
-  document.getElementById("continueFramework").onclick=()=>document.getElementById("frameworkDevelopmentSection").scrollIntoView({behavior:"smooth",block:"start"});
-  document.getElementById("openFrameworkSummary").onclick=()=>{const el=document.getElementById("frameworkSummarySection");el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};
-  document.getElementById("openFrameworkGaps").onclick=()=>{const el=document.getElementById("frameworkGapsSection");el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})};
   document.querySelectorAll(".framework-use-notes").forEach(button=>button.addEventListener("click",()=>{
     const id=button.dataset.summaryNotes;
     const textarea=document.getElementById(`frameworkSummary-${id}`);
@@ -2592,7 +2589,7 @@ function frameworkPage(){
     const next={};
     summaryFields.forEach(field=>next[field.id]=document.getElementById(`frameworkSummary-${field.id}`).value.trim());
     saveFrameworkSummaryData(next);
-    alert("Your emerging framework has been saved 🧭");
+    alert("Your practice framework has been saved 🧭");
     frameworkPage();
   });
   document.querySelectorAll(".framework-chip").forEach(btn=>btn.onclick=()=>btn.classList.toggle("selected"));

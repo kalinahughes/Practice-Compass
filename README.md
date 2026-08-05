@@ -1,16 +1,23 @@
-# Practice Compass: Reflection Compass Interaction Refinement
+# Practice Compass: Framework Three Options
 
-Replace both `app.js` and `style.css`.
+Replace both `app.js` and `style.css` in the current project.
 
-This sprint adds:
+## My Practice Framework now has three choices only
 
-1. Relevant, Not sure and No controls for every reflection lens
-2. Clear controls that close a lens and remove its selections
-3. Tap again to deselect options
-4. Short memory cues beneath theory and framework options
-5. In place explanations and Toolkit links
-6. Automatic local draft saving for reflection text, lens status and selections
-7. Draft restoration after opening a Toolkit topic
-8. A Back to reflection path that returns to the same saved draft
+1. My Practice Framework
+2. Develop My Framework
+3. Areas to Strengthen
 
-Existing reflections, Toolkit content, assessment data, Practice Framework links, storage keys and other app pages remain intact.
+The separate overview and emerging framework sections have been removed.
+
+My Practice Framework is now the single place where the overall framework is written and saved.
+
+Develop My Framework keeps the six distinct practice areas and the original detailed learning areas inside them.
+
+Areas to Strengthen remains a small optional section and is clearly framed as guidance rather than another task list.
+
+## Protected
+
+All saved framework responses, evidence links, reflection links, supervision links and storage keys remain unchanged.
+
+No changes were made to Home, Reflect, Reflection Compass, Assessments, Toolkit, timesheets or backup tools.
