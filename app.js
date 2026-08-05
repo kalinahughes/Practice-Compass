@@ -2113,14 +2113,14 @@ function assessmentDetail(id,openPlanning=false){
 
       <section class="assessment-clear-section" aria-labelledby="assessment-do-heading">
         <div class="assessment-clear-section-heading"><span>02</span><h2 id="assessment-do-heading">What to look for and do</h2></div>
-        <div class="assessment-clear-requirement">
-          <strong>What JCU expects</strong>
-          <p>${official.requirement}</p>
-        </div>
         <div class="assessment-focus-list">
           ${(a.tasks||[]).slice(0,4).map(task=>`<p><span>✓</span>${task}</p>`).join("")}
           ${reqs.slice(0,3).map(item=>`<p><span>○</span>Notice evidence of ${safeText(item).toLowerCase()}</p>`).join("")}
         </div>
+        <details class="assessment-quiet-details">
+          <summary><span>What JCU expects</span><small>Open guidance</small></summary>
+          <div><p>${official.requirement}</p><p class="assessment-scope-note">${official.record}</p></div>
+        </details>
         ${taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
       </section>
 
@@ -2131,51 +2131,31 @@ function assessmentDetail(id,openPlanning=false){
           <div class="assessment-priority-percent"><strong>${progress}%</strong><small>complete</small></div>
         </div>
         <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
-        <div class="assessment-priority-grid">
+        <div class="assessment-priority-grid assessment-priority-grid-two">
           <div><small>Linked evidence</small><strong>${entries.length} reflection${entries.length===1?"":"s"}</strong></div>
           <div><small>My target date</small><strong>${planning.date?formatPlanningDate(planning.date):"Not set"}</strong></div>
-          <div><small>Official timing</small><strong>${a.when}</strong></div>
         </div>
-        <button class="assessment-clear-edit" id="openPlanningEdit">Edit my plan</button>
+        <details class="assessment-plan-editor" id="assessmentPlanning" ${openPlanning?"open":""}>
+          <summary><span>Edit my plan</span><small>${planning.date?formatPlanningDate(planning.date):"No date set"}</small></summary>
+          <div class="assessment-planning-controls">
+            <label class="label" for="planningDate">My target date</label>
+            <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
+            <label class="label" for="planningReason">Planning note</label>
+            <input id="planningReason" type="text" class="input" maxlength="120" value="${escapeAttribute(planning.reason)}" placeholder="What do I need to focus on next?">
+            <div class="assessment-planning-actions"><button class="btn" id="savePlanningDate">Save plan</button><button class="btn secondary" id="clearPlanningDate" ${planning.date||planning.reason?"":"disabled"}>Clear</button></div>
+          </div>
+        </details>
         ${entries.length?`<details class="assessment-clear-linked"><summary>Linked reflections <span>${entries.length}</span></summary><div>${entries.map(e=>`<article><strong>${e.date}</strong><p>${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</p></article>`).join("")}</div></details>`:""}
       </section>
 
       ${a.id==="integration"?integrationSessionManager():""}
 
-      <details class="assessment-secondary-details assessment-planning-date" id="assessmentPlanning" ${openPlanning?"open":""}>
-        <summary><span>Edit planning date</span><small>${planning.date?formatPlanningDate(planning.date):"Not set"}</small></summary>
-        <div class="assessment-planning-controls">
-          <label class="label" for="planningDate">My target date</label>
-          <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
-          <label class="label" for="planningReason">Optional reason</label>
-          <input id="planningReason" type="text" class="input" maxlength="120" value="${escapeAttribute(planning.reason)}" placeholder="Leave, travel or another commitment">
-          <p class="assessment-planning-notice">This is your personal planning date and does not change the official JCU requirement.</p>
-          <div class="assessment-planning-actions"><button class="btn" id="savePlanningDate">Save</button><button class="btn secondary" id="clearPlanningDate" ${planning.date||planning.reason?"":"disabled"}>Clear</button></div>
-        </div>
-      </details>
-
-      <div class="assessment-clear-extra-heading"><h2>Extra details</h2><p>Open these only when you need more information.</p></div>
-
-      <details class="assessment-secondary-details">
-        <summary><span>Official record and guidance</span><small>JCU information</small></summary>
+      <details class="assessment-secondary-details assessment-more-information">
+        <summary><span>More information</span><small>Toolkit and sources</small></summary>
         <div class="assessment-secondary-content">
-          <h3>Official record</h3><p>${official.record}</p>
-          <p class="assessment-scope-note">${official.notice}</p>
-        </div>
-      </details>
-
-      ${reqs.length?`<details class="assessment-secondary-details"><summary><span>Evidence categories</span><small>${reqs.length}</small></summary><div class="assessment-secondary-content assessment-evidence-map">${reqs.map(r=>{
-        const count=entries.filter(e=>(e.evidenceTypes||[]).includes(r)).length;
-        return `<div class="evidence-category-row"><span>${count?"✓":"○"}</span><span>${r}</span><strong>${count}</strong></div>`;
-      }).join("")}</div></details>`:""}
-
-      ${toolkitLinks.length?`<details class="assessment-secondary-details"><summary><span>Toolkit suggestions</span><small>${toolkitLinks.length}</small></summary><div class="assessment-secondary-content linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div></details>`:""}
-
-      <details class="assessment-secondary-details official-sources-card">
-        <summary><span>Official sources</span><small>${official.sources.length}</small></summary>
-        <div class="assessment-secondary-content">
+          ${toolkitLinks.length?`<div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div>`:""}
           <div class="official-source-list">${official.sources.map(source=>`<div class="official-source-row"><span>✓</span><span>${source}</span></div>`).join("")}</div>
-          <p class="assessment-scope-note">Use the current version supplied by JCU or published by the AASW. Practice Compass does not replace official JCU documents, LearnJCU instructions or FELO advice.</p>
+          <p class="assessment-scope-note">${official.notice}</p>
         </div>
       </details>
     </div>`;
@@ -2193,11 +2173,6 @@ function assessmentDetail(id,openPlanning=false){
     alert("Integration session details saved ☕");
     assessmentDetail("integration");
   });
-  document.getElementById("openPlanningEdit").onclick=()=>{
-    const details=document.getElementById("assessmentPlanning");
-    details.open=true;
-    details.scrollIntoView({behavior:"smooth",block:"start"});
-  };
   document.getElementById("savePlanningDate").onclick=()=>{
     const date=document.getElementById("planningDate").value;
     const reason=document.getElementById("planningReason").value.trim();
