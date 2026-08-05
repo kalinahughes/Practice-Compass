@@ -1,18 +1,40 @@
-# Practice Compass: Restore Original Character
+# Practice Compass: Placement Dates and Reminders
 
-Replace these three files:
+Replace `app.js` and `style.css` in the current live project.
 
-1. index.html
-2. app.js
-3. style.css
+## Integration Sessions
 
-This correction removes the custom line icon system and the new DM Sans / Nunito Sans font combination.
+The Integration Sessions assessment now includes three editable session records.
 
-It restores:
+Each session has:
 
-1. The previous familiar font system
-2. The warmer emoji and botanical identity
-3. The original navigation symbols and page personality
-4. The useful spacing, card, colour and hierarchy improvements from the Final Consistency Audit
+1. Date
+2. Status: Not booked, Booked or Completed
+3. Optional note
 
-No saved data, storage keys, reflection functions, Toolkit content, assessment content, framework content or backup functions are changed.
+The dates already listed in Practice Compass are used as the starting dates:
+
+1. 21 August 2026
+2. 18 September 2026
+3. 16 October 2026
+
+A session appears briefly on Home when it is within seven days or has just passed and still needs to be marked completed.
+
+## Timesheet submissions
+
+Timesheets now include a fortnightly submission card based on the placement cycle ending Friday 31 July 2026 and continuing every 14 days.
+
+The card shows:
+
+1. The current fortnight
+2. The submission due date
+3. Whether it is due soon or overdue
+4. A Mark as submitted button
+
+Home only shows a timesheet reminder within three days of the due date or while a submission remains overdue. There is no permanent What’s Coming Up section.
+
+## Protected
+
+Daily hours entry is unchanged. Home, Reflect, Reflection Compass, Assessments, Toolkit, Me, My Practice Framework, backup tools and all existing storage keys remain intact.
+
+New information is stored separately under `integrationSessions` and `timesheetSubmissions`.

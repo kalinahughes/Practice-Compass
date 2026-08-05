@@ -1270,6 +1270,73 @@ function currentStage(info){
 }
 function timesheetEntries(){ return state.get("timesheets",[]); }
 
+
+const INTEGRATION_SESSIONS_DEFAULT = [
+  {id:"session1",label:"Integration Session 1",date:"2026-08-21",status:"booked",note:""},
+  {id:"session2",label:"Integration Session 2",date:"2026-09-18",status:"booked",note:""},
+  {id:"session3",label:"Integration Session 3",date:"2026-10-16",status:"booked",note:""}
+];
+const TIMESHEET_FIRST_DUE="2026-07-31";
+
+function integrationSessions(){
+  const saved=state.get("integrationSessions",null);
+  if(!Array.isArray(saved)||!saved.length){
+    state.set("integrationSessions",INTEGRATION_SESSIONS_DEFAULT);
+    return INTEGRATION_SESSIONS_DEFAULT.map(item=>({...item}));
+  }
+  return INTEGRATION_SESSIONS_DEFAULT.map(defaultItem=>{
+    const current=saved.find(item=>item.id===defaultItem.id)||{};
+    return {...defaultItem,...current};
+  });
+}
+function saveIntegrationSessions(items){state.set("integrationSessions",items);}
+function integrationStatusLabel(status){return status==="completed"?"Completed":status==="booked"?"Booked":"Not booked";}
+function daysBetweenDates(fromValue,toValue){return Math.round((parseLocalDate(toValue)-parseLocalDate(fromValue))/86400000);}
+function integrationReminder(today=localDateValue()){
+  const candidates=integrationSessions().filter(item=>item.status!=="completed"&&item.date).map(item=>({...item,days:daysBetweenDates(today,item.date)})).sort((a,b)=>a.days-b.days);
+  const overdue=candidates.filter(item=>item.days<0).sort((a,b)=>b.days-a.days)[0];
+  if(overdue&&overdue.days>=-7)return {type:"integration",tone:"attention",title:`${overdue.label} has passed`,text:`${formatPlanningDate(overdue.date)} · mark it completed when ready.`,action:"Open session",assessmentId:"integration"};
+  const soon=candidates.find(item=>item.days>=0&&item.days<=7);
+  if(soon)return {type:"integration",tone:"calm",title:`${soon.label} ${soon.days===0?"is today":`is in ${soon.days} day${soon.days===1?"":"s"}`}`,text:formatPlanningDate(soon.date),action:"Open session",assessmentId:"integration"};
+  return null;
+}
+function timesheetSubmissions(){return state.get("timesheetSubmissions",{});}
+function saveTimesheetSubmissions(value){state.set("timesheetSubmissions",value);}
+function timesheetDueDatesAround(todayValue=localDateValue()){
+  const first=parseLocalDate(TIMESHEET_FIRST_DUE),today=parseLocalDate(todayValue),dates=[];
+  let cursor=new Date(first);
+  while(cursor<=today){dates.push(localDateValue(cursor));cursor.setDate(cursor.getDate()+14);}
+  for(let i=0;i<3;i++){dates.push(localDateValue(cursor));cursor.setDate(cursor.getDate()+14);}
+  return dates;
+}
+function timesheetCycleForDue(dueDate){
+  const end=parseLocalDate(dueDate),start=new Date(end);start.setDate(end.getDate()-13);
+  return {start:localDateValue(start),end:dueDate};
+}
+function timesheetSubmissionStatus(todayValue=localDateValue()){
+  const submissions=timesheetSubmissions(),dates=timesheetDueDatesAround(todayValue),today=parseLocalDate(todayValue);
+  const overdue=[...dates].filter(date=>parseLocalDate(date)<=today&&!submissions[date]).sort().pop();
+  if(overdue){const cycle=timesheetCycleForDue(overdue);return {dueDate:overdue,cycle,submitted:false,overdue:true,days:daysBetweenDates(todayValue,overdue)};}
+  const next=dates.find(date=>parseLocalDate(date)>today)||dates[dates.length-1];
+  const cycle=timesheetCycleForDue(next);
+  return {dueDate:next,cycle,submitted:Boolean(submissions[next]),overdue:false,days:daysBetweenDates(todayValue,next)};
+}
+function markTimesheetSubmitted(dueDate){
+  const all=timesheetSubmissions();all[dueDate]={submittedAt:new Date().toISOString()};saveTimesheetSubmissions(all);
+}
+function timesheetReminder(today=localDateValue()){
+  const status=timesheetSubmissionStatus(today);
+  if(status.overdue)return {type:"timesheet",tone:"attention",title:"Timesheet submission is overdue",text:`Fortnight ending ${formatPlanningDate(status.dueDate)}`,action:"Open timesheets"};
+  if(status.days<=3)return {type:"timesheet",tone:"calm",title:`Timesheet due ${status.days===0?"today":`in ${status.days} day${status.days===1?"":"s"}`}`,text:`Fortnight ending ${formatPlanningDate(status.dueDate)}`,action:"Open timesheets"};
+  return null;
+}
+function homePlacementReminders(){return [timesheetReminder(),integrationReminder()].filter(Boolean).slice(0,2);}
+function homeReminderPanel(){
+  const reminders=homePlacementReminders();
+  if(!reminders.length)return "";
+  return `<section class="home-reminder-panel" aria-label="Placement reminders">${reminders.map(item=>`<button class="home-reminder-row ${item.tone==="attention"?"is-attention":""}" data-reminder-type="${item.type}" ${item.assessmentId?`data-assessment-id="${item.assessmentId}"`:""}><span class="home-reminder-symbol">${item.type==="timesheet"?"⏱️":"☕"}</span><span><strong>${item.title}</strong><small>${item.text}</small></span><b>${item.action} ›</b></button>`).join("")}</section>`;
+}
+
 let quickHoursEditingDate=null;
 function localDateValue(date=new Date()){
   const year=date.getFullYear();
@@ -1663,6 +1730,8 @@ function todayPage(){
       </div>
     </section>
 
+    ${homeReminderPanel()}
+
     <section class="home-snapshot-card">
       <div class="home-snapshot-heading">
         <div><span class="home-kicker">Placement snapshot</span><h2>Your progress at a glance</h2></div>
@@ -1964,6 +2033,23 @@ function assessmentPage(){
       </section>
     </div>`;
 }
+
+function integrationSessionManager(){
+  const sessions=integrationSessions();
+  return `<section class="assessment-clear-section integration-session-section" aria-labelledby="integration-session-heading">
+    <div class="assessment-clear-section-heading"><span>☕</span><h2 id="integration-session-heading">Integration Session details</h2></div>
+    <div class="integration-session-list">${sessions.map(item=>`<article class="integration-session-card" data-integration-card="${item.id}">
+      <div class="integration-session-card-heading"><div><strong>${item.label}</strong><small>${item.date?formatPlanningDate(item.date):"No date set"}</small></div><span class="integration-status integration-status-${item.status}">${integrationStatusLabel(item.status)}</span></div>
+      <div class="integration-session-fields">
+        <label><span>Date</span><input type="date" class="input integration-date" data-session-id="${item.id}" value="${escapeAttribute(item.date)}"></label>
+        <label><span>Status</span><select class="select integration-status-select" data-session-id="${item.id}"><option value="not_booked" ${item.status==="not_booked"?"selected":""}>Not booked</option><option value="booked" ${item.status==="booked"?"selected":""}>Booked</option><option value="completed" ${item.status==="completed"?"selected":""}>Completed</option></select></label>
+      </div>
+      <label class="integration-note-label"><span>Optional note</span><input type="text" class="input integration-note" data-session-id="${item.id}" maxlength="120" value="${escapeAttribute(item.note||"")}" placeholder="Anything to remember"></label>
+    </article>`).join("")}</div>
+    <button class="btn integration-save" id="saveIntegrationSessions">Save session details</button>
+  </section>`;
+}
+
 function officialAssessmentInfo(a){
   const sharedNotice="Practice Compass is a planning and evidence tool. It does not replace official JCU documents, LearnJCU instructions or advice from your Field Education Liaison Officer (FELO).";
   const records={
@@ -2037,6 +2123,8 @@ function assessmentDetail(id,openPlanning=false){
         </div>
       </section>
 
+      ${a.id==="integration"?integrationSessionManager():""}
+
       <section class="assessment-clear-section" aria-labelledby="assessment-progress-heading">
         <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-progress-heading">Your progress</h2></div>
         <div class="assessment-clear-summary-grid">
@@ -2107,6 +2195,18 @@ function assessmentDetail(id,openPlanning=false){
     </div>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+  document.getElementById("saveIntegrationSessions")?.addEventListener("click",()=>{
+    const current=integrationSessions();
+    const updated=current.map(item=>({
+      ...item,
+      date:document.querySelector(`.integration-date[data-session-id="${item.id}"]`)?.value||"",
+      status:document.querySelector(`.integration-status-select[data-session-id="${item.id}"]`)?.value||"not_booked",
+      note:document.querySelector(`.integration-note[data-session-id="${item.id}"]`)?.value.trim()||""
+    }));
+    saveIntegrationSessions(updated);
+    alert("Integration session details saved ☕");
+    assessmentDetail("integration");
+  });
   document.getElementById("openPlanningEdit").onclick=()=>{
     const details=document.getElementById("assessmentPlanning");
     details.open=true;
@@ -2641,11 +2741,24 @@ function frameworkPage(){
 }
 
 
+
+function timesheetSubmissionCard(){
+  const status=timesheetSubmissionStatus();
+  const submissions=timesheetSubmissions();
+  const submitted=submissions[status.dueDate];
+  const heading=status.overdue?"Submission overdue":status.days<=3?"Submission due soon":"Next submission";
+  return `<section class="timesheet-submission-card ${status.overdue?"is-overdue":""}">
+    <div><span class="home-kicker">${heading}</span><h2>Fortnight ending ${formatPlanningDate(status.dueDate)}</h2><p>${formatPlanningDate(status.cycle.start)} to ${formatPlanningDate(status.cycle.end)}</p></div>
+    ${submitted?`<span class="timesheet-submitted-badge">✓ Submitted</span>`:`<button class="btn" id="markTimesheetSubmitted" data-due-date="${status.dueDate}">Mark as submitted</button>`}
+  </section>`;
+}
+
 function timesheetPage(){
   const entries=timesheetEntries();
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>⏱️ Timesheets</h2></div>
-    <div class="card green"><div class="label">Why am I doing this?</div><p>JCU requires a detailed record of placement hours and activities. Timesheets are reviewed, signed and submitted every two weeks.</p></div>
+    ${timesheetSubmissionCard()}
+    <div class="card green"><div class="label">Timesheet record</div><p>Keep your daily hours current here. The official JCU workbook remains the formal record submitted every two weeks.</p></div>
     <div class="card"><label class="label">Date</label><input id="tsDate" type="date" class="input"><div class="grid2" style="margin-top:10px"><input id="tsStart" type="time" class="input" value="09:00"><input id="tsFinish" type="time" class="input" value="17:00"></div><label class="label" style="display:block;margin-top:12px">Unpaid lunch minutes</label><input id="tsLunch" type="number" class="input" value="45"><label class="label" style="display:block;margin-top:12px">Activities</label><textarea id="tsActivities" class="textarea" placeholder="Orientation, team meeting, shadowing, documentation, group, supervision, research..."></textarea><button class="btn" id="saveTimesheet">Save timesheet entry</button></div>
     <div class="card"><div class="label">Saved entries</div>${entries.length?entries.map(e=>`<div class="row"><div style="flex:1"><strong>${e.date}</strong><div class="small">${e.start} to ${e.finish} · ${Number(e.hours).toFixed(2)} hrs</div><div class="small">${e.activities||""}</div></div></div>`).join(""):`<p class="muted personality-empty">📅 Your first timesheet entry will appear here.</p>`}</div>`;
   document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
@@ -3042,6 +3155,14 @@ function bind(){
   document.getElementById("openFramework")?.addEventListener("click",()=>frameworkPage());
   document.getElementById("openTimesheets")?.addEventListener("click",()=>timesheetPage());
   document.getElementById("openSupervision")?.addEventListener("click",()=>supervisionPage());
+  document.querySelectorAll(".home-reminder-row").forEach(button=>button.addEventListener("click",()=>{
+    if(button.dataset.reminderType==="timesheet")timesheetPage();
+    else assessmentDetail(button.dataset.assessmentId||"integration");
+  }));
+  document.getElementById("markTimesheetSubmitted")?.addEventListener("click",event=>{
+    markTimesheetSubmitted(event.currentTarget.dataset.dueDate);
+    timesheetPage();
+  });
   document.querySelectorAll(".assessment").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id));
   document.querySelectorAll(".assessment-plan-edit").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id,true));
   const toolkitList=document.getElementById("toolkitList");

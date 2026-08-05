@@ -4746,3 +4746,42 @@ main{padding-inline:18px}
   .reflection-lens-heading{padding:14px 13px}
   .framework-primary-option > summary{min-height:68px}
 }
+
+/* Placement dates and reminders */
+.home-reminder-panel{display:grid;gap:10px;margin:14px 0 18px}
+.home-reminder-row{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;text-align:left;border:1px solid rgba(55,104,111,.2);background:#f2f8f7;border-radius:16px;padding:13px 14px;color:var(--text,#303735);box-shadow:0 7px 20px rgba(40,69,65,.06)}
+.home-reminder-row.is-attention{background:#fff7f3;border-color:rgba(174,103,79,.28)}
+.home-reminder-symbol{font-size:1.2rem}
+.home-reminder-row span:nth-child(2){display:grid;gap:2px}
+.home-reminder-row strong{font-size:.94rem;line-height:1.25}
+.home-reminder-row small{color:var(--muted,#6d7772);font-size:.8rem}
+.home-reminder-row b{color:#2f8792;font-size:.78rem;white-space:nowrap;font-weight:700}
+
+.integration-session-section{background:#fff}
+.integration-session-list{display:grid;gap:12px}
+.integration-session-card{border:1px solid rgba(62,105,114,.16);border-radius:16px;padding:14px;background:#f8faf9}
+.integration-session-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.integration-session-card-heading div{display:grid;gap:3px}
+.integration-session-card-heading strong{font-size:1rem;color:#304f54}
+.integration-session-card-heading small{color:var(--muted,#6d7772)}
+.integration-status{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.integration-status-booked{background:#dcebe8;color:#315f61}
+.integration-status-completed{background:#e5efe5;color:#3b664c}
+.integration-status-not_booked{background:#f0ece7;color:#776b62}
+.integration-session-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.integration-session-fields label,.integration-note-label{display:grid;gap:5px}
+.integration-session-fields label span,.integration-note-label span{font-size:.76rem;font-weight:700;color:#53635f}
+.integration-note-label{margin-top:10px}
+.integration-save{margin-top:14px}
+
+.timesheet-submission-card{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px;border-radius:18px;background:#eef7f5;border:1px solid rgba(55,104,111,.2);margin-bottom:14px}
+.timesheet-submission-card.is-overdue{background:#fff7f3;border-color:rgba(174,103,79,.28)}
+.timesheet-submission-card h2{margin:4px 0 2px;font-size:1.05rem;color:#31575c}
+.timesheet-submission-card p{margin:0;color:var(--muted,#6d7772);font-size:.82rem}
+.timesheet-submitted-badge{display:inline-flex;align-items:center;border-radius:999px;padding:7px 11px;background:#dcebe2;color:#356044;font-size:.78rem;font-weight:700;white-space:nowrap}
+
+@media (max-width:560px){
+  .home-reminder-row{grid-template-columns:auto 1fr}.home-reminder-row b{grid-column:2}
+  .integration-session-fields{grid-template-columns:1fr}
+  .timesheet-submission-card{align-items:flex-start;flex-direction:column}
+}
