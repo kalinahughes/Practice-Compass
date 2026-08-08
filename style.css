@@ -4908,3 +4908,9 @@ main{padding-inline:18px}
 }
 .journey-reset-row strong{color:#70463e}
 .journey-reset-row small{color:#87665e}
+
+/* Placement profile scheduling: contained to My Journey > App tools */
+.placement-profile-date-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.placement-profile-editor label>span small{font-weight:500;opacity:.65}
+.placement-profile-hint{display:block;margin-top:6px;color:var(--muted,#6f746f);font-size:.78rem;line-height:1.35}
+@media (max-width:560px){.placement-profile-date-row{grid-template-columns:1fr}}

@@ -1,15 +1,15 @@
 
-const START_DATE = new Date("2026-07-20T00:00:00");
+const LEGACY_START_DATE = "2026-07-20";
 const HOURS_PER_DAY = 7.25;
-const TOTAL_HOURS = 500;
+const DEFAULT_TOTAL_HOURS = 500;
 
 const state = {
   get(k, fallback){ try{ const v=localStorage.getItem(k); return v===null?fallback:JSON.parse(v)}catch{return fallback} },
   set(k,v){ localStorage.setItem(k,JSON.stringify(v)) }
 };
 
-const LEGACY_PLACEMENT_PROFILE={studentName:"Kalina Hughes",agency:"Mind Australia",service:"Adult Step Up Step Down"};
-const EMPTY_PLACEMENT_PROFILE={studentName:"",agency:"",service:""};
+const LEGACY_PLACEMENT_PROFILE={studentName:"Kalina Hughes",agency:"Mind Australia",service:"Adult Step Up Step Down",startDate:LEGACY_START_DATE,endDate:"",totalHours:DEFAULT_TOTAL_HOURS,weekOverride:""};
+const EMPTY_PLACEMENT_PROFILE={studentName:"",agency:"",service:"",startDate:"",endDate:"",totalHours:DEFAULT_TOTAL_HOURS,weekOverride:""};
 function hasExistingPlacementData(){
   return (state.get("entries",[]).length>0) ||
     (state.get("timesheets",[]).length>0) ||
@@ -20,7 +20,24 @@ function hasExistingPlacementData(){
 function placementProfile(){
   const saved=state.get("placementProfile",null);
   if(saved===null)return hasExistingPlacementData()?{...LEGACY_PLACEMENT_PROFILE}:{...EMPTY_PLACEMENT_PROFILE};
-  return {studentName:String(saved.studentName||""),agency:String(saved.agency||""),service:String(saved.service||"")};
+  const existing=hasExistingPlacementData();
+  const totalHours=Number(saved.totalHours);
+  return {
+    studentName:String(saved.studentName||""),
+    agency:String(saved.agency||""),
+    service:String(saved.service||""),
+    startDate:String(saved.startDate||(existing?LEGACY_START_DATE:"")),
+    endDate:String(saved.endDate||""),
+    totalHours:Number.isFinite(totalHours)&&totalHours>0?totalHours:DEFAULT_TOTAL_HOURS,
+    weekOverride:saved.weekOverride===0||saved.weekOverride?String(saved.weekOverride):""
+  };
+}
+function placementTotalHours(){ return placementProfile().totalHours||DEFAULT_TOTAL_HOURS; }
+function parseLocalDate(value){
+  if(!value)return null;
+  const parts=String(value).split("-").map(Number);
+  if(parts.length!==3||parts.some(Number.isNaN))return null;
+  return new Date(parts[0],parts[1]-1,parts[2],0,0,0,0);
 }
 function placementProfileLabel(){
   const profile=placementProfile();
@@ -1188,15 +1205,21 @@ function dayMessage(){
 
 
 function placementInfo(){
-  const today = new Date();
-  const diff = Math.floor((today - START_DATE)/(1000*60*60*24));
-  if(diff < 0) return {started:false,daysUntil:Math.ceil((START_DATE-today)/(1000*60*60*24)),week:0,day:0,workdays:0};
+  const profile=placementProfile();
+  const start=parseLocalDate(profile.startDate);
+  if(!start)return {started:false,notConfigured:true,daysUntil:0,week:0,day:0,workdays:0};
+  const today=new Date(); today.setHours(0,0,0,0);
+  const diff=Math.floor((today-start)/(1000*60*60*24));
+  if(diff<0)return {started:false,daysUntil:Math.ceil((start-today)/(1000*60*60*24)),week:0,day:0,workdays:0};
   let workdays=0;
-  for(let d=new Date(START_DATE); d<=today; d.setDate(d.getDate()+1)){
+  for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
     const day=d.getDay();
-    if(day>=1 && day<=5) workdays++;
+    if(day>=1&&day<=5)workdays++;
   }
-  return {started:true,workdays,week:Math.ceil(workdays/5),day:((workdays-1)%5)+1};
+  const automaticWeek=Math.floor(diff/7)+1;
+  const override=Number(profile.weekOverride);
+  const week=Number.isInteger(override)&&override>0?override:automaticWeek;
+  return {started:true,workdays,week,automaticWeek,day:((workdays-1)%5)+1};
 }
 
 function assessmentIsComplete(id){
@@ -1723,12 +1746,12 @@ function homeIcon(name){
 }
 
 function todayPage(){
-  const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
-  const remaining=Math.max(0,TOTAL_HOURS-h);
-  const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
+  const info=placementInfo(), h=hours(), totalHours=placementTotalHours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
+  const remaining=Math.max(0,totalHours-h);
+  const progress=Math.min(100,Math.round((h/totalHours)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
-  const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
+  const placementLabel=info.started?`Placement week ${info.week}`:(info.notConfigured?`Add your placement start date in My Journey`:`Placement begins in ${info.daysUntil} days`);
   return `
     <section class="home-welcome">
       <div class="home-welcome-copy">
@@ -2000,10 +2023,10 @@ function assessmentPage(){
           <div><span>${info.started?"Current week":"Starts"}</span><strong>${placementTiming}</strong></div>
         </div>
         <div class="placement-hours-line">
-          <span><small>Hours</small><strong>${hoursStarted?`${h.toFixed(1)} / 500`:"Not started"}</strong></span>
+          <span><small>Hours</small><strong>${hoursStarted?`${h.toFixed(1)} / ${placementTotalHours()}`:"Not started"}</strong></span>
           <span><small>Stage</small><strong>${stage.title}</strong></span>
         </div>
-        ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/TOTAL_HOURS)*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>`:""}
+        ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/placementTotalHours())*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/placementTotalHours())*100)}%"></span></div>`:""}
       </section>
 
       <section class="placement-native-section">
@@ -2341,6 +2364,12 @@ function morePage(){
           <label><span>Name</span><input class="input" id="profileStudentName" value="${safeText(placementProfile().studentName)}" placeholder="Your name"></label>
           <label><span>Agency</span><input class="input" id="profileAgency" value="${safeText(placementProfile().agency)}" placeholder="Placement agency"></label>
           <label><span>Service or team</span><input class="input" id="profileService" value="${safeText(placementProfile().service)}" placeholder="Service, program or team"></label>
+          <div class="placement-profile-date-row">
+            <label><span>Placement start date</span><input class="input" type="date" id="profileStartDate" value="${safeText(placementProfile().startDate)}"></label>
+            <label><span>Expected end date <small>optional</small></span><input class="input" type="date" id="profileEndDate" value="${safeText(placementProfile().endDate)}"></label>
+          </div>
+          <label><span>Total placement hours</span><input class="input" type="number" min="1" step="1" id="profileTotalHours" value="${safeText(placementProfile().totalHours)}"></label>
+          <label><span>Placement week override <small>optional</small></span><input class="input" type="number" min="1" step="1" id="profileWeekOverride" value="${safeText(placementProfile().weekOverride)}" placeholder="Leave blank to calculate automatically"><small class="placement-profile-hint">Practice Compass calculates the week from your start date. Only use this if your university counts placement weeks differently.</small></label>
           <button type="button" class="btn secondary placement-profile-save" id="savePlacementProfile">Save placement details</button>
         </div>
       </details>
@@ -3024,7 +3053,12 @@ function savePlacementProfile(){
   const studentName=document.getElementById("profileStudentName")?.value.trim()||"";
   const agency=document.getElementById("profileAgency")?.value.trim()||"";
   const service=document.getElementById("profileService")?.value.trim()||"";
-  state.set("placementProfile",{studentName,agency,service});
+  const startDate=document.getElementById("profileStartDate")?.value||"";
+  const endDate=document.getElementById("profileEndDate")?.value||"";
+  const totalHours=Math.max(1,Number(document.getElementById("profileTotalHours")?.value)||DEFAULT_TOTAL_HOURS);
+  const weekRaw=document.getElementById("profileWeekOverride")?.value.trim()||"";
+  const weekOverride=weekRaw?String(Math.max(1,Math.floor(Number(weekRaw)||1))):"";
+  state.set("placementProfile",{studentName,agency,service,startDate,endDate,totalHours,weekOverride});
   render();
 }
 function resetPracticeCompassThisDevice(){
@@ -3034,7 +3068,7 @@ function resetPracticeCompassThisDevice(){
   if(typed!=="CLEAR")return;
   try{
     localStorage.clear();
-    localStorage.setItem("placementProfile",JSON.stringify({studentName:"",agency:"",service:""}));
+    localStorage.setItem("placementProfile",JSON.stringify({...EMPTY_PLACEMENT_PROFILE}));
     alert("Practice Compass data has been cleared from this device only. The app will now reload so a new user can add their placement details.");
     window.location.reload();
   }catch(error){
@@ -3193,7 +3227,7 @@ function bind(){
     const box=document.getElementById("whyFocusText");
     box.classList.toggle("hidden");
   });
-  document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(TOTAL_HOURS,hours()+HOURS_PER_DAY));render()});
+  document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(placementTotalHours(),hours()+HOURS_PER_DAY));render()});
   document.getElementById("adjustHours")?.addEventListener("click",()=>{const v=prompt("Enter total completed placement hours:",hours()); if(v!==null&&!isNaN(Number(v))){state.set("hours",Number(v));render()}});
   document.getElementById("saveEntry")?.addEventListener("click",saveEntry);
   document.querySelectorAll(".reflection-involvement-chip,.reflection-outcome-chip,.reflection-focus-chip").forEach(button=>button.addEventListener("click",()=>{
