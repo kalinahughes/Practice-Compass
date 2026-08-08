@@ -8,6 +8,29 @@ const state = {
   set(k,v){ localStorage.setItem(k,JSON.stringify(v)) }
 };
 
+const LEGACY_PLACEMENT_PROFILE={studentName:"Kalina Hughes",agency:"Mind Australia",service:"Adult Step Up Step Down"};
+const EMPTY_PLACEMENT_PROFILE={studentName:"",agency:"",service:""};
+function hasExistingPlacementData(){
+  return (state.get("entries",[]).length>0) ||
+    (state.get("timesheets",[]).length>0) ||
+    Number(state.get("hours",0))>0 ||
+    (state.get("supervisionItems",[]).length>0) ||
+    (state.get("weeklyReviews",[]).length>0);
+}
+function placementProfile(){
+  const saved=state.get("placementProfile",null);
+  if(saved===null)return hasExistingPlacementData()?{...LEGACY_PLACEMENT_PROFILE}:{...EMPTY_PLACEMENT_PROFILE};
+  return {studentName:String(saved.studentName||""),agency:String(saved.agency||""),service:String(saved.service||"")};
+}
+function placementProfileLabel(){
+  const profile=placementProfile();
+  return [profile.studentName,profile.agency,profile.service].filter(Boolean).join(" · ");
+}
+function firstName(){
+  const name=placementProfile().studentName.trim();
+  return name?name.split(/\s+/)[0]:"there";
+}
+
 const assessments = [
  {id:"modules",title:"Pre Placement Modules",when:"Before placement",icon:"✅",color:"stone",
   purpose:"Complete six preparation modules and their quizzes before placement begins.",
@@ -31,7 +54,7 @@ const assessments = [
   toolkit:["Recovery Oriented Practice","Use of Self","Cultural Capability and Inclusion","Reflective Practice"]},
 
  {id:"project",title:"Small Project",when:"Agree scope early in placement",icon:"📄",color:"brown",
-  purpose:"Complete a manageable research or practice project that contributes to your learning and provides a useful outcome for Mind Australia.",
+  purpose:"Complete a manageable research or practice project that contributes to your learning and provides a useful outcome for your placement agency.",
   why:"The project develops research minded practice and shows how social workers can improve services, policy, resources or organisational knowledge.",
   tasks:["Discuss agency needs with your supervisor","Agree on a realistic project question and output","Plan research or information gathering","Complete the project within placement time","Explain how it benefits the agency and your learning"],
   collect:["Possible agency need or gap","Project question","Relevant literature or policy","Supervisor feedback","Decisions and changes made","Evidence of agency benefit"],
@@ -459,11 +482,11 @@ const stage1ToolkitContent = {
       "Do not use confidentiality as a blanket reason to avoid all communication with carers. Check the exact limits, organisational policy and lawful basis.",
       "A carer’s view may add important context, but it should be identified as their perspective rather than treated automatically as fact.",
       "Where family involvement may create risk, coercion or distress, prioritise safety and discuss the situation in supervision.",
-      "Follow current Mind Australia policy, consent documentation, privacy requirements and supervisor guidance."
+      "Follow your placement agency’s current policy, consent documentation, privacy requirements and supervisor guidance."
     ],
     related:["Informed Consent","Confidentiality","Supported Decision Making","Recovery Oriented Practice","Systems & Ecological Theory","Safety Planning"],
     refs:[
-      ["Mind Australia, Family and Carer Inclusion Policy and practice guidance reviewed during placement",""],
+      ["Your placement agency’s family and carer inclusion policy or practice guidance reviewed during placement",""],
       ["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],
       ["Australian Government, National framework for recovery oriented mental health services","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-guide-for-practitioners-and-providers"],
       ["Carer Gateway, support for carers","https://www.carergateway.gov.au/"]
@@ -1143,10 +1166,10 @@ const selfcare = [
 let route="today";
 
 function greeting(){
-  const hour = new Date().getHours();
-  if(hour < 12) return {title:"☀️ Good morning, Kalina", subtitle:"A new day. Stay curious and notice one useful thing."};
-  if(hour < 17) return {title:"🌿 Good afternoon, Kalina", subtitle:"Welcome back. Let’s focus on what matters next."};
-  return {title:"🌙 Welcome back, Kalina", subtitle:"One meaningful moment from today is enough."};
+  const hour = new Date().getHours(), name=firstName();
+  if(hour < 12) return {title:`☀️ Good morning, ${name}`, subtitle:"A new day. Stay curious and notice one useful thing."};
+  if(hour < 17) return {title:`🌿 Good afternoon, ${name}`, subtitle:"Welcome back. Let’s focus on what matters next."};
+  return {title:`🌙 Welcome back, ${name}`, subtitle:"One meaningful moment from today is enough."};
 }
 
 function dayMessage(){
@@ -1223,7 +1246,7 @@ function upcomingAssessments(info,hours,currentId,limit=2){
 function dailyPrompt(info,hours){
   if(!info.started) return {
     title:"Prepare without pressure",
-    q:"What are you most hoping to learn from Mind Australia?",
+    q:"What are you most hoping to learn from your placement?",
     why:"This can help shape your Learning Plan before placement begins.",
     goal:1
   };
@@ -1893,7 +1916,7 @@ function journalPage(){
     <section class="conversation-card reflection-journal-card reflection-primary-card">
       <div class="reflection-step-number">1</div>
       <label for="answer"><strong>What happened?</strong><span>One or two lines is enough. Keep client information de identified.</span></label>
-      <textarea id="answer" class="textarea reflection-main-journal" placeholder="e.g. Sat in on MDT and saw the FEW resource being used."></textarea>
+      <textarea id="answer" class="textarea reflection-main-journal" placeholder="e.g. Sat in on an MDT and noticed how the team approached a complex decision."></textarea>
       <small class="reflection-draft-status" id="reflectionDraftStatus">Draft saves automatically on this device</small>
     </section>
 
@@ -1973,7 +1996,7 @@ function assessmentPage(){
 
       <section class="placement-native-overview placement-native-overview-compact" aria-label="Placement overview">
         <div class="placement-overview-line">
-          <div><span>Placement</span><strong>Mind Australia</strong><small>Step Up Step Down</small></div>
+          <div><span>Placement</span><strong>${safeText(placementProfile().agency||"My placement")}</strong><small>${safeText(placementProfile().service||"Add placement details in My Journey")}</small></div>
           <div><span>${info.started?"Current week":"Starts"}</span><strong>${placementTiming}</strong></div>
         </div>
         <div class="placement-hours-line">
@@ -2312,12 +2335,22 @@ function morePage(){
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
       <div class="journey-app-heading"><h2 id="journeyAppHeading">App tools</h2><p>Practical controls kept separate from your professional journey.</p></div>
+      <details class="journey-utility-details placement-profile-details">
+        <summary><span><strong>My placement details</strong><small>${safeText(placementProfileLabel()||"Add your name and placement")}</small></span><span>›</span></summary>
+        <div class="journey-utility-note placement-profile-editor">
+          <label><span>Name</span><input class="input" id="profileStudentName" value="${safeText(placementProfile().studentName)}" placeholder="Your name"></label>
+          <label><span>Agency</span><input class="input" id="profileAgency" value="${safeText(placementProfile().agency)}" placeholder="Placement agency"></label>
+          <label><span>Service or team</span><input class="input" id="profileService" value="${safeText(placementProfile().service)}" placeholder="Service, program or team"></label>
+          <button type="button" class="btn secondary placement-profile-save" id="savePlacementProfile">Save placement details</button>
+        </div>
+      </details>
       <button class="journey-utility-row" id="exportHtml"><span><strong>Export readable record</strong><small>Create a readable copy of reflections, hours and framework notes</small></span><span>›</span></button>
       <button class="journey-utility-row" id="backupJson"><span><strong>Back up everything</strong><small>Save a private copy of all Practice Compass browser data</small></span><span>›</span></button>
       <button class="journey-utility-row" id="restoreJson"><span><strong>Restore a backup</strong><small>Preview and import a Practice Compass backup file</small></span><span>›</span></button>
       <input class="hidden" type="file" id="restoreJsonFile" accept="application/json,.json">
       <div class="backup-status" id="backupStatus">${backupStatusText()}</div>
       <div class="backup-restore-panel hidden" id="backupRestorePanel" aria-live="polite"></div>
+      <button class="journey-utility-row journey-reset-row" id="resetThisDevice"><span><strong>Start fresh on this device</strong><small>Clear Practice Compass data saved only in this browser</small></span><span>›</span></button>
       <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass supports placement learning, reflection and professional growth. University assessment requirements and progress remain in My Placement and Assessments.</div></details>
     </section>
   </div>`;
@@ -2983,10 +3016,33 @@ async function shareOrDownload(blob,filename,title){
 function exportPrintable(){
   try{
     const entries=savedEntries(),reviews=state.get("weeklyReviews",[]),timesheets=timesheetEntries(),framework=frameworkData();
-    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>Kalina Hughes · Mind Australia · Adult Step Up Step Down</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Framework for Practice</h2><div class="entry"><p><strong>Values:</strong> ${(framework.values||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Theories and approaches:</strong> ${(framework.theories||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Cultural capability:</strong> ${(framework.cultural||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Skills:</strong> ${(framework.skills||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Use of self:</strong> ${safeText(framework.useOfSelf)||"Not added"}</p><p><strong>Professional identity:</strong> ${safeText(framework.professionalIdentity)||"Not added"}</p></div></body></html>`;
+    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>${safeText(placementProfileLabel()||"Placement details not added")}</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Framework for Practice</h2><div class="entry"><p><strong>Values:</strong> ${(framework.values||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Theories and approaches:</strong> ${(framework.theories||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Cultural capability:</strong> ${(framework.cultural||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Skills:</strong> ${(framework.skills||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Use of self:</strong> ${safeText(framework.useOfSelf)||"Not added"}</p><p><strong>Professional identity:</strong> ${safeText(framework.professionalIdentity)||"Not added"}</p></div></body></html>`;
     shareOrDownload(new Blob([html],{type:"text/html"}),"Practice_Compass_Placement_Notes.html","Practice Compass placement notes");
   }catch(error){console.error(error);alert("The export could not be created. Please try the JSON backup instead.");}
 }
+function savePlacementProfile(){
+  const studentName=document.getElementById("profileStudentName")?.value.trim()||"";
+  const agency=document.getElementById("profileAgency")?.value.trim()||"";
+  const service=document.getElementById("profileService")?.value.trim()||"";
+  state.set("placementProfile",{studentName,agency,service});
+  render();
+}
+function resetPracticeCompassThisDevice(){
+  const first=window.confirm("Start fresh on this device? This will permanently remove reflections, timesheets, hours, supervision notes, assessment progress and other Practice Compass data stored in this browser only. It will not clear data on another phone, tablet or computer.");
+  if(!first)return;
+  const typed=window.prompt('Type CLEAR to confirm. If you need this device’s data, cancel and create a backup first.');
+  if(typed!=="CLEAR")return;
+  try{
+    localStorage.clear();
+    localStorage.setItem("placementProfile",JSON.stringify({studentName:"",agency:"",service:""}));
+    alert("Practice Compass data has been cleared from this device only. The app will now reload so a new user can add their placement details.");
+    window.location.reload();
+  }catch(error){
+    console.error(error);
+    alert("Practice Compass could not be cleared. No further changes were made.");
+  }
+}
+
 const PRACTICE_COMPASS_BACKUP_VERSION=2;
 function backupStatusText(){
   const value=state.get("lastBackupAt","");
@@ -3219,8 +3275,10 @@ function bind(){
   document.getElementById("myJourney")?.addEventListener("click",myJourneyPage);
   document.getElementById("wellbeing")?.addEventListener("click",()=>wellbeingPage());
   document.getElementById("exportHtml")?.addEventListener("click",()=>exportPrintable());
+  document.getElementById("savePlacementProfile")?.addEventListener("click",savePlacementProfile);
   document.getElementById("backupJson")?.addEventListener("click",()=>backup());
   document.getElementById("restoreJson")?.addEventListener("click",()=>document.getElementById("restoreJsonFile")?.click());
+  document.getElementById("resetThisDevice")?.addEventListener("click",resetPracticeCompassThisDevice);
   document.getElementById("restoreJsonFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];readBackupFile(file);event.target.value="";});
 }
 

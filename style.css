@@ -4871,3 +4871,40 @@ main{padding-inline:18px}
   .reflection-binary{width:100%}
   .reflection-binary .reflection-choice-chip{flex:1}
 }
+
+/* Device-safe start fresh and editable placement details */
+.placement-profile-details summary small{
+  max-width:230px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.placement-profile-editor{
+  display:grid;
+  gap:12px;
+}
+.placement-profile-editor label{
+  display:grid;
+  gap:6px;
+}
+.placement-profile-editor label>span{
+  color:#52635f;
+  font-size:12px;
+  font-weight:750;
+}
+.placement-profile-editor .input{
+  width:100%;
+  min-height:44px;
+}
+.placement-profile-save{
+  width:100%;
+  margin:2px 0 0;
+}
+.journey-reset-row{
+  margin-top:12px;
+  color:#7c4c42;
+  background:#fff9f7;
+  border-top:1px solid #eadfd9;
+}
+.journey-reset-row strong{color:#70463e}
+.journey-reset-row small{color:#87665e}
