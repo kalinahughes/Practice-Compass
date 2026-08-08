@@ -4826,3 +4826,48 @@ main{padding-inline:18px}
 .assessment-more-information{margin-top:16px}
 .assessment-clear-extra-heading{display:none!important}
 @media(max-width:560px){.assessment-priority-grid-two{grid-template-columns:1fr}}
+
+/* Reflection sprint: quick capture, low cognitive load, assessment ready */
+.reflection-quick-flow{gap:14px}
+.reflection-primary-card{position:relative;padding:22px;border:1px solid rgba(63,111,120,.18);box-shadow:0 8px 24px rgba(39,68,63,.06)}
+.reflection-primary-card label{padding-left:34px}
+.reflection-step-number{width:24px;height:24px;border-radius:999px;display:inline-grid;place-items:center;background:var(--sage-soft,#edf3ed);color:var(--green);font-size:.76rem;font-weight:800;flex:0 0 auto}
+.reflection-primary-card>.reflection-step-number{position:absolute;left:22px;top:23px}
+.reflection-main-journal{min-height:112px;margin-top:12px;font-size:.98rem;line-height:1.55}
+.reflection-choice-card{padding:18px 20px;border:1px solid rgba(77,91,80,.10);box-shadow:0 4px 15px rgba(39,68,63,.035)}
+.reflection-secondary-card{background:rgba(248,251,250,.72)}
+.reflection-section-heading{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
+.reflection-section-heading h2{font-size:1.02rem;line-height:1.25;margin:1px 0 3px;color:var(--text)}
+.reflection-section-heading p{font-size:.82rem;line-height:1.35;margin:0;color:var(--muted)}
+.reflection-button-grid{display:flex;flex-wrap:wrap;gap:8px}
+.reflection-choice-chip{appearance:none;border:1px solid rgba(63,111,120,.22);background:#fff;color:var(--text);border-radius:999px;padding:9px 13px;font:inherit;font-size:.84rem;font-weight:700;line-height:1.2;cursor:pointer;transition:.16s ease}
+.reflection-choice-chip.selected{background:#3f6f78;border-color:#3f6f78;color:#fff;box-shadow:0 2px 7px rgba(63,111,120,.18)}
+.reflection-choice-chip:focus-visible{outline:3px solid rgba(63,111,120,.18);outline-offset:2px}
+.reflection-focus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.reflection-focus-chip{border-radius:13px;text-align:left;display:grid;gap:3px;min-height:58px;align-content:center;padding:10px 12px}
+.reflection-focus-chip span{font-weight:750}
+.reflection-focus-chip small{font-size:.69rem;color:var(--muted);font-weight:550;line-height:1.25}
+.reflection-focus-chip.selected small{color:rgba(255,255,255,.82)}
+.reflection-adaptive-note{margin-top:14px;padding:14px;border-radius:14px;background:var(--sage-soft,#edf3ed)}
+.reflection-adaptive-note label{display:grid;gap:3px;margin-bottom:9px}
+.reflection-adaptive-note label strong{font-size:.9rem}
+.reflection-adaptive-note label span{font-size:.75rem;color:var(--muted)}
+.reflection-mini-note{min-height:76px;font-size:.9rem;line-height:1.45}
+.reflection-project-card{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 19px;border:1px solid rgba(77,91,80,.10);box-shadow:none}
+.reflection-project-card>div:first-child{display:grid;gap:3px}
+.reflection-project-card strong{font-size:.91rem}
+.reflection-project-card small{font-size:.76rem;color:var(--muted);line-height:1.35}
+.reflection-binary{display:flex;gap:7px;flex:0 0 auto}
+.reflection-binary .reflection-choice-chip{min-width:58px;text-align:center}
+.reflection-save-button{margin-top:2px}
+.reflection-library-note{padding:10px 12px;border-radius:12px;background:var(--sage-soft,#edf3ed);font-size:.86rem}
+@media(max-width:560px){
+  .reflection-primary-card{padding:18px 16px}
+  .reflection-primary-card>.reflection-step-number{left:16px;top:19px}
+  .reflection-primary-card label{padding-left:32px}
+  .reflection-choice-card{padding:16px}
+  .reflection-focus-grid{grid-template-columns:1fr}
+  .reflection-project-card{align-items:flex-start;flex-direction:column}
+  .reflection-binary{width:100%}
+  .reflection-binary .reflection-choice-chip{flex:1}
+}
