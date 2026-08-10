@@ -1,22 +1,20 @@
-# Practice Compass: Assessment Hierarchy Correction
+# Practice Compass: Cool Mist Palette Refinement
 
-Replace both `app.js` and `style.css`.
+Replace only `style.css`.
 
-## Corrected assessment structure
-
-1. What it is
-2. What to look for and do
-3. My plan and progress
+This is a palette-only sprint.
 
 ## Changes
 
-1. What JCU expects is now a quiet collapsed section.
-2. The assessment checklist remains collapsed.
-3. My plan and progress appears once only.
-4. Planning date and planning note are edited inside My plan and progress.
-5. Duplicate evidence categories, official timing and separate Extra details heading are removed.
-6. Toolkit links and official sources are combined into one optional More information section.
-7. The assessment title is restored to white against the slate teal header.
-8. Integration Session booking controls remain unchanged.
+1. Reduces beige and cream across large surfaces.
+2. Uses white for main cards and workspaces.
+3. Uses a very light cool mist for page backgrounds and quiet secondary areas.
+4. Keeps slate teal as the structural colour.
+5. Keeps eucalyptus for progress and completed states.
+6. Keeps soft sage for supportive and reflective content.
+7. Keeps bright teal available for key actions.
+8. Retains only a small amount of warm brown as an accent.
 
-No storage keys, saved assessment progress, reflections, Toolkit content, timesheet data, supervision data or backup functions are changed.
+No layout, JavaScript, saved data, routes, Reflect, Toolkit, Me, Assessments, timesheets or backup functionality is changed.
+
+The Timesheets title wording is not changed in this sprint.

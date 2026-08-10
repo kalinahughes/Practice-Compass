@@ -4827,90 +4827,116 @@ main{padding-inline:18px}
 .assessment-clear-extra-heading{display:none!important}
 @media(max-width:560px){.assessment-priority-grid-two{grid-template-columns:1fr}}
 
-/* Reflection sprint: quick capture, low cognitive load, assessment ready */
-.reflection-quick-flow{gap:14px}
-.reflection-primary-card{position:relative;padding:22px;border:1px solid rgba(63,111,120,.18);box-shadow:0 8px 24px rgba(39,68,63,.06)}
-.reflection-primary-card label{padding-left:34px}
-.reflection-step-number{width:24px;height:24px;border-radius:999px;display:inline-grid;place-items:center;background:var(--sage-soft,#edf3ed);color:var(--green);font-size:.76rem;font-weight:800;flex:0 0 auto}
-.reflection-primary-card>.reflection-step-number{position:absolute;left:22px;top:23px}
-.reflection-main-journal{min-height:112px;margin-top:12px;font-size:.98rem;line-height:1.55}
-.reflection-choice-card{padding:18px 20px;border:1px solid rgba(77,91,80,.10);box-shadow:0 4px 15px rgba(39,68,63,.035)}
-.reflection-secondary-card{background:rgba(248,251,250,.72)}
-.reflection-section-heading{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
-.reflection-section-heading h2{font-size:1.02rem;line-height:1.25;margin:1px 0 3px;color:var(--text)}
-.reflection-section-heading p{font-size:.82rem;line-height:1.35;margin:0;color:var(--muted)}
-.reflection-button-grid{display:flex;flex-wrap:wrap;gap:8px}
-.reflection-choice-chip{appearance:none;border:1px solid rgba(63,111,120,.22);background:#fff;color:var(--text);border-radius:999px;padding:9px 13px;font:inherit;font-size:.84rem;font-weight:700;line-height:1.2;cursor:pointer;transition:.16s ease}
-.reflection-choice-chip.selected{background:#3f6f78;border-color:#3f6f78;color:#fff;box-shadow:0 2px 7px rgba(63,111,120,.18)}
-.reflection-choice-chip:focus-visible{outline:3px solid rgba(63,111,120,.18);outline-offset:2px}
-.reflection-focus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.reflection-focus-chip{border-radius:13px;text-align:left;display:grid;gap:3px;min-height:58px;align-content:center;padding:10px 12px}
-.reflection-focus-chip span{font-weight:750}
-.reflection-focus-chip small{font-size:.69rem;color:var(--muted);font-weight:550;line-height:1.25}
-.reflection-focus-chip.selected small{color:rgba(255,255,255,.82)}
-.reflection-adaptive-note{margin-top:14px;padding:14px;border-radius:14px;background:var(--sage-soft,#edf3ed)}
-.reflection-adaptive-note label{display:grid;gap:3px;margin-bottom:9px}
-.reflection-adaptive-note label strong{font-size:.9rem}
-.reflection-adaptive-note label span{font-size:.75rem;color:var(--muted)}
-.reflection-mini-note{min-height:76px;font-size:.9rem;line-height:1.45}
-.reflection-project-card{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 19px;border:1px solid rgba(77,91,80,.10);box-shadow:none}
-.reflection-project-card>div:first-child{display:grid;gap:3px}
-.reflection-project-card strong{font-size:.91rem}
-.reflection-project-card small{font-size:.76rem;color:var(--muted);line-height:1.35}
-.reflection-binary{display:flex;gap:7px;flex:0 0 auto}
-.reflection-binary .reflection-choice-chip{min-width:58px;text-align:center}
-.reflection-save-button{margin-top:2px}
-.reflection-library-note{padding:10px 12px;border-radius:12px;background:var(--sage-soft,#edf3ed);font-size:.86rem}
-@media(max-width:560px){
-  .reflection-primary-card{padding:18px 16px}
-  .reflection-primary-card>.reflection-step-number{left:16px;top:19px}
-  .reflection-primary-card label{padding-left:32px}
-  .reflection-choice-card{padding:16px}
-  .reflection-focus-grid{grid-template-columns:1fr}
-  .reflection-project-card{align-items:flex-start;flex-direction:column}
-  .reflection-binary{width:100%}
-  .reflection-binary .reflection-choice-chip{flex:1}
+
+/* =========================================================
+   Practice Compass — Cool Mist Palette Refinement
+   Reduces beige/cream surfaces without changing layout.
+   ========================================================= */
+:root{
+  --cream:#f7f9f8;
+  --cream-2:#f1f5f3;
+  --white:#ffffff;
+  --stone:#d7e0db;
+  --stone-soft:#edf3ef;
+  --taupe:#a7b2ac;
+  --brown-soft:#edf2ef;
+  --line:#dde6e1;
 }
 
-/* Device-safe start fresh and editable placement details */
-.placement-profile-details summary small{
-  max-width:230px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+/* Main surfaces */
+body{
+  background:#e9efec;
 }
-.placement-profile-editor{
-  display:grid;
-  gap:12px;
-}
-.placement-profile-editor label{
-  display:grid;
-  gap:6px;
-}
-.placement-profile-editor label>span{
-  color:#52635f;
-  font-size:12px;
-  font-weight:750;
-}
-.placement-profile-editor .input{
-  width:100%;
-  min-height:44px;
-}
-.placement-profile-save{
-  width:100%;
-  margin:2px 0 0;
-}
-.journey-reset-row{
-  margin-top:12px;
-  color:#7c4c42;
-  background:#fff9f7;
-  border-top:1px solid #eadfd9;
-}
-.journey-reset-row strong{color:#70463e}
-.journey-reset-row small{color:#87665e}
 
-/* Placement profile scheduling: contained to My Journey > App tools */
-.placement-profile-date-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.placement-profile-editor label>span small{font-weight:500;opacity:.65}
-.placement-profile-hint{display:block;margin-top:6px;color:var(--muted,#6f746f);font-size:.78rem;line-height:1.35}
-@media (max-width:560px){.placement-profile-date-row{grid-template-columns:1fr}}
+#app{
+  background:
+    radial-gradient(circle at 92% 7%, rgba(190,200,189,.20), transparent 25%),
+    linear-gradient(180deg,#ffffff 0%,#f7faf8 52%,#f1f5f3 100%);
+}
+
+/* Cards and primary content surfaces */
+.card,
+.item,
+.menu,
+.toolkit-folder,
+.conversation-card,
+.placement-summary>div,
+.quick-action,
+.journey-moment,
+.focus-panel,
+.milestone-panel,
+.glance-card{
+  background:#ffffff;
+  border-color:var(--line);
+}
+
+/* Soft supporting surfaces */
+.card.green,
+.green-note,
+.snapshot-row div,
+.kindness-note{
+  background:linear-gradient(135deg,#f4f8f5,#e7f0e9)!important;
+}
+
+/* Former beige / stone cards become cool mist */
+.card.stone,
+.blush-menu,
+.blush-card,
+.blush-panel{
+  background:linear-gradient(135deg,#ffffff,#eef3f0)!important;
+}
+
+/* Muted note and helper areas */
+.tip,
+.helper,
+.helper-box,
+.info-box,
+.small-note,
+.subtle-panel{
+  background:#f2f6f4;
+  border-color:var(--line);
+}
+
+/* Inputs and chips */
+input,
+textarea,
+select,
+.mood-chip,
+.select-chip{
+  background:#ffffff;
+  border-color:#dbe4df;
+}
+
+/* Neutral statuses: remove beige cast */
+.status-not-started{
+  background:#edf2ef;
+  color:#66716b;
+}
+
+.status-in-progress{
+  background:#eef4f1;
+  color:#52665b;
+}
+
+/* Preserve warmth only as a restrained accent rather than a surface */
+.item-icon.brown{
+  background:#9b8778;
+}
+
+/* Keep supportive blush subtle, not beige */
+.focus-panel{
+  background:linear-gradient(135deg,#ffffff 0%,#f5f1f2 100%)!important;
+}
+
+/* Assessment and toolkit optional detail surfaces */
+details,
+details[open],
+.assessment-details,
+.toolkit-details{
+  border-color:var(--line);
+}
+
+/* Bottom navigation remains deep and grounded */
+.bottom-nav{
+  background:rgba(53,83,67,.97);
+}
