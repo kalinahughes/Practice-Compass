@@ -1,18 +1,13 @@
-# Practice Compass: Safe Palette and My Placement Fix
+# Practice Compass: My Placement Title Fix
 
-Replace both `app.js` and `style.css`.
+Replace `style.css` only.
 
-This correction is built from the last working Assessment Hierarchy version, not the broken palette stylesheet.
+This fixes the remaining My Placement title colour issue by targeting the exact live heading selector.
 
-## Fixes
+Changes:
+1. My Placement is forced to white on the slate teal header.
+2. The subtitle is also restored to a clear white tone.
+3. The malformed previous CSS patch is removed.
+4. No layout or functionality is changed.
 
-1. Restores the working Reflection chip layout and existing visual hierarchy.
-2. Removes the duplicated `🌱 Placement` eyebrow from the Placement hero.
-3. Keeps `My Placement` as the single page title.
-4. Makes `My Placement` white against the slate teal hero.
-5. Reduces beige through colour variables only, shifting backgrounds toward white and cool mist.
-6. Retains eucalyptus, sage, slate teal and the brighter teal accent.
-
-## Protected
-
-No reflection logic, saved data, Toolkit content, Practice Framework content, assessment storage, timesheet data, supervision data, reminders or backup functions are changed.
+The duplicate Placement label was already removed in the current app.js, so app.js does not need replacing.

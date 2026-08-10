@@ -4826,4 +4826,24 @@ main{padding-inline:18px}
 .assessment-more-information{margin-top:16px}
 .assessment-clear-extra-heading{display:none!important}
 @media(max-width:560px){.assessment-priority-grid-two{grid-template-columns:1fr}}
-\n\n/* =========================================================\n   Practice Compass — Safe Cool Mist + Placement Header Fix\n   Variable-level palette adjustment only: no layout overrides.\n   ========================================================= */\n:root{\n  --cream:#f8faf9;\n  --cream-2:#f1f5f3;\n  --white:#ffffff;\n  --stone:#d6dfda;\n  --stone-soft:#edf3ef;\n  --taupe:#9ca9a2;\n  --brown-soft:#edf2ef;\n  --line:#dce5e1;\n}\nhtml,body{background:#e9efec;}\n#app{\n  background:\n    radial-gradient(circle at 100% 0%,rgba(170,185,165,.16),transparent 32%),\n    linear-gradient(180deg,#ffffff 0%,#f8faf9 52%,#f2f6f4 100%);\n}\n.topbar{\n  background:rgba(255,255,255,.95);\n  border-bottom-color:rgba(220,229,225,.85);\n}\n\n/* The hero already provides the Placement context. Keep one clear title. */\n.placement-native-heading h1{\n  color:#ffffff!important;\n}\n.placement-native-heading p{\n  color:rgba(255,255,255,.84)!important;\n}\n
+
+/* =========================================================
+   Practice Compass — My Placement title correction
+   ========================================================= */
+.placement-native-calm .placement-native-heading.placement-native-heading-compact h1,
+.placement-native-heading.placement-native-heading-compact h1,
+section.placement-native-heading h1 {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.placement-native-calm .placement-native-heading.placement-native-heading-compact p,
+.placement-native-heading.placement-native-heading-compact p {
+  color: rgba(255,255,255,.86) !important;
+}
+
+/* Keep the header itself in the approved slate direction. */
+.placement-native-heading.placement-native-heading-compact {
+  background: linear-gradient(135deg, var(--pc-slate-deep), var(--pc-slate)) !important;
+}
