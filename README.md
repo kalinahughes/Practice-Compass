@@ -1,20 +1,18 @@
-# Practice Compass: Cool Mist Palette Refinement
+# Practice Compass: Safe Palette and My Placement Fix
 
-Replace only `style.css`.
+Replace both `app.js` and `style.css`.
 
-This is a palette-only sprint.
+This correction is built from the last working Assessment Hierarchy version, not the broken palette stylesheet.
 
-## Changes
+## Fixes
 
-1. Reduces beige and cream across large surfaces.
-2. Uses white for main cards and workspaces.
-3. Uses a very light cool mist for page backgrounds and quiet secondary areas.
-4. Keeps slate teal as the structural colour.
-5. Keeps eucalyptus for progress and completed states.
-6. Keeps soft sage for supportive and reflective content.
-7. Keeps bright teal available for key actions.
-8. Retains only a small amount of warm brown as an accent.
+1. Restores the working Reflection chip layout and existing visual hierarchy.
+2. Removes the duplicated `🌱 Placement` eyebrow from the Placement hero.
+3. Keeps `My Placement` as the single page title.
+4. Makes `My Placement` white against the slate teal hero.
+5. Reduces beige through colour variables only, shifting backgrounds toward white and cool mist.
+6. Retains eucalyptus, sage, slate teal and the brighter teal accent.
 
-No layout, JavaScript, saved data, routes, Reflect, Toolkit, Me, Assessments, timesheets or backup functionality is changed.
+## Protected
 
-The Timesheets title wording is not changed in this sprint.
+No reflection logic, saved data, Toolkit content, Practice Framework content, assessment storage, timesheet data, supervision data, reminders or backup functions are changed.

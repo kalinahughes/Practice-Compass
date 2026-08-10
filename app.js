@@ -1,52 +1,12 @@
 
-const LEGACY_START_DATE = "2026-07-20";
+const START_DATE = new Date("2026-07-20T00:00:00");
 const HOURS_PER_DAY = 7.25;
-const DEFAULT_TOTAL_HOURS = 500;
+const TOTAL_HOURS = 500;
 
 const state = {
   get(k, fallback){ try{ const v=localStorage.getItem(k); return v===null?fallback:JSON.parse(v)}catch{return fallback} },
   set(k,v){ localStorage.setItem(k,JSON.stringify(v)) }
 };
-
-const LEGACY_PLACEMENT_PROFILE={studentName:"Kalina Hughes",agency:"Mind Australia",service:"Adult Step Up Step Down",startDate:LEGACY_START_DATE,endDate:"",totalHours:DEFAULT_TOTAL_HOURS,weekOverride:""};
-const EMPTY_PLACEMENT_PROFILE={studentName:"",agency:"",service:"",startDate:"",endDate:"",totalHours:DEFAULT_TOTAL_HOURS,weekOverride:""};
-function hasExistingPlacementData(){
-  return (state.get("entries",[]).length>0) ||
-    (state.get("timesheets",[]).length>0) ||
-    Number(state.get("hours",0))>0 ||
-    (state.get("supervisionItems",[]).length>0) ||
-    (state.get("weeklyReviews",[]).length>0);
-}
-function placementProfile(){
-  const saved=state.get("placementProfile",null);
-  if(saved===null)return hasExistingPlacementData()?{...LEGACY_PLACEMENT_PROFILE}:{...EMPTY_PLACEMENT_PROFILE};
-  const existing=hasExistingPlacementData();
-  const totalHours=Number(saved.totalHours);
-  return {
-    studentName:String(saved.studentName||""),
-    agency:String(saved.agency||""),
-    service:String(saved.service||""),
-    startDate:String(saved.startDate||(existing?LEGACY_START_DATE:"")),
-    endDate:String(saved.endDate||""),
-    totalHours:Number.isFinite(totalHours)&&totalHours>0?totalHours:DEFAULT_TOTAL_HOURS,
-    weekOverride:saved.weekOverride===0||saved.weekOverride?String(saved.weekOverride):""
-  };
-}
-function placementTotalHours(){ return placementProfile().totalHours||DEFAULT_TOTAL_HOURS; }
-function parseLocalDate(value){
-  if(!value)return null;
-  const parts=String(value).split("-").map(Number);
-  if(parts.length!==3||parts.some(Number.isNaN))return null;
-  return new Date(parts[0],parts[1]-1,parts[2],0,0,0,0);
-}
-function placementProfileLabel(){
-  const profile=placementProfile();
-  return [profile.studentName,profile.agency,profile.service].filter(Boolean).join(" · ");
-}
-function firstName(){
-  const name=placementProfile().studentName.trim();
-  return name?name.split(/\s+/)[0]:"there";
-}
 
 const assessments = [
  {id:"modules",title:"Pre Placement Modules",when:"Before placement",icon:"✅",color:"stone",
@@ -71,7 +31,7 @@ const assessments = [
   toolkit:["Recovery Oriented Practice","Use of Self","Cultural Capability and Inclusion","Reflective Practice"]},
 
  {id:"project",title:"Small Project",when:"Agree scope early in placement",icon:"📄",color:"brown",
-  purpose:"Complete a manageable research or practice project that contributes to your learning and provides a useful outcome for your placement agency.",
+  purpose:"Complete a manageable research or practice project that contributes to your learning and provides a useful outcome for Mind Australia.",
   why:"The project develops research minded practice and shows how social workers can improve services, policy, resources or organisational knowledge.",
   tasks:["Discuss agency needs with your supervisor","Agree on a realistic project question and output","Plan research or information gathering","Complete the project within placement time","Explain how it benefits the agency and your learning"],
   collect:["Possible agency need or gap","Project question","Relevant literature or policy","Supervisor feedback","Decisions and changes made","Evidence of agency benefit"],
@@ -499,11 +459,11 @@ const stage1ToolkitContent = {
       "Do not use confidentiality as a blanket reason to avoid all communication with carers. Check the exact limits, organisational policy and lawful basis.",
       "A carer’s view may add important context, but it should be identified as their perspective rather than treated automatically as fact.",
       "Where family involvement may create risk, coercion or distress, prioritise safety and discuss the situation in supervision.",
-      "Follow your placement agency’s current policy, consent documentation, privacy requirements and supervisor guidance."
+      "Follow current Mind Australia policy, consent documentation, privacy requirements and supervisor guidance."
     ],
     related:["Informed Consent","Confidentiality","Supported Decision Making","Recovery Oriented Practice","Systems & Ecological Theory","Safety Planning"],
     refs:[
-      ["Your placement agency’s family and carer inclusion policy or practice guidance reviewed during placement",""],
+      ["Mind Australia, Family and Carer Inclusion Policy and practice guidance reviewed during placement",""],
       ["AASW Code of Ethics 2020","https://www.aasw.asn.au/about-aasw/ethics-standards/code-of-ethics/"],
       ["Australian Government, National framework for recovery oriented mental health services","https://www.health.gov.au/resources/publications/a-national-framework-for-recovery-oriented-mental-health-services-guide-for-practitioners-and-providers"],
       ["Carer Gateway, support for carers","https://www.carergateway.gov.au/"]
@@ -1183,10 +1143,10 @@ const selfcare = [
 let route="today";
 
 function greeting(){
-  const hour = new Date().getHours(), name=firstName();
-  if(hour < 12) return {title:`☀️ Good morning, ${name}`, subtitle:"A new day. Stay curious and notice one useful thing."};
-  if(hour < 17) return {title:`🌿 Good afternoon, ${name}`, subtitle:"Welcome back. Let’s focus on what matters next."};
-  return {title:`🌙 Welcome back, ${name}`, subtitle:"One meaningful moment from today is enough."};
+  const hour = new Date().getHours();
+  if(hour < 12) return {title:"☀️ Good morning, Kalina", subtitle:"A new day. Stay curious and notice one useful thing."};
+  if(hour < 17) return {title:"🌿 Good afternoon, Kalina", subtitle:"Welcome back. Let’s focus on what matters next."};
+  return {title:"🌙 Welcome back, Kalina", subtitle:"One meaningful moment from today is enough."};
 }
 
 function dayMessage(){
@@ -1205,21 +1165,15 @@ function dayMessage(){
 
 
 function placementInfo(){
-  const profile=placementProfile();
-  const start=parseLocalDate(profile.startDate);
-  if(!start)return {started:false,notConfigured:true,daysUntil:0,week:0,day:0,workdays:0};
-  const today=new Date(); today.setHours(0,0,0,0);
-  const diff=Math.floor((today-start)/(1000*60*60*24));
-  if(diff<0)return {started:false,daysUntil:Math.ceil((start-today)/(1000*60*60*24)),week:0,day:0,workdays:0};
+  const today = new Date();
+  const diff = Math.floor((today - START_DATE)/(1000*60*60*24));
+  if(diff < 0) return {started:false,daysUntil:Math.ceil((START_DATE-today)/(1000*60*60*24)),week:0,day:0,workdays:0};
   let workdays=0;
-  for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
+  for(let d=new Date(START_DATE); d<=today; d.setDate(d.getDate()+1)){
     const day=d.getDay();
-    if(day>=1&&day<=5)workdays++;
+    if(day>=1 && day<=5) workdays++;
   }
-  const automaticWeek=Math.floor(diff/7)+1;
-  const override=Number(profile.weekOverride);
-  const week=Number.isInteger(override)&&override>0?override:automaticWeek;
-  return {started:true,workdays,week,automaticWeek,day:((workdays-1)%5)+1};
+  return {started:true,workdays,week:Math.ceil(workdays/5),day:((workdays-1)%5)+1};
 }
 
 function assessmentIsComplete(id){
@@ -1269,7 +1223,7 @@ function upcomingAssessments(info,hours,currentId,limit=2){
 function dailyPrompt(info,hours){
   if(!info.started) return {
     title:"Prepare without pressure",
-    q:"What are you most hoping to learn from your placement?",
+    q:"What are you most hoping to learn from Mind Australia?",
     why:"This can help shape your Learning Plan before placement begins.",
     goal:1
   };
@@ -1746,12 +1700,12 @@ function homeIcon(name){
 }
 
 function todayPage(){
-  const info=placementInfo(), h=hours(), totalHours=placementTotalHours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
-  const remaining=Math.max(0,totalHours-h);
-  const progress=Math.min(100,Math.round((h/totalHours)*100));
+  const info=placementInfo(), h=hours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
+  const remaining=Math.max(0,TOTAL_HOURS-h);
+  const progress=Math.min(100,Math.round((h/TOTAL_HOURS)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
-  const placementLabel=info.started?`Placement week ${info.week}`:(info.notConfigured?`Add your placement start date in My Journey`:`Placement begins in ${info.daysUntil} days`);
+  const placementLabel=info.started?`Placement week ${info.week}`:`Placement begins in ${info.daysUntil} days`;
   return `
     <section class="home-welcome">
       <div class="home-welcome-copy">
@@ -1860,109 +1814,140 @@ const reflectionCompassLenses=[
 ];
 
 const REFLECTION_DRAFT_KEY="reflectionCompassDraft";
-const reflectionInvolvementOptions=["Observed","Participated","Completed","Led","Learned"];
-const reflectionOutcomeOptions=[
-  {id:"learned",label:"Learned something new"},
-  {id:"confidence",label:"Built confidence"},
-  {id:"skill",label:"Practised a skill"},
-  {id:"changed",label:"Changed my thinking",prompt:"What changed?"},
-  {id:"feedback",label:"Got feedback",prompt:"What feedback is worth remembering?"},
-  {id:"practice",label:"Need more practice",prompt:"What do you still want to practise?"}
-];
-const reflectionFocusOptions=[
-  {id:"values",label:"Values and judgement",lo:"LO1 · Values and ethics"},
-  {id:"culture",label:"Culture and inclusion",lo:"LO2 · Culturally responsive practice"},
-  {id:"knowledge",label:"Knowledge",lo:"LO3 · Knowledge"},
-  {id:"communication",label:"Communication and working with people",lo:"LO4 · Skills and use of self"},
-  {id:"assessment",label:"Assessment and documentation",lo:"LO5 · Methods and processes"},
-  {id:"development",label:"My development as a social worker",lo:"LO6 · Awareness of self and supervision"},
-  {id:"unsure",label:"Not sure",lo:"Sort later"}
-];
-function selectedReflectionButtons(selector){return [...document.querySelectorAll(`${selector}.selected`)].map(button=>button.dataset.value);}
-function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],projectRelated:false,reflectionNote:"",updatedAt:""});}
 function captureReflectionDraft(){
-  const draft={
-    answer:document.getElementById("answer")?.value||"",
-    involvement:selectedReflectionButtons(".reflection-involvement-chip"),
-    outcomes:selectedReflectionButtons(".reflection-outcome-chip"),
-    focus:selectedReflectionButtons(".reflection-focus-chip"),
-    projectRelated:document.getElementById("reflectionProjectYes")?.classList.contains("selected")||false,
-    reflectionNote:document.getElementById("reflectionNote")?.value||"",
-    updatedAt:new Date().toISOString()
-  };
-  state.set(REFLECTION_DRAFT_KEY,draft);return draft;
+  const answer=document.getElementById("answer")?.value||"";
+  const supervision=document.getElementById("supervision")?.value||"";
+  const statuses={};
+  document.querySelectorAll(".reflection-status-button.selected").forEach(button=>statuses[button.dataset.lensStatus]=button.dataset.status);
+  const selections={};
+  reflectionCompassLenses.forEach(lens=>selections[lens.id]=reflectionLensSelection(lens.id));
+  const draft={answer,supervision,statuses,selections,updatedAt:new Date().toISOString()};
+  state.set(REFLECTION_DRAFT_KEY,draft);
+  return draft;
 }
-function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],projectRelated:false,reflectionNote:"",updatedAt:""});}
-function reflectionPromptForSelection(){
-  const selected=selectedReflectionButtons(".reflection-outcome-chip");
-  return reflectionOutcomeOptions.find(option=>selected.includes(option.id)&&option.prompt)?.prompt||"";
-}
-function updateReflectionPrompt(){
-  const wrap=document.getElementById("reflectionPromptWrap"),label=document.getElementById("reflectionPromptLabel");
-  if(!wrap||!label)return;
-  const prompt=reflectionPromptForSelection();
-  label.textContent=prompt;
-  wrap.classList.toggle("hidden",!prompt);
-}
+function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",supervision:"",statuses:{},selections:{},updatedAt:""});}
+function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",supervision:"",statuses:{},selections:{},updatedAt:""});}
 function restoreReflectionDraft(){
   const draft=reflectionDraft();
-  const answer=document.getElementById("answer"),note=document.getElementById("reflectionNote");
+  const answer=document.getElementById("answer"),supervision=document.getElementById("supervision");
   if(answer)answer.value=draft.answer||"";
-  if(note)note.value=draft.reflectionNote||"";
-  (draft.involvement||[]).forEach(value=>document.querySelector(`.reflection-involvement-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
-  (draft.outcomes||[]).forEach(value=>document.querySelector(`.reflection-outcome-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
-  (draft.focus||[]).forEach(value=>document.querySelector(`.reflection-focus-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
-  if(draft.projectRelated)document.getElementById("reflectionProjectYes")?.classList.add("selected");else document.getElementById("reflectionProjectNo")?.classList.add("selected");
-  updateReflectionPrompt();
+  if(supervision)supervision.value=draft.supervision||"";
+  Object.entries(draft.statuses||{}).forEach(([lens,status])=>{
+    const selected=document.querySelector(`.reflection-status-button[data-lens-status="${lens}"][data-status="${status}"]`);
+    if(selected)selected.classList.add("selected");
+    if(status!=="no")document.querySelector(`[data-lens-options="${lens}"]`)?.classList.remove("hidden");
+    const guidance=document.querySelector(`[data-guidance="${lens}"]`);
+    if(guidance){guidance.innerHTML=reflectionGuidanceText(lens,status);guidance.classList.toggle("hidden",status!=="unsure");}
+  });
+  Object.entries(draft.selections||{}).forEach(([lens,values])=>{
+    (values||[]).forEach(value=>document.querySelectorAll(`.reflection-option-chip[data-lens="${lens}"]`).forEach(button=>{if(button.dataset.value===value)button.classList.add("selected");}));
+  });
+  const note=document.getElementById("reflectionDraftStatus");
+  if(note && draft.updatedAt && (draft.answer||Object.values(draft.selections||{}).some(items=>(items||[]).length))) note.textContent="Draft restored automatically";
 }
+function reflectionOptionCue(value){
+  const info=reflectionConceptInfo[value];
+  if(info)return info[0];
+  const cues={
+    "Critical Social Work":"Power, inequality and how systems shape people’s experiences.",
+    "Social Determinants of Health":"How housing, income, education, discrimination and access shape wellbeing.",
+    "Systems and Ecological Theory":"How relationships, services and wider environments interact.",
+    "Feminist Social Work":"How gender, power and intersecting inequalities shape experience.",
+    "Empowerment Theory":"Building participation, control, confidence and access to resources.",
+    "Ethics of Care":"Relationships, responsiveness and the responsibilities created through care.",
+    "Attachment Theory":"How patterns of safety and relationships may influence connection and coping."
+  };
+  return cues[value]||"";
+}
+function openReflectionLearnMore(value,lens){
+  captureReflectionDraft();
+  const info=reflectionConceptInfo[value]||[reflectionOptionCue(value)||`${value} is a practice concept available in the Toolkit.`,`Compare the concept with what actually happened before deciding whether it fits.`,value];
+  const panel=document.querySelector(`[data-concept-lens="${lens}"]`);if(!panel)return;
+  panel.classList.remove("hidden");
+  panel.innerHTML=`<div><strong>${safeText(value)}</strong><p>${safeText(info[0])}</p><small>${safeText(info[1])}</small></div><div class="reflection-concept-actions"><button type="button" class="text-link reflection-concept-close">Close</button><button type="button" class="btn secondary reflection-open-toolkit">Open Toolkit topic</button></div>`;
+  panel.querySelector(".reflection-concept-close").onclick=()=>panel.classList.add("hidden");
+  panel.querySelector(".reflection-open-toolkit").onclick=()=>{captureReflectionDraft();state.set("reflectionReturnPending",true);openToolkitTopicByName(info[2]||value);};
+}
+function reflectionLensSelection(lensId){return [...document.querySelectorAll(`.reflection-option-chip.selected[data-lens="${lensId}"]`)].map(button=>button.dataset.value);}
+function reflectionLensCard(lens){
+  const optionHtml=value=>{const cue=reflectionOptionCue(value);return `<button type="button" class="reflection-option-chip" data-lens="${lens.id}" data-value="${safeText(value)}"><span>${safeText(value)}</span>${cue?`<small>${safeText(cue)}</small>`:""}</button>`};
+  const quickHtml=lens.quick.map(optionHtml).join("");
+  const more=lens.all.filter(value=>!lens.quick.includes(value));
+  const moreHtml=more.map(optionHtml).join("");
+  return `<article class="reflection-lens-card" data-lens-card="${lens.id}">
+    <div class="reflection-lens-heading"><div><strong>${safeText(lens.title)}</strong><small>${safeText(lens.prompt)}</small></div><div class="reflection-lens-status"><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="relevant">Relevant</button><button type="button" class="reflection-status-button" data-lens-status="${lens.id}" data-status="unsure">Not sure</button><button type="button" class="reflection-status-button reflection-status-no" data-lens-status="${lens.id}" data-status="no">No</button></div></div>
+    <div class="reflection-lens-options hidden" data-lens-options="${lens.id}">
+      <div class="reflection-lens-tools"><span>Select anything that fits</span><button type="button" class="text-link reflection-clear-lens" data-clear-lens="${lens.id}">Clear</button></div>
+      <div class="reflection-quick-options">${quickHtml}</div>
+      <details class="reflection-all-options"><summary>See all options</summary><div class="reflection-option-search-wrap"><input type="search" class="input reflection-option-search" data-search-lens="${lens.id}" placeholder="Search ${safeText(lens.title.toLowerCase())}"></div><div class="reflection-all-option-grid" data-all-options="${lens.id}">${moreHtml}</div></details>
+      <div class="reflection-guidance hidden" data-guidance="${lens.id}"></div>
+      <div class="reflection-concept-inline hidden" data-concept-lens="${lens.id}"></div>
+    </div>
+  </article>`;
+}
+
+function reflectionGuidanceText(lensId,status){
+  const prompts={
+    theory:"Look for the idea that best explains the person, interaction, change process or wider context. More than one theory can fit.",
+    method:"Choose the approaches that describe how practice was carried out, not only what topic was discussed.",
+    skills:"Choose observable actions. Think about what you said, noticed, documented, coordinated or helped the person do.",
+    values:"Choose the principles that guided how the person was treated and involved.",
+    ethics:"Look for a tension between competing responsibilities, rights, risks or professional obligations.",
+    assessment:"Think about the information gathered, how it was interpreted and how judgement was formed.",
+    useOfSelf:"Notice how your personality, communication, authority, feelings and professional presence affected the interaction.",
+    culture:"Consider identity, culture, accessibility, power, discrimination and whether practice felt culturally safe.",
+    systems:"Look beyond the individual to relationships, organisations, policy, resources and structural barriers.",
+    supervision:"Select what would help you make sense of the experience or develop your practice.",
+    research:"Consider whether evidence, policy, standards or evaluation informed the work or needs further checking."
+  };
+  return status==="unsure"?`<strong>Quick guide</strong><p>${safeText(prompts[lensId]||"Use the examples to compare what may fit. You can select more than one.")}</p>`:"";
+}
+
+const reflectionConceptInfo={
+  "Recovery Oriented Practice":["Supports hope, choice, identity and a meaningful life beyond symptoms.","Your reflection may involve collaboration, personal goals, autonomy or recognising strengths.","Recovery Oriented Practice"],
+  "Trauma Informed Practice":["Recognises how trauma can shape safety, trust, relationships and responses.","Your reflection may involve choice, predictability, emotional safety or avoiding re traumatisation.","Trauma Informed Practice"],
+  "Strengths Based Practice":["Starts with abilities, resources, relationships and possibilities rather than deficits alone.","Your reflection may describe noticing capacity, resilience or what is already working.","Strengths Based Practice"],
+  "Person Centred Practice":["Keeps the person’s priorities, preferences and lived experience central to practice.","Your reflection may involve listening, shared planning or adapting support to the person.","Person Centred Practice"],
+  "Systems Theory":["Considers how relationships, services and wider systems interact with a person’s experience.","Your reflection may involve family, services, policy or organisational influences.","Systems & Ecological Theory"],
+  "Ecological Systems Theory":["Explores the person within interconnected social and environmental contexts.","Your reflection may link individual experiences with family, community or structural factors.","Systems & Ecological Theory"],
+  "CHIME":["Highlights Connectedness, Hope, Identity, Meaning and Empowerment in personal recovery.","Your reflection may describe belonging, hope, identity, purpose or personal agency.","CHIME"],
+  "Motivational Interviewing":["Uses partnership and curiosity to explore a person’s own reasons for change.","Your reflection may involve ambivalence, open questions or supporting autonomy.","Motivational Interviewing"],
+  "Solution Focused Practice":["Builds on goals, exceptions and small achievable steps.","Your reflection may involve identifying preferred outcomes or what has helped before.","Solution Focused Practice"],
+  "Narrative Practice":["Separates people from problems and explores the stories shaping identity and possibility.","Your reflection may involve language, identity or alternative stories of strength.","Narrative Practice"],
+  "Anti Oppressive Practice":["Examines power, privilege and structural inequality within everyday practice.","Your reflection may involve barriers, discrimination, voice or unequal decision making.","Anti Oppressive Practice"],
+  "Rights Based Practice":["Centres dignity, participation, equality and access to rights.","Your reflection may involve choice, fairness, advocacy or supported participation.","Human Rights"],
+  "Crisis Intervention":["Prioritises immediate safety, stabilisation and practical support during acute distress.","Your reflection may involve risk, de escalation, safety planning or urgent coordination.","Risk & Safety Planning"],
+  "Respect for Persons":["Recognises each person’s inherent dignity, worth and right to participate in decisions.","This may relate where you listened, respected choice or adjusted practice to the person.","AASW Code of Ethics"],
+  "Social Justice":["Focuses on fairness, access, participation and challenging structural disadvantage.","This may relate where barriers, inequity, advocacy or resource access were present.","AASW Code of Ethics"],
+  "AASW Code of Ethics":["Requires accountable, honest and ethically responsible professional practice.","This may relate where boundaries, transparency, supervision or professional judgement were important.","AASW Code of Ethics"]
+};
+function reflectionQuestionForToday(){const d=new Date();const seed=Number(`${d.getFullYear()}${d.getMonth()+1}${d.getDate()}`);return deeperReflectionQuestions[seed%deeperReflectionQuestions.length];}
+function orderedReflectionTheories(entries){const counts={};entries.forEach(e=>(e.theories||[]).forEach(x=>counts[x]=(counts[x]||0)+1));return [...reflectionTheoryOptions].sort((a,b)=>(counts[b]||0)-(counts[a]||0));}
 function reflectionInsights(entries){
   if(!entries.length)return "Your practice insights will grow naturally as you save reflections.";
-  const counts={};entries.forEach(entry=>(entry.learningOutcomes||entry.focusAreas||[]).forEach(item=>counts[item]=(counts[item]||0)+1));
-  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  if(!sorted.length)return "Your reflections are beginning to show the social worker you are becoming.";
-  const label=reflectionFocusOptions.find(option=>option.id===sorted[0][0])?.label||sorted[0][0];
-  return `You have been building evidence around ${label.toLowerCase()}.`;
+  const groups={"Recovery Oriented Practice":["recovery","chime"],"multidisciplinary practice":["team","multidisciplinary","collaboration"],"advocacy":["advocacy","rights","equity"],"cultural safety":["cultural safety","culture"],"use of self":["use of self","emotion","communication"]};
+  const counts={}; entries.forEach(e=>{const h=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[])].join(" ").toLowerCase();Object.entries(groups).forEach(([k,terms])=>{if(terms.some(t=>h.includes(t)))counts[k]=(counts[k]||0)+1;});});
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]); if(!sorted.length)return "Your reflections are beginning to show the social worker you are becoming.";
+  const high=sorted[0][0], low=Object.keys(groups).find(k=>!counts[k]); return low?`You’ve recently been reflecting on ${high}. You may like to notice ${low} when it naturally arises.`:`You’ve been connecting your reflections with ${high}.`;
 }
 function reflectionLibrary(entries){
   if(!entries.length)return `<section class="reflection-empty-state">🌱 Your reflection library will grow as you save learning moments.</section>`;
   const libraryOpen=state.get("reflectionLibraryOpen",false);
-  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const tags=[...(e.involvement||[]),...(e.outcomeTags||[]),...(e.learningOutcomeLabels||[]),...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])];const terms=[e.answer,e.moment,e.reflectionNote,...tags].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p>${e.reflectionNote?`<p class="reflection-library-note"><strong>Worth remembering:</strong> ${safeText(e.reflectionNote)}</p>`:""}<div class="reflection-tag-list">${tags.slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
-}
-function reflectionChipGroup(options,className,extra=""){
-  return `<div class="reflection-button-grid ${extra}">${options.map(option=>{const value=typeof option==="string"?option:option.id;const label=typeof option==="string"?option:option.label;return `<button type="button" class="reflection-choice-chip ${className}" data-value="${safeText(value)}">${safeText(label)}</button>`}).join("")}</div>`;
+  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const terms=[e.answer,...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[]),e.consumerGroup,e.placementType].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||(e.theories||[]).slice(0,2).join(" · ")||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p><div class="reflection-tag-list">${[...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[])].slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
 }
 function journalPage(){
   const entries=savedEntries();
-  return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Capture it once. Practice Compass will organise it for assessment later.</p></section>
-  ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved and added to your placement evidence.</section>`:""}
-  <form class="reflection-simple reflection-quick-flow" id="reflectionForm" onsubmit="return false">
-    <section class="conversation-card reflection-journal-card reflection-primary-card">
-      <div class="reflection-step-number">1</div>
-      <label for="answer"><strong>What happened?</strong><span>One or two lines is enough. Keep client information de identified.</span></label>
-      <textarea id="answer" class="textarea reflection-main-journal" placeholder="e.g. Sat in on an MDT and noticed how the team approached a complex decision."></textarea>
-      <small class="reflection-draft-status" id="reflectionDraftStatus">Draft saves automatically on this device</small>
+  return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Capture the moment, then use the compass to recognise the social work within it.</p></section>
+  ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved. The practice areas you identified now contribute to My Practice Framework.</section>`:""}
+  <form class="reflection-simple" id="reflectionForm" onsubmit="return false">
+    <section class="conversation-card reflection-journal-card"><label for="answer"><strong>What happened?</strong><span>A quick note is enough. Keep client information de identified.</span></label><textarea id="answer" class="textarea reflection-main-journal" placeholder="Capture the interaction in your own words..."></textarea><small class="reflection-draft-status" id="reflectionDraftStatus">Draft saves automatically on this device</small></section>
+
+    <section class="conversation-card reflection-compass-map">
+      <div class="reflection-compass-map-heading"><div><span class="eyebrow">Quick identify</span><h2>What was happening here?</h2><p>Tap Relevant or Not sure. Choose only what fits. Unselected areas stay out of the way.</p></div><span class="reflection-compass-mark">🧭</span></div>
+      <div class="reflection-lens-grid">${reflectionCompassLenses.map(reflectionLensCard).join("")}</div>
     </section>
 
-    <section class="conversation-card reflection-choice-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">2</span><div><h2>My involvement</h2><p>Tap anything that fits.</p></div></div>
-      ${reflectionChipGroup(reflectionInvolvementOptions,"reflection-involvement-chip")}
-    </section>
-
-    <section class="conversation-card reflection-choice-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">3</span><div><h2>What did this show me?</h2><p>Quick taps only. Add detail only when it will help later.</p></div></div>
-      ${reflectionChipGroup(reflectionOutcomeOptions,"reflection-outcome-chip")}
-      <div class="reflection-adaptive-note hidden" id="reflectionPromptWrap"><label for="reflectionNote"><strong id="reflectionPromptLabel"></strong><span>Optional · one sentence is enough</span></label><textarea id="reflectionNote" class="textarea reflection-mini-note" placeholder="Add the detail you will want to remember at assessment time..."></textarea></div>
-    </section>
-
-    <section class="conversation-card reflection-choice-card reflection-secondary-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">4</span><div><h2>What was it mostly about?</h2><p>Choose one or more. These link to your Learning Plan behind the scenes.</p></div></div>
-      <div class="reflection-button-grid reflection-focus-grid">${reflectionFocusOptions.map(option=>`<button type="button" class="reflection-choice-chip reflection-focus-chip" data-value="${safeText(option.id)}"><span>${safeText(option.label)}</span><small>${safeText(option.lo)}</small></button>`).join("")}</div>
-    </section>
-
-    <section class="conversation-card reflection-project-card">
-      <div><strong>Part of my placement project?</strong><small>Tag it once so it can also feed your three project reflections.</small></div>
-      <div class="reflection-binary"><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectYes" data-value="yes">Yes</button><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectNo" data-value="no">No</button></div>
-    </section>
+    <section class="conversation-card reflection-note-card"><label for="supervision"><strong>Question or note for supervision</strong><span>Optional</span></label><textarea id="supervision" class="textarea" placeholder="Something to check, clarify or explore..."></textarea></section>
     <button class="btn reflection-save-button" id="saveEntry">Save reflection</button>
   </form>
   <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span><span>🌿</span><span><strong>Reflection insight</strong><small>A pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
@@ -2012,21 +1997,20 @@ function assessmentPage(){
   return `
     <div class="placement-native-calm">
       <section class="placement-native-heading placement-native-heading-compact">
-        <div class="eyebrow">🌱 Placement</div>
         <h1>My Placement</h1>
         <p>Assessment progress, evidence and placement records.</p>
       </section>
 
       <section class="placement-native-overview placement-native-overview-compact" aria-label="Placement overview">
         <div class="placement-overview-line">
-          <div><span>Placement</span><strong>${safeText(placementProfile().agency||"My placement")}</strong><small>${safeText(placementProfile().service||"Add placement details in My Journey")}</small></div>
+          <div><span>Placement</span><strong>Mind Australia</strong><small>Step Up Step Down</small></div>
           <div><span>${info.started?"Current week":"Starts"}</span><strong>${placementTiming}</strong></div>
         </div>
         <div class="placement-hours-line">
-          <span><small>Hours</small><strong>${hoursStarted?`${h.toFixed(1)} / ${placementTotalHours()}`:"Not started"}</strong></span>
+          <span><small>Hours</small><strong>${hoursStarted?`${h.toFixed(1)} / 500`:"Not started"}</strong></span>
           <span><small>Stage</small><strong>${stage.title}</strong></span>
         </div>
-        ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/placementTotalHours())*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/placementTotalHours())*100)}%"></span></div>`:""}
+        ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/TOTAL_HOURS)*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/TOTAL_HOURS)*100)}%"></span></div>`:""}
       </section>
 
       <section class="placement-native-section">
@@ -2358,28 +2342,12 @@ function morePage(){
 
     <section class="journey-app-section" aria-labelledby="journeyAppHeading">
       <div class="journey-app-heading"><h2 id="journeyAppHeading">App tools</h2><p>Practical controls kept separate from your professional journey.</p></div>
-      <details class="journey-utility-details placement-profile-details">
-        <summary><span><strong>My placement details</strong><small>${safeText(placementProfileLabel()||"Add your name and placement")}</small></span><span>›</span></summary>
-        <div class="journey-utility-note placement-profile-editor">
-          <label><span>Name</span><input class="input" id="profileStudentName" value="${safeText(placementProfile().studentName)}" placeholder="Your name"></label>
-          <label><span>Agency</span><input class="input" id="profileAgency" value="${safeText(placementProfile().agency)}" placeholder="Placement agency"></label>
-          <label><span>Service or team</span><input class="input" id="profileService" value="${safeText(placementProfile().service)}" placeholder="Service, program or team"></label>
-          <div class="placement-profile-date-row">
-            <label><span>Placement start date</span><input class="input" type="date" id="profileStartDate" value="${safeText(placementProfile().startDate)}"></label>
-            <label><span>Expected end date <small>optional</small></span><input class="input" type="date" id="profileEndDate" value="${safeText(placementProfile().endDate)}"></label>
-          </div>
-          <label><span>Total placement hours</span><input class="input" type="number" min="1" step="1" id="profileTotalHours" value="${safeText(placementProfile().totalHours)}"></label>
-          <label><span>Placement week override <small>optional</small></span><input class="input" type="number" min="1" step="1" id="profileWeekOverride" value="${safeText(placementProfile().weekOverride)}" placeholder="Leave blank to calculate automatically"><small class="placement-profile-hint">Practice Compass calculates the week from your start date. Only use this if your university counts placement weeks differently.</small></label>
-          <button type="button" class="btn secondary placement-profile-save" id="savePlacementProfile">Save placement details</button>
-        </div>
-      </details>
       <button class="journey-utility-row" id="exportHtml"><span><strong>Export readable record</strong><small>Create a readable copy of reflections, hours and framework notes</small></span><span>›</span></button>
       <button class="journey-utility-row" id="backupJson"><span><strong>Back up everything</strong><small>Save a private copy of all Practice Compass browser data</small></span><span>›</span></button>
       <button class="journey-utility-row" id="restoreJson"><span><strong>Restore a backup</strong><small>Preview and import a Practice Compass backup file</small></span><span>›</span></button>
       <input class="hidden" type="file" id="restoreJsonFile" accept="application/json,.json">
       <div class="backup-status" id="backupStatus">${backupStatusText()}</div>
       <div class="backup-restore-panel hidden" id="backupRestorePanel" aria-live="polite"></div>
-      <button class="journey-utility-row journey-reset-row" id="resetThisDevice"><span><strong>Start fresh on this device</strong><small>Clear Practice Compass data saved only in this browser</small></span><span>›</span></button>
       <details class="journey-utility-details"><summary><span><strong>About Practice Compass</strong><small>Purpose and boundaries</small></span><span>›</span></summary><div class="journey-utility-note">Practice Compass supports placement learning, reflection and professional growth. University assessment requirements and progress remain in My Placement and Assessments.</div></details>
     </section>
   </div>`;
@@ -2970,67 +2938,55 @@ function wellbeingPage(){
 }
 
 function saveEntry(){
-  const moment=document.getElementById("answer")?.value.trim()||"";
-  if(!moment){alert("Add a quick note about what happened first.");return}
-  const involvement=selectedReflectionButtons(".reflection-involvement-chip");
-  const outcomeIds=selectedReflectionButtons(".reflection-outcome-chip");
-  const focusAreas=selectedReflectionButtons(".reflection-focus-chip");
-  const projectRelated=document.getElementById("reflectionProjectYes")?.classList.contains("selected")||false;
-  const reflectionNote=document.getElementById("reflectionNote")?.value.trim()||"";
-  const outcomeTags=reflectionOutcomeOptions.filter(option=>outcomeIds.includes(option.id)).map(option=>option.label);
-  const learningOutcomeLabels=reflectionFocusOptions.filter(option=>focusAreas.includes(option.id)&&option.id!=="unsure").map(option=>option.lo);
-
-  // Keep the existing evidence structure populated so older assessment and framework views continue to work.
-  const theories=[],methods=[],skills=[],values=[],ethics=[],assessmentJudgement=[],useOfSelfTags=[],cultural=[],systems=[],supervisionLearning=[],researchEvidence=[];
-  const evidenceTypes=[];
-  const addEvidence=value=>{if(value&&!evidenceTypes.includes(value))evidenceTypes.push(value)};
-  focusAreas.forEach(area=>{
-    if(area==="values"){values.push("Values and professional judgement");addEvidence("Ethics or values");}
-    if(area==="culture"){cultural.push("Culturally responsive practice");addEvidence("Cultural capability");}
-    if(area==="knowledge"){researchEvidence.push("Knowledge and understanding");addEvidence("Knowledge");addEvidence("Theory in action");}
-    if(area==="communication"){skills.push("Communication and working with people");useOfSelfTags.push("Use of self in practice");addEvidence("Communication");addEvidence("Skill");addEvidence("Use of self");}
-    if(area==="assessment"){assessmentJudgement.push("Assessment and documentation");skills.push("Information recording and sharing");addEvidence("Documentation");addEvidence("Skill");}
-    if(area==="development"){supervisionLearning.push("Professional development and reflection");useOfSelfTags.push("Developing social work practice");addEvidence("Professional development");addEvidence("Use of self");}
-  });
-  outcomeIds.forEach(id=>{
-    if(id==="learned")addEvidence("Knowledge");
-    if(id==="confidence")addEvidence("Professional development");
-    if(id==="skill")addEvidence("Skill");
-    if(id==="changed")addEvidence("Use of self");
-    if(id==="feedback")addEvidence("Feedback");
-    if(id==="practice")addEvidence("Professional development");
-  });
-  if(involvement.includes("Participated")||involvement.includes("Led"))addEvidence("Communication");
+  const moment=document.getElementById("answer")?.value.trim()||""; if(!moment){alert("Add a quick note about what happened first.");return}
+  const lensStatus={};document.querySelectorAll(".reflection-status-button.selected").forEach(button=>lensStatus[button.dataset.lensStatus]=button.dataset.status);
+  const theories=reflectionLensSelection("theory");
+  const methods=reflectionLensSelection("method");
+  const skills=reflectionLensSelection("skills");
+  const values=reflectionLensSelection("values");
+  const ethics=reflectionLensSelection("ethics");
+  const assessmentJudgement=reflectionLensSelection("assessment");
+  const useOfSelfTags=reflectionLensSelection("useOfSelf");
+  const cultural=reflectionLensSelection("culture");
+  const systems=reflectionLensSelection("systems");
+  const supervisionLearning=reflectionLensSelection("supervision");
+  const researchEvidence=reflectionLensSelection("research");
+  const supervision=document.getElementById("supervision")?.value.trim()||"";
   const practiceStandards=[];
-  if(focusAreas.includes("values"))practiceStandards.push("Practice Standard 1: Values and ethics");
-  if(focusAreas.includes("culture"))practiceStandards.push("Practice Standards 2 and 4: Culturally responsive and inclusive practice");
-  if(focusAreas.includes("knowledge"))practiceStandards.push("Practice Standard 5: Professional knowledge");
-  if(focusAreas.includes("communication"))practiceStandards.push("Practice Standards 3 and 7: Advocacy and professional identity");
-  if(focusAreas.includes("assessment"))practiceStandards.push("Practice Standard 6: Holistic assessment and professional decision making");
-  if(focusAreas.includes("development"))practiceStandards.push("Practice Standards 8 and 9: Supervision and professional development");
-
-  const autoMapped=mappedAssessments(evidenceTypes);
-  if(projectRelated){
-    if(!autoMapped.includes("Small Project"))autoMapped.push("Small Project");
-    if(!autoMapped.includes("Project Reflections"))autoMapped.push("Project Reflections");
-    if(!autoMapped.includes("Final Presentation"))autoMapped.push("Final Presentation");
-  }
-  const info=placementInfo(),p=dailyPrompt(info,hours());
-  const entry={
-    id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:moment,moment,
-    involvement,outcomeIds,outcomeTags,focusAreas,learningOutcomes:focusAreas.filter(id=>id!=="unsure"),learningOutcomeLabels,projectRelated,reflectionNote,
-    theories,methods,skills,values,ethics,assessmentJudgement,useOfSelfTags,cultural,systems,supervisionLearning,researchEvidence,lensStatus:{},practiceStandards,
-    useOfSelf:useOfSelfTags.join(", "),deeperQuestion:reflectionPromptForSelection(),deeperAnswer:reflectionNote,futurePractice:"",professionalIdentity:"",evidenceTypes,theory:"",method:"",supervision:"",evidence:autoMapped
-  };
+  if(values.length||ethics.length) practiceStandards.push("Practice Standard 1: Values and ethics");
+  if(cultural.length) practiceStandards.push("Practice Standard 3: Culturally responsive and inclusive practice");
+  if(theories.length||researchEvidence.length) practiceStandards.push("Practice Standard 4: Knowledge for practice");
+  if(methods.length||assessmentJudgement.length) practiceStandards.push("Practice Standard 5: Applying knowledge to practice");
+  if(skills.length||useOfSelfTags.length) practiceStandards.push("Practice Standard 6: Communication and interpersonal skills");
+  if(supervisionLearning.length||supervision) practiceStandards.push("Practice Standard 8: Professional development and supervision");
+  const evidenceTypes=[];
+  if(theories.length)evidenceTypes.push("Theory in action");
+  if(methods.length)evidenceTypes.push("Practice approach");
+  if(skills.length)evidenceTypes.push("Skill");
+  if(values.length||ethics.length)evidenceTypes.push("Ethics or values");
+  if(assessmentJudgement.length)evidenceTypes.push("Assessment and judgement");
+  if(useOfSelfTags.length)evidenceTypes.push("Use of self");
+  if(cultural.length)evidenceTypes.push("Cultural capability");
+  if(systems.length)evidenceTypes.push("Systems issue");
+  if(supervisionLearning.length||supervision)evidenceTypes.push("Professional development");
+  if(researchEvidence.length)evidenceTypes.push("Knowledge");
+  const autoMapped=mappedAssessments([...new Set(evidenceTypes)]), info=placementInfo(),p=dailyPrompt(info,hours());
+  const labelled=[
+    ["Theory and frameworks",theories],["Methods and approaches",methods],["Practice skills",skills],["Values",values],["Ethics",ethics],["Assessment and judgement",assessmentJudgement],["Use of self",useOfSelfTags],["Culture, identity and inclusion",cultural],["Systems and context",systems],["Supervision and learning",supervisionLearning],["Research and evidence",researchEvidence]
+  ];
+  const sections=[moment,...labelled.filter(([,items])=>items.length).map(([label,items])=>`${label}: ${items.join(", ")}`),supervision&&`Supervision note: ${supervision}`].filter(Boolean);
+  const entry={id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:sections.join("\n\n"),moment,theories,methods,skills,values,ethics,assessmentJudgement,useOfSelfTags,cultural,systems,supervisionLearning,researchEvidence,lensStatus,practiceStandards,useOfSelf:useOfSelfTags.join(", "),deeperQuestion:"",deeperAnswer:"",futurePractice:"",professionalIdentity:"",evidenceTypes:[...new Set(evidenceTypes)],theory:theories[0]||"",method:methods[0]||"",supervision,evidence:autoMapped};
   const arr=savedEntries();arr.unshift(entry);state.set("entries",arr);
   const framework=frameworkData();
-  framework.values=[...new Set([...(framework.values||[]),...values])];
-  framework.theories=[...new Set([...(framework.theories||[]),...researchEvidence])];
+  framework.theories=[...new Set([...(framework.theories||[]),...theories,...methods])];
+  framework.values=[...new Set([...(framework.values||[]),...values,...ethics])];
   framework.skills=[...new Set([...(framework.skills||[]),...skills,...assessmentJudgement])];
-  framework.cultural=[...new Set([...(framework.cultural||[]),...cultural])];
-  if(useOfSelfTags.length)framework.useOfSelf=[framework.useOfSelf,useOfSelfTags.join(", ")].filter(Boolean).join("\n");
+  framework.cultural=[...new Set([...(framework.cultural||[]),...cultural,...systems])];
+  if(useOfSelfTags.length) framework.useOfSelf=[framework.useOfSelf,useOfSelfTags.join(", ")].filter(Boolean).join("\n");
   saveFrameworkData(framework);
-  clearReflectionDraft();lastSavedReflection=entry;render();window.scrollTo({top:0,behavior:"smooth"});
+  clearReflectionDraft();
+  if(supervision){const items=supervisionItems();items.unshift({id:Date.now()+1,date:entry.date,type:"Reflection question",text:supervision});state.set("supervisionItems",items);}
+  lastSavedReflection=entry;render();window.scrollTo({top:0,behavior:"smooth"});
 }
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 function triggerFileDownload(blob,filename){
@@ -3045,38 +3001,10 @@ async function shareOrDownload(blob,filename,title){
 function exportPrintable(){
   try{
     const entries=savedEntries(),reviews=state.get("weeklyReviews",[]),timesheets=timesheetEntries(),framework=frameworkData();
-    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>${safeText(placementProfileLabel()||"Placement details not added")}</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Framework for Practice</h2><div class="entry"><p><strong>Values:</strong> ${(framework.values||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Theories and approaches:</strong> ${(framework.theories||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Cultural capability:</strong> ${(framework.cultural||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Skills:</strong> ${(framework.skills||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Use of self:</strong> ${safeText(framework.useOfSelf)||"Not added"}</p><p><strong>Professional identity:</strong> ${safeText(framework.professionalIdentity)||"Not added"}</p></div></body></html>`;
+    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>Kalina Hughes · Mind Australia · Adult Step Up Step Down</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Framework for Practice</h2><div class="entry"><p><strong>Values:</strong> ${(framework.values||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Theories and approaches:</strong> ${(framework.theories||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Cultural capability:</strong> ${(framework.cultural||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Skills:</strong> ${(framework.skills||[]).map(safeText).join(", ")||"Not added"}</p><p><strong>Use of self:</strong> ${safeText(framework.useOfSelf)||"Not added"}</p><p><strong>Professional identity:</strong> ${safeText(framework.professionalIdentity)||"Not added"}</p></div></body></html>`;
     shareOrDownload(new Blob([html],{type:"text/html"}),"Practice_Compass_Placement_Notes.html","Practice Compass placement notes");
   }catch(error){console.error(error);alert("The export could not be created. Please try the JSON backup instead.");}
 }
-function savePlacementProfile(){
-  const studentName=document.getElementById("profileStudentName")?.value.trim()||"";
-  const agency=document.getElementById("profileAgency")?.value.trim()||"";
-  const service=document.getElementById("profileService")?.value.trim()||"";
-  const startDate=document.getElementById("profileStartDate")?.value||"";
-  const endDate=document.getElementById("profileEndDate")?.value||"";
-  const totalHours=Math.max(1,Number(document.getElementById("profileTotalHours")?.value)||DEFAULT_TOTAL_HOURS);
-  const weekRaw=document.getElementById("profileWeekOverride")?.value.trim()||"";
-  const weekOverride=weekRaw?String(Math.max(1,Math.floor(Number(weekRaw)||1))):"";
-  state.set("placementProfile",{studentName,agency,service,startDate,endDate,totalHours,weekOverride});
-  render();
-}
-function resetPracticeCompassThisDevice(){
-  const first=window.confirm("Start fresh on this device? This will permanently remove reflections, timesheets, hours, supervision notes, assessment progress and other Practice Compass data stored in this browser only. It will not clear data on another phone, tablet or computer.");
-  if(!first)return;
-  const typed=window.prompt('Type CLEAR to confirm. If you need this device’s data, cancel and create a backup first.');
-  if(typed!=="CLEAR")return;
-  try{
-    localStorage.clear();
-    localStorage.setItem("placementProfile",JSON.stringify({...EMPTY_PLACEMENT_PROFILE}));
-    alert("Practice Compass data has been cleared from this device only. The app will now reload so a new user can add their placement details.");
-    window.location.reload();
-  }catch(error){
-    console.error(error);
-    alert("Practice Compass could not be cleared. No further changes were made.");
-  }
-}
-
 const PRACTICE_COMPASS_BACKUP_VERSION=2;
 function backupStatusText(){
   const value=state.get("lastBackupAt","");
@@ -3227,23 +3155,45 @@ function bind(){
     const box=document.getElementById("whyFocusText");
     box.classList.toggle("hidden");
   });
-  document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(placementTotalHours(),hours()+HOURS_PER_DAY));render()});
+  document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(TOTAL_HOURS,hours()+HOURS_PER_DAY));render()});
   document.getElementById("adjustHours")?.addEventListener("click",()=>{const v=prompt("Enter total completed placement hours:",hours()); if(v!==null&&!isNaN(Number(v))){state.set("hours",Number(v));render()}});
   document.getElementById("saveEntry")?.addEventListener("click",saveEntry);
-  document.querySelectorAll(".reflection-involvement-chip,.reflection-outcome-chip,.reflection-focus-chip").forEach(button=>button.addEventListener("click",()=>{
-    if(button.classList.contains("reflection-focus-chip")&&button.dataset.value==="unsure"){
-      document.querySelectorAll(".reflection-focus-chip").forEach(item=>item.classList.remove("selected"));button.classList.add("selected");
+  document.querySelectorAll(".reflection-status-button").forEach(button=>button.addEventListener("click",()=>{
+    const lens=button.dataset.lensStatus,status=button.dataset.status;
+    document.querySelectorAll(`.reflection-status-button[data-lens-status="${lens}"]`).forEach(item=>item.classList.toggle("selected",item===button));
+    const options=document.querySelector(`[data-lens-options="${lens}"]`);
+    const guidance=document.querySelector(`[data-guidance="${lens}"]`);
+    if(status==="no"){
+      document.querySelectorAll(`.reflection-option-chip[data-lens="${lens}"]`).forEach(item=>item.classList.remove("selected"));
+      options?.classList.add("hidden");
+      guidance?.classList.add("hidden");
+      document.querySelector(`[data-concept-lens="${lens}"]`)?.classList.add("hidden");
     }else{
-      button.classList.toggle("selected");
-      if(button.classList.contains("reflection-focus-chip")&&button.classList.contains("selected"))document.querySelector('.reflection-focus-chip[data-value="unsure"]')?.classList.remove("selected");
+      options?.classList.remove("hidden");
+      if(guidance){guidance.innerHTML=reflectionGuidanceText(lens,status);guidance.classList.toggle("hidden",status!=="unsure");}
     }
-    updateReflectionPrompt();captureReflectionDraft();
+    captureReflectionDraft();
   }));
-  document.querySelectorAll(".reflection-project-chip").forEach(button=>button.addEventListener("click",()=>{
-    document.querySelectorAll(".reflection-project-chip").forEach(item=>item.classList.toggle("selected",item===button));captureReflectionDraft();
+  document.querySelectorAll(".reflection-option-chip").forEach(button=>button.addEventListener("click",()=>{
+    button.classList.toggle("selected");
+    const lens=button.dataset.lens,value=button.dataset.value;
+    if(button.classList.contains("selected"))openReflectionLearnMore(value,lens);
+    else document.querySelector(`[data-concept-lens="${lens}"]`)?.classList.add("hidden");
+    captureReflectionDraft();
   }));
-  ["answer","reflectionNote"].forEach(id=>document.getElementById(id)?.addEventListener("input",captureReflectionDraft));
+  document.querySelectorAll(".reflection-clear-lens").forEach(button=>button.addEventListener("click",()=>{
+    const lens=button.dataset.clearLens;
+    document.querySelectorAll(`.reflection-option-chip[data-lens="${lens}"]`).forEach(item=>item.classList.remove("selected"));
+    document.querySelectorAll(`.reflection-status-button[data-lens-status="${lens}"]`).forEach(item=>item.classList.remove("selected"));
+    document.querySelector(`[data-lens-options="${lens}"]`)?.classList.add("hidden");
+    captureReflectionDraft();
+  }));
+  ["answer","supervision"].forEach(id=>document.getElementById(id)?.addEventListener("input",captureReflectionDraft));
   restoreReflectionDraft();
+  document.querySelectorAll(".reflection-option-search").forEach(input=>input.addEventListener("input",()=>{
+    const lens=input.dataset.searchLens,query=input.value.toLowerCase().trim();
+    document.querySelectorAll(`[data-all-options="${lens}"] .reflection-option-chip`).forEach(button=>button.classList.toggle("hidden",query&&!button.dataset.value.toLowerCase().includes(query)));
+  }));
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
   document.getElementById("reflectionInsight")?.addEventListener("toggle",event=>state.set("reflectionInsightOpen",event.currentTarget.open));
   document.getElementById("reflectionLibrary")?.addEventListener("toggle",event=>state.set("reflectionLibraryOpen",event.currentTarget.open));
@@ -3309,10 +3259,8 @@ function bind(){
   document.getElementById("myJourney")?.addEventListener("click",myJourneyPage);
   document.getElementById("wellbeing")?.addEventListener("click",()=>wellbeingPage());
   document.getElementById("exportHtml")?.addEventListener("click",()=>exportPrintable());
-  document.getElementById("savePlacementProfile")?.addEventListener("click",savePlacementProfile);
   document.getElementById("backupJson")?.addEventListener("click",()=>backup());
   document.getElementById("restoreJson")?.addEventListener("click",()=>document.getElementById("restoreJsonFile")?.click());
-  document.getElementById("resetThisDevice")?.addEventListener("click",resetPracticeCompassThisDevice);
   document.getElementById("restoreJsonFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];readBackupFile(file);event.target.value="";});
 }
 
