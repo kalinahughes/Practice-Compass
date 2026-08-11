@@ -2044,6 +2044,14 @@ function assessmentPage(){
         ${hoursStarted?`<div class="placement-native-hours-track" aria-label="${Math.round((h/placementTotalHours())*100)} percent of placement hours completed"><span style="width:${Math.min(100,(h/placementTotalHours())*100)}%"></span></div>`:""}
       </section>
 
+      <section class="placement-growing-entry">
+        <button type="button" class="placement-growing-button" id="openWhereGrowing">
+          <span class="placement-growing-icon">🌿</span>
+          <span class="placement-growing-copy"><strong>Where I’m Growing</strong><small>${(()=>{const c=whereImGrowingCounts();return c.remaining?`${c.remaining} things I’m still working towards`:`Everything currently tracked is complete ✨`;})()}</small></span>
+          <span class="placement-growing-arrow">›</span>
+        </button>
+      </section>
+
       <section class="placement-native-section">
         <div class="placement-native-section-heading">
           <div><span aria-hidden="true">🗂️</span><h2>Assessment work</h2></div>
@@ -2062,6 +2070,86 @@ function assessmentPage(){
         </div>
       </section>
     </div>`;
+}
+
+
+const whereImGrowingGroups = [
+  {id:"practice",title:"Practice",icon:"🌿",items:[
+    {id:"own-consumer",text:"Take on my own consumer work with appropriate support"},
+    {id:"assessment-intake",text:"Complete or contribute to a psychosocial assessment or intake"},
+    {id:"group",text:"Facilitate or co facilitate a group"},
+    {id:"mdt",text:"Contribute in MDT, reviews or case discussions"},
+    {id:"documentation",text:"Practise recovery oriented documentation and case noting"}
+  ]},
+  {id:"supervision",title:"Supervision and learning",icon:"☕",items:[
+    {id:"regular-supervision",text:"Attend regular structured social work supervision"},
+    {id:"critical-reflection",text:"Bring a real practice example or question for critical reflection"},
+    {id:"feedback",text:"Ask for feedback on my assessment, documentation or use of self"},
+    {id:"act-feedback",text:"Act on feedback and notice what changes in my practice"},
+    {id:"next-opportunity",text:"Use supervision to identify my next practice opportunity"}
+  ]},
+  {id:"project",title:"Project",icon:"📄",items:[
+    {id:"project-review",text:"Finalise project resources after organisational review"},
+    {id:"project-feedback",text:"Record FEW and staff feedback and any changes made"},
+    {id:"project-use",text:"Capture evidence of the resources being used in practice"},
+    {id:"project-reflection-1",text:"Complete Project Reflection 1"},
+    {id:"project-reflection-2",text:"Complete Project Reflection 2"},
+    {id:"project-reflection-3",text:"Complete Project Reflection 3"}
+  ]},
+  {id:"mid",title:"Mid placement",icon:"🌱",items:[
+    {id:"mid-evidence",text:"Review evidence against all six Learning Outcomes"},
+    {id:"mid-self-assessment",text:"Complete my Mid Placement Self Assessment"},
+    {id:"mid-gaps",text:"Identify gaps and priorities for the second half of placement"},
+    {id:"mid-meeting",text:"Have the Mid Placement meeting with placement stakeholders"},
+    {id:"mid-actions",text:"Record feedback and actions from the Mid Placement meeting"}
+  ]}
+];
+function whereImGrowingState(){
+  const saved=state.get("whereImGrowing",{});
+  return saved&&typeof saved==="object"?saved:{};
+}
+function whereImGrowingCounts(){
+  const saved=whereImGrowingState();
+  const total=whereImGrowingGroups.reduce((sum,g)=>sum+g.items.length,0);
+  const complete=whereImGrowingGroups.reduce((sum,g)=>sum+g.items.filter(item=>saved[item.id]).length,0);
+  return {total,complete,remaining:Math.max(0,total-complete)};
+}
+function toggleWhereImGrowing(id,complete){
+  const saved=whereImGrowingState();
+  saved[id]=Boolean(complete);
+  state.set("whereImGrowing",saved);
+}
+
+function whereImGrowingPage(){
+  const saved=whereImGrowingState();
+  const completed=[];
+  const groupHtml=whereImGrowingGroups.map(group=>{
+    const active=group.items.filter(item=>!saved[item.id]);
+    group.items.filter(item=>saved[item.id]).forEach(item=>completed.push({...item,group:group.title,icon:group.icon}));
+    return `<section class="growth-folder-group">
+      <div class="growth-folder-group-heading"><span>${group.icon}</span><h2>${group.title}</h2><small>${active.length} left</small></div>
+      ${active.length?`<div class="growth-folder-list">${active.map(item=>`<label class="growth-folder-item"><input type="checkbox" data-growing-id="${item.id}"><span>${safeText(item.text)}</span></label>`).join("")}</div>`:`<p class="growth-folder-empty">All done here ✨</p>`}
+    </section>`;
+  }).join("");
+  const counts=whereImGrowingCounts();
+  document.getElementById("main").innerHTML=`
+    <div class="growth-folder-page">
+      <button class="assessment-back-link" id="backGrowing" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
+      <section class="growth-folder-heading">
+        <div class="eyebrow">🌿 Placement growth</div>
+        <h1>Where I’m Growing</h1>
+        <p>A simple place to keep track of the opportunities and assessment pieces I still want to work through.</p>
+        <div class="growth-folder-progress"><span>${counts.complete} complete</span><strong>${counts.remaining} to go</strong></div>
+      </section>
+      ${groupHtml}
+      <details class="growth-folder-completed">
+        <summary>Completed <span>${completed.length}</span></summary>
+        ${completed.length?`<div class="growth-folder-list growth-folder-completed-list">${completed.map(item=>`<label class="growth-folder-item completed"><input type="checkbox" checked data-growing-id="${item.id}"><span><small>${safeText(item.group)}</small>${safeText(item.text)}</span></label>`).join("")}</div>`:`<p class="growth-folder-empty">Nothing completed yet.</p>`}
+      </details>
+    </div>`;
+  document.getElementById("backGrowing").onclick=()=>{route="assessments";render()};
+  document.querySelectorAll("[data-growing-id]").forEach(input=>input.addEventListener("change",()=>{toggleWhereImGrowing(input.dataset.growingId,input.checked);whereImGrowingPage();}));
+  window.scrollTo({top:0});
 }
 
 function integrationSessionManager(){
@@ -3242,6 +3330,7 @@ function bind(){
   document.getElementById("openEvidenceMap")?.addEventListener("click",()=>evidenceMapPage());
   document.getElementById("openFramework")?.addEventListener("click",()=>frameworkPage());
   document.getElementById("openTimesheets")?.addEventListener("click",()=>timesheetPage());
+  document.getElementById("openWhereGrowing")?.addEventListener("click",()=>whereImGrowingPage());
   document.getElementById("openSupervision")?.addEventListener("click",()=>supervisionPage());
   document.querySelectorAll(".home-reminder-row").forEach(button=>button.addEventListener("click",()=>{
     if(button.dataset.reminderType==="timesheet")timesheetPage();
