@@ -5106,3 +5106,8 @@ main{padding-inline:18px}
   #frameworkGapsSection .framework-calm-details-body{padding-inline:11px}
   #frameworkSummarySection .framework-history-heading{display:grid;gap:2px}
 }
+
+/* My Placement header text fix: preserve white text on dark slate hero */
+.placement-native-heading h1{color:#fff!important}
+.placement-native-heading .eyebrow{color:rgba(255,255,255,.76)!important}
+.placement-native-heading p{color:rgba(255,255,255,.84)!important}
