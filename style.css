@@ -5117,3 +5117,18 @@ main{padding-inline:18px}
   #frameworkGapsSection .framework-calm-details-body{padding-inline:11px}
   .framework-history-heading{display:grid;gap:2px}
 }
+
+/* Assessment header text colour repair — scoped only to assessment detail hero. */
+.assessment-clear-header .assessment-clear-title h1{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff;
+}
+.assessment-clear-header .assessment-clear-title p{
+  color:rgba(255,255,255,.82) !important;
+  -webkit-text-fill-color:rgba(255,255,255,.82);
+}
+.assessment-clear-header .assessment-clear-title .status-inline,
+.assessment-clear-header .assessment-clear-percent{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff;
+}
