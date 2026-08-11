@@ -2076,37 +2076,54 @@ function assessmentPage(){
 const whereImGrowingGroups = [
   {id:"practice",title:"Practice",icon:"🌿",items:[
     {id:"own-consumer",text:"Take on my own consumer work with appropriate support"},
-    {id:"assessment-intake",text:"Complete or contribute to a psychosocial assessment or intake"},
+    {id:"assessment-intake",text:"Contribute to assessments and intake work"},
     {id:"group",text:"Facilitate or co facilitate a group"},
-    {id:"mdt",text:"Contribute in MDT, reviews or case discussions"},
-    {id:"documentation",text:"Practise recovery oriented documentation and case noting"}
+    {id:"mdt",text:"Contribute in reviews, MDTs or case discussions"},
+    {id:"documentation",text:"Complete case notes and placement documentation"},
+    {id:"theory-practice",text:"Link a social work theory or framework clearly to a real practice example"},
+    {id:"professional-voice",text:"Keep building confidence using my professional voice in meetings, assessments and case discussions"},
+    {id:"sit-with-uncertainty",text:"Practise sitting with uncertainty rather than moving straight into fixing or problem solving"},
+    {id:"assessment-ownership",text:"Take greater ownership of an assessment or consumer contact from planning through to documentation and follow up"}
   ]},
   {id:"supervision",title:"Supervision and learning",icon:"☕",items:[
-    {id:"regular-supervision",text:"Attend regular structured social work supervision"},
-    {id:"critical-reflection",text:"Bring a real practice example or question for critical reflection"},
-    {id:"feedback",text:"Ask for feedback on my assessment, documentation or use of self"},
-    {id:"act-feedback",text:"Act on feedback and notice what changes in my practice"},
-    {id:"next-opportunity",text:"Use supervision to identify my next practice opportunity"}
+    {id:"jcu-supervision-record",text:"Use the JCU supervision record for formal supervision"},
+    {id:"practice-dilemma",text:"Bring a meaningful practice question or dilemma into supervision"},
+    {id:"feedback-judgement",text:"Ask for specific feedback on my use of self and professional judgement"},
+    {id:"supervision-shift",text:"Capture an example of supervision changing or challenging my thinking"},
+    {id:"statutory-recovery",text:"Be able to explain how my practice is shifting from statutory Child Safety toward recovery oriented social work"}
   ]},
   {id:"project",title:"Project",icon:"📄",items:[
-    {id:"project-review",text:"Finalise project resources after organisational review"},
-    {id:"project-feedback",text:"Record FEW and staff feedback and any changes made"},
-    {id:"project-use",text:"Capture evidence of the resources being used in practice"},
+    {id:"project-developed",text:"Develop the FEW resources and triage material"},
+    {id:"project-consulted",text:"Consult with the FEW worker and staff"},
+    {id:"project-positive-feedback",text:"Receive and record positive staff or FEW feedback"},
+    {id:"project-mdt-use",text:"Have the resource used in practice or an MDT"},
+    {id:"project-senior-review",text:"Send the project resources for senior management review"},
+    {id:"project-review-outcome",text:"Record the outcome of senior management review or approval"},
+    {id:"project-final-changes",text:"Make any final changes requested after review"},
+    {id:"project-use",text:"Keep evidence of how the FEW resources are being used in practice"},
+    {id:"project-feedback",text:"Record any further FEW or staff feedback"},
     {id:"project-reflection-1",text:"Complete Project Reflection 1"},
     {id:"project-reflection-2",text:"Complete Project Reflection 2"},
     {id:"project-reflection-3",text:"Complete Project Reflection 3"}
   ]},
   {id:"mid",title:"Mid placement",icon:"🌱",items:[
-    {id:"mid-evidence",text:"Review evidence against all six Learning Outcomes"},
+    {id:"mid-six-examples",text:"Have at least one strong example for each of the six Learning Outcomes"},
+    {id:"mid-cultural",text:"Strengthen my culturally responsive practice evidence"},
+    {id:"mid-theory",text:"Strengthen my theory into practice evidence"},
+    {id:"mid-supervision",text:"Strengthen my supervision and use of self evidence"},
     {id:"mid-self-assessment",text:"Complete my Mid Placement Self Assessment"},
-    {id:"mid-gaps",text:"Identify gaps and priorities for the second half of placement"},
-    {id:"mid-meeting",text:"Have the Mid Placement meeting with placement stakeholders"},
-    {id:"mid-actions",text:"Record feedback and actions from the Mid Placement meeting"}
+    {id:"mid-priorities",text:"Identify and discuss my priorities for the second half of placement at the mid placement meeting"}
   ]}
 ];
 function whereImGrowingState(){
   const saved=state.get("whereImGrowing",{});
-  return saved&&typeof saved==="object"?saved:{};
+  const next=saved&&typeof saved==="object"?saved:{};
+  if(!next.__learningPlanMidV2){
+    ["own-consumer","assessment-intake","group","mdt","documentation","project-developed","project-consulted","project-positive-feedback","project-mdt-use","project-senior-review"].forEach(id=>{next[id]=true;});
+    next.__learningPlanMidV2=true;
+    state.set("whereImGrowing",next);
+  }
+  return next;
 }
 function whereImGrowingCounts(){
   const saved=whereImGrowingState();
