@@ -81,7 +81,7 @@ const assessments = [
  {id:"reflections",title:"Three Project Reflections",when:"Three times across placement · 800 to 1000 words each",icon:"⭐",color:"olive",
   purpose:"Submit three structured reflections about your project, research process and its connection with professional social work practice.",
   why:"The reflections show that you are learning from the project as it develops, rather than only reporting the final product.",
-  tasks:["Agree submission timing with your FELO","Use the LearnJCU template","Submit three reflections regularly","Respond to FELO feedback and revise if requested"],
+  tasks:["Project Reflection 1 · planning and identifying the need","Project Reflection 2 · development, consultation and changes","Project Reflection 3 · implementation, impact and learning"],
   collect:["What has progressed","What challenged you","Research or theory used","Agency relevance","Ethical issues","What changed after feedback","Next steps"],
   toolkit:["Reflective Practice","Research and Evidence","Ethical Decision Making","Use of Self"]},
 
