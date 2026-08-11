@@ -4965,7 +4965,8 @@ main{padding-inline:18px}
 @media(max-width:420px){.framework-summary-edit-actions .btn{flex:1 1 100%}}
 
 
-/* Practice Framework visual identity — intentionally scoped to this page only. */
+/* Practice Framework visual identity — cleaned and scoped.
+   Explicit tone classes prevent older framework CSS from overriding the current six-part view. */
 #frameworkSummarySection,
 #frameworkDevelopmentSection,
 #frameworkGapsSection{
@@ -4987,26 +4988,23 @@ main{padding-inline:18px}
   max-width:680px;
   padding:13px 15px;
   margin:4px 0 16px;
+  border:1px solid rgba(90,113,108,.10);
   border-radius:16px;
   background:linear-gradient(110deg,#edf4f6 0%,#f7eee6 55%,#f6e8eb 100%);
   color:#465653;
-  border:1px solid rgba(90,113,108,.10);
 }
 #frameworkSummarySection,
 #frameworkDevelopmentSection,
 #frameworkGapsSection{
-  border:1px solid rgba(76,99,95,.12);
-  border-radius:18px;
   overflow:hidden;
   margin:12px 0;
+  border:1px solid rgba(76,99,95,.12);
+  border-radius:18px;
   background:#fff;
 }
 #frameworkSummarySection>summary,
 #frameworkDevelopmentSection>summary,
-#frameworkGapsSection>summary{
-  padding:15px 16px;
-  border:0;
-}
+#frameworkGapsSection>summary{padding:15px 16px;border:0}
 #frameworkSummarySection>summary{background:linear-gradient(90deg,#dcebf1 0%,#f5e9dd 100%)}
 #frameworkDevelopmentSection>summary{background:linear-gradient(90deg,#dcece7 0%,#f0e5e7 100%)}
 #frameworkGapsSection>summary{background:linear-gradient(90deg,#f4e5d8 0%,#f4edcf 100%)}
@@ -5017,118 +5015,94 @@ main{padding-inline:18px}
 #frameworkDevelopmentSection .framework-calm-details-body,
 #frameworkGapsSection .framework-calm-details-body{padding:8px 14px 16px}
 
-.framework-summary-read-view{display:grid;gap:11px}
-.framework-summary-read-field{
+#frameworkSummarySection .framework-summary-read-view{display:grid;gap:11px}
+#frameworkSummarySection .framework-summary-read-field{
   position:relative;
   overflow:hidden;
   padding:14px 15px 14px 18px;
   border:0;
   border-radius:15px;
 }
-.framework-summary-read-field::before{
-  content:"";
-  position:absolute;
-  left:0;top:0;bottom:0;
-  width:5px;
+#frameworkSummarySection .framework-summary-read-field::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
 }
-.framework-summary-read-field:nth-child(1){background:#e6f0f4}.framework-summary-read-field:nth-child(1)::before{background:#668ea2}
-.framework-summary-read-field:nth-child(2){background:#f6edcf}.framework-summary-read-field:nth-child(2)::before{background:#c69a43}
-.framework-summary-read-field:nth-child(3){background:#f3e3e6}.framework-summary-read-field:nth-child(3)::before{background:#bd7e88}
-.framework-summary-read-field:nth-child(4){background:#e2efeb}.framework-summary-read-field:nth-child(4)::before{background:#4f8178}
-.framework-summary-read-field:nth-child(5){background:#e9eddc}.framework-summary-read-field:nth-child(5)::before{background:#718259}
-.framework-summary-read-field:nth-child(6){background:#f4e3da}.framework-summary-read-field:nth-child(6)::before{background:#b96f4e}
-.framework-summary-read-field strong{color:#33413f;font-weight:700}
-.framework-summary-read-field small{color:#66736f}
-.framework-summary-read-field p{color:#374541;margin-top:7px}
-.framework-summary-footer-actions{display:flex;justify-content:flex-start;margin-top:2px}
-#frameworkSummarySection .framework-summary-edit{border-color:#668ea2;color:#496c7c;background:#f7fbfc}
+#frameworkSummarySection .framework-tone-vision{background:var(--fw-blue-soft)}
+#frameworkSummarySection .framework-tone-vision::before{background:var(--fw-blue)}
+#frameworkSummarySection .framework-tone-purpose{background:var(--fw-ochre-soft)}
+#frameworkSummarySection .framework-tone-purpose::before{background:var(--fw-ochre)}
+#frameworkSummarySection .framework-tone-values{background:var(--fw-rose-soft)}
+#frameworkSummarySection .framework-tone-values::before{background:var(--fw-rose)}
+#frameworkSummarySection .framework-tone-theories{background:var(--fw-teal-soft)}
+#frameworkSummarySection .framework-tone-theories::before{background:var(--fw-teal)}
+#frameworkSummarySection .framework-tone-tools{background:var(--fw-moss-soft)}
+#frameworkSummarySection .framework-tone-tools::before{background:var(--fw-moss)}
+#frameworkSummarySection .framework-tone-reflection{background:var(--fw-terracotta-soft)}
+#frameworkSummarySection .framework-tone-reflection::before{background:var(--fw-terracotta)}
+#frameworkSummarySection .framework-summary-read-field strong{color:var(--fw-ink);font-weight:700}
+#frameworkSummarySection .framework-summary-read-field small{color:#66736f}
+#frameworkSummarySection .framework-summary-read-field p{margin-top:7px;color:#374541}
+#frameworkSummarySection .framework-summary-footer-actions{display:flex;justify-content:flex-start;margin-top:2px}
+#frameworkSummarySection .framework-summary-edit{border-color:var(--fw-blue);color:#496c7c;background:#f7fbfc}
 
 #frameworkSummarySection .framework-summary-editor-field{
-  border:1px solid rgba(67,84,80,.10);
-  border-radius:15px;
   padding:12px;
   margin-bottom:10px;
+  border:1px solid rgba(67,84,80,.10);
+  border-radius:15px;
 }
-#frameworkSummarySection .framework-summary-editor-field:nth-child(1){background:#eef5f7}
-#frameworkSummarySection .framework-summary-editor-field:nth-child(2){background:#faf4df}
-#frameworkSummarySection .framework-summary-editor-field:nth-child(3){background:#f8ecee}
-#frameworkSummarySection .framework-summary-editor-field:nth-child(4){background:#edf6f3}
-#frameworkSummarySection .framework-summary-editor-field:nth-child(5){background:#f1f3e8}
-#frameworkSummarySection .framework-summary-editor-field:nth-child(6){background:#f8ece6}
-#frameworkSummarySection #saveFrameworkSummary{background:#668ea2;border-color:#668ea2;color:#fff}
+#frameworkSummarySection .framework-summary-editor-field.framework-tone-vision{background:#eef5f7}
+#frameworkSummarySection .framework-summary-editor-field.framework-tone-purpose{background:#faf4df}
+#frameworkSummarySection .framework-summary-editor-field.framework-tone-values{background:#f8ecee}
+#frameworkSummarySection .framework-summary-editor-field.framework-tone-theories{background:#edf6f3}
+#frameworkSummarySection .framework-summary-editor-field.framework-tone-tools{background:#f1f3e8}
+#frameworkSummarySection .framework-summary-editor-field.framework-tone-reflection{background:#f8ece6}
+#frameworkSummarySection #saveFrameworkSummary{background:var(--fw-blue);border-color:var(--fw-blue);color:#fff}
 
 #frameworkDevelopmentSection .framework-auto-note{
   padding:12px 14px;
+  border-left:4px solid var(--fw-teal);
   border-radius:14px;
   background:#edf5f2;
-  border-left:4px solid #4f8178;
 }
 #frameworkDevelopmentSection .framework-auto-note strong{color:#3f7068}
-.framework-auto-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.framework-auto-area{border:0;box-shadow:none;min-height:68px}
-.framework-auto-area:nth-child(1){background:#e6f0f4}
-.framework-auto-area:nth-child(2){background:#f3e3e6}
-.framework-auto-area:nth-child(3){background:#e2efeb}
-.framework-auto-area:nth-child(4){background:#e9eddc}
-.framework-auto-area:nth-child(5){background:#f4e3da}
-.framework-auto-area:nth-child(6){background:#f6edcf}
-
+#frameworkDevelopmentSection .framework-auto-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#frameworkDevelopmentSection .framework-auto-area{min-height:68px;border:0;box-shadow:none}
+#frameworkDevelopmentSection .framework-auto-area:nth-child(1){background:var(--fw-blue-soft)}
+#frameworkDevelopmentSection .framework-auto-area:nth-child(2){background:var(--fw-rose-soft)}
+#frameworkDevelopmentSection .framework-auto-area:nth-child(3){background:var(--fw-teal-soft)}
+#frameworkDevelopmentSection .framework-auto-area:nth-child(4){background:var(--fw-moss-soft)}
+#frameworkDevelopmentSection .framework-auto-area:nth-child(5){background:var(--fw-terracotta-soft)}
+#frameworkDevelopmentSection .framework-auto-area:nth-child(6){background:var(--fw-ochre-soft)}
 #frameworkGapsSection .framework-opportunity-list span{
   border:1px solid rgba(185,111,78,.18);
   background:#fbf2e9;
   color:#85523f;
 }
 
-.framework-history{
-  margin-top:12px;
-  border-top:1px solid rgba(73,108,124,.13);
-  padding-top:10px;
+#frameworkSummarySection .framework-history{margin-top:12px;padding-top:10px;border-top:1px solid rgba(73,108,124,.13)}
+#frameworkSummarySection .framework-history>summary{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 10px;border-radius:12px;background:#eef5f7;cursor:pointer;list-style:none;
 }
-.framework-history>summary{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  cursor:pointer;
-  list-style:none;
-  padding:9px 10px;
-  border-radius:12px;
-  background:#eef5f7;
-}
-.framework-history>summary::-webkit-details-marker{display:none}
-.framework-history>summary>span:first-child{display:grid;gap:2px}
-.framework-history>summary strong{font-size:.86rem;color:#496c7c}
-.framework-history>summary small{font-size:.72rem;color:#74807c}
-.framework-history>summary>span:last-child{font-size:20px;color:#6b7d78;transition:transform .18s ease}
-.framework-history[open]>summary>span:last-child{transform:rotate(90deg)}
-.framework-history-list{display:grid;gap:9px;margin-top:9px}
-.framework-history-version{padding:12px 13px;border-radius:14px;background:#fafbfa;border:1px solid rgba(66,84,82,.10)}
-.framework-history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
-.framework-history-heading strong{font-size:.82rem;color:#405c64}
-.framework-history-heading small{font-size:.68rem;color:#78827f}
-.framework-history-field{padding:7px 0;border-top:1px solid rgba(66,84,82,.08)}
-.framework-history-field:first-of-type{border-top:0}
-.framework-history-field b{display:block;font-size:.72rem;color:#65716e;margin-bottom:3px}
-.framework-history-field p{margin:0;font-size:.78rem;line-height:1.48;color:#3d4845;white-space:pre-wrap}
+#frameworkSummarySection .framework-history>summary::-webkit-details-marker{display:none}
+#frameworkSummarySection .framework-history>summary>span:first-child{display:grid;gap:2px}
+#frameworkSummarySection .framework-history>summary strong{font-size:.86rem;color:#496c7c}
+#frameworkSummarySection .framework-history>summary small{font-size:.72rem;color:#74807c}
+#frameworkSummarySection .framework-history>summary>span:last-child{font-size:20px;color:#6b7d78;transition:transform .18s ease}
+#frameworkSummarySection .framework-history[open]>summary>span:last-child{transform:rotate(90deg)}
+#frameworkSummarySection .framework-history-list{display:grid;gap:9px;margin-top:9px}
+#frameworkSummarySection .framework-history-version{padding:12px 13px;border:1px solid rgba(66,84,82,.10);border-radius:14px;background:#fafbfa}
+#frameworkSummarySection .framework-history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
+#frameworkSummarySection .framework-history-heading strong{font-size:.82rem;color:#405c64}
+#frameworkSummarySection .framework-history-heading small{font-size:.68rem;color:#78827f}
+#frameworkSummarySection .framework-history-field{padding:7px 0;border-top:1px solid rgba(66,84,82,.08)}
+#frameworkSummarySection .framework-history-field:first-of-type{border-top:0}
+#frameworkSummarySection .framework-history-field b{display:block;margin-bottom:3px;font-size:.72rem;color:#65716e}
+#frameworkSummarySection .framework-history-field p{margin:0;font-size:.78rem;line-height:1.48;color:#3d4845;white-space:pre-wrap}
 @media(max-width:520px){
-  .framework-auto-grid{grid-template-columns:1fr}
+  #frameworkDevelopmentSection .framework-auto-grid{grid-template-columns:1fr}
   #frameworkSummarySection .framework-calm-details-body,
   #frameworkDevelopmentSection .framework-calm-details-body,
   #frameworkGapsSection .framework-calm-details-body{padding-inline:11px}
-  .framework-history-heading{display:grid;gap:2px}
-}
-
-/* Assessment header text colour repair — scoped only to assessment detail hero. */
-.assessment-clear-header .assessment-clear-title h1{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff;
-}
-.assessment-clear-header .assessment-clear-title p{
-  color:rgba(255,255,255,.82) !important;
-  -webkit-text-fill-color:rgba(255,255,255,.82);
-}
-.assessment-clear-header .assessment-clear-title .status-inline,
-.assessment-clear-header .assessment-clear-percent{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff;
+  #frameworkSummarySection .framework-history-heading{display:grid;gap:2px}
 }

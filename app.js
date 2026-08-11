@@ -2570,13 +2570,13 @@ function frameworkPage(){
   ];
 
   const hasSavedSummary=summaryFields.some(field=>String(summary[field.id]||"").trim());
-  const summaryEditor=summaryFields.map(field=>`<section class="framework-summary-editor-field framework-summary-editor-compact">
+  const summaryEditor=summaryFields.map(field=>`<section class="framework-summary-editor-field framework-summary-editor-compact framework-tone-${field.id}">
       <div class="framework-summary-editor-heading"><div><strong>${field.title}</strong><small>${field.hint}</small></div>${summarySuggestions[field.id]?`<button type="button" class="framework-use-notes" data-summary-notes="${field.id}">Use saved notes</button>`:""}</div>
       <textarea class="textarea framework-summary-text framework-summary-text-compact" id="frameworkSummary-${field.id}" placeholder="Keep this short. You can change it as placement develops.">${safeText(summary[field.id]||"")}</textarea>
     </section>`).join("");
   const summaryReadView=summaryFields.map(field=>{
     const value=String(summary[field.id]||"").trim();
-    return `<section class="framework-summary-read-field">
+    return `<section class="framework-summary-read-field framework-tone-${field.id}">
       <div><strong>${field.title}</strong><small>${field.hint}</small></div>
       <p>${value?safeText(value):`<span class="muted">Nothing added yet.</span>`}</p>
     </section>`;
