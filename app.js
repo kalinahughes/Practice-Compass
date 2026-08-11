@@ -1516,19 +1516,18 @@ function frameworkSummaryData(){return state.get("frameworkSummary",{vision:"",p
 function saveFrameworkSummaryData(data){state.set("frameworkSummary",data);}
 function frameworkSummaryHistoryData(){return state.get("frameworkSummaryHistory",[]);}
 function saveFrameworkSummaryHistoryData(data){state.set("frameworkSummaryHistory",data);}
-function frameworkSummaryChanged(a={},b={}){
-  return ["vision","purpose","values","theories","tools","reflection"].some(key=>String(a[key]||"").trim()!==String(b[key]||"").trim());
+function frameworkSummaryChanged(a,b){
+  return ["vision","purpose","values","theories","tools","reflection"].some(key=>String(a?.[key]||"").trim()!==String(b?.[key]||"").trim());
 }
-function saveFrameworkSummaryVersion(next,current={}){
+function saveFrameworkSummaryVersion(summary){
   const history=frameworkSummaryHistoryData();
-  const hasCurrent=["vision","purpose","values","theories","tools","reflection"].some(key=>String(current[key]||"").trim());
-  if(hasCurrent && !history.length && frameworkSummaryChanged(current,next)){
-    history.push({savedAt:new Date().toISOString(),label:"Earlier version",summary:{...current}});
-  }
-  if(!history.length || frameworkSummaryChanged(history[history.length-1]?.summary||{},next)){
-    history.push({savedAt:new Date().toISOString(),label:"Saved version",summary:{...next}});
-  }
-  saveFrameworkSummaryHistoryData(history.slice(-20));
+  const clean={};
+  ["vision","purpose","values","theories","tools","reflection"].forEach(key=>clean[key]=String(summary?.[key]||"").trim());
+  if(!Object.values(clean).some(Boolean))return;
+  const latest=history[history.length-1];
+  if(latest&& !frameworkSummaryChanged(latest.summary,clean))return;
+  history.push({savedAt:new Date().toISOString(),summary:clean});
+  saveFrameworkSummaryHistoryData(history.slice(-24));
 }
 
 
@@ -2586,9 +2585,9 @@ function frameworkPage(){
   const frameworkHistoryHtml=summaryHistory.length?`<details class="framework-history">
     <summary><span><strong>See changes over time</strong><small>${summaryHistory.length} saved version${summaryHistory.length===1?"":"s"}</small></span><span>›</span></summary>
     <div class="framework-history-list">${summaryHistory.slice().reverse().map((version,index)=>{
-      const date=new Date(version.savedAt);
-      const dateLabel=Number.isNaN(date.getTime())?"Saved version":date.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});
-      return `<article class="framework-history-version"><div class="framework-history-heading"><strong>${index===0?"Latest saved version":safeText(version.label||"Saved version")}</strong><small>${safeText(dateLabel)}</small></div>${summaryFields.map(field=>{const value=String(version.summary?.[field.id]||"").trim();return value?`<div class="framework-history-field"><b>${field.title}</b><p>${safeText(value)}</p></div>`:"";}).join("")}</article>`;
+      const d=new Date(version.savedAt);
+      const dateLabel=Number.isNaN(d.getTime())?"Saved version":d.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});
+      return `<article class="framework-history-version"><div class="framework-history-heading"><strong>${index===0?"Latest saved version":"Earlier version"}</strong><small>${safeText(dateLabel)}</small></div>${summaryFields.map(field=>{const value=String(version.summary?.[field.id]||"").trim();return value?`<div class="framework-history-field"><b>${field.title}</b><p>${safeText(value)}</p></div>`:"";}).join("")}</article>`;
     }).join("")}</div>
   </details>`:"";
 
@@ -2683,7 +2682,7 @@ function frameworkPage(){
   document.getElementById("saveFrameworkSummary")?.addEventListener("click",()=>{
     const next={};
     summaryFields.forEach(field=>next[field.id]=document.getElementById(`frameworkSummary-${field.id}`).value.trim());
-    saveFrameworkSummaryVersion(next,summary);
+    if(frameworkSummaryChanged(summary,next))saveFrameworkSummaryVersion(next);
     saveFrameworkSummaryData(next);
     alert("Your practice framework has been saved 🧭");
     frameworkPage();
@@ -3029,8 +3028,8 @@ async function shareOrDownload(blob,filename,title){
 }
 function exportPrintable(){
   try{
-    const entries=savedEntries(),reviews=state.get("weeklyReviews",[]),timesheets=timesheetEntries(),framework=frameworkData(),frameworkSummary=frameworkSummaryData(),frameworkHistory=frameworkSummaryHistoryData();
-    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>${safeText(placementProfileLabel()||"Placement details not added")}</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Practice Framework</h2><div class="entry"><p><strong>Vision:</strong><br>${safeText(frameworkSummary.vision)||"Not added"}</p><p><strong>Purpose:</strong><br>${safeText(frameworkSummary.purpose)||"Not added"}</p><p><strong>Values:</strong><br>${safeText(frameworkSummary.values)||"Not added"}</p><p><strong>Theories:</strong><br>${safeText(frameworkSummary.theories)||"Not added"}</p><p><strong>Practice tools:</strong><br>${safeText(frameworkSummary.tools)||"Not added"}</p><p><strong>Reflection and accountability:</strong><br>${safeText(frameworkSummary.reflection)||"Not added"}</p></div>${frameworkHistory.length?`<h2>Practice Framework History</h2>${frameworkHistory.map(version=>{const d=new Date(version.savedAt);const dateLabel=Number.isNaN(d.getTime())?"Saved version":d.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});return `<div class="entry"><div class="meta">${safeText(dateLabel)}</div><p><strong>Vision:</strong><br>${safeText(version.summary?.vision)||"Not added"}</p><p><strong>Purpose:</strong><br>${safeText(version.summary?.purpose)||"Not added"}</p><p><strong>Values:</strong><br>${safeText(version.summary?.values)||"Not added"}</p><p><strong>Theories:</strong><br>${safeText(version.summary?.theories)||"Not added"}</p><p><strong>Practice tools:</strong><br>${safeText(version.summary?.tools)||"Not added"}</p><p><strong>Reflection and accountability:</strong><br>${safeText(version.summary?.reflection)||"Not added"}</p></div>`;}).join("")}`:""}</body></html>`;
+    const entries=savedEntries(),reviews=state.get("weeklyReviews",[]),timesheets=timesheetEntries(),frameworkSummary=frameworkSummaryData(),frameworkHistory=frameworkSummaryHistoryData();
+    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Practice Compass Export</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:40px auto;padding:0 20px;color:#2f332f}h1,h2{color:#536158}.entry{border:1px solid #ddd6cc;border-radius:12px;padding:18px;margin:16px 0}.meta{color:#777;font-size:13px}.pill{display:inline-block;background:#e8eee9;padding:5px 8px;border-radius:99px;margin:3px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>Practice Compass Placement Notes</h1><p>${safeText(placementProfileLabel()||"Placement details not added")}</p><h2>Learning moments</h2>${entries.map(e=>`<div class="entry"><div class="meta">${safeText(e.date)} · Goal ${safeText(e.goal)}</div><pre>${safeText(e.answer)}</pre>${(e.evidenceTypes||[]).map(x=>`<span class="pill">${safeText(x)}</span>`).join("")}${e.supervision?`<p><strong>Supervision:</strong> ${safeText(e.supervision)}</p>`:""}</div>`).join("")||"<p>No entries yet.</p>"}<h2>Timesheets</h2>${timesheets.map(e=>`<div class="entry"><strong>${safeText(e.date)}</strong><p>${safeText(e.start)} to ${safeText(e.finish)} · ${Number(e.hours||0).toFixed(2)} hours</p><p>${safeText(e.activities)}</p></div>`).join("")||"<p>No timesheet entries yet.</p>"}<h2>Weekly check ins</h2>${reviews.map(r=>`<div class="entry"><div class="meta">${safeText(r.date)}</div>${(r.answers||[]).map(x=>`<p><strong>${safeText(x.q)}</strong><br>${safeText(x.a)}</p>`).join("")}</div>`).join("")||"<p>No weekly reviews yet.</p>"}<h2>My Practice Framework</h2><div class="entry"><p><strong>Vision:</strong><br>${safeText(frameworkSummary.vision)||"Not added"}</p><p><strong>Purpose:</strong><br>${safeText(frameworkSummary.purpose)||"Not added"}</p><p><strong>Values:</strong><br>${safeText(frameworkSummary.values)||"Not added"}</p><p><strong>Theories:</strong><br>${safeText(frameworkSummary.theories)||"Not added"}</p><p><strong>Practice tools:</strong><br>${safeText(frameworkSummary.tools)||"Not added"}</p><p><strong>Reflection and accountability:</strong><br>${safeText(frameworkSummary.reflection)||"Not added"}</p></div>${frameworkHistory.length?`<h2>Practice Framework History</h2>${frameworkHistory.slice().reverse().map(version=>{const d=new Date(version.savedAt);const dateLabel=Number.isNaN(d.getTime())?"Saved version":d.toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});return `<div class="entry"><div class="meta">${safeText(dateLabel)}</div><p><strong>Vision:</strong><br>${safeText(version.summary?.vision)||"Not added"}</p><p><strong>Purpose:</strong><br>${safeText(version.summary?.purpose)||"Not added"}</p><p><strong>Values:</strong><br>${safeText(version.summary?.values)||"Not added"}</p><p><strong>Theories:</strong><br>${safeText(version.summary?.theories)||"Not added"}</p><p><strong>Practice tools:</strong><br>${safeText(version.summary?.tools)||"Not added"}</p><p><strong>Reflection and accountability:</strong><br>${safeText(version.summary?.reflection)||"Not added"}</p></div>`;}).join("")}`:""}</body></html>`;
     shareOrDownload(new Blob([html],{type:"text/html"}),"Practice_Compass_Placement_Notes.html","Practice Compass placement notes");
   }catch(error){console.error(error);alert("The export could not be created. Please try the JSON backup instead.");}
 }
