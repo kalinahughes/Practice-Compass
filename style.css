@@ -4963,3 +4963,181 @@ main{padding-inline:18px}
 .framework-summary-edit-view[hidden],.framework-summary-read-view[hidden]{display:none!important}
 .framework-summary-edit-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
 @media(max-width:420px){.framework-summary-edit-actions .btn{flex:1 1 100%}}
+
+/* Framework sprint 2: vibrant earthy identity + clearer hierarchy. Scoped to My Practice Framework only. */
+#frameworkSummarySection,
+#frameworkDevelopmentSection,
+#frameworkGapsSection{
+  --fw-blue:#5f8192;
+  --fw-blue-soft:#e7eff2;
+  --fw-teal:#4f8178;
+  --fw-teal-soft:#e5f0ec;
+  --fw-rose:#b97c84;
+  --fw-rose-soft:#f3e5e7;
+  --fw-ochre:#c59a43;
+  --fw-ochre-soft:#f6edcf;
+  --fw-terracotta:#b96f4e;
+  --fw-terracotta-soft:#f4e3db;
+  --fw-moss:#718259;
+  --fw-moss-soft:#e9eddc;
+  --fw-ink:#303a39;
+}
+.framework-three-intro{
+  max-width:620px;
+  color:#66716e;
+}
+#frameworkSummarySection,
+#frameworkDevelopmentSection,
+#frameworkGapsSection{
+  border:1px solid rgba(66,84,82,.11);
+  border-radius:20px;
+  box-shadow:0 8px 24px rgba(55,70,66,.055);
+  background:#fff;
+}
+#frameworkSummarySection{border-top:5px solid var(--fw-blue)}
+#frameworkDevelopmentSection{border-top:5px solid var(--fw-teal)}
+#frameworkGapsSection{border-top:5px solid var(--fw-terracotta)}
+#frameworkSummarySection>summary,
+#frameworkDevelopmentSection>summary,
+#frameworkGapsSection>summary{
+  padding:18px 17px;
+  border-radius:16px;
+}
+#frameworkSummarySection>summary{background:linear-gradient(90deg,var(--fw-blue-soft),#fff 72%)}
+#frameworkDevelopmentSection>summary{background:linear-gradient(90deg,var(--fw-teal-soft),#fff 72%)}
+#frameworkGapsSection>summary{background:linear-gradient(90deg,var(--fw-terracotta-soft),#fff 72%)}
+#frameworkSummarySection>summary strong{color:#496b7b}
+#frameworkDevelopmentSection>summary strong{color:#3f7068}
+#frameworkGapsSection>summary strong{color:#9a5c42}
+#frameworkSummarySection .framework-calm-details-body,
+#frameworkDevelopmentSection .framework-calm-details-body,
+#frameworkGapsSection .framework-calm-details-body{padding:5px 16px 18px}
+
+/* Six parts read as a finished framework, each with a distinct but related earthy accent. */
+.framework-summary-read-view{gap:10px}
+.framework-summary-read-field{
+  position:relative;
+  padding:14px 15px 14px 18px;
+  border:0;
+  border-radius:15px;
+  overflow:hidden;
+}
+.framework-summary-read-field::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:5px;
+  background:var(--fw-blue);
+}
+.framework-summary-read-field:nth-child(1){background:var(--fw-blue-soft)}
+.framework-summary-read-field:nth-child(1)::before{background:var(--fw-blue)}
+.framework-summary-read-field:nth-child(2){background:var(--fw-ochre-soft)}
+.framework-summary-read-field:nth-child(2)::before{background:var(--fw-ochre)}
+.framework-summary-read-field:nth-child(3){background:var(--fw-rose-soft)}
+.framework-summary-read-field:nth-child(3)::before{background:var(--fw-rose)}
+.framework-summary-read-field:nth-child(4){background:var(--fw-teal-soft)}
+.framework-summary-read-field:nth-child(4)::before{background:var(--fw-teal)}
+.framework-summary-read-field:nth-child(5){background:var(--fw-moss-soft)}
+.framework-summary-read-field:nth-child(5)::before{background:var(--fw-moss)}
+.framework-summary-read-field:nth-child(6){background:var(--fw-terracotta-soft)}
+.framework-summary-read-field:nth-child(6)::before{background:var(--fw-terracotta)}
+.framework-summary-read-field strong{font-size:15px;color:var(--fw-ink)}
+.framework-summary-read-field small{color:#6d7471}
+.framework-summary-read-field p{color:#35403e;margin-top:7px}
+.framework-summary-footer-actions{display:flex;justify-content:flex-start;margin-top:3px}
+#frameworkSummarySection .framework-summary-edit{
+  color:#496b7b;
+  border-color:rgba(95,129,146,.26);
+  background:#fff;
+}
+
+/* Editing stays calm while echoing the saved-view colours. */
+#frameworkSummarySection .framework-summary-editor-field{
+  padding:14px;
+  margin:9px 0;
+  border:1px solid rgba(66,84,82,.10);
+  border-radius:15px;
+  background:#fbfcfb;
+}
+#frameworkSummarySection .framework-summary-editor-field:nth-child(1){background:rgba(231,239,242,.55)}
+#frameworkSummarySection .framework-summary-editor-field:nth-child(2){background:rgba(246,237,207,.48)}
+#frameworkSummarySection .framework-summary-editor-field:nth-child(3){background:rgba(243,229,231,.52)}
+#frameworkSummarySection .framework-summary-editor-field:nth-child(4){background:rgba(229,240,236,.55)}
+#frameworkSummarySection .framework-summary-editor-field:nth-child(5){background:rgba(233,237,220,.58)}
+#frameworkSummarySection .framework-summary-editor-field:nth-child(6){background:rgba(244,227,219,.52)}
+#frameworkSummarySection .framework-summary-text-compact{
+  background:rgba(255,255,255,.86);
+  border-color:rgba(70,91,86,.16);
+}
+#frameworkSummarySection #saveFrameworkSummary{background:#5f8192;border-color:#5f8192}
+
+/* Develop My Framework: evidence is visible but clearly secondary to the actual framework. */
+#frameworkDevelopmentSection .framework-auto-note{
+  background:var(--fw-teal-soft);
+  border-color:rgba(79,129,120,.16);
+}
+#frameworkDevelopmentSection .framework-auto-note strong{color:#3f7068}
+.framework-auto-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.framework-auto-area{border:0;box-shadow:none;min-height:66px}
+.framework-auto-area:nth-child(1){background:var(--fw-blue-soft)}
+.framework-auto-area:nth-child(2){background:var(--fw-rose-soft)}
+.framework-auto-area:nth-child(3){background:var(--fw-teal-soft)}
+.framework-auto-area:nth-child(4){background:var(--fw-moss-soft)}
+.framework-auto-area:nth-child(5){background:var(--fw-terracotta-soft)}
+.framework-auto-area:nth-child(6){background:var(--fw-ochre-soft)}
+.framework-auto-area:nth-child(1) .framework-auto-icon{background:rgba(95,129,146,.15)}
+.framework-auto-area:nth-child(2) .framework-auto-icon{background:rgba(185,124,132,.15)}
+.framework-auto-area:nth-child(3) .framework-auto-icon{background:rgba(79,129,120,.15)}
+.framework-auto-area:nth-child(4) .framework-auto-icon{background:rgba(113,130,89,.15)}
+.framework-auto-area:nth-child(5) .framework-auto-icon{background:rgba(185,111,78,.15)}
+.framework-auto-area:nth-child(6) .framework-auto-icon{background:rgba(197,154,67,.16)}
+
+/* Areas to strengthen should feel constructive, not like an error state. */
+#frameworkGapsSection .framework-opportunity-list{display:flex;flex-wrap:wrap;gap:8px}
+#frameworkGapsSection .framework-opportunity-list span{
+  padding:8px 11px;
+  border-radius:999px;
+  background:var(--fw-ochre-soft);
+  color:#755d2f;
+  font-size:.8rem;
+  font-weight:700;
+}
+
+/* Framework version history */
+.framework-history{
+  margin-top:15px;
+  border-top:1px solid rgba(66,84,82,.12);
+  padding-top:12px;
+}
+.framework-history>summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  cursor:pointer;
+  list-style:none;
+  padding:8px 2px;
+}
+.framework-history>summary::-webkit-details-marker{display:none}
+.framework-history>summary>span:first-child{display:grid;gap:2px}
+.framework-history>summary strong{font-size:.86rem;color:#496b7b}
+.framework-history>summary small{font-size:.72rem;color:#74807c}
+.framework-history>summary>span:last-child{font-size:20px;color:#6b7d78;transition:transform .18s ease}
+.framework-history[open]>summary>span:last-child{transform:rotate(90deg)}
+.framework-history-list{display:grid;gap:10px;margin-top:9px}
+.framework-history-version{padding:13px 14px;border-radius:15px;background:#f8faf9;border:1px solid rgba(66,84,82,.10)}
+.framework-history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+.framework-history-heading strong{font-size:.82rem;color:#405c64}
+.framework-history-heading small{font-size:.68rem;color:#78827f}
+.framework-history-field{padding:8px 0;border-top:1px solid rgba(66,84,82,.08)}
+.framework-history-field:first-of-type{border-top:0}
+.framework-history-field b{display:block;font-size:.72rem;color:#65716e;margin-bottom:3px}
+.framework-history-field p{margin:0;font-size:.78rem;line-height:1.48;color:#3d4845;white-space:pre-wrap}
+
+@media(max-width:520px){
+  .framework-auto-grid{grid-template-columns:1fr}
+  #frameworkSummarySection .framework-calm-details-body,
+  #frameworkDevelopmentSection .framework-calm-details-body,
+  #frameworkGapsSection .framework-calm-details-body{padding-inline:12px}
+  .framework-history-heading{display:grid;gap:2px}
+}
