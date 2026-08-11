@@ -4965,146 +4965,184 @@ main{padding-inline:18px}
 @media(max-width:420px){.framework-summary-edit-actions .btn{flex:1 1 100%}}
 
 
-/* Practice Framework visual identity — cleaned and scoped.
-   Explicit tone classes prevent older framework CSS from overriding the current six-part view. */
-#frameworkSummarySection,
-#frameworkDevelopmentSection,
-#frameworkGapsSection{
-  --fw-blue:#668ea2;
-  --fw-blue-soft:#e6f0f4;
-  --fw-teal:#4f8178;
-  --fw-teal-soft:#e2efeb;
-  --fw-rose:#bd7e88;
-  --fw-rose-soft:#f3e3e6;
-  --fw-ochre:#c69a43;
-  --fw-ochre-soft:#f6edcf;
-  --fw-moss:#718259;
-  --fw-moss-soft:#e9eddc;
-  --fw-terracotta:#b96f4e;
-  --fw-terracotta-soft:#f4e3da;
-  --fw-ink:#33413f;
+/* Practice Framework warm visual identity — scoped to this page only. */
+.framework-page-shell{
+  --fw-clay:#a95639;
+  --fw-clay-deep:#87432f;
+  --fw-terracotta:#c46e43;
+  --fw-ochre:#c99a32;
+  --fw-mustard:#d4ad4f;
+  --fw-olive:#667044;
+  --fw-moss:#7d8658;
+  --fw-sage:#a8ad87;
+  --fw-taupe:#8a7463;
+  --fw-cream:#f8f0e2;
+  --fw-ivory:#fffaf2;
+  --fw-sand:#ead8bd;
+  --fw-ink:#3f392f;
+  margin:-6px -6px 6px;
+  padding:12px 10px 18px;
+  border-radius:22px;
+  background:linear-gradient(155deg,#f8efe0 0%,#f4e5d3 42%,#eee3d0 100%);
 }
-.framework-three-intro{
+.framework-page-shell .framework-page-title{
+  margin:0 0 12px;
+  padding:15px 16px;
+  border-radius:18px;
+  background:linear-gradient(105deg,var(--fw-clay-deep),var(--fw-clay) 58%,#b86d45);
+}
+.framework-page-shell .framework-page-title h2{color:#fff!important}
+.framework-page-shell .framework-page-title .back{
+  color:#fff!important;
+  border-color:rgba(255,255,255,.34)!important;
+  background:rgba(255,255,255,.10)!important;
+}
+.framework-page-shell .framework-three-intro{
   max-width:680px;
   padding:13px 15px;
-  margin:4px 0 16px;
-  border:1px solid rgba(90,113,108,.10);
+  margin:0 2px 15px;
+  border:1px solid rgba(135,67,47,.14);
   border-radius:16px;
-  background:linear-gradient(110deg,#edf4f6 0%,#f7eee6 55%,#f6e8eb 100%);
-  color:#465653;
+  background:#f7e3bd;
+  color:#554537;
 }
-#frameworkSummarySection,
-#frameworkDevelopmentSection,
-#frameworkGapsSection{
+.framework-page-shell #frameworkSummarySection,
+.framework-page-shell #frameworkDevelopmentSection,
+.framework-page-shell #frameworkGapsSection{
   overflow:hidden;
   margin:12px 0;
-  border:1px solid rgba(76,99,95,.12);
+  border:1px solid rgba(91,73,56,.13);
   border-radius:18px;
-  background:#fff;
+  background:var(--fw-ivory);
+  box-shadow:0 2px 0 rgba(93,69,49,.035);
 }
-#frameworkSummarySection>summary,
-#frameworkDevelopmentSection>summary,
-#frameworkGapsSection>summary{padding:15px 16px;border:0}
-#frameworkSummarySection>summary{background:linear-gradient(90deg,#dcebf1 0%,#f5e9dd 100%)}
-#frameworkDevelopmentSection>summary{background:linear-gradient(90deg,#dcece7 0%,#f0e5e7 100%)}
-#frameworkGapsSection>summary{background:linear-gradient(90deg,#f4e5d8 0%,#f4edcf 100%)}
-#frameworkSummarySection>summary strong{color:#496c7c}
-#frameworkDevelopmentSection>summary strong{color:#3f7068}
-#frameworkGapsSection>summary strong{color:#9a5d43}
-#frameworkSummarySection .framework-calm-details-body,
-#frameworkDevelopmentSection .framework-calm-details-body,
-#frameworkGapsSection .framework-calm-details-body{padding:8px 14px 16px}
+.framework-page-shell #frameworkSummarySection>summary,
+.framework-page-shell #frameworkDevelopmentSection>summary,
+.framework-page-shell #frameworkGapsSection>summary{
+  padding:15px 16px;
+  border:0;
+}
+.framework-page-shell #frameworkSummarySection>summary{background:#b95f3d}
+.framework-page-shell #frameworkDevelopmentSection>summary{background:#667044}
+.framework-page-shell #frameworkGapsSection>summary{background:#c99a32}
+.framework-page-shell #frameworkSummarySection>summary strong,
+.framework-page-shell #frameworkDevelopmentSection>summary strong,
+.framework-page-shell #frameworkGapsSection>summary strong{color:#fff!important}
+.framework-page-shell #frameworkSummarySection>summary small,
+.framework-page-shell #frameworkDevelopmentSection>summary small,
+.framework-page-shell #frameworkGapsSection>summary small{color:rgba(255,255,255,.84)!important}
+.framework-page-shell #frameworkSummarySection>summary>span:last-child,
+.framework-page-shell #frameworkDevelopmentSection>summary>span:last-child,
+.framework-page-shell #frameworkGapsSection>summary>span:last-child{color:#fff!important}
+.framework-page-shell #frameworkSummarySection .framework-calm-details-body,
+.framework-page-shell #frameworkDevelopmentSection .framework-calm-details-body,
+.framework-page-shell #frameworkGapsSection .framework-calm-details-body{padding:12px 14px 16px}
 
-#frameworkSummarySection .framework-summary-read-view{display:grid;gap:11px}
-#frameworkSummarySection .framework-summary-read-field{
+.framework-page-shell #frameworkSummarySection .framework-summary-read-view{display:grid;gap:10px}
+.framework-page-shell #frameworkSummarySection .framework-summary-read-field{
   position:relative;
   overflow:hidden;
   padding:14px 15px 14px 18px;
-  border:0;
+  border:1px solid rgba(102,78,57,.08);
   border-radius:15px;
+  background:#fff9ef;
 }
-#frameworkSummarySection .framework-summary-read-field::before{
+.framework-page-shell #frameworkSummarySection .framework-summary-read-field::before{
   content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
 }
-#frameworkSummarySection .framework-tone-vision{background:var(--fw-blue-soft)}
-#frameworkSummarySection .framework-tone-vision::before{background:var(--fw-blue)}
-#frameworkSummarySection .framework-tone-purpose{background:var(--fw-ochre-soft)}
-#frameworkSummarySection .framework-tone-purpose::before{background:var(--fw-ochre)}
-#frameworkSummarySection .framework-tone-values{background:var(--fw-rose-soft)}
-#frameworkSummarySection .framework-tone-values::before{background:var(--fw-rose)}
-#frameworkSummarySection .framework-tone-theories{background:var(--fw-teal-soft)}
-#frameworkSummarySection .framework-tone-theories::before{background:var(--fw-teal)}
-#frameworkSummarySection .framework-tone-tools{background:var(--fw-moss-soft)}
-#frameworkSummarySection .framework-tone-tools::before{background:var(--fw-moss)}
-#frameworkSummarySection .framework-tone-reflection{background:var(--fw-terracotta-soft)}
-#frameworkSummarySection .framework-tone-reflection::before{background:var(--fw-terracotta)}
-#frameworkSummarySection .framework-summary-read-field strong{color:var(--fw-ink);font-weight:700}
-#frameworkSummarySection .framework-summary-read-field small{color:#66736f}
-#frameworkSummarySection .framework-summary-read-field p{margin-top:7px;color:#374541}
-#frameworkSummarySection .framework-summary-footer-actions{display:flex;justify-content:flex-start;margin-top:2px}
-#frameworkSummarySection .framework-summary-edit{border-color:var(--fw-blue);color:#496c7c;background:#f7fbfc}
+.framework-page-shell #frameworkSummarySection .framework-tone-vision::before{background:#9b643d}
+.framework-page-shell #frameworkSummarySection .framework-tone-purpose::before{background:#c78b2f}
+.framework-page-shell #frameworkSummarySection .framework-tone-values::before{background:#a95639}
+.framework-page-shell #frameworkSummarySection .framework-tone-theories::before{background:#667044}
+.framework-page-shell #frameworkSummarySection .framework-tone-tools::before{background:#7d8658}
+.framework-page-shell #frameworkSummarySection .framework-tone-reflection::before{background:#b96845}
+.framework-page-shell #frameworkSummarySection .framework-summary-read-field strong{color:var(--fw-ink);font-weight:700}
+.framework-page-shell #frameworkSummarySection .framework-summary-read-field small{color:#796b5c}
+.framework-page-shell #frameworkSummarySection .framework-summary-read-field p{margin-top:7px;color:#463e34}
+.framework-page-shell #frameworkSummarySection .framework-summary-footer-actions{display:flex;justify-content:flex-start;margin-top:3px}
+.framework-page-shell #frameworkSummarySection .framework-summary-edit{
+  border-color:var(--fw-clay);
+  color:var(--fw-clay-deep);
+  background:#fff7eb;
+}
 
-#frameworkSummarySection .framework-summary-editor-field{
+.framework-page-shell #frameworkSummarySection .framework-summary-editor-field{
   padding:12px;
   margin-bottom:10px;
-  border:1px solid rgba(67,84,80,.10);
+  border:1px solid rgba(90,72,54,.10);
   border-radius:15px;
+  background:#fff9ef;
 }
-#frameworkSummarySection .framework-summary-editor-field.framework-tone-vision{background:#eef5f7}
-#frameworkSummarySection .framework-summary-editor-field.framework-tone-purpose{background:#faf4df}
-#frameworkSummarySection .framework-summary-editor-field.framework-tone-values{background:#f8ecee}
-#frameworkSummarySection .framework-summary-editor-field.framework-tone-theories{background:#edf6f3}
-#frameworkSummarySection .framework-summary-editor-field.framework-tone-tools{background:#f1f3e8}
-#frameworkSummarySection .framework-summary-editor-field.framework-tone-reflection{background:#f8ece6}
-#frameworkSummarySection #saveFrameworkSummary{background:var(--fw-blue);border-color:var(--fw-blue);color:#fff}
+.framework-page-shell #frameworkSummarySection .framework-summary-editor-field.framework-tone-purpose{background:#fbf1d5}
+.framework-page-shell #frameworkSummarySection .framework-summary-editor-field.framework-tone-theories{background:#eef0e2}
+.framework-page-shell #frameworkSummarySection .framework-summary-editor-field.framework-tone-tools{background:#f1f1df}
+.framework-page-shell #frameworkSummarySection .framework-summary-editor-field.framework-tone-reflection{background:#f8e7dc}
+.framework-page-shell #frameworkSummarySection #saveFrameworkSummary{
+  background:var(--fw-clay);
+  border-color:var(--fw-clay);
+  color:#fff;
+}
 
-#frameworkDevelopmentSection .framework-auto-note{
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-note{
   padding:12px 14px;
-  border-left:4px solid var(--fw-teal);
+  border-left:4px solid var(--fw-olive);
   border-radius:14px;
-  background:#edf5f2;
+  background:#edf0df;
 }
-#frameworkDevelopmentSection .framework-auto-note strong{color:#3f7068}
-#frameworkDevelopmentSection .framework-auto-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-#frameworkDevelopmentSection .framework-auto-area{min-height:68px;border:0;box-shadow:none}
-#frameworkDevelopmentSection .framework-auto-area:nth-child(1){background:var(--fw-blue-soft)}
-#frameworkDevelopmentSection .framework-auto-area:nth-child(2){background:var(--fw-rose-soft)}
-#frameworkDevelopmentSection .framework-auto-area:nth-child(3){background:var(--fw-teal-soft)}
-#frameworkDevelopmentSection .framework-auto-area:nth-child(4){background:var(--fw-moss-soft)}
-#frameworkDevelopmentSection .framework-auto-area:nth-child(5){background:var(--fw-terracotta-soft)}
-#frameworkDevelopmentSection .framework-auto-area:nth-child(6){background:var(--fw-ochre-soft)}
-#frameworkGapsSection .framework-opportunity-list span{
-  border:1px solid rgba(185,111,78,.18);
-  background:#fbf2e9;
-  color:#85523f;
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-note strong{color:#566037}
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-area{
+  min-height:68px;
+  border:1px solid rgba(94,82,60,.08);
+  background:#faf5e9;
+  box-shadow:none;
+}
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-area:nth-child(2),
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-area:nth-child(5){background:#f6e5d8}
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-area:nth-child(3),
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-area:nth-child(4){background:#edf0df}
+.framework-page-shell #frameworkDevelopmentSection .framework-auto-icon{background:rgba(255,255,255,.64)}
+.framework-page-shell #frameworkGapsSection .framework-opportunity-list span{
+  border:1px solid rgba(164,116,41,.18);
+  background:#f8ecc7;
+  color:#775c29;
 }
 
-#frameworkSummarySection .framework-history{margin-top:12px;padding-top:10px;border-top:1px solid rgba(73,108,124,.13)}
-#frameworkSummarySection .framework-history>summary{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:9px 10px;border-radius:12px;background:#eef5f7;cursor:pointer;list-style:none;
+.framework-page-shell #frameworkSummarySection .framework-history{
+  margin-top:12px;padding-top:10px;border-top:1px solid rgba(123,88,62,.13)
 }
-#frameworkSummarySection .framework-history>summary::-webkit-details-marker{display:none}
-#frameworkSummarySection .framework-history>summary>span:first-child{display:grid;gap:2px}
-#frameworkSummarySection .framework-history>summary strong{font-size:.86rem;color:#496c7c}
-#frameworkSummarySection .framework-history>summary small{font-size:.72rem;color:#74807c}
-#frameworkSummarySection .framework-history>summary>span:last-child{font-size:20px;color:#6b7d78;transition:transform .18s ease}
-#frameworkSummarySection .framework-history[open]>summary>span:last-child{transform:rotate(90deg)}
-#frameworkSummarySection .framework-history-list{display:grid;gap:9px;margin-top:9px}
-#frameworkSummarySection .framework-history-version{padding:12px 13px;border:1px solid rgba(66,84,82,.10);border-radius:14px;background:#fafbfa}
-#frameworkSummarySection .framework-history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
-#frameworkSummarySection .framework-history-heading strong{font-size:.82rem;color:#405c64}
-#frameworkSummarySection .framework-history-heading small{font-size:.68rem;color:#78827f}
-#frameworkSummarySection .framework-history-field{padding:7px 0;border-top:1px solid rgba(66,84,82,.08)}
-#frameworkSummarySection .framework-history-field:first-of-type{border-top:0}
-#frameworkSummarySection .framework-history-field b{display:block;margin-bottom:3px;font-size:.72rem;color:#65716e}
-#frameworkSummarySection .framework-history-field p{margin:0;font-size:.78rem;line-height:1.48;color:#3d4845;white-space:pre-wrap}
+.framework-page-shell #frameworkSummarySection .framework-history>summary{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 10px;border-radius:12px;background:#f0e3cf;cursor:pointer;list-style:none;
+}
+.framework-page-shell #frameworkSummarySection .framework-history>summary::-webkit-details-marker{display:none}
+.framework-page-shell #frameworkSummarySection .framework-history>summary>span:first-child{display:grid;gap:2px}
+.framework-page-shell #frameworkSummarySection .framework-history>summary strong{font-size:.86rem;color:#7e4c35}
+.framework-page-shell #frameworkSummarySection .framework-history>summary small{font-size:.72rem;color:#7d7062}
+.framework-page-shell #frameworkSummarySection .framework-history>summary>span:last-child{font-size:20px;color:#816d5b;transition:transform .18s ease}
+.framework-page-shell #frameworkSummarySection .framework-history[open]>summary>span:last-child{transform:rotate(90deg)}
+.framework-page-shell #frameworkSummarySection .framework-history-list{display:grid;gap:9px;margin-top:9px}
+.framework-page-shell #frameworkSummarySection .framework-history-version{
+  padding:12px 13px;border:1px solid rgba(91,73,56,.10);border-radius:14px;background:#fff9ef
+}
+.framework-page-shell #frameworkSummarySection .framework-history-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
+.framework-page-shell #frameworkSummarySection .framework-history-heading strong{font-size:.82rem;color:#734b38}
+.framework-page-shell #frameworkSummarySection .framework-history-heading small{font-size:.68rem;color:#817568}
+.framework-page-shell #frameworkSummarySection .framework-history-field{padding:7px 0;border-top:1px solid rgba(91,73,56,.08)}
+.framework-page-shell #frameworkSummarySection .framework-history-field:first-of-type{border-top:0}
+.framework-page-shell #frameworkSummarySection .framework-history-field b{display:block;margin-bottom:3px;font-size:.72rem;color:#766858}
+.framework-page-shell #frameworkSummarySection .framework-history-field p{margin:0;font-size:.78rem;line-height:1.48;color:#463f36;white-space:pre-wrap}
+
+.framework-page-shell .framework-previous-notes{border-top-color:rgba(91,73,56,.11)}
+.framework-page-shell .framework-old-note{background:#f6efe2}
+
 @media(max-width:520px){
-  #frameworkDevelopmentSection .framework-auto-grid{grid-template-columns:1fr}
-  #frameworkSummarySection .framework-calm-details-body,
-  #frameworkDevelopmentSection .framework-calm-details-body,
-  #frameworkGapsSection .framework-calm-details-body{padding-inline:11px}
-  #frameworkSummarySection .framework-history-heading{display:grid;gap:2px}
+  .framework-page-shell{margin:-5px -4px 4px;padding:9px 8px 15px;border-radius:18px}
+  .framework-page-shell #frameworkDevelopmentSection .framework-auto-grid{grid-template-columns:1fr}
+  .framework-page-shell #frameworkSummarySection .framework-calm-details-body,
+  .framework-page-shell #frameworkDevelopmentSection .framework-calm-details-body,
+  .framework-page-shell #frameworkGapsSection .framework-calm-details-body{padding-inline:11px}
+  .framework-page-shell #frameworkSummarySection .framework-history-heading{display:grid;gap:2px}
 }
 
 /* My Placement header text fix: preserve white text on dark slate hero */

@@ -2613,7 +2613,8 @@ function frameworkPage(){
   }).filter(Boolean).join("");
 
   document.getElementById("main").innerHTML=`
-    <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
+    <div class="framework-page-shell">
+    <div class="screen-title framework-page-title"><button class="back" id="backMore">‹</button><h2>🧭 My Practice Framework</h2></div>
     <p class="framework-three-intro">A short working summary of the social worker you are becoming. This should grow from placement, not become another task.</p>
 
     <div class="framework-three-options">
@@ -2655,6 +2656,7 @@ function frameworkPage(){
         <summary><span><strong>Areas to Strengthen</strong><small>Only highlights areas that have less evidence so far</small></span><span>›</span></summary>
         <div class="framework-calm-details-body">${opportunities.length?`<div class="framework-opportunity-list">${opportunities.map(item=>`<span>${safeText(item.label)}</span>`).join("")}</div>`:`<p class="muted">Nothing specific is being flagged right now. Keep capturing real placement experiences as they happen.</p>`}</div>
       </details>
+    </div>
     </div>`;
 
   document.getElementById("backMore").onclick=()=>{route="more";render()};
