@@ -2553,10 +2553,18 @@ function frameworkPage(){
     {id:"reflection",title:"Reflection and accountability",hint:"How I keep learning and checking my practice"}
   ];
 
+  const hasSavedSummary=summaryFields.some(field=>String(summary[field.id]||"").trim());
   const summaryEditor=summaryFields.map(field=>`<section class="framework-summary-editor-field framework-summary-editor-compact">
       <div class="framework-summary-editor-heading"><div><strong>${field.title}</strong><small>${field.hint}</small></div>${summarySuggestions[field.id]?`<button type="button" class="framework-use-notes" data-summary-notes="${field.id}">Use saved notes</button>`:""}</div>
       <textarea class="textarea framework-summary-text framework-summary-text-compact" id="frameworkSummary-${field.id}" placeholder="Keep this short. You can change it as placement develops.">${safeText(summary[field.id]||"")}</textarea>
     </section>`).join("");
+  const summaryReadView=summaryFields.map(field=>{
+    const value=String(summary[field.id]||"").trim();
+    return `<section class="framework-summary-read-field">
+      <div><strong>${field.title}</strong><small>${field.hint}</small></div>
+      <p>${value?safeText(value):`<span class="muted">Nothing added yet.</span>`}</p>
+    </section>`;
+  }).join("");
 
   const evidenceAreas=[
     {title:"Purpose and professional identity",icon:"🧭",tags:["Professional development","Use of self"]},
@@ -2588,8 +2596,22 @@ function frameworkPage(){
         <summary><span><strong>My Practice Framework</strong><small>Keep the six parts short and update them only when your thinking changes</small></span><span>›</span></summary>
         <div class="framework-calm-details-body">
           <section class="framework-six-part-summary framework-summary-refined framework-summary-simplified">
-            ${summaryEditor}
-            <button type="button" class="btn framework-summary-save" id="saveFrameworkSummary">Save my framework</button>
+            ${hasSavedSummary?`
+              <div class="framework-summary-read-view" id="frameworkSummaryReadView">
+                ${summaryReadView}
+                <button type="button" class="btn secondary framework-summary-edit" id="editFrameworkSummary">Edit framework</button>
+              </div>
+              <div class="framework-summary-edit-view" id="frameworkSummaryEditView" hidden>
+                ${summaryEditor}
+                <div class="framework-summary-edit-actions">
+                  <button type="button" class="btn" id="saveFrameworkSummary">Save my framework</button>
+                  <button type="button" class="btn secondary" id="cancelFrameworkSummary">Cancel</button>
+                </div>
+              </div>`:`
+              <div class="framework-summary-edit-view" id="frameworkSummaryEditView">
+                ${summaryEditor}
+                <button type="button" class="btn framework-summary-save" id="saveFrameworkSummary">Save my framework</button>
+              </div>`}
           </section>
         </div>
       </details>
@@ -2610,6 +2632,18 @@ function frameworkPage(){
     </div>`;
 
   document.getElementById("backMore").onclick=()=>{route="more";render()};
+  document.getElementById("editFrameworkSummary")?.addEventListener("click",()=>{
+    const readView=document.getElementById("frameworkSummaryReadView");
+    const editView=document.getElementById("frameworkSummaryEditView");
+    if(readView)readView.hidden=true;
+    if(editView)editView.hidden=false;
+  });
+  document.getElementById("cancelFrameworkSummary")?.addEventListener("click",()=>{
+    const readView=document.getElementById("frameworkSummaryReadView");
+    const editView=document.getElementById("frameworkSummaryEditView");
+    if(editView)editView.hidden=true;
+    if(readView)readView.hidden=false;
+  });
   document.querySelectorAll(".framework-use-notes").forEach(button=>button.addEventListener("click",()=>{
     const id=button.dataset.summaryNotes;
     const textarea=document.getElementById(`frameworkSummary-${id}`);

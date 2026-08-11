@@ -4950,3 +4950,16 @@ main{padding-inline:18px}
 .framework-old-note p{margin:6px 0 0;color:#5f6962;font-size:.78rem;line-height:1.5;white-space:pre-wrap}
 .framework-old-note small{display:block;margin-top:5px;color:var(--muted);font-size:.7rem}
 @media(max-width:420px){.framework-summary-text-compact{min-height:86px}.framework-auto-area{padding:10px}}
+
+/* Framework sprint 1: saved summary read view only. Colour palette intentionally unchanged. */
+.framework-summary-read-view{display:grid;gap:0}
+.framework-summary-read-field{padding:15px 0;border-top:1px solid #e5e9e4}
+.framework-summary-read-field:first-child{border-top:0}
+.framework-summary-read-field>div{display:grid;gap:3px}
+.framework-summary-read-field strong{color:var(--charcoal);font-size:15px;font-weight:650}
+.framework-summary-read-field small{color:#607068;font-size:12px;line-height:1.4}
+.framework-summary-read-field p{margin:8px 0 0;color:var(--charcoal);font-size:14px;line-height:1.58;white-space:pre-wrap}
+.framework-summary-edit{margin-top:10px;justify-self:start}
+.framework-summary-edit-view[hidden],.framework-summary-read-view[hidden]{display:none!important}
+.framework-summary-edit-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
+@media(max-width:420px){.framework-summary-edit-actions .btn{flex:1 1 100%}}
