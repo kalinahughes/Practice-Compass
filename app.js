@@ -1893,21 +1893,44 @@ const reflectionFocusOptions=[
   {id:"development",label:"My development as a social worker",lo:"LO6 · Awareness of self and supervision"},
   {id:"unsure",label:"Not sure",lo:"Sort later"}
 ];
+const reflectionPracticeQuick=["Recovery Oriented Practice","Strengths Based Practice","Trauma Informed Practice","Person Centred Practice","Systems and Ecological Theory","Anti Oppressive Practice","Rights Based Practice","Cultural Humility and Safety"];
+const reflectionPracticeLibrary=[...new Set([
+  ...reflectionCompassLenses.find(item=>item.id==="theory").all,
+  ...reflectionCompassLenses.find(item=>item.id==="method").all,
+  "Relationship Based Practice","Intersectionality","Cultural Humility","Cultural Safety","Culturally Responsive Practice","Decolonising Practice","Aboriginal and Torres Strait Islander Self Determination","Trauma and Violence Informed Care","Supported Decision Making","Biopsychosocial Framework","Psychosocial Framework","Recovery Model","Family Inclusive Practice","Social Justice Framework","Structural Social Work","Ecological Perspective","Solution Focused Brief Therapy","Cognitive Behavioural Approaches","Attachment Informed Practice","Harm Minimisation","Strengths Perspective","Empowerment Practice"
+])].sort((a,b)=>a.localeCompare(b));
+const reflectionTheoryCueMap={
+  "Choice and autonomy":["Recovery Oriented Practice","Person Centred Practice","Rights Based Practice","Supported Decision Making","Empowerment Theory"],
+  "Strengths and capabilities":["Strengths Based Practice","Recovery Oriented Practice","Empowerment Theory","Solution Focused Practice"],
+  "Safety and trust":["Trauma Informed Practice","Trauma and Violence Informed Care","Relationship Based Practice","Person Centred Practice"],
+  "Power or inequality":["Anti Oppressive Practice","Critical Social Work","Feminist Social Work","Intersectionality","Structural Social Work"],
+  "Family and systems":["Systems and Ecological Theory","Ecological Perspective","Family Inclusive Practice","Social Determinants of Health"],
+  "Culture and identity":["Cultural Humility","Cultural Safety","Culturally Responsive Practice","Intersectionality","Decolonising Practice"],
+  "Relationship and rapport":["Relationship Based Practice","Person Centred Practice","Strengths Based Practice","Ethics of Care"],
+  "Goals and motivation":["Motivational Interviewing","Solution Focused Practice","Goal Oriented Practice","Recovery Oriented Practice"],
+  "Thoughts and behaviours":["Cognitive Behavioural Approaches","Social Learning Theory","Motivational Interviewing"],
+  "Trauma history":["Trauma Informed Practice","Trauma and Violence Informed Care","Attachment Informed Practice"],
+  "Rights and access":["Rights Based Practice","Anti Oppressive Practice","Social Justice Framework","Advocacy","Social Determinants of Health"]
+};
 function selectedReflectionButtons(selector){return [...document.querySelectorAll(`${selector}.selected`)].map(button=>button.dataset.value);}
-function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],projectRelated:false,reflectionNote:"",updatedAt:""});}
+function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],practiceConnections:[],projectRelated:false,reflectionNote:"",practiceNote:"",criticalPrompt:"",criticalAnswer:"",updatedAt:""});}
 function captureReflectionDraft(){
   const draft={
     answer:document.getElementById("answer")?.value||"",
     involvement:selectedReflectionButtons(".reflection-involvement-chip"),
     outcomes:selectedReflectionButtons(".reflection-outcome-chip"),
     focus:selectedReflectionButtons(".reflection-focus-chip"),
+    practiceConnections:selectedReflectionButtons(".reflection-practice-chip"),
     projectRelated:document.getElementById("reflectionProjectYes")?.classList.contains("selected")||false,
     reflectionNote:document.getElementById("reflectionNote")?.value||"",
+    practiceNote:document.getElementById("reflectionPracticeNote")?.value||"",
+    criticalPrompt:document.getElementById("criticalReflectionPrompt")?.textContent||"",
+    criticalAnswer:document.getElementById("criticalReflectionAnswer")?.value||"",
     updatedAt:new Date().toISOString()
   };
   state.set(REFLECTION_DRAFT_KEY,draft);return draft;
 }
-function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],projectRelated:false,reflectionNote:"",updatedAt:""});}
+function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],practiceConnections:[],projectRelated:false,reflectionNote:"",practiceNote:"",criticalPrompt:"",criticalAnswer:"",updatedAt:""});}
 function reflectionPromptForSelection(){
   const selected=selectedReflectionButtons(".reflection-outcome-chip");
   return reflectionOutcomeOptions.find(option=>selected.includes(option.id)&&option.prompt)?.prompt||"";
@@ -1919,16 +1942,46 @@ function updateReflectionPrompt(){
   label.textContent=prompt;
   wrap.classList.toggle("hidden",!prompt);
 }
+function updatePracticeConnectionNote(){
+  const wrap=document.getElementById("reflectionPracticeNoteWrap");
+  if(!wrap)return;
+  wrap.classList.toggle("hidden",selectedReflectionButtons(".reflection-practice-chip").length===0);
+}
+function filterPracticeLibrary(){
+  const q=(document.getElementById("practiceLibrarySearch")?.value||"").trim().toLowerCase();
+  document.querySelectorAll(".reflection-practice-library-chip").forEach(button=>button.classList.toggle("hidden",q&&!button.dataset.value.toLowerCase().includes(q)));
+}
+function renderTheorySuggestions(){
+  const selected=selectedReflectionButtons(".reflection-theory-cue-chip"),box=document.getElementById("theorySuggestions");
+  if(!box)return;
+  const suggestions=[...new Set(selected.flatMap(cue=>reflectionTheoryCueMap[cue]||[]))].slice(0,8);
+  box.innerHTML=suggestions.length?`<small>Possible connections to consider</small><div class="reflection-button-grid">${suggestions.map(item=>`<button type="button" class="reflection-choice-chip reflection-theory-suggestion" data-value="${safeText(item)}">${safeText(item)}</button>`).join("")}</div>`:`<small>Tap what stood out and Practice Compass will suggest possible connections.</small>`;
+  box.querySelectorAll(".reflection-theory-suggestion").forEach(button=>button.addEventListener("click",()=>{
+    const value=button.dataset.value;
+    document.querySelectorAll(`.reflection-practice-chip[data-value="${CSS.escape(value)}"]`).forEach(item=>item.classList.add("selected"));
+    updatePracticeConnectionNote();captureReflectionDraft();
+  }));
+}
+function setCriticalReflectionPrompt(prompt=""){
+  const wrap=document.getElementById("criticalReflectionWrap"),label=document.getElementById("criticalReflectionPrompt");
+  if(!wrap||!label)return;
+  const chosen=prompt||deeperReflectionQuestions[Math.floor(Math.random()*deeperReflectionQuestions.length)];
+  label.textContent=chosen;wrap.classList.remove("hidden");captureReflectionDraft();
+}
 function restoreReflectionDraft(){
   const draft=reflectionDraft();
-  const answer=document.getElementById("answer"),note=document.getElementById("reflectionNote");
+  const answer=document.getElementById("answer"),note=document.getElementById("reflectionNote"),practiceNote=document.getElementById("reflectionPracticeNote"),criticalAnswer=document.getElementById("criticalReflectionAnswer");
   if(answer)answer.value=draft.answer||"";
   if(note)note.value=draft.reflectionNote||"";
+  if(practiceNote)practiceNote.value=draft.practiceNote||"";
+  if(criticalAnswer)criticalAnswer.value=draft.criticalAnswer||"";
   (draft.involvement||[]).forEach(value=>document.querySelector(`.reflection-involvement-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
   (draft.outcomes||[]).forEach(value=>document.querySelector(`.reflection-outcome-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
   (draft.focus||[]).forEach(value=>document.querySelector(`.reflection-focus-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
+  (draft.practiceConnections||[]).forEach(value=>document.querySelectorAll(`.reflection-practice-chip[data-value="${CSS.escape(value)}"]`).forEach(item=>item.classList.add("selected")));
   if(draft.projectRelated)document.getElementById("reflectionProjectYes")?.classList.add("selected");else document.getElementById("reflectionProjectNo")?.classList.add("selected");
-  updateReflectionPrompt();
+  updateReflectionPrompt();updatePracticeConnectionNote();
+  if(draft.criticalPrompt)setCriticalReflectionPrompt(draft.criticalPrompt);
 }
 function reflectionInsights(entries){
   if(!entries.length)return "Your practice insights will grow naturally as you save reflections.";
@@ -1941,7 +1994,7 @@ function reflectionInsights(entries){
 function reflectionLibrary(entries){
   if(!entries.length)return `<section class="reflection-empty-state">🌱 Your reflection library will grow as you save learning moments.</section>`;
   const libraryOpen=state.get("reflectionLibraryOpen",false);
-  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const tags=[...(e.involvement||[]),...(e.outcomeTags||[]),...(e.learningOutcomeLabels||[]),...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])];const terms=[e.answer,e.moment,e.reflectionNote,...tags].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p>${e.reflectionNote?`<p class="reflection-library-note"><strong>Worth remembering:</strong> ${safeText(e.reflectionNote)}</p>`:""}<div class="reflection-tag-list">${tags.slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
+  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const tags=[...(e.involvement||[]),...(e.outcomeTags||[]),...(e.learningOutcomeLabels||[]),...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])];const terms=[e.answer,e.moment,e.reflectionNote,...tags].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p>${e.reflectionNote?`<p class="reflection-library-note"><strong>Worth remembering:</strong> ${safeText(e.reflectionNote)}</p>`:""}${e.practiceNote?`<p class="reflection-library-note"><strong>Practice connection:</strong> ${safeText(e.practiceNote)}</p>`:""}${e.criticalAnswer?`<p class="reflection-library-note"><strong>${safeText(e.criticalPrompt||"Critical reflection")}</strong><br>${safeText(e.criticalAnswer)}</p>`:""}<div class="reflection-tag-list">${tags.slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
 }
 function reflectionChipGroup(options,className,extra=""){
   return `<div class="reflection-button-grid ${extra}">${options.map(option=>{const value=typeof option==="string"?option:option.id;const label=typeof option==="string"?option:option.label;return `<button type="button" class="reflection-choice-chip ${className}" data-value="${safeText(value)}">${safeText(label)}</button>`}).join("")}</div>`;
@@ -1972,6 +2025,17 @@ function journalPage(){
     <section class="conversation-card reflection-choice-card reflection-secondary-card">
       <div class="reflection-section-heading"><span class="reflection-step-number">4</span><div><h2>What was it mostly about?</h2><p>Choose one or more. These link to your Learning Plan behind the scenes.</p></div></div>
       <div class="reflection-button-grid reflection-focus-grid">${reflectionFocusOptions.map(option=>`<button type="button" class="reflection-choice-chip reflection-focus-chip" data-value="${safeText(option.id)}"><span>${safeText(option.label)}</span><small>${safeText(option.lo)}</small></button>`).join("")}</div>
+    </section>
+
+    <section class="conversation-card reflection-choice-card reflection-practice-connection-card">
+      <div class="reflection-section-heading"><span class="reflection-step-number">5</span><div><h2>Practice / theory connection</h2><p>Optional. Pick what might have informed the practice. Not sure is okay.</p></div></div>
+      ${reflectionChipGroup([...reflectionPracticeQuick,"Not sure"],"reflection-practice-chip reflection-practice-quick-chip")}
+      <div class="reflection-theory-actions"><button type="button" class="text-link" id="openPracticeLibrary">More theories and frameworks</button><button type="button" class="text-link" id="helpIdentifyTheory">Help me identify it</button></div>
+      <div class="reflection-practice-note hidden" id="reflectionPracticeNoteWrap"><label for="reflectionPracticeNote"><strong>How did you see this in practice?</strong><span>Optional · one sentence is enough</span></label><textarea id="reflectionPracticeNote" class="textarea reflection-mini-note" placeholder="e.g. The consumer was given choice about family involvement rather than staff deciding for them."></textarea></div>
+      <div class="reflection-theory-panel hidden" id="practiceLibraryPanel"><div class="reflection-theory-panel-head"><strong>More theories and frameworks</strong><button type="button" class="text-link" id="closePracticeLibrary">Close</button></div><input id="practiceLibrarySearch" class="input" placeholder="Search theory or framework"><div class="reflection-button-grid reflection-practice-library">${reflectionPracticeLibrary.map(item=>`<button type="button" class="reflection-choice-chip reflection-practice-chip reflection-practice-library-chip" data-value="${safeText(item)}">${safeText(item)}</button>`).join("")}</div></div>
+      <div class="reflection-theory-panel hidden" id="theoryHelperPanel"><div class="reflection-theory-panel-head"><strong>What stood out most?</strong><button type="button" class="text-link" id="closeTheoryHelper">Close</button></div><p class="reflection-theory-helper-copy">Tap one or more. These are clues, not a test.</p>${reflectionChipGroup(Object.keys(reflectionTheoryCueMap),"reflection-theory-cue-chip")}<div class="reflection-theory-suggestions" id="theorySuggestions"><small>Tap what stood out and Practice Compass will suggest possible connections.</small></div></div>
+      <div class="reflection-critical-toggle"><button type="button" class="btn secondary reflection-critical-button" id="thinkDeeper">Think a little deeper</button><small>Optional critical reflection</small></div>
+      <div class="reflection-adaptive-note hidden" id="criticalReflectionWrap"><div class="reflection-critical-head"><label for="criticalReflectionAnswer"><strong id="criticalReflectionPrompt"></strong><span>Optional · one or two lines is enough</span></label><button type="button" class="text-link" id="anotherCriticalPrompt">Another prompt</button></div><textarea id="criticalReflectionAnswer" class="textarea reflection-mini-note" placeholder="Add what you want to remember..."></textarea></div>
     </section>
 
     <section class="conversation-card reflection-project-card">
@@ -3066,15 +3130,21 @@ function saveEntry(){
   const involvement=selectedReflectionButtons(".reflection-involvement-chip");
   const outcomeIds=selectedReflectionButtons(".reflection-outcome-chip");
   const focusAreas=selectedReflectionButtons(".reflection-focus-chip");
+  const practiceConnections=[...new Set(selectedReflectionButtons(".reflection-practice-chip").filter(value=>value!=="Not sure"))];
   const projectRelated=document.getElementById("reflectionProjectYes")?.classList.contains("selected")||false;
   const reflectionNote=document.getElementById("reflectionNote")?.value.trim()||"";
+  const practiceNote=document.getElementById("reflectionPracticeNote")?.value.trim()||"";
+  const criticalPrompt=document.getElementById("criticalReflectionWrap")?.classList.contains("hidden")?"":document.getElementById("criticalReflectionPrompt")?.textContent.trim()||"";
+  const criticalAnswer=document.getElementById("criticalReflectionAnswer")?.value.trim()||"";
   const outcomeTags=reflectionOutcomeOptions.filter(option=>outcomeIds.includes(option.id)).map(option=>option.label);
   const learningOutcomeLabels=reflectionFocusOptions.filter(option=>focusAreas.includes(option.id)&&option.id!=="unsure").map(option=>option.lo);
 
   // Keep the existing evidence structure populated so older assessment and framework views continue to work.
-  const theories=[],methods=[],skills=[],values=[],ethics=[],assessmentJudgement=[],useOfSelfTags=[],cultural=[],systems=[],supervisionLearning=[],researchEvidence=[];
+  const theories=[...practiceConnections],methods=[],skills=[],values=[],ethics=[],assessmentJudgement=[],useOfSelfTags=[],cultural=[],systems=[],supervisionLearning=[],researchEvidence=[];
   const evidenceTypes=[];
   const addEvidence=value=>{if(value&&!evidenceTypes.includes(value))evidenceTypes.push(value)};
+  if(practiceConnections.length){addEvidence("Theory in action");addEvidence("Knowledge");}
+  if(criticalAnswer){addEvidence("Critical reflection");addEvidence("Use of self");}
   focusAreas.forEach(area=>{
     if(area==="values"){values.push("Values and professional judgement");addEvidence("Ethics or values");}
     if(area==="culture"){cultural.push("Culturally responsive practice");addEvidence("Cultural capability");}
@@ -3109,14 +3179,14 @@ function saveEntry(){
   const info=placementInfo(),p=dailyPrompt(info,hours());
   const entry={
     id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:moment,moment,
-    involvement,outcomeIds,outcomeTags,focusAreas,learningOutcomes:focusAreas.filter(id=>id!=="unsure"),learningOutcomeLabels,projectRelated,reflectionNote,
+    involvement,outcomeIds,outcomeTags,focusAreas,learningOutcomes:focusAreas.filter(id=>id!=="unsure"),learningOutcomeLabels,projectRelated,reflectionNote,practiceConnections,practiceNote,criticalPrompt,criticalAnswer,
     theories,methods,skills,values,ethics,assessmentJudgement,useOfSelfTags,cultural,systems,supervisionLearning,researchEvidence,lensStatus:{},practiceStandards,
-    useOfSelf:useOfSelfTags.join(", "),deeperQuestion:reflectionPromptForSelection(),deeperAnswer:reflectionNote,futurePractice:"",professionalIdentity:"",evidenceTypes,theory:"",method:"",supervision:"",evidence:autoMapped
+    useOfSelf:useOfSelfTags.join(", "),deeperQuestion:criticalPrompt||reflectionPromptForSelection(),deeperAnswer:criticalAnswer||reflectionNote,futurePractice:"",professionalIdentity:"",evidenceTypes,theory:practiceConnections.join(", "),method:"",supervision:"",evidence:autoMapped
   };
   const arr=savedEntries();arr.unshift(entry);state.set("entries",arr);
   const framework=frameworkData();
   framework.values=[...new Set([...(framework.values||[]),...values])];
-  framework.theories=[...new Set([...(framework.theories||[]),...researchEvidence])];
+  framework.theories=[...new Set([...(framework.theories||[]),...practiceConnections,...researchEvidence])];
   framework.skills=[...new Set([...(framework.skills||[]),...skills,...assessmentJudgement])];
   framework.cultural=[...new Set([...(framework.cultural||[]),...cultural])];
   if(useOfSelfTags.length)framework.useOfSelf=[framework.useOfSelf,useOfSelfTags.join(", ")].filter(Boolean).join("\n");
@@ -3321,19 +3391,37 @@ function bind(){
   document.getElementById("completeDay")?.addEventListener("click",()=>{state.set("hours",Math.min(placementTotalHours(),hours()+HOURS_PER_DAY));render()});
   document.getElementById("adjustHours")?.addEventListener("click",()=>{const v=prompt("Enter total completed placement hours:",hours()); if(v!==null&&!isNaN(Number(v))){state.set("hours",Number(v));render()}});
   document.getElementById("saveEntry")?.addEventListener("click",saveEntry);
-  document.querySelectorAll(".reflection-involvement-chip,.reflection-outcome-chip,.reflection-focus-chip").forEach(button=>button.addEventListener("click",()=>{
+  document.querySelectorAll(".reflection-involvement-chip,.reflection-outcome-chip,.reflection-focus-chip,.reflection-practice-chip").forEach(button=>button.addEventListener("click",()=>{
     if(button.classList.contains("reflection-focus-chip")&&button.dataset.value==="unsure"){
       document.querySelectorAll(".reflection-focus-chip").forEach(item=>item.classList.remove("selected"));button.classList.add("selected");
     }else{
       button.classList.toggle("selected");
       if(button.classList.contains("reflection-focus-chip")&&button.classList.contains("selected"))document.querySelector('.reflection-focus-chip[data-value="unsure"]')?.classList.remove("selected");
     }
+    if(button.classList.contains("reflection-practice-chip")){
+      const value=button.dataset.value;
+      if(value==="Not sure"&&button.classList.contains("selected")){
+        document.querySelectorAll('.reflection-practice-chip:not([data-value="Not sure"])').forEach(item=>item.classList.remove("selected"));
+      }else if(value!=="Not sure"&&button.classList.contains("selected")){
+        document.querySelectorAll('.reflection-practice-chip[data-value="Not sure"]').forEach(item=>item.classList.remove("selected"));
+        document.querySelectorAll(`.reflection-practice-chip[data-value="${CSS.escape(value)}"]`).forEach(item=>item.classList.add("selected"));
+      }else if(value!=="Not sure")document.querySelectorAll(`.reflection-practice-chip[data-value="${CSS.escape(value)}"]`).forEach(item=>item.classList.remove("selected"));
+      updatePracticeConnectionNote();
+    }
     updateReflectionPrompt();captureReflectionDraft();
   }));
+  document.getElementById("openPracticeLibrary")?.addEventListener("click",()=>document.getElementById("practiceLibraryPanel")?.classList.remove("hidden"));
+  document.getElementById("closePracticeLibrary")?.addEventListener("click",()=>document.getElementById("practiceLibraryPanel")?.classList.add("hidden"));
+  document.getElementById("practiceLibrarySearch")?.addEventListener("input",filterPracticeLibrary);
+  document.getElementById("helpIdentifyTheory")?.addEventListener("click",()=>document.getElementById("theoryHelperPanel")?.classList.remove("hidden"));
+  document.getElementById("closeTheoryHelper")?.addEventListener("click",()=>document.getElementById("theoryHelperPanel")?.classList.add("hidden"));
+  document.querySelectorAll(".reflection-theory-cue-chip").forEach(button=>button.addEventListener("click",()=>{button.classList.toggle("selected");renderTheorySuggestions();}));
+  document.getElementById("thinkDeeper")?.addEventListener("click",()=>setCriticalReflectionPrompt());
+  document.getElementById("anotherCriticalPrompt")?.addEventListener("click",()=>setCriticalReflectionPrompt());
   document.querySelectorAll(".reflection-project-chip").forEach(button=>button.addEventListener("click",()=>{
     document.querySelectorAll(".reflection-project-chip").forEach(item=>item.classList.toggle("selected",item===button));captureReflectionDraft();
   }));
-  ["answer","reflectionNote"].forEach(id=>document.getElementById(id)?.addEventListener("input",captureReflectionDraft));
+  ["answer","reflectionNote","reflectionPracticeNote","criticalReflectionAnswer"].forEach(id=>document.getElementById(id)?.addEventListener("input",captureReflectionDraft));
   restoreReflectionDraft();
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
   document.getElementById("reflectionInsight")?.addEventListener("toggle",event=>state.set("reflectionInsightOpen",event.currentTarget.open));

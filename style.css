@@ -5164,3 +5164,33 @@ main{padding-inline:18px}
 .growth-folder-item.completed>span{color:#69736d}.growth-folder-empty{margin:0;padding:14px 3px;color:#7a847e;font-size:13px}
 .growth-folder-completed{margin-top:30px;border-top:1px solid #e3e9e5;padding-top:8px}.growth-folder-completed>summary{display:flex;align-items:center;gap:8px;padding:12px 3px;color:#59665f;font-size:14px;font-weight:650;cursor:pointer;list-style:none}.growth-folder-completed>summary::-webkit-details-marker{display:none}.growth-folder-completed>summary span{display:inline-grid;min-width:24px;height:24px;place-items:center;border-radius:99px;background:#edf3ef;color:#3e6853;font-size:12px}.growth-folder-completed-list{margin-top:4px;background:#fafcfb}
 @media(max-width:560px){.growth-folder-heading{padding:20px 17px}.growth-folder-heading h1{font-size:27px}.placement-growing-button{padding:14px}.growth-folder-item{padding:13px 14px}}
+
+/* Reflection sprint: optional theory/framework articulation + critical reflection */
+.reflection-practice-connection-card{border-color:rgba(72,102,94,.14);background:linear-gradient(180deg,rgba(246,250,249,.88),rgba(255,255,255,.96))}
+.reflection-theory-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;align-items:center}
+.reflection-theory-actions .text-link{font-size:.82rem}
+.reflection-practice-note{margin-top:14px;padding:14px;border-radius:14px;background:rgba(222,235,231,.55)}
+.reflection-practice-note label{display:grid;gap:3px;margin-bottom:9px}
+.reflection-practice-note label strong{font-size:.9rem;color:var(--text)}
+.reflection-practice-note label span{font-size:.75rem;color:var(--muted)}
+.reflection-theory-panel{margin-top:14px;padding:14px;border:1px solid rgba(63,111,120,.14);border-radius:16px;background:#fff}
+.reflection-theory-panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.reflection-theory-panel-head strong{font-size:.92rem}
+.reflection-theory-panel .input{margin-bottom:10px}
+.reflection-practice-library{max-height:250px;overflow:auto;padding:2px 1px 4px}
+.reflection-theory-helper-copy{margin:0 0 10px;color:var(--muted);font-size:.8rem}
+.reflection-theory-suggestions{margin-top:12px;padding-top:12px;border-top:1px solid rgba(63,111,120,.12)}
+.reflection-theory-suggestions>small{display:block;margin-bottom:8px;color:var(--muted)}
+.reflection-theory-suggestion{background:rgba(230,239,241,.65)}
+.reflection-critical-toggle{display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(77,91,80,.09)}
+.reflection-critical-button{padding:9px 13px!important;min-height:auto!important}
+.reflection-critical-toggle small{color:var(--muted);font-size:.75rem}
+.reflection-critical-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.reflection-critical-head label{flex:1}
+.reflection-critical-head .text-link{white-space:nowrap;font-size:.76rem;margin-top:1px}
+@media(max-width:540px){
+  .reflection-theory-actions{gap:10px}
+  .reflection-theory-panel{padding:12px}
+  .reflection-critical-head{display:block}
+  .reflection-critical-head .text-link{display:inline-block;margin:6px 0 0}
+}
