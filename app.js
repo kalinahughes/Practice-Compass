@@ -2022,7 +2022,7 @@ function journalPage(){
   <form class="reflection-simple reflection-quick-flow" id="reflectionForm" onsubmit="return false">
     <section class="conversation-card reflection-journal-card reflection-primary-card">
       <div class="reflection-step-number">1</div>
-      <label for="answer"><strong>What happened?</strong><span>One or two lines is enough. Keep client information de identified.</span></label>
+      <label for="answer"><strong>What Happened?</strong><span>One or two lines is enough. Keep client information de identified.</span></label>
       <textarea id="answer" class="textarea reflection-main-journal" placeholder="e.g. Sat in on an MDT and noticed how the team approached a complex decision."></textarea>
       <small class="reflection-draft-status" id="reflectionDraftStatus">Draft saves automatically on this device</small>
     </section>
@@ -2055,7 +2055,7 @@ function journalPage(){
     </section>
 
     <section class="conversation-card reflection-project-card">
-      <div><strong>Part of My Placement Project?</strong><small>Tag it once so it can also feed your three project reflections.</small></div>
+      <div><strong>Project Related?</strong><small>Tag it once so it can also feed your three project reflections.</small></div>
       <div class="reflection-binary"><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectYes" data-value="yes">Yes</button><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectNo" data-value="no">No</button></div>
     </section>
     <button class="btn reflection-save-button" id="saveEntry">Save reflection</button>

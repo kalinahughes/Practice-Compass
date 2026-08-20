@@ -5360,3 +5360,42 @@ main{padding-inline:18px}
   .reflection-quick-flow .reflection-choice-card:nth-of-type(2)>.reflection-button-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .reflection-quick-flow .reflection-choice-card:nth-of-type(2)>.reflection-button-grid .reflection-choice-chip{padding:8px 5px;font-size:.76rem}
 }
+
+
+/* Reflect cohesion sprint — equal heading hierarchy, progression retained */
+.reflection-quick-flow .reflection-primary-card,
+.reflection-quick-flow .reflection-choice-card,
+.reflection-quick-flow .reflection-practice-connection-card{
+  padding:18px 20px;
+}
+.reflection-quick-flow .reflection-primary-card label strong,
+.reflection-quick-flow .reflection-section-heading h2,
+.reflection-quick-flow .reflection-practice-connection-card .reflection-section-heading h2,
+.reflection-quick-flow .reflection-project-card strong{
+  font-size:1.02rem;
+  line-height:1.25;
+  font-weight:700;
+  letter-spacing:-.01em;
+  color:var(--text);
+}
+.reflection-quick-flow .reflection-primary-card label span,
+.reflection-quick-flow .reflection-section-heading p,
+.reflection-quick-flow .reflection-practice-connection-card .reflection-section-heading p,
+.reflection-quick-flow .reflection-project-card small{
+  font-size:.82rem;
+  line-height:1.35;
+  color:var(--muted);
+}
+.reflection-quick-flow .reflection-practice-connection-card{
+  background:rgba(248,251,250,.72);
+  border:1px solid rgba(77,91,80,.10);
+}
+.reflection-quick-flow .reflection-project-card{
+  padding:16px 20px;
+}
+@media(max-width:560px){
+  .reflection-quick-flow .reflection-primary-card,
+  .reflection-quick-flow .reflection-choice-card,
+  .reflection-quick-flow .reflection-practice-connection-card{padding:16px}
+  .reflection-quick-flow .reflection-project-card{padding:15px 16px}
+}
