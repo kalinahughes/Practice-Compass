@@ -5399,3 +5399,26 @@ main{padding-inline:18px}
   .reflection-quick-flow .reflection-practice-connection-card{padding:16px}
   .reflection-quick-flow .reflection-project-card{padding:15px 16px}
 }
+
+
+/* Reflect: keep critical reflection as its own clear section */
+.reflection-critical-card{
+  margin-top:18px;
+}
+.reflection-critical-card .reflection-critical-toggle{
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+}
+.reflection-critical-card .reflection-critical-button{
+  width:auto;
+  min-width:0;
+}
+.reflection-critical-card .reflection-adaptive-note{
+  margin-top:14px;
+}
+.reflection-practice-connection-card .reflection-critical-toggle,
+.reflection-practice-connection-card #criticalReflectionWrap{
+  margin-top:0;
+}
