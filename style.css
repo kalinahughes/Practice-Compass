@@ -5344,3 +5344,19 @@ main{padding-inline:18px}
   .reflection-theory-actions .text-link{text-align:left;padding:6px 5px}
   .reflection-critical-toggle{display:grid;grid-template-columns:auto 1fr;gap:5px 8px}
 }
+
+
+/* Reflect cohesion refinement: compact involvement and calmer section rhythm */
+.reflection-quick-flow .reflection-choice-card{box-shadow:none}
+.reflection-quick-flow .reflection-section-heading h2{text-transform:none}
+.reflection-quick-flow .reflection-section-heading h2,
+.reflection-quick-flow .reflection-project-card strong{letter-spacing:-.01em}
+.reflection-quick-flow .reflection-involvement-chip{min-width:0;text-align:center}
+.reflection-quick-flow .reflection-choice-card:nth-of-type(2)>.reflection-button-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.reflection-quick-flow .reflection-choice-card:nth-of-type(2)>.reflection-button-grid .reflection-choice-chip{justify-content:center;padding:9px 8px}
+.reflection-practice-connection-card .reflection-theory-actions{border-top:1px solid rgba(77,91,80,.06);padding-top:7px}
+.reflection-practice-connection-card .reflection-critical-toggle{margin-bottom:0}
+@media(max-width:420px){
+  .reflection-quick-flow .reflection-choice-card:nth-of-type(2)>.reflection-button-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .reflection-quick-flow .reflection-choice-card:nth-of-type(2)>.reflection-button-grid .reflection-choice-chip{padding:8px 5px;font-size:.76rem}
+}

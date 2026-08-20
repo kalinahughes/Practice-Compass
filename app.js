@@ -1252,10 +1252,12 @@ function assessmentPriority(info,hours){
 }
 
 function nextAssessment(info,hours){
+  const integrationIsCurrent=Boolean(integrationReminder());
   const ordered=assessmentPriority(info,hours)
     .map(id=>assessments.find(item=>item.id===id))
     .filter(Boolean);
-  return ordered.find(item=>!assessmentIsComplete(item.id)) || ordered[ordered.length-1] || assessments[0];
+  const current=ordered.find(item=>!assessmentIsComplete(item.id)&&(item.id!=="integration"||integrationIsCurrent));
+  return current || ordered.find(item=>!assessmentIsComplete(item.id)) || ordered[ordered.length-1] || assessments[0];
 }
 
 function upcomingAssessments(info,hours,currentId,limit=2){
@@ -1671,6 +1673,13 @@ function escapeAttribute(value){
 }
 
 function assessmentOverallStatus(a){
+  if(a.id==="integration"){
+    const sessions=integrationSessions();
+    if(sessions.length&&sessions.every(item=>item.status==="completed")) return "complete";
+    if(sessions.some(item=>item.status==="completed")) return "in_progress";
+    if(sessions.some(item=>item.status==="booked")) return "in_progress";
+    return "not_started";
+  }
   const tasks=a.tasks||[];
   if(!tasks.length) return "not_started";
   const statuses=tasks.map((_,i)=>getTaskStatus(a.id,i));
@@ -1681,6 +1690,12 @@ function assessmentOverallStatus(a){
 }
 
 function assessmentProgress(a){
+  if(a.id==="integration"){
+    const sessions=integrationSessions();
+    if(!sessions.length) return 0;
+    const completed=sessions.filter(item=>item.status==="completed").length;
+    return Math.round((completed/sessions.length)*100);
+  }
   const tasks=a.tasks||[];
   if(!tasks.length) return 0;
   const weights={not_started:0,in_progress:.5,waiting:.5,complete:1};
@@ -1875,7 +1890,7 @@ const reflectionCompassLenses=[
 ];
 
 const REFLECTION_DRAFT_KEY="reflectionCompassDraft";
-const reflectionInvolvementOptions=["Observed","Participated","Completed","Led","Learned"];
+const reflectionInvolvementOptions=["Observed","Involved","Led"];
 const reflectionOutcomeOptions=[
   {id:"learned",label:"Learned something new"},
   {id:"confidence",label:"Built confidence"},
@@ -1975,7 +1990,8 @@ function restoreReflectionDraft(){
   if(note)note.value=draft.reflectionNote||"";
   if(practiceNote)practiceNote.value=draft.practiceNote||"";
   if(criticalAnswer)criticalAnswer.value=draft.criticalAnswer||"";
-  (draft.involvement||[]).forEach(value=>document.querySelector(`.reflection-involvement-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
+  const restoredInvolvement=[...new Set((draft.involvement||[]).map(value=>["Participated","Completed","Learned"].includes(value)?"Involved":value))];
+  restoredInvolvement.forEach(value=>document.querySelector(`.reflection-involvement-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
   (draft.outcomes||[]).forEach(value=>document.querySelector(`.reflection-outcome-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
   (draft.focus||[]).forEach(value=>document.querySelector(`.reflection-focus-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
   (draft.practiceConnections||[]).forEach(value=>document.querySelectorAll(`.reflection-practice-chip[data-value="${CSS.escape(value)}"]`).forEach(item=>item.classList.add("selected")));
@@ -2012,34 +2028,34 @@ function journalPage(){
     </section>
 
     <section class="conversation-card reflection-choice-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">2</span><div><h2>My involvement</h2><p>Tap anything that fits.</p></div></div>
+      <div class="reflection-section-heading"><span class="reflection-step-number">2</span><div><h2>My Involvement</h2><p>Tap anything that fits.</p></div></div>
       ${reflectionChipGroup(reflectionInvolvementOptions,"reflection-involvement-chip")}
     </section>
 
     <section class="conversation-card reflection-choice-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">3</span><div><h2>What did this show me?</h2><p>Quick taps only. Add detail only when it will help later.</p></div></div>
+      <div class="reflection-section-heading"><span class="reflection-step-number">3</span><div><h2>What Did This Show Me?</h2><p>Quick taps only. Add detail only when it will help later.</p></div></div>
       ${reflectionChipGroup(reflectionOutcomeOptions,"reflection-outcome-chip")}
       <div class="reflection-adaptive-note hidden" id="reflectionPromptWrap"><label for="reflectionNote"><strong id="reflectionPromptLabel"></strong><span>Optional · one sentence is enough</span></label><textarea id="reflectionNote" class="textarea reflection-mini-note" placeholder="Add the detail you will want to remember at assessment time..."></textarea></div>
     </section>
 
     <section class="conversation-card reflection-choice-card reflection-secondary-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">4</span><div><h2>What was it mostly about?</h2><p>Choose one or more. These link to your Learning Plan behind the scenes.</p></div></div>
+      <div class="reflection-section-heading"><span class="reflection-step-number">4</span><div><h2>What Was It Mostly About?</h2><p>Choose one or more. These link to your Learning Plan behind the scenes.</p></div></div>
       <div class="reflection-button-grid reflection-focus-grid">${reflectionFocusOptions.map(option=>`<button type="button" class="reflection-choice-chip reflection-focus-chip" data-value="${safeText(option.id)}"><span>${safeText(option.label)}</span><small>${safeText(option.lo)}</small></button>`).join("")}</div>
     </section>
 
     <section class="conversation-card reflection-choice-card reflection-practice-connection-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">5</span><div><h2>Practice / theory connection</h2><p>Optional. Pick what might have informed the practice. Not sure is okay.</p></div></div>
+      <div class="reflection-section-heading"><span class="reflection-step-number">5</span><div><h2>Theory / Practice Connection</h2><p>Optional. Pick what might have informed the practice. Not sure is okay.</p></div></div>
       ${reflectionChipGroup([...reflectionPracticeQuick,"Not sure"],"reflection-practice-chip reflection-practice-quick-chip")}
-      <div class="reflection-theory-actions"><button type="button" class="text-link" id="openPracticeLibrary">More theories and frameworks</button><button type="button" class="text-link" id="helpIdentifyTheory">Help me identify it</button></div>
+      <div class="reflection-theory-actions"><button type="button" class="text-link" id="openPracticeLibrary">More Theories and Frameworks</button><button type="button" class="text-link" id="helpIdentifyTheory">Help Me Identify It</button></div>
       <div class="reflection-practice-note hidden" id="reflectionPracticeNoteWrap"><label for="reflectionPracticeNote"><strong>How did you see this in practice?</strong><span>Optional · one sentence is enough</span></label><textarea id="reflectionPracticeNote" class="textarea reflection-mini-note" placeholder="e.g. The consumer was given choice about family involvement rather than staff deciding for them."></textarea></div>
-      <div class="reflection-theory-panel hidden" id="practiceLibraryPanel"><div class="reflection-theory-panel-head"><strong>More theories and frameworks</strong><button type="button" class="text-link" id="closePracticeLibrary">Close</button></div><input id="practiceLibrarySearch" class="input" placeholder="Search theory or framework"><div class="reflection-button-grid reflection-practice-library">${reflectionPracticeLibrary.map(item=>`<button type="button" class="reflection-choice-chip reflection-practice-chip reflection-practice-library-chip" data-value="${safeText(item)}">${safeText(item)}</button>`).join("")}</div></div>
+      <div class="reflection-theory-panel hidden" id="practiceLibraryPanel"><div class="reflection-theory-panel-head"><strong>More Theories and Frameworks</strong><button type="button" class="text-link" id="closePracticeLibrary">Close</button></div><input id="practiceLibrarySearch" class="input" placeholder="Search theory or framework"><div class="reflection-button-grid reflection-practice-library">${reflectionPracticeLibrary.map(item=>`<button type="button" class="reflection-choice-chip reflection-practice-chip reflection-practice-library-chip" data-value="${safeText(item)}">${safeText(item)}</button>`).join("")}</div></div>
       <div class="reflection-theory-panel hidden" id="theoryHelperPanel"><div class="reflection-theory-panel-head"><strong>What stood out most?</strong><button type="button" class="text-link" id="closeTheoryHelper">Close</button></div><p class="reflection-theory-helper-copy">Tap one or more. These are clues, not a test.</p>${reflectionChipGroup(Object.keys(reflectionTheoryCueMap),"reflection-theory-cue-chip")}<div class="reflection-theory-suggestions" id="theorySuggestions"><small>Tap what stood out and Practice Compass will suggest possible connections.</small></div></div>
-      <div class="reflection-critical-toggle"><button type="button" class="btn secondary reflection-critical-button" id="thinkDeeper">Think a little deeper</button><small>Optional critical reflection</small></div>
+      <div class="reflection-critical-toggle"><button type="button" class="btn secondary reflection-critical-button" id="thinkDeeper">Think a Little Deeper</button><small>Optional Critical Reflection</small></div>
       <div class="reflection-adaptive-note hidden" id="criticalReflectionWrap"><div class="reflection-critical-head"><label for="criticalReflectionAnswer"><strong id="criticalReflectionPrompt"></strong><span>Optional · one or two lines is enough</span></label><button type="button" class="text-link" id="anotherCriticalPrompt">Another prompt</button></div><textarea id="criticalReflectionAnswer" class="textarea reflection-mini-note" placeholder="Add what you want to remember..."></textarea></div>
     </section>
 
     <section class="conversation-card reflection-project-card">
-      <div><strong>Part of my placement project?</strong><small>Tag it once so it can also feed your three project reflections.</small></div>
+      <div><strong>Part of My Placement Project?</strong><small>Tag it once so it can also feed your three project reflections.</small></div>
       <div class="reflection-binary"><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectYes" data-value="yes">Yes</button><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectNo" data-value="no">No</button></div>
     </section>
     <button class="btn reflection-save-button" id="saveEntry">Save reflection</button>
@@ -2236,7 +2252,7 @@ function whereImGrowingPage(){
 function integrationSessionManager(){
   const sessions=integrationSessions();
   return `<section class="assessment-clear-section integration-session-section" aria-labelledby="integration-session-heading">
-    <div class="assessment-clear-section-heading"><span>☕</span><h2 id="integration-session-heading">Integration Session details</h2></div>
+    <div class="assessment-clear-section-heading"><span>☕</span><h2 id="integration-session-heading">Integration Session Details</h2></div>
     <div class="integration-session-list">${sessions.map(item=>`<article class="integration-session-card" data-integration-card="${item.id}">
       <div class="integration-session-card-heading"><div><strong>${item.label}</strong><small>${item.date?formatPlanningDate(item.date):"No date set"}</small></div><span class="integration-status integration-status-${item.status}">${integrationStatusLabel(item.status)}</span></div>
       <div class="integration-session-fields">
@@ -2278,7 +2294,10 @@ function assessmentDetail(id,openPlanning=false){
   const official=officialAssessmentInfo(a);
   const planning=assessmentPlanning(a.id);
   const missingRequirements=reqs.filter(requirement=>!entries.some(entry=>(entry.evidenceTypes||[]).includes(requirement)));
-  const nextTask=incomplete.length?incomplete[0].task:"Check the official submission or sign off step";
+  const nextIntegrationSession=a.id==="integration"?integrationSessions().find(item=>item.status!=="completed"):null;
+  const nextTask=a.id==="integration"
+    ? (nextIntegrationSession?`${nextIntegrationSession.label} · ${nextIntegrationSession.date?formatPlanningDate(nextIntegrationSession.date):"date not set"}`:"All three Integration Sessions completed")
+    : (incomplete.length?incomplete[0].task:"Check the official submission or sign off step");
 
   const taskRow=item=>{
     const meta=taskStatuses[item.status];
@@ -2320,7 +2339,7 @@ function assessmentDetail(id,openPlanning=false){
           <summary><span>What JCU expects</span><small>Open guidance</small></summary>
           <div><p>${official.requirement}</p><p class="assessment-scope-note">${official.record}</p></div>
         </details>
-        ${taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
+        ${a.id!=="integration"&&taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
       </section>
 
       <section class="assessment-clear-section assessment-priority-panel" aria-labelledby="assessment-plan-heading">
@@ -3161,7 +3180,7 @@ function saveEntry(){
     if(id==="feedback")addEvidence("Feedback");
     if(id==="practice")addEvidence("Professional development");
   });
-  if(involvement.includes("Participated")||involvement.includes("Led"))addEvidence("Communication");
+  if(involvement.includes("Involved")||involvement.includes("Led")||involvement.includes("Participated"))addEvidence("Communication");
   const practiceStandards=[];
   if(focusAreas.includes("values"))practiceStandards.push("Practice Standard 1: Values and ethics");
   if(focusAreas.includes("culture"))practiceStandards.push("Practice Standards 2 and 4: Culturally responsive and inclusive practice");
