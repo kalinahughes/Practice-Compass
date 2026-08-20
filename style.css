@@ -5194,3 +5194,153 @@ main{padding-inline:18px}
   .reflection-critical-head{display:block}
   .reflection-critical-head .text-link{display:inline-block;margin:6px 0 0}
 }
+
+/* Reflect visual cleanup sprint — hierarchy only, no logic changes */
+.reflection-practice-connection-card{
+  margin-top:4px;
+  padding:15px 17px;
+  border:1px solid rgba(73,105,96,.10);
+  background:#f7faf8;
+  box-shadow:none;
+}
+.reflection-practice-connection-card .reflection-section-heading{
+  margin-bottom:10px;
+  gap:9px;
+}
+.reflection-practice-connection-card .reflection-step-number{
+  width:25px;
+  height:25px;
+  min-width:25px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  background:#e7efeb;
+  color:#537063;
+  font-size:.73rem;
+  font-weight:750;
+}
+.reflection-practice-connection-card .reflection-section-heading h2{
+  margin:1px 0 2px;
+  font-size:.95rem;
+  font-weight:650;
+  color:#3f4b45;
+}
+.reflection-practice-connection-card .reflection-section-heading p{
+  max-width:46ch;
+  font-size:.76rem;
+  line-height:1.35;
+  color:#7b8680;
+}
+.reflection-practice-connection-card>.reflection-button-grid{
+  gap:6px;
+}
+.reflection-practice-connection-card>.reflection-button-grid .reflection-choice-chip{
+  padding:7px 10px;
+  border-color:rgba(63,111,120,.15);
+  background:rgba(255,255,255,.88);
+  font-size:.76rem;
+  font-weight:620;
+  color:#4c5852;
+}
+.reflection-practice-connection-card>.reflection-button-grid .reflection-choice-chip.selected{
+  background:#557f78;
+  border-color:#557f78;
+  color:#fff;
+  box-shadow:none;
+}
+.reflection-theory-actions{
+  gap:6px;
+  margin-top:9px;
+}
+.reflection-theory-actions .text-link{
+  padding:6px 8px;
+  border-radius:9px;
+  background:transparent;
+  color:#52716a;
+  font-size:.74rem;
+  font-weight:620;
+}
+.reflection-theory-actions .text-link:hover{background:#edf3f0}
+.reflection-practice-note{
+  margin-top:10px;
+  padding:11px 12px;
+  border:1px solid rgba(73,105,96,.08);
+  border-radius:12px;
+  background:#fff;
+}
+.reflection-practice-note label{margin-bottom:7px}
+.reflection-practice-note label strong{font-size:.84rem}
+.reflection-practice-note label span{font-size:.71rem}
+.reflection-practice-connection-card .reflection-mini-note{
+  min-height:76px;
+  padding:10px 11px;
+  font-size:.84rem;
+}
+.reflection-theory-panel{
+  margin-top:10px;
+  padding:12px;
+  border:1px solid #e3ebe7;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:none;
+}
+.reflection-theory-panel-head{margin-bottom:8px}
+.reflection-theory-panel-head strong{font-size:.84rem;color:#45524c}
+.reflection-theory-panel .input{
+  min-height:40px;
+  margin-bottom:8px;
+  padding:9px 11px;
+  font-size:.82rem;
+}
+.reflection-practice-library{
+  max-height:220px;
+  gap:6px;
+}
+.reflection-practice-library .reflection-choice-chip,
+.reflection-theory-panel .reflection-choice-chip{
+  padding:7px 9px;
+  font-size:.75rem;
+  font-weight:600;
+}
+.reflection-theory-helper-copy{font-size:.75rem}
+.reflection-theory-suggestions{margin-top:9px;padding-top:9px}
+.reflection-critical-toggle{
+  margin-top:12px;
+  padding-top:11px;
+  border-top:1px solid rgba(77,91,80,.07);
+}
+.reflection-critical-button{
+  min-height:auto!important;
+  padding:7px 9px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#526e67!important;
+  font-size:.77rem!important;
+  font-weight:650!important;
+}
+.reflection-critical-button:before{content:"↳ ";font-weight:500}
+.reflection-critical-toggle small{
+  font-size:.7rem;
+  color:#87908b;
+}
+.reflection-practice-connection-card #criticalReflectionWrap{
+  margin-top:8px;
+  padding:11px 12px;
+  border:1px solid #e4ebe7;
+  border-radius:12px;
+  background:#fff;
+}
+.reflection-critical-head label strong{font-size:.84rem;color:#44514b}
+.reflection-critical-head label span{font-size:.71rem}
+.reflection-critical-head .text-link{font-size:.7rem;color:#617b73}
+.reflection-project-card{margin-top:8px}
+
+@media(max-width:540px){
+  .reflection-practice-connection-card{padding:14px 14px}
+  .reflection-practice-connection-card>.reflection-button-grid{gap:5px}
+  .reflection-practice-connection-card>.reflection-button-grid .reflection-choice-chip{padding:7px 9px;font-size:.74rem}
+  .reflection-theory-actions{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+  .reflection-theory-actions .text-link{text-align:left;padding:6px 5px}
+  .reflection-critical-toggle{display:grid;grid-template-columns:auto 1fr;gap:5px 8px}
+}
