@@ -1661,6 +1661,25 @@ function clearAssessmentPlanning(assessmentId){
   }
 }
 
+function assessmentNextStepsData(){return state.get("assessmentNextSteps",{});}
+function assessmentNextStep(assessmentId){
+  const all=assessmentNextStepsData();
+  const item=all&&typeof all==="object"?all[assessmentId]:null;
+  return item&&typeof item==="object"?{text:item.text||"",dueDate:item.dueDate||""}:{text:"",dueDate:""};
+}
+function saveAssessmentNextStep(assessmentId,text,dueDate){
+  const all=assessmentNextStepsData();
+  const clean=String(text||"").trim();
+  if(clean)all[assessmentId]={text:clean,dueDate:dueDate||"",updatedAt:new Date().toISOString()};
+  else delete all[assessmentId];
+  state.set("assessmentNextSteps",all);
+}
+function clearAssessmentNextStep(assessmentId){
+  const all=assessmentNextStepsData();
+  delete all[assessmentId];
+  state.set("assessmentNextSteps",all);
+}
+
 function formatPlanningDate(value){
   if(!value) return "Not set";
   const [year,month,day]=value.split("-").map(Number);
@@ -1741,15 +1760,21 @@ function assessmentComponentSummary(a){
 function componentAssessmentManager(a){
   const defs=assessmentComponentDefinitions(a.id),statuses=assessmentComponentState(a.id);
   if(!defs.length)return "";
-  return `<section class="assessment-clear-section assessment-component-section" aria-labelledby="assessment-components-heading">
-    <div class="assessment-clear-section-heading"><span>✓</span><h2 id="assessment-components-heading">${a.id==="reflections"?"Project Reflections":"Self Assessments"}</h2></div>
+  return `<section class="assessment-simple-components">
+    <div class="assessment-simple-components-head">
+      <h2>${a.id==="reflections"?"Project Reflections":"Self Assessments"}</h2>
+      <span>${assessmentComponentSummary(a)}</span>
+    </div>
     <div class="assessment-component-list">${defs.map(item=>{
       const status=statuses[item.id]||"not_started";
-      const complete=status==="complete";
-      return `<label class="assessment-component-row ${complete?"is-complete":""}">
-        <input type="checkbox" class="assessment-component-check" data-assessment="${a.id}" data-component="${item.id}" ${complete?"checked":""}>
-        <span><strong>${safeText(item.label)}</strong><small>${complete?"Completed":status==="in_progress"?"In progress":"Not completed"}</small></span>
-      </label>`;
+      return `<article class="assessment-component-row ${status==="complete"?"is-complete":""}">
+        <span><strong>${safeText(item.label)}</strong></span>
+        <select class="assessment-component-status" data-assessment="${a.id}" data-component="${item.id}">
+          <option value="not_started" ${status==="not_started"?"selected":""}>Not Started</option>
+          <option value="in_progress" ${status==="in_progress"?"selected":""}>In Progress</option>
+          <option value="complete" ${status==="complete"?"selected":""}>Completed</option>
+        </select>
+      </article>`;
     }).join("")}</div>
   </section>`;
 }
@@ -1862,8 +1887,11 @@ function todayPage(){
   const progress=Math.min(100,Math.round((h/totalHours)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
   const currentComponents=["integration","reflections","midfinal"].includes(current.id)?assessmentComponentProgress(current.id):null;
-  const currentDisplayTitle=currentComponents?.next||current.title;
-  const currentDisplayWhen=currentComponents?.next?`${current.title} · ${assessmentComponentSummary(current)}`:current.when;
+  const customNext=assessmentNextStep(current.id);
+  const currentDisplayTitle=customNext.text||currentComponents?.next||current.title;
+  const currentDisplayWhen=customNext.text
+    ? `${current.title}${customNext.dueDate?` · Due ${formatPlanningDate(customNext.dueDate)}`:""}`
+    : (currentComponents?.next?`${current.title} · ${assessmentComponentSummary(current)}`:current.when);
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   const placementLabel=info.started?`Placement week ${info.week}`:(info.notConfigured?`Add your placement start date in My Journey`:`Placement begins in ${info.daysUntil} days`);
   return `
@@ -2131,27 +2159,36 @@ function journalPage(){
     </section>
 
     <section class="conversation-card reflection-choice-card reflection-practice-connection-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">5</span><div><h2>Theory / Practice Connection</h2><p>Optional. Pick what might have informed the practice. Not sure is okay.</p></div></div>
-      ${reflectionChipGroup([...reflectionPracticeQuick,"Not sure"],"reflection-practice-chip reflection-practice-quick-chip")}
-      <div class="reflection-theory-actions"><button type="button" class="text-link" id="openPracticeLibrary">More Theories and Frameworks</button><button type="button" class="text-link" id="helpIdentifyTheory">Help Me Identify It</button></div>
+      <div class="reflection-section-heading"><span class="reflection-step-number">5</span><div><h2>Theory / Practice Connection</h2><p>Optional</p></div></div>
+      <div class="reflection-button-grid reflection-practice-quick-grid">
+        ${[
+          ["Recovery Oriented Practice","Recovery"],
+          ["Strengths Based Practice","Strengths"],
+          ["Trauma Informed Practice","Trauma Informed"],
+          ["Person Centred Practice","Person Centred"]
+        ].map(([value,label])=>`<button type="button" class="reflection-choice-chip reflection-practice-chip reflection-practice-quick-chip" data-value="${safeText(value)}">${safeText(label)}</button>`).join("")}
+      </div>
+      <div class="reflection-theory-actions"><button type="button" class="text-link" id="openPracticeLibrary">More Theories</button><button type="button" class="text-link" id="helpIdentifyTheory">Help Me Identify It</button></div>
       <div class="reflection-practice-note hidden" id="reflectionPracticeNoteWrap"><label for="reflectionPracticeNote"><strong>How did you see this in practice?</strong><span>Optional · one sentence is enough</span></label><textarea id="reflectionPracticeNote" class="textarea reflection-mini-note" placeholder="e.g. The consumer was given choice about family involvement rather than staff deciding for them."></textarea></div>
       <div class="reflection-theory-panel hidden" id="practiceLibraryPanel"><div class="reflection-theory-panel-head"><strong>More Theories and Frameworks</strong><button type="button" class="text-link" id="closePracticeLibrary">Close</button></div><input id="practiceLibrarySearch" class="input" placeholder="Search theory or framework"><div class="reflection-button-grid reflection-practice-library">${reflectionPracticeLibrary.map(item=>`<button type="button" class="reflection-choice-chip reflection-practice-chip reflection-practice-library-chip" data-value="${safeText(item)}">${safeText(item)}</button>`).join("")}</div></div>
       <div class="reflection-theory-panel hidden" id="theoryHelperPanel"><div class="reflection-theory-panel-head"><strong>What stood out most?</strong><button type="button" class="text-link" id="closeTheoryHelper">Close</button></div><p class="reflection-theory-helper-copy">Tap one or more. These are clues, not a test.</p>${reflectionChipGroup(Object.keys(reflectionTheoryCueMap),"reflection-theory-cue-chip")}<div class="reflection-theory-suggestions" id="theorySuggestions"><small>Tap what stood out and Practice Compass will suggest possible connections.</small></div></div>
     </section>
 
     <section class="conversation-card reflection-choice-card reflection-critical-card">
-      <div class="reflection-section-heading"><span class="reflection-step-number">6</span><div><h2>Think a Little Deeper</h2><p>Optional critical reflection. Use this when something is worth unpacking further.</p></div></div>
-      <div class="reflection-critical-toggle"><button type="button" class="btn secondary reflection-critical-button" id="thinkDeeper">Choose a Reflection Prompt</button></div>
+      <div class="reflection-section-heading"><span class="reflection-step-number">6</span><div><h2>Think a Little Deeper</h2><p>Optional critical reflection</p></div></div>
+      <div class="reflection-critical-toggle"><button type="button" class="btn secondary reflection-critical-button" id="thinkDeeper">Choose a Prompt <span aria-hidden="true">›</span></button></div>
       <div class="reflection-adaptive-note hidden" id="criticalReflectionWrap"><div class="reflection-critical-head"><label for="criticalReflectionAnswer"><strong id="criticalReflectionPrompt"></strong><span>Optional · one or two lines is enough</span></label><button type="button" class="text-link" id="anotherCriticalPrompt">Another Prompt</button></div><textarea id="criticalReflectionAnswer" class="textarea reflection-mini-note" placeholder="Add what you want to remember..."></textarea></div>
     </section>
 
-    <section class="conversation-card reflection-project-card">
-      <div><strong>Part of My Project?</strong><small>Tag it so it can also feed your three project reflections.</small></div>
-      <div class="reflection-binary"><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectYes" data-value="yes">Yes</button><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectNo" data-value="no">No</button></div>
-    </section>
-    <section class="conversation-card reflection-supervision-followup-card">
-      <div><strong>Bring to Supervision?</strong><small>Tag this if you want it waiting in your Supervision folder.</small></div>
-      <button type="button" class="reflection-choice-chip reflection-supervision-chip" id="reflectionSupervisionFollowUp">Bring to Supervision</button>
+    <section class="conversation-card reflection-routing-card">
+      <div class="reflection-routing-row">
+        <strong>Part of My Project?</strong>
+        <div class="reflection-binary"><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectYes" data-value="yes">Yes</button><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectNo" data-value="no">No</button></div>
+      </div>
+      <div class="reflection-routing-row">
+        <strong>Bring to Supervision?</strong>
+        <button type="button" class="reflection-choice-chip reflection-supervision-chip" id="reflectionSupervisionFollowUp">Add</button>
+      </div>
     </section>
     <button class="btn reflection-save-button" id="saveEntry">${editingId?"Update Reflection":"Save Reflection"}</button>
   </form>
@@ -2172,24 +2209,15 @@ function assessmentPage(){
   const assessmentRow=a=>{
     const status=assessmentOverallStatus(a);
     const meta=taskStatuses[status];
-    const progress=assessmentProgress(a);
-    const planning=assessmentPlanning(a.id);
-    const timing=planning.date
-      ? `My target ${formatPlanningDate(planning.date)}`
-      : (a.when||"Check current JCU timing");
-    const showProgress=progress>0;
-    return `<article class="native-assessment-row">
+    const componentSummary=assessmentComponentSummary(a);
+    return `<article class="native-assessment-row assessment-row-compact">
       <button class="native-assessment-open assessment" data-id="${a.id}" aria-label="Open ${a.title}">
         <span class="native-assessment-icon" aria-hidden="true">${a.icon}</span>
         <span class="native-assessment-copy">
-          <span class="native-assessment-head">
-            <strong>${a.title}</strong>
-            <span class="status-inline ${meta.className}">${meta.label}</span>
-          </span>
-          <span class="native-assessment-timing">${timing}</span>
-          ${["integration","reflections","midfinal"].includes(a.id)?`<span class="native-assessment-component-summary">${assessmentComponentSummary(a)}</span>`:(showProgress?`<span class="native-assessment-progress"><span><i style="width:${progress}%"></i></span><small>${progress}%</small></span>`:"")}
+          <strong>${a.title}</strong>
+          <span class="assessment-row-meta"><span class="status-inline ${meta.className}">${meta.label}</span>${componentSummary?`<small>${componentSummary}</small>`:""}</span>
         </span>
-        <span class="native-assessment-action">Open <b>›</b></span>
+        <span class="native-assessment-action"><b>›</b></span>
       </button>
     </article>`;
   };
@@ -2346,17 +2374,17 @@ function whereImGrowingPage(){
 
 function integrationSessionManager(){
   const sessions=integrationSessions();
-  return `<section class="assessment-clear-section integration-session-section" aria-labelledby="integration-session-heading">
-    <div class="assessment-clear-section-heading"><span>☕</span><h2 id="integration-session-heading">Integration Session Details</h2></div>
-    <div class="integration-session-list">${sessions.map(item=>`<article class="integration-session-card" data-integration-card="${item.id}">
-      <div class="integration-session-card-heading"><div><strong>${item.label}</strong><small>${item.date?formatPlanningDate(item.date):"No date set"}</small></div><span class="integration-status integration-status-${item.status}">${integrationStatusLabel(item.status)}</span></div>
-      <div class="integration-session-fields">
-        <label><span>Date</span><input type="date" class="input integration-date" data-session-id="${item.id}" value="${escapeAttribute(item.date)}"></label>
-        <label><span>Status</span><select class="select integration-status-select" data-session-id="${item.id}"><option value="not_booked" ${item.status==="not_booked"?"selected":""}>Not booked</option><option value="booked" ${item.status==="booked"?"selected":""}>Booked</option><option value="completed" ${item.status==="completed"?"selected":""}>Completed</option></select></label>
-      </div>
-      <label class="integration-note-label"><span>Optional note</span><input type="text" class="input integration-note" data-session-id="${item.id}" maxlength="120" value="${escapeAttribute(item.note||"")}" placeholder="Anything to remember"></label>
+  return `<section class="assessment-simple-components">
+    <div class="assessment-simple-components-head"><h2>Integration Sessions</h2><span>${assessmentComponentSummary({id:"integration"})}</span></div>
+    <div class="assessment-component-list">${sessions.map(item=>`<article class="assessment-component-row ${item.status==="completed"?"is-complete":""}">
+      <span><strong>${safeText(item.label)}</strong><small>${item.date?formatPlanningDate(item.date):"No date set"}</small></span>
+      <select class="integration-status-select assessment-component-status" data-session-id="${item.id}">
+        <option value="not_booked" ${item.status==="not_booked"?"selected":""}>Not Started</option>
+        <option value="booked" ${item.status==="booked"?"selected":""}>In Progress</option>
+        <option value="completed" ${item.status==="completed"?"selected":""}>Completed</option>
+      </select>
     </article>`).join("")}</div>
-    <button class="btn integration-save" id="saveIntegrationSessions">Save session details</button>
+    <button class="btn secondary assessment-simple-save" id="saveIntegrationSessions">Save Changes</button>
   </section>`;
 }
 
@@ -2378,151 +2406,128 @@ function officialAssessmentInfo(a){
 function assessmentDetail(id,openPlanning=false){
   const a=assessments.find(x=>x.id===id);
   const entries=savedEntries().filter(e=>(e.evidence||[]).includes(a.title)||smartAssessmentEntryMatch(e,a.id));
-  const reqs=assessmentRequirements[a.title]||[];
   const overall=assessmentOverallStatus(a);
   const overallMeta=taskStatuses[overall];
   const progress=assessmentProgress(a);
+  const planning=assessmentPlanning(a.id);
+  const official=officialAssessmentInfo(a);
   const toolkitLinks=(a.toolkit||[]);
+  const componentProgress=["integration","reflections","midfinal"].includes(a.id)?assessmentComponentProgress(a.id):null;
   const taskItems=(a.tasks||[]).map((task,index)=>({task,index,status:getTaskStatus(a.id,index)}));
   const incomplete=taskItems.filter(item=>item.status!=="complete");
-  const completeCount=taskItems.length-incomplete.length;
-  const official=officialAssessmentInfo(a);
-  const planning=assessmentPlanning(a.id);
-  const missingRequirements=reqs.filter(requirement=>!entries.some(entry=>(entry.evidenceTypes||[]).includes(requirement)));
-  const nextIntegrationSession=a.id==="integration"?integrationSessions().find(item=>item.status!=="completed"):null;
-  const componentProgress=["reflections","midfinal"].includes(a.id)?assessmentComponentProgress(a.id):null;
-  const nextTask=a.id==="integration"
-    ? (nextIntegrationSession?`${nextIntegrationSession.label} · ${nextIntegrationSession.date?formatPlanningDate(nextIntegrationSession.date):"date not set"}`:"All three Integration Sessions completed")
-    : (componentProgress?(componentProgress.next||"All components completed"):(incomplete.length?incomplete[0].task:"Check the official submission or sign off step"));
+  const automaticNextTask=componentProgress ? (componentProgress.next||"Everything is completed") : (incomplete[0]?.task||"Everything is completed");
+  const customNext=assessmentNextStep(a.id);
+  const nextTask=customNext.text||automaticNextTask;
 
-  const taskRow=item=>{
-    const meta=taskStatuses[item.status];
-    return `<div class="assessment-clear-task ${item.status==="complete"?"is-complete":""}">
-      <input class="task-complete-check" type="checkbox" data-assessment="${a.id}" data-index="${item.index}" ${item.status==="complete"?"checked":""} aria-label="Mark ${item.task} complete">
-      <span class="assessment-clear-task-copy">${item.task}</span>
-      <select class="task-status-select ${meta.className}" data-assessment="${a.id}" data-index="${item.index}" aria-label="Status for ${item.task}">
-        ${Object.entries(taskStatuses).map(([value,m])=>`<option value="${value}" ${value===item.status?"selected":""}>${m.label}</option>`).join("")}
-      </select>
-    </div>`;
-  };
+  const simpleTaskRows=taskItems.map(item=>`<article class="assessment-component-row ${item.status==="complete"?"is-complete":""}">
+    <span><strong>${safeText(item.task)}</strong></span>
+    <select class="task-status-select assessment-component-status" data-assessment="${a.id}" data-index="${item.index}">
+      <option value="not_started" ${item.status==="not_started"?"selected":""}>Not Started</option>
+      <option value="in_progress" ${item.status==="in_progress"?"selected":""}>In Progress</option>
+      <option value="complete" ${item.status==="complete"?"selected":""}>Completed</option>
+    </select>
+  </article>`).join("");
 
   document.getElementById("main").innerHTML=`
-    <div class="assessment-clear-page">
-      <button class="assessment-back-link" id="backAssess" aria-label="Back to My Placement">‹ <span>My Placement</span></button>
-
-      <header class="assessment-clear-header">
-        <div class="assessment-clear-icon">${a.icon}</div>
-        <div class="assessment-clear-title">
+    <div class="assessment-simple-page">
+      <button class="assessment-back-link" id="backAssess">‹ <span>My Placement</span></button>
+      <header class="assessment-simple-header">
+        <div>
           <span class="status-inline ${overallMeta.className}">${overallMeta.label}</span>
           <h1>${a.title}</h1>
           <p>${a.when}</p>
         </div>
-
+        <div class="assessment-simple-progress-number">
+          <strong>${componentProgress?`${componentProgress.done}/${componentProgress.total}`:`${progress}%`}</strong>
+          <small>complete</small>
+        </div>
       </header>
-
-      <section class="assessment-clear-section" aria-labelledby="assessment-what-heading">
-        <div class="assessment-clear-section-heading"><span>01</span><h2 id="assessment-what-heading">What it is</h2></div>
-        <p class="assessment-clear-lead">${a.purpose||a.plain}</p>
-      </section>
-
-      <section class="assessment-clear-section" aria-labelledby="assessment-do-heading">
-        <div class="assessment-clear-section-heading"><span>02</span><h2 id="assessment-do-heading">What to look for and do</h2></div>
-        <div class="assessment-focus-list">
-          ${(a.tasks||[]).slice(0,4).map(task=>`<p><span>✓</span>${task}</p>`).join("")}
-          ${reqs.slice(0,3).map(item=>`<p><span>○</span>Notice evidence of ${safeText(item).toLowerCase()}</p>`).join("")}
+      <div class="assessment-clear-progress assessment-simple-progress"><span style="width:${progress}%"></span></div>
+      <section class="assessment-simple-next ${customNext.text?"is-custom":""}">
+        <div class="assessment-next-display">
+          <div><small>Next Step</small><strong>${safeText(nextTask)}</strong>${customNext.dueDate?`<span>Due ${formatPlanningDate(customNext.dueDate)}</span>`:""}</div>
+          <button type="button" class="text-link assessment-next-edit" id="editAssessmentNextStep">${customNext.text?"Edit":"Add"}</button>
         </div>
-        <details class="assessment-quiet-details">
-          <summary><span>What JCU expects</span><small>Open guidance</small></summary>
-          <div><p>${official.requirement}</p><p class="assessment-scope-note">${official.record}</p></div>
-        </details>
-        ${!["integration","reflections","midfinal"].includes(a.id)&&taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
+        ${customNext.text?`<button type="button" class="assessment-next-done" id="completeAssessmentNextStep">Done</button>`:""}
       </section>
-
-      <section class="assessment-clear-section assessment-priority-panel" aria-labelledby="assessment-plan-heading">
-        <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-plan-heading">My plan and progress</h2></div>
-        <div class="assessment-priority-main">
-          <div><small>Next useful step</small><strong>${nextTask}</strong></div>
-          <div class="assessment-priority-percent"><strong>${["integration","reflections","midfinal"].includes(a.id)?assessmentComponentProgress(a.id).done+" / "+assessmentComponentProgress(a.id).total:progress+"%"}</strong><small>complete</small></div>
-        </div>
-        <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
-        <div class="assessment-priority-grid assessment-priority-grid-two">
-          <div><small>Linked evidence</small><strong>${entries.length} reflection${entries.length===1?"":"s"}</strong></div>
-          <div><small>My target date</small><strong>${planning.date?formatPlanningDate(planning.date):"Not set"}</strong></div>
-        </div>
-        <details class="assessment-plan-editor" id="assessmentPlanning" ${openPlanning?"open":""}>
-          <summary><span>Edit my plan</span><small>${planning.date?formatPlanningDate(planning.date):"No date set"}</small></summary>
-          <div class="assessment-planning-controls">
-            <label class="label" for="planningDate">My target date</label>
-            <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
-            <label class="label" for="planningReason">Planning note</label>
-            <input id="planningReason" type="text" class="input" maxlength="120" value="${escapeAttribute(planning.reason)}" placeholder="What do I need to focus on next?">
-            <div class="assessment-planning-actions"><button class="btn" id="savePlanningDate">Save plan</button><button class="btn secondary" id="clearPlanningDate" ${planning.date||planning.reason?"":"disabled"}>Clear</button></div>
-          </div>
-        </details>
-        ${entries.length?`<details class="assessment-clear-linked"><summary>Linked reflections <span>${entries.length}</span></summary><div>${entries.map(e=>`<article><strong>${e.date}</strong><p>${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</p></article>`).join("")}</div></details>`:""}
-      </section>
+      <div class="assessment-next-editor hidden" id="assessmentNextStepEditor">
+        <label><span>What Do I Need to Do Next?</span><input id="assessmentNextStepText" class="input" maxlength="140" value="${escapeAttribute(customNext.text)}" placeholder="${escapeAttribute(automaticNextTask)}"></label>
+        <label><span>Optional Due Date</span><input id="assessmentNextStepDue" type="date" class="input" value="${escapeAttribute(customNext.dueDate)}"></label>
+        <div class="assessment-next-editor-actions"><button type="button" class="btn" id="saveAssessmentNextStep">Save Next Step</button><button type="button" class="btn secondary" id="cancelAssessmentNextStep">Cancel</button></div>
+      </div>
 
       ${["reflections","midfinal"].includes(a.id)?componentAssessmentManager(a):""}
       ${a.id==="integration"?integrationSessionManager():""}
+      ${!["integration","reflections","midfinal"].includes(a.id)?`<section class="assessment-simple-components"><div class="assessment-simple-components-head"><h2>Progress</h2></div><div class="assessment-component-list">${simpleTaskRows}</div></section>`:""}
 
-      <details class="assessment-secondary-details assessment-more-information">
-        <summary><span>More information</span><small>Toolkit and sources</small></summary>
-        <div class="assessment-secondary-content">
-          ${toolkitLinks.length?`<div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${item}"><span>📚</span><div><strong>${item}</strong></div><span>›</span></button>`).join("")}</div>`:""}
-          <div class="official-source-list">${official.sources.map(source=>`<div class="official-source-row"><span>✓</span><span>${source}</span></div>`).join("")}</div>
-          <p class="assessment-scope-note">${official.notice}</p>
+      <details class="assessment-simple-details" ${openPlanning?"open":""}>
+        <summary>Plan and Target Date</summary>
+        <div class="assessment-simple-details-body">
+          <label class="label" for="planningDate">Target Date</label>
+          <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
+          <label class="label" for="planningReason">Note</label>
+          <input id="planningReason" type="text" class="input" maxlength="120" value="${escapeAttribute(planning.reason)}" placeholder="Optional">
+          <div class="assessment-planning-actions">
+            <button class="btn" id="savePlanningDate">Save</button>
+            <button class="btn secondary" id="clearPlanningDate" ${planning.date||planning.reason?"":"disabled"}>Clear</button>
+          </div>
+        </div>
+      </details>
+
+      ${entries.length?`<details class="assessment-simple-details"><summary>Linked Reflections <span>${entries.length}</span></summary><div class="assessment-simple-details-body">${entries.map(e=>`<article class="assessment-linked-simple"><strong>${safeText(e.date)}</strong><p>${safeText((e.answer||"").slice(0,150))}${(e.answer||"").length>150?"…":""}</p></article>`).join("")}</div></details>`:""}
+
+      <details class="assessment-simple-details">
+        <summary>More Information</summary>
+        <div class="assessment-simple-details-body">
+          <p>${safeText(a.purpose||"")}</p>
+          <p>${safeText(official.requirement)}</p>
+          ${toolkitLinks.length?`<div class="linked-resource-list">${toolkitLinks.map(item=>`<button class="linked-resource" data-toolkit-name="${safeText(item)}"><span>📚</span><div><strong>${safeText(item)}</strong></div><span>›</span></button>`).join("")}</div>`:""}
         </div>
       </details>
     </div>`;
 
   document.getElementById("backAssess").onclick=()=>{route="assessments";render()};
+
   document.getElementById("saveIntegrationSessions")?.addEventListener("click",()=>{
     const current=integrationSessions();
-    const updated=current.map(item=>({
-      ...item,
-      date:document.querySelector(`.integration-date[data-session-id="${item.id}"]`)?.value||"",
-      status:document.querySelector(`.integration-status-select[data-session-id="${item.id}"]`)?.value||"not_booked",
-      note:document.querySelector(`.integration-note[data-session-id="${item.id}"]`)?.value.trim()||""
-    }));
-    saveIntegrationSessions(updated);
-    alert("Integration session details saved ☕");
-    assessmentDetail("integration");
+    const updated=current.map(item=>({...item,status:document.querySelector(`.integration-status-select[data-session-id="${item.id}"]`)?.value||item.status}));
+    saveIntegrationSessions(updated); assessmentDetail("integration");
   });
-  document.getElementById("savePlanningDate").onclick=()=>{
-    const date=document.getElementById("planningDate").value;
-    const reason=document.getElementById("planningReason").value.trim();
-    saveAssessmentPlanning(a.id,date,reason);
+
+  document.querySelectorAll(".assessment-component-status").forEach(select=>{
+    if(select.classList.contains("integration-status-select"))return;
+    if(select.dataset.component){
+      select.onchange=()=>{setAssessmentComponentStatus(select.dataset.assessment,select.dataset.component,select.value);assessmentDetail(id);};
+    }else if(select.dataset.index!==undefined){
+      select.onchange=()=>{setTaskStatus(select.dataset.assessment,Number(select.dataset.index),select.value);assessmentDetail(id);};
+    }
+  });
+
+  document.getElementById("editAssessmentNextStep")?.addEventListener("click",()=>{
+    document.getElementById("assessmentNextStepEditor")?.classList.remove("hidden");
+    document.getElementById("assessmentNextStepText")?.focus();
+  });
+  document.getElementById("cancelAssessmentNextStep")?.addEventListener("click",()=>{
+    document.getElementById("assessmentNextStepEditor")?.classList.add("hidden");
+  });
+  document.getElementById("saveAssessmentNextStep")?.addEventListener("click",()=>{
+    const text=document.getElementById("assessmentNextStepText")?.value.trim()||"";
+    const due=document.getElementById("assessmentNextStepDue")?.value||"";
+    if(!text){alert("Add the next step first.");return;}
+    saveAssessmentNextStep(a.id,text,due);
+    assessmentDetail(id);
+  });
+  document.getElementById("completeAssessmentNextStep")?.addEventListener("click",()=>{
+    clearAssessmentNextStep(a.id);
+    assessmentDetail(id);
+  });
+
+  document.getElementById("savePlanningDate")?.addEventListener("click",()=>{
+    saveAssessmentPlanning(a.id,document.getElementById("planningDate").value,document.getElementById("planningReason").value.trim());
     assessmentDetail(id,true);
-  };
-  document.getElementById("clearPlanningDate").onclick=()=>{
-    clearAssessmentPlanning(a.id);
-    assessmentDetail(id,true);
-  };
-
-  document.querySelectorAll(".task-complete-check").forEach(check=>{
-    check.onchange=()=>{
-      setTaskStatus(check.dataset.assessment,Number(check.dataset.index),check.checked?"complete":"not_started");
-      assessmentDetail(id);
-    };
   });
-
-  document.querySelectorAll(".task-status-select").forEach(select=>{
-    select.onchange=()=>{
-      setTaskStatus(select.dataset.assessment,Number(select.dataset.index),select.value);
-      assessmentDetail(id);
-    };
-  });
-
-  document.querySelectorAll(".assessment-component-check").forEach(check=>{
-    check.onchange=()=>{
-      setAssessmentComponentStatus(check.dataset.assessment,check.dataset.component,check.checked?"complete":"not_started");
-      assessmentDetail(id);
-    };
-  });
-
-  document.querySelectorAll(".linked-resource").forEach(button=>{
-    button.onclick=()=>openToolkitTopicByName(button.dataset.toolkitName);
-  });
+  document.getElementById("clearPlanningDate")?.addEventListener("click",()=>{clearAssessmentPlanning(a.id);assessmentDetail(id,true);});
+  document.querySelectorAll(".linked-resource").forEach(button=>button.onclick=()=>openToolkitTopicByName(button.dataset.toolkitName));
 }
 
 function learnPage(){
