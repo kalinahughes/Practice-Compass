@@ -5422,3 +5422,117 @@ main{padding-inline:18px}
 .reflection-practice-connection-card #criticalReflectionWrap{
   margin-top:0;
 }
+
+
+/* Functionality sprint: quieter Reflect surface */
+.reflection-quick-flow .conversation-card,
+.reflection-quick-flow .reflection-choice-card,
+.reflection-quick-flow .reflection-journal-card,
+.reflection-quick-flow .reflection-practice-connection-card,
+.reflection-quick-flow .reflection-critical-card,
+.reflection-quick-flow .reflection-project-card,
+.reflection-quick-flow .reflection-supervision-followup-card{
+  background:#fff !important;
+}
+.reflection-supervision-followup-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.reflection-supervision-followup-card > div{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.reflection-supervision-followup-card small{color:var(--muted,#6f756f);}
+.reflection-supervision-chip{flex:0 0 auto;}
+.reflection-supervision-tag{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  margin:10px 0 0;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#edf3ee;
+  color:#53675a;
+  font-size:12px;
+  font-weight:700;
+}
+.reflection-edit-button{
+  margin-top:14px;
+  width:auto;
+}
+.reflection-editing-note{
+  margin:0 0 14px;
+  padding:10px 14px;
+  border-radius:12px;
+  background:#edf3ee;
+  color:#53675a;
+  font-size:13px;
+  font-weight:700;
+}
+
+/* Assessment components */
+.native-assessment-component-summary{
+  display:block;
+  margin-top:7px;
+  font-size:12px;
+  font-weight:700;
+  color:#5e6d62;
+}
+.assessment-component-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.assessment-component-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 2px;
+  border-bottom:1px solid rgba(83,103,90,.12);
+}
+.assessment-component-row:last-child{border-bottom:0;}
+.assessment-component-row input{
+  width:20px;
+  height:20px;
+  accent-color:#627b68;
+}
+.assessment-component-row > span{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.assessment-component-row small{color:#7b817c;}
+.assessment-component-row.is-complete strong{
+  color:#69736b;
+  text-decoration:none;
+}
+
+/* Supervision history + linked reflection follow ups */
+.supervision-reflection-followups,
+.supervision-previous-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:10px;
+}
+.supervision-reflection-followup,
+.supervision-previous-row{
+  padding:12px 0;
+  border-bottom:1px solid rgba(83,103,90,.12);
+}
+.supervision-reflection-followup:last-child,
+.supervision-previous-row:last-child{border-bottom:0;}
+.supervision-reflection-followup{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+}
+.supervision-reflection-followup p,
+.supervision-previous-row p{
+  margin:5px 0 0;
+}
+.supervision-record-card textarea{min-height:120px;}

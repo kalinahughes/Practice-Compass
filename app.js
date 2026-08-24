@@ -1672,12 +1672,95 @@ function escapeAttribute(value){
   return String(value||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
+
+function assessmentComponentDefinitions(id){
+  if(id==="reflections")return [
+    {id:"reflection1",label:"Project Reflection 1"},
+    {id:"reflection2",label:"Project Reflection 2"},
+    {id:"reflection3",label:"Project Reflection 3"}
+  ];
+  if(id==="midfinal")return [
+    {id:"mid",label:"Mid Placement Self Assessment"},
+    {id:"final",label:"Final Placement Self Assessment"}
+  ];
+  return [];
+}
+function assessmentComponentState(id){
+  const all=state.get("assessmentComponents",{});
+  const saved=all&&typeof all==="object"&&all[id]&&typeof all[id]==="object"?all[id]:{};
+  const defs=assessmentComponentDefinitions(id);
+  if(!defs.length)return {};
+  const next={...saved};
+  let changed=false;
+  if(id==="reflections"){
+    const growth=state.get("whereImGrowing",{});
+    defs.forEach((item,index)=>{
+      if(!next[item.id]){
+        const legacy=getTaskStatus("reflections",index);
+        const growthComplete=Boolean(growth[`project-reflection-${index+1}`]);
+        next[item.id]=(legacy==="complete"||growthComplete)?"complete":legacy==="in_progress"||legacy==="waiting"?"in_progress":"not_started";
+        changed=true;
+      }
+    });
+  }
+  if(id==="midfinal"){
+    const growth=state.get("whereImGrowing",{});
+    const legacyStatuses=(assessments.find(a=>a.id==="midfinal")?.tasks||[]).map((_,index)=>getTaskStatus("midfinal",index));
+    const legacyComplete=legacyStatuses.length>0&&legacyStatuses.every(status=>status==="complete");
+    if(!next.mid){next.mid=(legacyComplete||growth["mid-self-assessment"])?"complete":legacyStatuses.some(status=>status==="in_progress"||status==="waiting"||status==="complete")?"in_progress":"not_started";changed=true;}
+    if(!next.final){next.final="not_started";changed=true;}
+  }
+  if(changed){all[id]=next;state.set("assessmentComponents",all);}
+  return next;
+}
+function setAssessmentComponentStatus(id,componentId,status){
+  const all=state.get("assessmentComponents",{});
+  const current=assessmentComponentState(id);
+  all[id]={...current,[componentId]:status};
+  state.set("assessmentComponents",all);
+  if(id==="reflections"){
+    const index=assessmentComponentDefinitions(id).findIndex(item=>item.id===componentId);
+    if(index>=0)setTaskStatus("reflections",index,status==="complete"?"complete":status==="in_progress"?"in_progress":"not_started");
+  }
+}
+function assessmentComponentProgress(id){
+  if(id==="integration"){
+    const sessions=integrationSessions(),done=sessions.filter(item=>item.status==="completed").length;
+    return {done,total:sessions.length,next:sessions.find(item=>item.status!=="completed")?.label||"",allComplete:Boolean(sessions.length)&&done===sessions.length};
+  }
+  const defs=assessmentComponentDefinitions(id),statuses=assessmentComponentState(id);
+  const done=defs.filter(item=>statuses[item.id]==="complete").length;
+  const next=defs.find(item=>statuses[item.id]!=="complete");
+  return {done,total:defs.length,next:next?.label||"",allComplete:Boolean(defs.length)&&done===defs.length};
+}
+function assessmentComponentSummary(a){
+  if(!["integration","reflections","midfinal"].includes(a.id))return "";
+  const progress=assessmentComponentProgress(a.id);
+  return `${progress.done} of ${progress.total} complete`;
+}
+function componentAssessmentManager(a){
+  const defs=assessmentComponentDefinitions(a.id),statuses=assessmentComponentState(a.id);
+  if(!defs.length)return "";
+  return `<section class="assessment-clear-section assessment-component-section" aria-labelledby="assessment-components-heading">
+    <div class="assessment-clear-section-heading"><span>✓</span><h2 id="assessment-components-heading">${a.id==="reflections"?"Project Reflections":"Self Assessments"}</h2></div>
+    <div class="assessment-component-list">${defs.map(item=>{
+      const status=statuses[item.id]||"not_started";
+      const complete=status==="complete";
+      return `<label class="assessment-component-row ${complete?"is-complete":""}">
+        <input type="checkbox" class="assessment-component-check" data-assessment="${a.id}" data-component="${item.id}" ${complete?"checked":""}>
+        <span><strong>${safeText(item.label)}</strong><small>${complete?"Completed":status==="in_progress"?"In progress":"Not completed"}</small></span>
+      </label>`;
+    }).join("")}</div>
+  </section>`;
+}
+
 function assessmentOverallStatus(a){
-  if(a.id==="integration"){
-    const sessions=integrationSessions();
-    if(sessions.length&&sessions.every(item=>item.status==="completed")) return "complete";
-    if(sessions.some(item=>item.status==="completed")) return "in_progress";
-    if(sessions.some(item=>item.status==="booked")) return "in_progress";
+  if(["integration","reflections","midfinal"].includes(a.id)){
+    const progress=assessmentComponentProgress(a.id);
+    if(progress.allComplete)return "complete";
+    if(progress.done>0)return "in_progress";
+    if(a.id==="integration"&&integrationSessions().some(item=>item.status==="booked"))return "in_progress";
+    if(a.id!=="integration"&&Object.values(assessmentComponentState(a.id)).some(status=>status==="in_progress"))return "in_progress";
     return "not_started";
   }
   const tasks=a.tasks||[];
@@ -1690,11 +1773,9 @@ function assessmentOverallStatus(a){
 }
 
 function assessmentProgress(a){
-  if(a.id==="integration"){
-    const sessions=integrationSessions();
-    if(!sessions.length) return 0;
-    const completed=sessions.filter(item=>item.status==="completed").length;
-    return Math.round((completed/sessions.length)*100);
+  if(["integration","reflections","midfinal"].includes(a.id)){
+    const progress=assessmentComponentProgress(a.id);
+    return progress.total?Math.round((progress.done/progress.total)*100):0;
   }
   const tasks=a.tasks||[];
   if(!tasks.length) return 0;
@@ -1780,6 +1861,9 @@ function todayPage(){
   const remaining=Math.max(0,totalHours-h);
   const progress=Math.min(100,Math.round((h/totalHours)*100));
   const status=taskStatuses[assessmentOverallStatus(current)];
+  const currentComponents=["integration","reflections","midfinal"].includes(current.id)?assessmentComponentProgress(current.id):null;
+  const currentDisplayTitle=currentComponents?.next||current.title;
+  const currentDisplayWhen=currentComponents?.next?`${current.title} · ${assessmentComponentSummary(current)}`:current.when;
   const dayLabel=new Intl.DateTimeFormat('en-AU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   const placementLabel=info.started?`Placement week ${info.week}`:(info.notConfigured?`Add your placement start date in My Journey`:`Placement begins in ${info.daysUntil} days`);
   return `
@@ -1798,8 +1882,8 @@ function todayPage(){
         <span class="home-focus-label">What’s next</span>
         <span class="status-inline ${status.className}">${status.icon} ${status.label}</span>
       </div>
-      <h2>${current.title}</h2>
-      <p>${current.when}</p>
+      <h2>${currentDisplayTitle}</h2>
+      <p>${currentDisplayWhen}</p>
       <div class="home-focus-action">
         <div><span>Start here</span><strong>${stage.focus[0]}</strong></div>
         <button class="home-primary-action" id="openCurrentAssessment" data-id="${current.id}" aria-label="Open ${current.title}">${homeIcon('arrow')}</button>
@@ -1928,7 +2012,7 @@ const reflectionTheoryCueMap={
   "Rights and access":["Rights Based Practice","Anti Oppressive Practice","Social Justice Framework","Advocacy","Social Determinants of Health"]
 };
 function selectedReflectionButtons(selector){return [...document.querySelectorAll(`${selector}.selected`)].map(button=>button.dataset.value);}
-function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],practiceConnections:[],projectRelated:false,reflectionNote:"",practiceNote:"",criticalPrompt:"",criticalAnswer:"",updatedAt:""});}
+function reflectionDraft(){return state.get(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],practiceConnections:[],projectRelated:false,supervisionFollowUp:false,reflectionNote:"",practiceNote:"",criticalPrompt:"",criticalAnswer:"",updatedAt:""});}
 function captureReflectionDraft(){
   const draft={
     answer:document.getElementById("answer")?.value||"",
@@ -1937,6 +2021,7 @@ function captureReflectionDraft(){
     focus:selectedReflectionButtons(".reflection-focus-chip"),
     practiceConnections:selectedReflectionButtons(".reflection-practice-chip"),
     projectRelated:document.getElementById("reflectionProjectYes")?.classList.contains("selected")||false,
+    supervisionFollowUp:document.getElementById("reflectionSupervisionFollowUp")?.classList.contains("selected")||false,
     reflectionNote:document.getElementById("reflectionNote")?.value||"",
     practiceNote:document.getElementById("reflectionPracticeNote")?.value||"",
     criticalPrompt:document.getElementById("criticalReflectionPrompt")?.textContent||"",
@@ -1945,7 +2030,7 @@ function captureReflectionDraft(){
   };
   state.set(REFLECTION_DRAFT_KEY,draft);return draft;
 }
-function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],practiceConnections:[],projectRelated:false,reflectionNote:"",practiceNote:"",criticalPrompt:"",criticalAnswer:"",updatedAt:""});}
+function clearReflectionDraft(){state.set(REFLECTION_DRAFT_KEY,{answer:"",involvement:[],outcomes:[],focus:[],practiceConnections:[],projectRelated:false,supervisionFollowUp:false,reflectionNote:"",practiceNote:"",criticalPrompt:"",criticalAnswer:"",updatedAt:""});state.set("editingReflectionId",null);}
 function reflectionPromptForSelection(){
   const selected=selectedReflectionButtons(".reflection-outcome-chip");
   return reflectionOutcomeOptions.find(option=>selected.includes(option.id)&&option.prompt)?.prompt||"";
@@ -1996,6 +2081,7 @@ function restoreReflectionDraft(){
   (draft.focus||[]).forEach(value=>document.querySelector(`.reflection-focus-chip[data-value="${CSS.escape(value)}"]`)?.classList.add("selected"));
   (draft.practiceConnections||[]).forEach(value=>document.querySelectorAll(`.reflection-practice-chip[data-value="${CSS.escape(value)}"]`).forEach(item=>item.classList.add("selected")));
   if(draft.projectRelated)document.getElementById("reflectionProjectYes")?.classList.add("selected");else document.getElementById("reflectionProjectNo")?.classList.add("selected");
+  if(draft.supervisionFollowUp)document.getElementById("reflectionSupervisionFollowUp")?.classList.add("selected");
   updateReflectionPrompt();updatePracticeConnectionNote();
   if(draft.criticalPrompt)setCriticalReflectionPrompt(draft.criticalPrompt);
 }
@@ -2010,15 +2096,16 @@ function reflectionInsights(entries){
 function reflectionLibrary(entries){
   if(!entries.length)return `<section class="reflection-empty-state">🌱 Your reflection library will grow as you save learning moments.</section>`;
   const libraryOpen=state.get("reflectionLibraryOpen",false);
-  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse all</button></div><div id="reflectionLibraryList">${entries.map(e=>{const tags=[...(e.involvement||[]),...(e.outcomeTags||[]),...(e.learningOutcomeLabels||[]),...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])];const terms=[e.answer,e.moment,e.reflectionNote,...tags].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p>${e.reflectionNote?`<p class="reflection-library-note"><strong>Worth remembering:</strong> ${safeText(e.reflectionNote)}</p>`:""}${e.practiceNote?`<p class="reflection-library-note"><strong>Practice connection:</strong> ${safeText(e.practiceNote)}</p>`:""}${e.criticalAnswer?`<p class="reflection-library-note"><strong>${safeText(e.criticalPrompt||"Critical reflection")}</strong><br>${safeText(e.criticalAnswer)}</p>`:""}<div class="reflection-tag-list">${tags.slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div></div></details>`}).join("")}</div></div></details>`;
+  return `<details class="reflection-library reflection-library-collapsible" id="reflectionLibrary" ${libraryOpen?"open":""}><summary class="reflection-library-summary"><span><span class="reflection-library-summary-icon">📚</span><span><strong>Previous Reflections</strong><small>${entries.length} saved learning moment${entries.length===1?"":"s"}</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-library-body"><div class="reflection-library-tools"><input id="reflectionSearch" class="input" placeholder="Search reflections"><button type="button" class="text-link reflection-collapse-all" id="collapseAllReflections">Collapse All</button></div><div id="reflectionLibraryList">${entries.map(e=>{const tags=[...(e.involvement||[]),...(e.outcomeTags||[]),...(e.learningOutcomeLabels||[]),...(e.theories||[]),...(e.values||[]),...(e.ethics||[]),...(e.practiceStandards||[]),...(e.evidenceTypes||[])];const terms=[e.answer,e.moment,e.reflectionNote,...tags].filter(Boolean).join(" ");const preview=(e.moment||e.answer||"").replace(/\s+/g," ").trim();return `<details class="reflection-library-item" data-search="${safeText(terms.toLowerCase())}"><summary><span><strong>${safeText(e.date||"Reflection")}</strong><small>${safeText(preview.slice(0,90)||"Learning moment")}${preview.length>90?"…":""}</small></span><span>›</span></summary><div class="reflection-library-entry-body"><p>${safeText((e.moment||e.answer||"").slice(0,500))}</p>${e.reflectionNote?`<p class="reflection-library-note"><strong>Worth remembering:</strong> ${safeText(e.reflectionNote)}</p>`:""}${e.practiceNote?`<p class="reflection-library-note"><strong>Practice connection:</strong> ${safeText(e.practiceNote)}</p>`:""}${e.criticalAnswer?`<p class="reflection-library-note"><strong>${safeText(e.criticalPrompt||"Critical reflection")}</strong><br>${safeText(e.criticalAnswer)}</p>`:""}${e.supervisionFollowUp?`<p class="reflection-supervision-tag">☕ Bring to Supervision</p>`:""}<div class="reflection-tag-list">${tags.slice(0,8).map(x=>`<span>${safeText(x)}</span>`).join("")}</div><button type="button" class="btn secondary reflection-edit-button" data-edit-reflection="${e.id}">Edit Reflection</button></div></details>`}).join("")}</div></div></details>`;
 }
 function reflectionChipGroup(options,className,extra=""){
   return `<div class="reflection-button-grid ${extra}">${options.map(option=>{const value=typeof option==="string"?option:option.id;const label=typeof option==="string"?option:option.label;return `<button type="button" class="reflection-choice-chip ${className}" data-value="${safeText(value)}">${safeText(label)}</button>`}).join("")}</div>`;
 }
 function journalPage(){
   const entries=savedEntries();
+  const editingId=state.get("editingReflectionId",null);
   return `<section class="welcome-block reflection-welcome"><div class="eyebrow">Reflect</div><h1>💭 Reflect</h1><p class="welcome-text">Capture it once. Practice Compass will organise it for assessment later.</p></section>
-  ${lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved and added to your placement evidence.</section>`:""}
+  ${editingId?`<section class="reflection-editing-note">Editing Saved Reflection</section>`:(lastSavedReflection?`<section class="reflection-saved-note">✨ Reflection saved and added to your placement evidence.</section>`:"")}
   <form class="reflection-simple reflection-quick-flow" id="reflectionForm" onsubmit="return false">
     <section class="conversation-card reflection-journal-card reflection-primary-card">
       <div class="reflection-step-number">1</div>
@@ -2062,7 +2149,11 @@ function journalPage(){
       <div><strong>Part of My Project?</strong><small>Tag it so it can also feed your three project reflections.</small></div>
       <div class="reflection-binary"><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectYes" data-value="yes">Yes</button><button type="button" class="reflection-choice-chip reflection-project-chip" id="reflectionProjectNo" data-value="no">No</button></div>
     </section>
-    <button class="btn reflection-save-button" id="saveEntry">Save reflection</button>
+    <section class="conversation-card reflection-supervision-followup-card">
+      <div><strong>Bring to Supervision?</strong><small>Tag this if you want it waiting in your Supervision folder.</small></div>
+      <button type="button" class="reflection-choice-chip reflection-supervision-chip" id="reflectionSupervisionFollowUp">Bring to Supervision</button>
+    </section>
+    <button class="btn reflection-save-button" id="saveEntry">${editingId?"Update Reflection":"Save Reflection"}</button>
   </form>
   <details class="reflection-growth-note reflection-insight-collapsible" id="reflectionInsight" ${state.get("reflectionInsightOpen",false)?"open":""}><summary><span><span>🌿</span><span><strong>Reflection insight</strong><small>A pattern from your saved reflections</small></span></span><span class="reflection-library-summary-arrow">›</span></summary><div class="reflection-insight-body"><p>${safeText(reflectionInsights(entries))}</p></div></details>
   ${reflectionLibrary(entries)}`;
@@ -2096,7 +2187,7 @@ function assessmentPage(){
             <span class="status-inline ${meta.className}">${meta.label}</span>
           </span>
           <span class="native-assessment-timing">${timing}</span>
-          ${showProgress?`<span class="native-assessment-progress"><span><i style="width:${progress}%"></i></span><small>${progress}%</small></span>`:""}
+          ${["integration","reflections","midfinal"].includes(a.id)?`<span class="native-assessment-component-summary">${assessmentComponentSummary(a)}</span>`:(showProgress?`<span class="native-assessment-progress"><span><i style="width:${progress}%"></i></span><small>${progress}%</small></span>`:"")}
         </span>
         <span class="native-assessment-action">Open <b>›</b></span>
       </button>
@@ -2299,9 +2390,10 @@ function assessmentDetail(id,openPlanning=false){
   const planning=assessmentPlanning(a.id);
   const missingRequirements=reqs.filter(requirement=>!entries.some(entry=>(entry.evidenceTypes||[]).includes(requirement)));
   const nextIntegrationSession=a.id==="integration"?integrationSessions().find(item=>item.status!=="completed"):null;
+  const componentProgress=["reflections","midfinal"].includes(a.id)?assessmentComponentProgress(a.id):null;
   const nextTask=a.id==="integration"
     ? (nextIntegrationSession?`${nextIntegrationSession.label} · ${nextIntegrationSession.date?formatPlanningDate(nextIntegrationSession.date):"date not set"}`:"All three Integration Sessions completed")
-    : (incomplete.length?incomplete[0].task:"Check the official submission or sign off step");
+    : (componentProgress?(componentProgress.next||"All components completed"):(incomplete.length?incomplete[0].task:"Check the official submission or sign off step"));
 
   const taskRow=item=>{
     const meta=taskStatuses[item.status];
@@ -2343,14 +2435,14 @@ function assessmentDetail(id,openPlanning=false){
           <summary><span>What JCU expects</span><small>Open guidance</small></summary>
           <div><p>${official.requirement}</p><p class="assessment-scope-note">${official.record}</p></div>
         </details>
-        ${a.id!=="integration"&&taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
+        ${!["integration","reflections","midfinal"].includes(a.id)&&taskItems.length?`<details class="assessment-full-checklist"><summary><span>Full checklist</span><small>${completeCount} of ${taskItems.length} complete</small></summary><div class="assessment-clear-checklist">${taskItems.map(taskRow).join("")}</div></details>`:""}
       </section>
 
       <section class="assessment-clear-section assessment-priority-panel" aria-labelledby="assessment-plan-heading">
         <div class="assessment-clear-section-heading"><span>03</span><h2 id="assessment-plan-heading">My plan and progress</h2></div>
         <div class="assessment-priority-main">
           <div><small>Next useful step</small><strong>${nextTask}</strong></div>
-          <div class="assessment-priority-percent"><strong>${progress}%</strong><small>complete</small></div>
+          <div class="assessment-priority-percent"><strong>${["integration","reflections","midfinal"].includes(a.id)?assessmentComponentProgress(a.id).done+" / "+assessmentComponentProgress(a.id).total:progress+"%"}</strong><small>complete</small></div>
         </div>
         <div class="assessment-clear-progress" aria-label="${progress} percent complete"><span style="width:${progress}%"></span></div>
         <div class="assessment-priority-grid assessment-priority-grid-two">
@@ -2370,6 +2462,7 @@ function assessmentDetail(id,openPlanning=false){
         ${entries.length?`<details class="assessment-clear-linked"><summary>Linked reflections <span>${entries.length}</span></summary><div>${entries.map(e=>`<article><strong>${e.date}</strong><p>${e.answer.slice(0,150)}${e.answer.length>150?"...":""}</p></article>`).join("")}</div></details>`:""}
       </section>
 
+      ${["reflections","midfinal"].includes(a.id)?componentAssessmentManager(a):""}
       ${a.id==="integration"?integrationSessionManager():""}
 
       <details class="assessment-secondary-details assessment-more-information">
@@ -2416,6 +2509,13 @@ function assessmentDetail(id,openPlanning=false){
   document.querySelectorAll(".task-status-select").forEach(select=>{
     select.onchange=()=>{
       setTaskStatus(select.dataset.assessment,Number(select.dataset.index),select.value);
+      assessmentDetail(id);
+    };
+  });
+
+  document.querySelectorAll(".assessment-component-check").forEach(check=>{
+    check.onchange=()=>{
+      setAssessmentComponentStatus(check.dataset.assessment,check.dataset.component,check.checked?"complete":"not_started");
       assessmentDetail(id);
     };
   });
@@ -3003,8 +3103,21 @@ function timesheetPage(editId=null){
   };
 }
 
+
+function supervisionRecords(){return state.get("supervisionRecords",[]);}
+function reflectionSupervisionFollowUps(){
+  const discussed=state.get("supervisionReflectionDiscussed",{});
+  return savedEntries().filter(entry=>entry.supervisionFollowUp).map(entry=>({...entry,followedUp:Boolean(discussed[String(entry.id)])}));
+}
+function setReflectionFollowedUp(id,value){
+  const discussed=state.get("supervisionReflectionDiscussed",{});
+  discussed[String(id)]=Boolean(value);state.set("supervisionReflectionDiscussed",discussed);
+}
 function supervisionPage(){
   const items=supervisionItems();
+  const records=supervisionRecords();
+  const reflectionFollowUps=reflectionSupervisionFollowUps();
+  const activeFollowUps=reflectionFollowUps.filter(item=>!item.followedUp);
   const categories=[
     ["Practice situation","A situation or interaction I want help making sense of"],
     ["Theory or framework","A theory I am unsure about or want to apply more confidently"],
@@ -3016,22 +3129,41 @@ function supervisionPage(){
   ];
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backPlacement">‹</button><h2>☕ Supervision</h2></div>
-    <div class="card green supervision-intro"><div class="label">Bring one useful thing</div><p>Use this space to hold questions, situations and feedback points so supervision stays connected to your real placement learning.</p></div>
+    <div class="card green supervision-intro"><div class="label">Supervision</div><p>Keep questions, follow ups and your previous supervision notes together.</p></div>
+
+    <section class="card supervision-followup-card">
+      <div class="label">Follow Ups From Reflections</div>
+      ${activeFollowUps.length?`<div class="supervision-reflection-followups">${activeFollowUps.map(entry=>`<article class="supervision-reflection-followup"><div><small>${safeText(entry.date||"Reflection")}</small><p>${safeText((entry.moment||entry.answer||"").slice(0,220))}</p></div><button type="button" class="text-link supervision-followed-up" data-followed-up="${entry.id}">Followed up</button></article>`).join("")}</div>`:`<p class="muted personality-empty">Nothing tagged for supervision right now.</p>`}
+    </section>
+
     <section class="card supervision-capture-card">
-      <div class="label">What do I want to bring?</div>
+      <div class="label">What Do I Want to Bring?</div>
       <div class="supervision-category-grid">${categories.map(([name,cue])=>`<button type="button" class="supervision-category" data-supervision-category="${name}" data-supervision-cue="${cue}"><strong>${name}</strong><small>${cue}</small></button>`).join("")}</div>
       <label class="label" for="supType">Category</label><select id="supType" class="select">${categories.map(([name])=>`<option>${name}</option>`).join("")}</select>
-      <label class="label" for="supText">Short note</label><textarea id="supText" class="textarea" placeholder="What happened, what are you unsure about, or what feedback would help?"></textarea>
-      <button class="btn" id="saveSupervision">Save for supervision</button>
+      <label class="label" for="supText">Short Note</label><textarea id="supText" class="textarea" placeholder="What happened, what are you unsure about, or what feedback would help?"></textarea>
+      <button class="btn" id="saveSupervision">Save for Supervision</button>
     </section>
-    <details class="card supervision-ideas"><summary><strong>Ideas for supervision</strong><span>Open only when needed</span></summary><div class="supervision-idea-list">
+
+    <section class="card supervision-record-card">
+      <div class="label">Save Supervision Notes</div>
+      <label class="label" for="supervisionRecordDate">Date</label><input id="supervisionRecordDate" type="date" class="input" value="${localDateValue()}">
+      <label class="label" for="supervisionRecordNotes">Notes</label><textarea id="supervisionRecordNotes" class="textarea" placeholder="Key discussion, feedback, learning or actions from supervision..."></textarea>
+      <button class="btn" id="saveSupervisionRecord">Save Supervision Record</button>
+    </section>
+
+    ${items.length?`<details class="card supervision-saved"><summary><strong>Saved Questions and Actions</strong><span>${items.length}</span></summary><div class="supervision-saved-list">${items.map(i=>`<article class="supervision-saved-row"><strong>${safeText(i.type)}</strong><small>${safeText(i.date)}</small><p>${safeText(i.text)}</p></article>`).join("")}</div></details>`:""}
+
+    <details class="card supervision-previous" ${records.length?"":"open"}><summary><strong>Previous Supervision</strong><span>${records.length}</span></summary>
+      ${records.length?`<div class="supervision-previous-list">${records.map(record=>`<article class="supervision-previous-row"><strong>${safeText(formatPlanningDate(record.date))}</strong><p>${safeText(record.notes)}</p></article>`).join("")}</div>`:`<p class="muted personality-empty">Your saved supervision notes will stay here so you can look back across placement.</p>`}
+    </details>
+
+    <details class="card supervision-ideas"><summary><strong>Ideas for Supervision</strong><span>Open only when needed</span></summary><div class="supervision-idea-list">
       <p>Which theory best explains a recent interaction, and what alternatives should I consider?</p>
       <p>How would a social worker approach this differently from a general support role?</p>
       <p>Can I receive feedback on my assessment, documentation, group facilitation or professional judgement?</p>
       <p>What opportunities can I take on to practise higher duties, policy, leadership or multidisciplinary work?</p>
       <p>Was there an ethical tension involving autonomy, risk, family involvement, confidentiality or boundaries?</p>
-    </div></details>
-    <section class="card supervision-saved"><div class="label">My supervision list</div>${items.length?`<details open><summary>${items.length} saved item${items.length===1?"":"s"}</summary><div class="supervision-saved-list">${items.map(i=>`<article class="supervision-saved-row"><strong>${safeText(i.type)}</strong><small>${safeText(i.date)}</small><p>${safeText(i.text)}</p></article>`).join("")}</div></details>`:`<p class="muted personality-empty">🤝 Save a question, feedback point or action when you are ready.</p>`}</section>`;
+    </div></details>`;
   document.getElementById("backPlacement").onclick=()=>{route="assessments";render()};
   document.querySelectorAll(".supervision-category").forEach(button=>button.onclick=()=>{
     document.getElementById("supType").value=button.dataset.supervisionCategory;
@@ -3040,7 +3172,14 @@ function supervisionPage(){
     document.querySelectorAll(".supervision-category").forEach(item=>item.classList.remove("selected"));
     button.classList.add("selected");
   });
-  document.getElementById("saveSupervision").onclick=()=>{const text=document.getElementById("supText").value.trim();if(!text){alert("Add a supervision note first.");return}const arr=supervisionItems();arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text});state.set("supervisionItems",arr);alert("🤝 Saved for supervision");supervisionPage();};
+  document.querySelectorAll(".supervision-followed-up").forEach(button=>button.onclick=()=>{setReflectionFollowedUp(button.dataset.followedUp,true);supervisionPage();});
+  document.getElementById("saveSupervision").onclick=()=>{const text=document.getElementById("supText").value.trim();if(!text){alert("Add a supervision note first.");return}const arr=supervisionItems();arr.unshift({id:Date.now(),date:new Date().toLocaleDateString("en-AU"),type:document.getElementById("supType").value,text});state.set("supervisionItems",arr);supervisionPage();};
+  document.getElementById("saveSupervisionRecord").onclick=()=>{
+    const date=document.getElementById("supervisionRecordDate").value;
+    const notes=document.getElementById("supervisionRecordNotes").value.trim();
+    if(!date||!notes){alert("Add a date and your supervision notes first.");return;}
+    const arr=supervisionRecords();arr.unshift({id:Date.now(),date,notes});state.set("supervisionRecords",arr);supervisionPage();
+  };
 }
 
 function learningPlanPage(){
@@ -3155,6 +3294,7 @@ function saveEntry(){
   const focusAreas=selectedReflectionButtons(".reflection-focus-chip");
   const practiceConnections=[...new Set(selectedReflectionButtons(".reflection-practice-chip").filter(value=>value!=="Not sure"))];
   const projectRelated=document.getElementById("reflectionProjectYes")?.classList.contains("selected")||false;
+  const supervisionFollowUp=document.getElementById("reflectionSupervisionFollowUp")?.classList.contains("selected")||false;
   const reflectionNote=document.getElementById("reflectionNote")?.value.trim()||"";
   const practiceNote=document.getElementById("reflectionPracticeNote")?.value.trim()||"";
   const criticalPrompt=document.getElementById("criticalReflectionWrap")?.classList.contains("hidden")?"":document.getElementById("criticalReflectionPrompt")?.textContent.trim()||"";
@@ -3202,11 +3342,18 @@ function saveEntry(){
   const info=placementInfo(),p=dailyPrompt(info,hours());
   const entry={
     id:Date.now(),date:new Date().toLocaleDateString("en-AU"),goal:p.goal,mood:"",answer:moment,moment,
-    involvement,outcomeIds,outcomeTags,focusAreas,learningOutcomes:focusAreas.filter(id=>id!=="unsure"),learningOutcomeLabels,projectRelated,reflectionNote,practiceConnections,practiceNote,criticalPrompt,criticalAnswer,
+    involvement,outcomeIds,outcomeTags,focusAreas,learningOutcomes:focusAreas.filter(id=>id!=="unsure"),learningOutcomeLabels,projectRelated,supervisionFollowUp,reflectionNote,practiceConnections,practiceNote,criticalPrompt,criticalAnswer,
     theories,methods,skills,values,ethics,assessmentJudgement,useOfSelfTags,cultural,systems,supervisionLearning,researchEvidence,lensStatus:{},practiceStandards,
     useOfSelf:useOfSelfTags.join(", "),deeperQuestion:criticalPrompt||reflectionPromptForSelection(),deeperAnswer:criticalAnswer||reflectionNote,futurePractice:"",professionalIdentity:"",evidenceTypes,theory:practiceConnections.join(", "),method:"",supervision:"",evidence:autoMapped
   };
-  const arr=savedEntries();arr.unshift(entry);state.set("entries",arr);
+  const arr=savedEntries();
+  const editingId=state.get("editingReflectionId",null);
+  if(editingId){
+    const index=arr.findIndex(item=>String(item.id)===String(editingId));
+    if(index>=0){entry.id=arr[index].id;entry.date=arr[index].date||entry.date;arr[index]={...arr[index],...entry};}
+    else arr.unshift(entry);
+  }else arr.unshift(entry);
+  state.set("entries",arr);
   const framework=frameworkData();
   framework.values=[...new Set([...(framework.values||[]),...values])];
   framework.theories=[...new Set([...(framework.theories||[]),...practiceConnections,...researchEvidence])];
@@ -3215,6 +3362,26 @@ function saveEntry(){
   if(useOfSelfTags.length)framework.useOfSelf=[framework.useOfSelf,useOfSelfTags.join(", ")].filter(Boolean).join("\n");
   saveFrameworkData(framework);
   clearReflectionDraft();lastSavedReflection=entry;render();window.scrollTo({top:0,behavior:"smooth"});
+}
+function editReflection(id){
+  const entry=savedEntries().find(item=>String(item.id)===String(id));
+  if(!entry)return;
+  state.set("editingReflectionId",entry.id);
+  state.set(REFLECTION_DRAFT_KEY,{
+    answer:entry.moment||entry.answer||"",
+    involvement:entry.involvement||[],
+    outcomes:entry.outcomeIds||[],
+    focus:entry.focusAreas||entry.learningOutcomes||[],
+    practiceConnections:entry.practiceConnections||entry.theories||[],
+    projectRelated:Boolean(entry.projectRelated),
+    supervisionFollowUp:Boolean(entry.supervisionFollowUp),
+    reflectionNote:entry.reflectionNote||"",
+    practiceNote:entry.practiceNote||"",
+    criticalPrompt:entry.criticalPrompt||"",
+    criticalAnswer:entry.criticalAnswer||"",
+    updatedAt:new Date().toISOString()
+  });
+  route="journal";render();window.scrollTo({top:0,behavior:"smooth"});
 }
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 function triggerFileDownload(blob,filename){
@@ -3444,6 +3611,8 @@ function bind(){
   document.querySelectorAll(".reflection-project-chip").forEach(button=>button.addEventListener("click",()=>{
     document.querySelectorAll(".reflection-project-chip").forEach(item=>item.classList.toggle("selected",item===button));captureReflectionDraft();
   }));
+  document.getElementById("reflectionSupervisionFollowUp")?.addEventListener("click",event=>{event.currentTarget.classList.toggle("selected");captureReflectionDraft();});
+  document.querySelectorAll("[data-edit-reflection]").forEach(button=>button.addEventListener("click",()=>editReflection(button.dataset.editReflection)));
   ["answer","reflectionNote","reflectionPracticeNote","criticalReflectionAnswer"].forEach(id=>document.getElementById(id)?.addEventListener("input",captureReflectionDraft));
   restoreReflectionDraft();
   document.getElementById("reflectionSearch")?.addEventListener("input",event=>{const q=event.target.value.toLowerCase();document.querySelectorAll(".reflection-library-item").forEach(item=>item.classList.toggle("hidden",!item.dataset.search.includes(q)));});
@@ -3469,6 +3638,7 @@ function bind(){
     timesheetPage();
   });
   document.querySelectorAll(".assessment").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id));
+  document.querySelectorAll(".assessment-component-check").forEach(input=>input.addEventListener("change",()=>{setAssessmentComponentStatus(input.dataset.assessment,input.dataset.component,input.checked?"complete":"not_started");assessmentDetail(input.dataset.assessment);}));
   document.querySelectorAll(".assessment-plan-edit").forEach(x=>x.onclick=()=>assessmentDetail(x.dataset.id,true));
   const toolkitList=document.getElementById("toolkitList");
   if(toolkitList){
