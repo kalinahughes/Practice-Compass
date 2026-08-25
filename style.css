@@ -6065,3 +6065,22 @@ main{padding-inline:18px}
     align-self:center;
   }
 }
+
+
+/* Cool colour cleanup: remove blush/yellow warmth */
+.home-celebrate-highlight{
+  background:#f2f5f5 !important;
+  border-color:#dde5e5 !important;
+}
+.home-celebrate-highlight .home-highlight-icon{
+  background:#e7edef !important;
+}
+.home-celebrate-highlight .home-highlight-copy small{
+  color:#64777b !important;
+}
+.home-celebrate-highlight .home-highlight-link{
+  color:#61777d !important;
+}
+.home-quick-access-card:nth-child(2) .home-quick-access-icon{
+  background:#e9eef0 !important;
+}
