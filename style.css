@@ -6084,3 +6084,134 @@ main{padding-inline:18px}
 .home-quick-access-card:nth-child(2) .home-quick-access-icon{
   background:#e9eef0 !important;
 }
+
+
+/* Home hierarchy sprint: one clear attention cue, quieter shortcuts, celebration lower down */
+.home-attention-panel{
+  margin:16px 0 14px;
+}
+.home-attention-label{
+  display:block;
+  margin:0 0 7px 3px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#617781;
+}
+.home-attention-row{
+  width:100%;
+  border:1px solid #d8e6ea;
+  background:#eef5f7;
+  border-radius:16px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:inherit;
+  text-align:left;
+}
+.home-attention-row.is-attention{
+  background:#f2f5f5;
+  border-color:#dce4e4;
+}
+.home-attention-row > span:nth-child(2){
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  flex:1;
+  min-width:0;
+}
+.home-attention-row strong{
+  font-size:14px;
+  line-height:1.25;
+}
+.home-attention-row small{
+  font-size:11px;
+  color:#707a7c;
+}
+.home-attention-row b{
+  color:#647f89;
+  font-size:18px;
+  font-weight:500;
+}
+.home-attention-symbol{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:rgba(255,255,255,.72);
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+}
+
+.home-quick-access-minimal{
+  margin:12px 0 16px !important;
+}
+.home-quick-access-minimal .home-quick-access-grid{
+  gap:8px !important;
+}
+.home-quick-access-minimal .home-quick-access-card{
+  min-height:62px !important;
+  padding:10px 11px !important;
+  border-radius:15px !important;
+}
+.home-quick-access-minimal .home-quick-access-icon{
+  width:32px !important;
+  height:32px !important;
+  font-size:16px !important;
+}
+.home-quick-access-minimal .home-quick-access-card strong{
+  font-size:13px !important;
+  line-height:1.15 !important;
+}
+.home-quick-access-minimal .home-quick-access-card b{
+  font-size:17px !important;
+}
+
+.home-celebrate-compact{
+  margin:14px 0;
+  background:#f2f5f5;
+  border:1px solid #dde5e5;
+  border-radius:15px;
+  padding:11px 13px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.home-celebrate-compact .home-highlight-icon{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  background:#e7edef;
+}
+.home-celebrate-compact .home-highlight-copy{
+  gap:1px;
+}
+.home-celebrate-compact .home-highlight-copy small{
+  color:#64777b;
+}
+.home-celebrate-compact .home-highlight-copy strong{
+  font-size:13.5px;
+}
+.home-celebrate-compact .home-highlight-link{
+  margin-left:auto;
+  color:#61777d;
+}
+
+/* The old smart cards are no longer used on Home */
+.home-smart-panel,
+.home-celebrate-highlight,
+.home-notice-highlight{
+  box-shadow:none;
+}
+
+@media (max-width:520px){
+  .home-quick-access-minimal .home-quick-access-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .home-quick-access-minimal .home-quick-access-card{
+    min-height:62px !important;
+    align-items:center !important;
+  }
+}

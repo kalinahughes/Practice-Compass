@@ -1380,9 +1380,27 @@ function timesheetReminder(today=localDateValue()){
 }
 function homePlacementReminders(){return [timesheetReminder(),integrationReminder()].filter(Boolean).slice(0,2);}
 function homeReminderPanel(){
-  const reminders=homePlacementReminders();
-  if(!reminders.length)return "";
-  return `<section class="home-reminder-panel" aria-label="Placement reminders">${reminders.map(item=>`<button class="home-reminder-row ${item.tone==="attention"?"is-attention":""}" data-reminder-type="${item.type}" ${item.assessmentId?`data-assessment-id="${item.assessmentId}"`:""}><span class="home-reminder-symbol">${item.type==="timesheet"?"⏱️":"☕"}</span><span><strong>${item.title}</strong><small>${item.text}</small></span><b>${item.action} ›</b></button>`).join("")}</section>`;
+  const reminder=homePlacementReminders()[0]||null;
+  const notice=!reminder?(smartNotices?.()[0]||null):null;
+  if(!reminder&&!notice)return "";
+  if(reminder){
+    return `<section class="home-attention-panel" aria-label="Needs attention">
+      <span class="home-attention-label">Needs Attention</span>
+      <button class="home-attention-row ${reminder.tone==="attention"?"is-attention":""}" data-reminder-type="${reminder.type}" ${reminder.assessmentId?`data-assessment-id="${reminder.assessmentId}"`:""}>
+        <span class="home-attention-symbol">${reminder.type==="timesheet"?"⏱️":"☕"}</span>
+        <span><strong>${reminder.title}</strong><small>${reminder.text}</small></span>
+        <b>›</b>
+      </button>
+    </section>`;
+  }
+  return `<section class="home-attention-panel" aria-label="Needs attention">
+    <span class="home-attention-label">Needs Attention</span>
+    <button class="home-attention-row" data-smart-action="${safeText(notice.action)}">
+      <span class="home-attention-symbol">${notice.icon}</span>
+      <span><strong>${safeText(notice.title)}</strong><small>${safeText(notice.detail)}</small></span>
+      <b>›</b>
+    </button>
+  </section>`;
 }
 
 let quickHoursEditingDate=null;
@@ -1952,27 +1970,14 @@ function smartNotices(){
 
 function homeSmartPanel(){
   const achievement=smartAchievements()[0]||null;
-  const notice=smartNotices()[0]||null;
-  if(!achievement&&!notice)return "";
-  return `<section class="home-smart-panel home-smart-panel-compact">
-    ${achievement?`<article class="home-celebrate-highlight">
-      <span class="home-highlight-icon">✨</span>
-      <span class="home-highlight-copy">
-        <small>Celebrate</small>
-        <strong>${safeText(achievement.title)}</strong>
-        <span>${safeText(achievement.detail)}</span>
-      </span>
-      <button type="button" class="home-highlight-link" id="viewAchievements">View ›</button>
-    </article>`:""}
-    ${notice?`<button type="button" class="home-notice-highlight" data-smart-action="${safeText(notice.action)}">
-      <span class="home-highlight-icon">👀</span>
-      <span class="home-highlight-copy">
-        <small>Worth Noticing</small>
-        <strong>${safeText(notice.title)}</strong>
-        <span>${safeText(notice.detail)}</span>
-      </span>
-      <b>›</b>
-    </button>`:""}
+  if(!achievement)return "";
+  return `<section class="home-celebrate-compact">
+    <span class="home-highlight-icon">✨</span>
+    <span class="home-highlight-copy">
+      <small>Celebrate</small>
+      <strong>${safeText(achievement.title)}</strong>
+    </span>
+    <button type="button" class="home-highlight-link" id="viewAchievements">View ›</button>
   </section>`;
 }
 function todayPage(){
@@ -2014,23 +2019,20 @@ function todayPage(){
 
     ${homeReminderPanel()}
 
-    <section class="home-quick-access" aria-label="Quick access">
-      <div class="home-quick-access-heading"><span class="home-kicker">Quick Access</span></div>
+    <section class="home-quick-access home-quick-access-minimal" aria-label="Quick access">
       <div class="home-quick-access-grid">
         <button type="button" class="home-quick-access-card" id="homeCreateSupervision">
           <span class="home-quick-access-icon">☕</span>
-          <span><strong>Create a Supervision Record</strong><small>Capture notes, follow ups and learning</small></span>
+          <span><strong>Supervision Record</strong></span>
           <b>›</b>
         </button>
         <button type="button" class="home-quick-access-card" id="homePracticeFramework">
           <span class="home-quick-access-icon">🧭</span>
-          <span><strong>My Practice Framework</strong><small>See and keep building your framework</small></span>
+          <span><strong>Practice Framework</strong></span>
           <b>›</b>
         </button>
       </div>
     </section>
-
-    ${homeSmartPanel()}
 
     <section class="home-snapshot-card">
       <div class="home-snapshot-heading">
@@ -2046,6 +2048,8 @@ function todayPage(){
     </section>
 
     ${quickHoursCard()}
+
+    ${homeSmartPanel()}
 
     <section class="home-care-card">
       <div class="home-care-icon">${homeIcon('heart')}</div>
