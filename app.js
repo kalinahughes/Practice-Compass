@@ -1881,6 +1881,90 @@ function homeIcon(name){
   return `<span class="home-icon home-icon-${name}">${icons[name]||icons.compass}</span>`;
 }
 
+
+function smartAchievements(){
+  const items=[];
+  const add=(id,icon,title,detail,rank=0)=>items.push({id,icon,title,detail,rank});
+
+  const h=hours();
+  [500,400,300,250,200,100].forEach(mark=>{
+    if(h>=mark)add(`hours-${mark}`,"⏱️",`${mark} Placement Hours`,`A placement milestone worth recognising.`,1000+mark);
+  });
+
+  const integration=integrationSessions();
+  integration.forEach((session,index)=>{
+    if(session.status==="completed")add(`integration-${session.id}`,"☕",`${session.label} Completed`,`One of your three integration sessions is done.`,900+index);
+  });
+
+  const reflectionDefs=assessmentComponentDefinitions("reflections");
+  const reflectionState=assessmentComponentState("reflections");
+  reflectionDefs.forEach((item,index)=>{
+    if(reflectionState[item.id]==="complete")add(`project-${item.id}`,"⭐",`${item.label} Completed`,`${index+1} of 3 project reflections completed.`,940+index);
+  });
+
+  const selfDefs=assessmentComponentDefinitions("midfinal");
+  const selfState=assessmentComponentState("midfinal");
+  selfDefs.forEach((item,index)=>{
+    if(selfState[item.id]==="complete")add(`self-${item.id}`,"📝",`${item.label} Completed`,index===0?"Mid placement self assessment is done.":"Final placement self assessment is done.",960+index);
+  });
+
+  const growth=whereImGrowingState();
+  const notable=[
+    ["own-consumer","🌿","Own Consumer Work","You have taken on your own consumer work."],
+    ["assessment-intake","🧭","Assessment Experience","You have contributed to assessment or intake work."],
+    ["group","💬","Group Facilitation","You have facilitated or co facilitated a group."],
+    ["mdt","🤝","Multidisciplinary Practice","You have contributed in reviews, MDTs or case discussions."],
+    ["documentation","📝","Practice Documentation","You have completed placement documentation and case notes."],
+    ["project-developed","📄","Project Resources Developed","Your placement project moved from an idea into something practical."],
+    ["project-senior-review","📨","Project Sent for Senior Review","Your project reached senior management review."]
+  ];
+  notable.forEach(([id,icon,title,detail],index)=>{
+    if(growth[id])add(`growth-${id}`,icon,title,detail,700+index);
+  });
+
+  const supCount=supervisionRecords().length;
+  if(supCount)add("supervision-records","☕",`${supCount} Supervision Record${supCount===1?"":"s"} Saved`,`Your supervision history is building across placement.`,820+supCount);
+
+  return items.sort((a,b)=>b.rank-a.rank);
+}
+
+function smartNotices(){
+  const notices=[];
+  const followUps=reflectionSupervisionFollowUps().filter(item=>!item.followedUp);
+  if(followUps.length){
+    notices.push({id:"supervision",icon:"☕",title:`${followUps.length} ${followUps.length===1?"reflection is":"reflections are"} waiting for supervision`,detail:"They are already collected in your Supervision folder.",action:"Supervision"});
+  }
+
+  const recent=savedEntries().slice(0,5);
+  const missingTheory=recent.filter(entry=>![...(entry.practiceConnections||[]),...(entry.theories||[])].length);
+  if(recent.length>=3&&missingTheory.length>=2){
+    notices.push({id:"theory",icon:"🧠",title:`${missingTheory.length} recent reflections have no Theory / Practice connection`,detail:"Only review them if a connection would strengthen the evidence.",action:"Reflect"});
+  }
+
+  const allEntries=savedEntries();
+  const culturalCount=allEntries.filter(entry=>(entry.focusAreas||entry.learningOutcomes||[]).includes("culture")||(entry.evidenceTypes||[]).includes("Cultural capability")).length;
+  if(allEntries.length>=5&&culturalCount===0){
+    notices.push({id:"culture",icon:"🌏",title:"Cultural responsiveness has less evidence so far",detail:"Keep an eye out for a genuine example rather than creating extra work.",action:"Where I’m Growing"});
+  }
+
+  return notices.slice(0,2);
+}
+
+function homeSmartPanel(){
+  const achievements=smartAchievements().slice(0,2);
+  const notices=smartNotices();
+  if(!achievements.length&&!notices.length)return "";
+  return `<section class="home-smart-panel">
+    ${achievements.length?`<div class="home-smart-group home-celebrate-group">
+      <div class="home-smart-heading"><span>✨</span><div><span class="home-kicker">Celebrate Achievements</span><small>Things you have already done</small></div></div>
+      <div class="home-smart-list">${achievements.map(item=>`<article class="home-smart-row"><span class="home-smart-symbol">${item.icon}</span><span><strong>${safeText(item.title)}</strong><small>${safeText(item.detail)}</small></span></article>`).join("")}</div>
+    </div>`:""}
+    ${notices.length?`<div class="home-smart-group home-notice-group">
+      <div class="home-smart-heading"><span>👀</span><div><span class="home-kicker">Worth Noticing</span><small>Practice Compass picked these up for you</small></div></div>
+      <div class="home-smart-list">${notices.map(item=>`<button type="button" class="home-smart-row home-smart-action" data-smart-action="${safeText(item.action)}"><span class="home-smart-symbol">${item.icon}</span><span><strong>${safeText(item.title)}</strong><small>${safeText(item.detail)}</small></span><b>›</b></button>`).join("")}</div>
+    </div>`:""}
+  </section>`;
+}
 function todayPage(){
   const info=placementInfo(), h=hours(), totalHours=placementTotalHours(), current=nextAssessment(info,h), stage=currentStage(info), g=greeting();
   const remaining=Math.max(0,totalHours-h);
@@ -1919,6 +2003,24 @@ function todayPage(){
     </section>
 
     ${homeReminderPanel()}
+
+    <section class="home-quick-access" aria-label="Quick access">
+      <div class="home-quick-access-heading"><span class="home-kicker">Quick Access</span></div>
+      <div class="home-quick-access-grid">
+        <button type="button" class="home-quick-access-card" id="homeCreateSupervision">
+          <span class="home-quick-access-icon">☕</span>
+          <span><strong>Create a Supervision Record</strong><small>Capture notes, follow ups and learning</small></span>
+          <b>›</b>
+        </button>
+        <button type="button" class="home-quick-access-card" id="homePracticeFramework">
+          <span class="home-quick-access-icon">🧭</span>
+          <span><strong>My Practice Framework</strong><small>See and keep building your framework</small></span>
+          <b>›</b>
+        </button>
+      </div>
+    </section>
+
+    ${homeSmartPanel()}
 
     <section class="home-snapshot-card">
       <div class="home-snapshot-heading">
@@ -3252,6 +3354,7 @@ function weeklyReviewPage(){
 function myJourneyPage(){
   const entries=savedEntries();
   const reviews=state.get("weeklyReviews",[]);
+  const achievements=smartAchievements();
   const grouped={};
   entries.forEach(e=>{
     const d=e.date||"Undated";
@@ -3260,10 +3363,11 @@ function myJourneyPage(){
   document.getElementById("main").innerHTML=`
     <div class="screen-title"><button class="back" id="backMore">‹</button><h2>🌸 My journey</h2></div>
     <div class="card blush-card">
-      <div class="label">Looking back</div>
+      <div class="label">Looking Back</div>
       <div class="big">Small moments can show you how much your practice is changing.</div>
-      <p class="muted">This page gathers your saved reflections and weekly check ins in one place.</p>
+      <p class="muted">This page gathers your reflections, achievements and check ins across placement.</p>
     </div>
+    ${achievements.length?`<details class="card journey-achievements" open><summary><strong>✨ Achievements</strong><span>${achievements.length}</span></summary><div class="journey-achievement-list">${achievements.map(item=>`<article class="journey-achievement-row"><span>${item.icon}</span><div><strong>${safeText(item.title)}</strong><small>${safeText(item.detail)}</small></div></article>`).join("")}</div></details>`:""}
     ${entries.length?Object.entries(grouped).map(([date,list])=>`
       <section class="journey-day">
         <div class="journey-date">${date}</div>
@@ -3634,6 +3738,14 @@ function bind(){
   document.getElementById("openTimesheets")?.addEventListener("click",()=>timesheetPage());
   document.getElementById("openWhereGrowing")?.addEventListener("click",()=>whereImGrowingPage());
   document.getElementById("openSupervision")?.addEventListener("click",()=>supervisionPage());
+  document.getElementById("homeCreateSupervision")?.addEventListener("click",()=>supervisionPage());
+  document.getElementById("homePracticeFramework")?.addEventListener("click",()=>frameworkPage());
+  document.querySelectorAll("[data-smart-action]").forEach(button=>button.addEventListener("click",()=>{
+    const action=button.dataset.smartAction;
+    if(action==="Supervision")supervisionPage();
+    else if(action==="Reflect"){route="journal";render();}
+    else if(action==="Where I’m Growing")whereImGrowingPage();
+  }));
   document.querySelectorAll(".home-reminder-row").forEach(button=>button.addEventListener("click",()=>{
     if(button.dataset.reminderType==="timesheet")timesheetPage();
     else assessmentDetail(button.dataset.assessmentId||"integration");
