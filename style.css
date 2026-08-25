@@ -5907,3 +5907,161 @@ main{padding-inline:18px}
   color:#737a75;
   font-size:12px;
 }
+
+
+/* Home visual refresh: less sage, more contrast */
+.home-quick-access{
+  margin:18px 0 14px;
+}
+.home-quick-access-heading{
+  margin:0 0 8px 2px;
+}
+.home-quick-access-grid{
+  grid-template-columns:1fr 1fr !important;
+  gap:10px;
+}
+.home-quick-access-card{
+  min-height:76px !important;
+  padding:12px !important;
+  border-radius:16px !important;
+  box-shadow:none !important;
+  border-color:rgba(78,105,116,.13) !important;
+}
+.home-quick-access-card strong{
+  font-size:14px !important;
+}
+.home-quick-access-card small{
+  font-size:10.5px !important;
+  color:#7a7f7c !important;
+}
+.home-quick-access-card b{
+  color:#647d86 !important;
+}
+.home-quick-access-icon{
+  width:36px !important;
+  height:36px !important;
+  border-radius:11px !important;
+  background:#e7f0f3 !important;
+}
+.home-quick-access-card:nth-child(2) .home-quick-access-icon{
+  background:#f0eae3 !important;
+}
+
+.home-smart-panel-compact{
+  display:grid;
+  gap:10px;
+  margin:12px 0 18px;
+}
+.home-celebrate-highlight,
+.home-notice-highlight{
+  width:100%;
+  border-radius:16px;
+  padding:13px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+}
+.home-celebrate-highlight{
+  background:#fbf4ee;
+  border:1px solid #eedfd1;
+}
+.home-notice-highlight{
+  background:#edf4f7;
+  border:1px solid #d7e5eb;
+  color:inherit;
+}
+.home-highlight-icon{
+  width:36px;
+  height:36px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:rgba(255,255,255,.72);
+  font-size:17px;
+}
+.home-highlight-copy{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+  flex:1;
+}
+.home-highlight-copy small{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:#78695f;
+}
+.home-notice-highlight .home-highlight-copy small{
+  color:#5d7883;
+}
+.home-highlight-copy strong{
+  font-size:14px;
+  line-height:1.25;
+  color:#323936;
+}
+.home-highlight-copy > span:last-child{
+  font-size:11.5px;
+  line-height:1.35;
+  color:#777b78;
+}
+.home-highlight-link{
+  border:0;
+  background:transparent;
+  color:#866f61;
+  font-weight:800;
+  font-size:12px;
+  padding:8px 2px;
+  flex:0 0 auto;
+}
+.home-notice-highlight b{
+  color:#627f8a;
+  font-size:19px;
+  font-weight:500;
+  flex:0 0 auto;
+}
+
+/* Dusty blue for secondary Home utility surfaces */
+.home-reminder-panel .home-reminder-row{
+  background:#eef5f7 !important;
+  border-color:#d8e6ea !important;
+}
+.home-reminder-panel .home-reminder-row b{
+  color:#4f7d8a !important;
+}
+
+/* Keep placement progress anchored in eucalyptus */
+.home-snapshot-card{
+  border-color:rgba(67,93,81,.12) !important;
+}
+.home-progress-track span{
+  background:#3d8990 !important;
+}
+
+/* Self care remains at the bottom but gets a softer blue tint */
+.home-care-card{
+  background:#eef4f7 !important;
+  border-color:#d9e5e9 !important;
+}
+.home-care-icon{
+  background:#e3edf1 !important;
+}
+
+@media (max-width:520px){
+  .home-quick-access-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .home-quick-access-card{
+    min-height:82px !important;
+    align-items:flex-start !important;
+  }
+  .home-quick-access-card small{
+    display:none;
+  }
+  .home-quick-access-card b{
+    align-self:center;
+  }
+}

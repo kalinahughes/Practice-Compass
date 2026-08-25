@@ -1951,18 +1951,28 @@ function smartNotices(){
 }
 
 function homeSmartPanel(){
-  const achievements=smartAchievements().slice(0,2);
-  const notices=smartNotices();
-  if(!achievements.length&&!notices.length)return "";
-  return `<section class="home-smart-panel">
-    ${achievements.length?`<div class="home-smart-group home-celebrate-group">
-      <div class="home-smart-heading"><span>✨</span><div><span class="home-kicker">Celebrate Achievements</span><small>Things you have already done</small></div></div>
-      <div class="home-smart-list">${achievements.map(item=>`<article class="home-smart-row"><span class="home-smart-symbol">${item.icon}</span><span><strong>${safeText(item.title)}</strong><small>${safeText(item.detail)}</small></span></article>`).join("")}</div>
-    </div>`:""}
-    ${notices.length?`<div class="home-smart-group home-notice-group">
-      <div class="home-smart-heading"><span>👀</span><div><span class="home-kicker">Worth Noticing</span><small>Practice Compass picked these up for you</small></div></div>
-      <div class="home-smart-list">${notices.map(item=>`<button type="button" class="home-smart-row home-smart-action" data-smart-action="${safeText(item.action)}"><span class="home-smart-symbol">${item.icon}</span><span><strong>${safeText(item.title)}</strong><small>${safeText(item.detail)}</small></span><b>›</b></button>`).join("")}</div>
-    </div>`:""}
+  const achievement=smartAchievements()[0]||null;
+  const notice=smartNotices()[0]||null;
+  if(!achievement&&!notice)return "";
+  return `<section class="home-smart-panel home-smart-panel-compact">
+    ${achievement?`<article class="home-celebrate-highlight">
+      <span class="home-highlight-icon">✨</span>
+      <span class="home-highlight-copy">
+        <small>Celebrate</small>
+        <strong>${safeText(achievement.title)}</strong>
+        <span>${safeText(achievement.detail)}</span>
+      </span>
+      <button type="button" class="home-highlight-link" id="viewAchievements">View ›</button>
+    </article>`:""}
+    ${notice?`<button type="button" class="home-notice-highlight" data-smart-action="${safeText(notice.action)}">
+      <span class="home-highlight-icon">👀</span>
+      <span class="home-highlight-copy">
+        <small>Worth Noticing</small>
+        <strong>${safeText(notice.title)}</strong>
+        <span>${safeText(notice.detail)}</span>
+      </span>
+      <b>›</b>
+    </button>`:""}
   </section>`;
 }
 function todayPage(){
@@ -3740,6 +3750,7 @@ function bind(){
   document.getElementById("openSupervision")?.addEventListener("click",()=>supervisionPage());
   document.getElementById("homeCreateSupervision")?.addEventListener("click",()=>supervisionPage());
   document.getElementById("homePracticeFramework")?.addEventListener("click",()=>frameworkPage());
+  document.getElementById("viewAchievements")?.addEventListener("click",()=>myJourneyPage());
   document.querySelectorAll("[data-smart-action]").forEach(button=>button.addEventListener("click",()=>{
     const action=button.dataset.smartAction;
     if(action==="Supervision")supervisionPage();
