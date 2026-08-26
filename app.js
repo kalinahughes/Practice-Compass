@@ -2017,8 +2017,6 @@ function todayPage(){
       </div>
     </section>
 
-    ${homeReminderPanel()}
-
     <section class="home-quick-access home-quick-access-minimal" aria-label="Quick access">
       <div class="home-quick-access-grid">
         <button type="button" class="home-quick-access-card" id="homeCreateSupervision">

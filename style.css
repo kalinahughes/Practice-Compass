@@ -6215,3 +6215,17 @@ main{padding-inline:18px}
     align-items:center !important;
   }
 }
+
+
+/* Final Home hierarchy cleanup */
+.home-quick-access-minimal{
+  margin-top:14px !important;
+  margin-bottom:16px !important;
+}
+.home-snapshot-card{
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+}
+.home-hours-card{
+  margin-top:0 !important;
+}
