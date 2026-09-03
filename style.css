@@ -6229,3 +6229,34 @@ main{padding-inline:18px}
 .home-hours-card{
   margin-top:0 !important;
 }
+
+
+/* Assessment detail usability cleanup */
+.assessment-simple-details summary{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.assessment-simple-details summary > span:first-child{
+  flex:0 1 auto;
+}
+.assessment-summary-meta{
+  margin-left:auto;
+  color:#72807a;
+  font-size:13px;
+  font-weight:600;
+  text-align:right;
+}
+.assessment-summary-arrow{
+  color:#6f7d77;
+  font-size:14px;
+  line-height:1;
+  margin-left:2px;
+  transition:transform .18s ease;
+}
+.assessment-simple-details[open] .assessment-summary-arrow{
+  transform:rotate(180deg);
+}
+.assessment-simple-details summary:hover .assessment-summary-arrow{
+  color:#445a50;
+}

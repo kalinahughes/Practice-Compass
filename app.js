@@ -1314,7 +1314,14 @@ const placementWeeks = [
 
 function currentStage(info){
   if(!info.started) return placementWeeks[0];
-  return placementWeeks.find(s=>info.week>=s.from && info.week<=s.to) || placementWeeks[placementWeeks.length-1];
+  const byWeek = placementWeeks.find(s=>info.week>=s.from && info.week<=s.to) || placementWeeks[placementWeeks.length-1];
+  try{
+    const midState = assessmentComponentState("midfinal");
+    if(midState.mid==="complete" && byWeek.title==="Prepare for mid placement"){
+      return placementWeeks.find(s=>s.title==="Develop independence and project outcomes") || byWeek;
+    }
+  }catch(e){}
+  return byWeek;
 }
 function timesheetEntries(){ return state.get("timesheets",[]); }
 
@@ -2575,7 +2582,7 @@ function assessmentDetail(id,openPlanning=false){
       ${!["integration","reflections","midfinal"].includes(a.id)?`<section class="assessment-simple-components"><div class="assessment-simple-components-head"><h2>Progress</h2></div><div class="assessment-component-list">${simpleTaskRows}</div></section>`:""}
 
       <details class="assessment-simple-details" ${openPlanning?"open":""}>
-        <summary>Plan and Target Date</summary>
+        <summary><span>Plan and Target Date</span><span class="assessment-summary-meta">${planning.date||planning.reason?`${planning.date?`Due ${formatPlanningDate(planning.date)}`:""}${planning.date&&planning.reason?" · ":""}${safeText(planning.reason||"")}`:"Add a target date or note"}</span><span class="assessment-summary-arrow" aria-hidden="true">⌄</span></summary>
         <div class="assessment-simple-details-body">
           <label class="label" for="planningDate">Target Date</label>
           <input id="planningDate" type="date" class="input" value="${escapeAttribute(planning.date)}">
@@ -2588,10 +2595,10 @@ function assessmentDetail(id,openPlanning=false){
         </div>
       </details>
 
-      ${entries.length?`<details class="assessment-simple-details"><summary>Linked Reflections <span>${entries.length}</span></summary><div class="assessment-simple-details-body">${entries.map(e=>`<article class="assessment-linked-simple"><strong>${safeText(e.date)}</strong><p>${safeText((e.answer||"").slice(0,150))}${(e.answer||"").length>150?"…":""}</p></article>`).join("")}</div></details>`:""}
+      ${entries.length?`<details class="assessment-simple-details"><summary><span>Linked Reflections</span><span class="assessment-summary-meta">${entries.length}</span><span class="assessment-summary-arrow" aria-hidden="true">⌄</span></summary><div class="assessment-simple-details-body">${entries.map(e=>`<article class="assessment-linked-simple"><strong>${safeText(e.date)}</strong><p>${safeText((e.answer||"").slice(0,150))}${(e.answer||"").length>150?"…":""}</p></article>`).join("")}</div></details>`:""}
 
       <details class="assessment-simple-details">
-        <summary>More Information</summary>
+        <summary><span>More Information</span><span class="assessment-summary-meta">Open</span><span class="assessment-summary-arrow" aria-hidden="true">⌄</span></summary>
         <div class="assessment-simple-details-body">
           <p>${safeText(a.purpose||"")}</p>
           <p>${safeText(official.requirement)}</p>
